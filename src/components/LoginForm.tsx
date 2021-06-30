@@ -1,38 +1,36 @@
 import React from "react";
 import {
-  Center,
-  InputGroup,
+  VStack,
   Input,
   InputRightElement,
+  InputGroup,
   Button,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+  Box,
 } from "@chakra-ui/react";
+
+import "./LoginForm.css";
 
 function LoginForm() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
   return (
-    <div>
-      <Center color="white">
-        <FormControl id="email">
+    <Box p={4}>
+      <FormControl id="email">
+        <VStack spacing={4}>
           <Input placeholder="아이디" />
-          <Input
-            pr="4.5rem"
-            type={show ? "text" : "password"}
-            placeholder="비밀번호"
-          />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </FormControl>
-      </Center>
-    </div>
+          <InputGroup>
+            <Input type={show ? "text" : "password"} placeholder="비밀번호" />
+            <InputRightElement>
+              <Button size="sm" onClick={handleClick}>
+                {show ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </VStack>
+      </FormControl>
+    </Box>
   );
 }
 
