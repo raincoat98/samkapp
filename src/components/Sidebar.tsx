@@ -17,14 +17,14 @@ function Sidebar() {
   };
 
   return (
-    <Flex direction={"column"} justify={"center"} p={3} w={250}>
+    <Flex direction={"column"} p={3} w={250}>
       <Box p={30}>
         <Image
           objectFit="contain"
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png"
         />
       </Box>
-      <Flex flex={1} direction={"column"} justify={"center"}>
+      <Flex flex={1} direction={"column"}>
         <Link to="/home">
           <Button leftIcon={<Icon as={FcHome} />} w={"100%"}>
             홈 화면

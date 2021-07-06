@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   FormLabel,
   Switch,
@@ -45,8 +46,8 @@ function SettingBox() {
 
 function Setting() {
   return (
-    <Box>
-      <VStack align={"center"} p={10} spacing={10}>
+    <Box p={10}>
+      <VStack align={"center"} spacing={10}>
         <SettingBox />
         <SettingBox />
         <SettingBox />
@@ -57,6 +58,8 @@ function Setting() {
         <SettingBox />
         <SettingBox />
       </VStack>
+      <Button colorScheme="red">설정 초기화</Button>
+      <Button colorScheme="blue">설정 저장</Button>
     </Box>
   );
 }
