@@ -31,20 +31,32 @@ function TestBox() {
 function Home() {
   return (
     <Flex direction={"column"} height={"100%"} p={3}>
-      <HStack p={5} mb={2.5} spacing={5} borderRadius="lg">
+      <HStack p={3} mb={2.5} spacing={5} borderWidth="1px" borderRadius="lg">
         <TestBox />
         <TestBox />
         <TestBox />
         <Button>작업 종료</Button>
       </HStack>
-      <Box p={5} flex={1} borderRadius="lg" overflow={"hidden"}>
+      <Box
+        p={3}
+        flex={1}
+        borderRadius="lg"
+        borderWidth="1px"
+        overflow={"hidden"}
+      >
         <Grid // 6x6 사이즈의 그리드
           h={"100%"}
           templateRows="repeat(6, 1fr)"
           templateColumns="repeat(6, 1fr)"
           gap={3}
         >
-          <GridItem p={3} borderWidth="1px" borderRadius="lg" colSpan={4}>
+          <GridItem
+            p={3}
+            borderWidth="1px"
+            borderRadius="lg"
+            rowSpan={2}
+            colSpan={4}
+          >
             <Tooltip label="현재 카운터 목록입니다.">
               <Badge>카운터</Badge>
             </Tooltip>
@@ -59,14 +71,14 @@ function Home() {
             <Tooltip label="현재 제품양품률입니다.">
               <Badge>제품양품률</Badge>
             </Tooltip>
-            <ChartPieFrame/>
+            <ChartPieFrame />
           </GridItem>
           <GridItem
             borderWidth="1px"
             overflow={"auto"}
             p={3}
             borderRadius="lg"
-            rowSpan={5}
+            rowSpan={4}
             colSpan={4}
           >
             <Tooltip label="현재 작업 지시서 목록입니다.">
@@ -74,12 +86,24 @@ function Home() {
             </Tooltip>
             <TableFrame />
           </GridItem>
-          <GridItem borderWidth="1px" p={3} borderRadius="lg" rowSpan={2} colSpan={2}>
+          <GridItem
+            borderWidth="1px"
+            p={3}
+            borderRadius="lg"
+            rowSpan={2}
+            colSpan={2}
+          >
             <Tooltip label="현재 일간 생산 추이입니다.">
               <Badge>일간 생산 추이</Badge>
             </Tooltip>
           </GridItem>
-          <GridItem borderWidth="1px" p={3} borderRadius="lg" rowSpan={2} colSpan={2}>
+          <GridItem
+            borderWidth="1px"
+            p={3}
+            borderRadius="lg"
+            rowSpan={2}
+            colSpan={2}
+          >
             <Tooltip label="현재 주간 생산 추이입니다.">
               <Badge>주간 생산 추이</Badge>
             </Tooltip>
