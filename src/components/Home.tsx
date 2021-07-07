@@ -8,6 +8,7 @@ import {
   GridItem,
   Tooltip,
 } from "@chakra-ui/react";
+
 import TableFrame from "./TableFrame";
 
 function TestBox() {
@@ -44,7 +45,7 @@ function Home() {
           gap={3}
         >
           <GridItem p={3} borderRadius="lg" colSpan={4} bg="tomato">
-            <Tooltip label="현재 카운터 목록입니다." aria-label="A tooltip">
+            <Tooltip label="현재 카운터 목록입니다.">
               <Badge>카운터</Badge>
             </Tooltip>
           </GridItem>
@@ -56,7 +57,9 @@ function Home() {
             colSpan={2}
             bg="papayawhip"
           >
-            <Badge>제품 양품률</Badge>
+            <Tooltip label="현재 제품양품률입니다.">
+              <Badge>제품양품률</Badge>
+            </Tooltip>
           </GridItem>
           <GridItem
             overflow={"auto"}
@@ -66,14 +69,20 @@ function Home() {
             colSpan={4}
             bg="papayawhip"
           >
-            <Badge>작업 지시서</Badge>
+            <Tooltip label="현재 작업 지시서 목록입니다.">
+              <Badge>작업 지시서</Badge>
+            </Tooltip>
             <TableFrame />
           </GridItem>
           <GridItem p={3} borderRadius="lg" rowSpan={2} colSpan={2} bg="tomato">
-            <Badge>일간 생산 추이</Badge>
+            <Tooltip label="현재 일간 생산 추이입니다.">
+              <Badge>일간 생산 추이</Badge>
+            </Tooltip>
           </GridItem>
           <GridItem p={3} borderRadius="lg" rowSpan={2} colSpan={2} bg="tomato">
-            <Badge>주간 생산 추이</Badge>
+            <Tooltip label="현재 주간 생산 추이입니다.">
+              <Badge>주간 생산 추이</Badge>
+            </Tooltip>
           </GridItem>
         </Grid>
       </Box>
