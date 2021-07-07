@@ -25,11 +25,11 @@ function TableItem() {
 function TableFrame() {
   const tableItems = [];
   for (let i = 0; i < 100; i++) {
-    tableItems.push(<TableItem />);
+    tableItems.push(<TableItem key={i} />);
   }
 
   return (
-    <Table variant="simple" bg={"white"}>
+    <Table variant="simple" >
       <TableCaption>목록의 마지막입니다.</TableCaption>
       <Thead>
         <Tr>

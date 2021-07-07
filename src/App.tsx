@@ -29,7 +29,7 @@ function App() {
       <Router>
         <Flex h={"100%"} w={"100%"}>
           <Sidebar />
-          <Box flex={1} overflow="auto" bg="gray.200">
+          <Box flex={1} overflow="auto">
             <Switch>
               <Route path="/" exact={true}>
                 <Redirect
