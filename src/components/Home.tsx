@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import TableFrame from "./TableFrame";
+import ChartPieFrame from "./ChartPieFrame";
 
 function TestBox() {
   return (
@@ -60,6 +61,7 @@ function Home() {
             <Tooltip label="현재 제품양품률입니다.">
               <Badge>제품양품률</Badge>
             </Tooltip>
+            <ChartPieFrame/>
           </GridItem>
           <GridItem
             overflow={"auto"}
