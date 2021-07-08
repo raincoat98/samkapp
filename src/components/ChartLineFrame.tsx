@@ -6,8 +6,8 @@ const data = {
     {
       label: "Dataset 1",
       data: [10, 12, 23, 20, 17, 22],
-      borderColor: "red",
-      backgroundColor: "red",
+      borderColor: "LightSkyBlue",
+      backgroundColor: "LightSkyBlue",
     },
   ],
 };

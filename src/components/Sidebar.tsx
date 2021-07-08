@@ -1,5 +1,16 @@
 import { Link } from "react-router-dom";
-import { Icon, Box, Image, Flex, Button, Spacer } from "@chakra-ui/react";
+import {
+  Icon,
+  Box,
+  Image,
+  Flex,
+  Button,
+  Spacer,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 import {
   FcHome,
   FcSupport,
@@ -8,6 +19,8 @@ import {
   FcCancel,
 } from "react-icons/fc";
 import { useDispatch } from "react-redux";
+import MenuFrame from "./MenuFrame";
+import logo from "../logo.png";
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -18,10 +31,7 @@ function Sidebar() {
   return (
     <Flex direction={"column"} p={3} w={250} borderRightWidth="1px">
       <Box p={30}>
-        <Image
-          objectFit="contain"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png"
-        />
+        <Image objectFit="contain" src={logo} />
       </Box>
       <Flex flex={1} direction={"column"}>
         <Link to="/home">
@@ -53,6 +63,11 @@ function Sidebar() {
             현재 사용 불가
           </Button>
         </Link>
+        <Spacer />
+        <MenuFrame
+          name="메뉴"
+          items={["화면 캡처", "화면 캡처", "화면 캡처"]}
+        />
         <Spacer />
         <Link to="/setting">
           <Button leftIcon={<Icon as={FcSettings} />} w={"100%"}>
