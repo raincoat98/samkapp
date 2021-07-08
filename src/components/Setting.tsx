@@ -9,6 +9,7 @@ import {
   FormLabel,
   Switch,
   Select,
+  Heading,
   Box,
   Tag,
   Input,
@@ -26,6 +27,8 @@ function Setting() {
 
   return (
     <Box>
+      <Heading p={3}>설정</Heading>
+
       <Box p={3}>
         <Tag>계정</Tag>
         <Divider my={3} />

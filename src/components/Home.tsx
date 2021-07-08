@@ -1,5 +1,6 @@
 import {
   HStack,
+  Icon,
   Box,
   Flex,
   Button,
@@ -7,7 +8,18 @@ import {
   Grid,
   GridItem,
   Tooltip,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
 } from "@chakra-ui/react";
+import { AiOutlineMenu } from "react-icons/ai";
 
 import TableFrame from "./TableFrame";
 import ChartPieFrame from "./ChartPieFrame";
@@ -60,6 +72,18 @@ function Home() {
         <TestBox />
         <TestBox />
         <TestBox />
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={AiOutlineMenu} />}>
+            작업 변경
+          </MenuButton>
+          <MenuList>
+            <MenuItem>Download</MenuItem>
+            <MenuItem>Create a Copy</MenuItem>
+            <MenuItem>Mark as Draft</MenuItem>
+            <MenuItem>Delete</MenuItem>
+            <MenuItem>Attend a Workshop</MenuItem>
+          </MenuList>
+        </Menu>
         <Button>작업 종료</Button>
       </HStack>
       <Grid // 6x6 사이즈의 그리드
