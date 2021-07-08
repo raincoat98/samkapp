@@ -6,23 +6,15 @@ import {
   Redirect,
 } from "react-router-dom";
 import "./App.css";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/modules";
 import { Box, Flex } from "@chakra-ui/react";
 
 // 컴포넌트
 import Sidebar from "./components/Sidebar";
-import SplashScreen from "./components/SplashScreen";
 import Home from "./components/Home";
 import Setting from "./components/Setting";
 import LoginForm from "./components/LoginForm";
 
 function App() {
-  const isLoaded = useSelector((state: RootState) => state.system.isLoaded);
-
-  if (!isLoaded) {
-    return <SplashScreen />;
-  }
   return (
     <div className="App">
       <LoginForm />

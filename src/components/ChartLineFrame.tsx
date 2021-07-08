@@ -1,8 +1,6 @@
 import { Line } from "react-chartjs-2";
 
 const DATA_COUNT = 7;
-const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
-const labels = ["1", "2"];
 const data = {
   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
   datasets: [

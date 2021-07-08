@@ -52,9 +52,9 @@ function GridItemFrame(props: GridItemFrameProps) {
       colSpan={props.col}
       overflow="auto"
     >
-      <Tooltip label={props.tooltip}>
-        <Badge>{props.badge}</Badge>
-      </Tooltip>
+      {/* <Tooltip label={props.tooltip}>
+        <Badge position={"absolute"}>{props.badge}</Badge>
+      </Tooltip> */}
       {props.child}
     </GridItem>
   );

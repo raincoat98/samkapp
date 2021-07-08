@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import { Box, CircularProgress } from "@chakra-ui/react";
 
 function Progress() {
   return (

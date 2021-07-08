@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/modules";
-import { loginAction } from "../store/modules/system";
 import {
   HStack,
   Input,
@@ -22,11 +21,13 @@ import {
 import "./LoginForm.css";
 
 function LoginForm() {
-  const isLogin = useSelector((state: RootState) => state.system.isLogin);
   const dispatch = useDispatch();
   const onToggleLoginForm = () => {
-    dispatch(loginAction());
+    dispatch({ type: "system/loginAction" });
   };
+
+  // 로그인 정보 가져오기
+  const isLogin = useSelector((state: RootState) => state.system.isLogin);
 
   // 비밀번호 보이게 하기
   const [passwordShow, setPasswordShow] = React.useState(false);

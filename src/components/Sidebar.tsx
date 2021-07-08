@@ -8,12 +8,11 @@ import {
   FcCancel,
 } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import { logoutAction } from "../store/modules/system";
 
 function Sidebar() {
   const dispatch = useDispatch();
   const onToggleLoginForm = () => {
-    dispatch(logoutAction());
+    dispatch({ type: "system/logoutAction" });
   };
 
   return (

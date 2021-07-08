@@ -29,7 +29,7 @@ const data = {
 
 const options = {
   plugins: {
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     legend: {
       display: false,
       position: "top",
