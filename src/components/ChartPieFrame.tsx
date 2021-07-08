@@ -28,8 +28,9 @@ const data = {
 };
 
 const options = {
+  responsive: true,
+  maintainAspectRatio: false,
   plugins: {
-    maintainAspectRatio: true,
     legend: {
       display: false,
       position: "top",
