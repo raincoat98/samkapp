@@ -12,17 +12,12 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
 import TableFrame from "./TableFrame";
 import ChartPieFrame from "./ChartPieFrame";
+import ChartLineFrame from "./ChartLineFrame";
 
 function TestBox() {
   return (
@@ -119,14 +114,14 @@ function Home() {
           tooltip="현재 일간 생산 추이입니다."
           col={2}
           row={2}
-          child={<Box />}
+          child={<ChartLineFrame />}
         />
         <GridItemFrame
           badge="주간 생산 추이"
           tooltip="현재 주간 생산 추이입니다."
           col={2}
           row={2}
-          child={<Box />}
+          child={<ChartLineFrame />}
         />
       </Grid>
     </Flex>
