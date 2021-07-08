@@ -18,8 +18,12 @@ import {
 function Setting() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
+
+  // 최초에 다크모드인지를 저장 및 값 가져오기
+  dispatch(toggleDarkThemeAction(colorMode));
   const isDakMode = useSelector((state: RootState) => state.system.isDarkTheme);
 
+  // 다크모드 토글 함수
   function changeDarkTheme() {
     dispatch(toggleDarkThemeAction(colorMode));
     toggleColorMode();

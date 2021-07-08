@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-  
+
 export type SystemState = {
   isDarkTheme: boolean;
   isLoaded: boolean;
@@ -17,8 +17,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     toggleDarkThemeAction(state, colorMode) {
-      const isDarkTheme = colorMode.payload === "light" ? true : false
-      state.isDarkTheme = isDarkTheme
+      const isDarkTheme = colorMode.payload === "light" ? false : true;
+      state.isDarkTheme = isDarkTheme;
     },
     loadAction(state) {
       state.isLoaded = true;
@@ -36,5 +36,11 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { toggleDarkThemeAction, loadAction, unloadAction, loginAction, logoutAction } = actions;
+export const {
+  toggleDarkThemeAction,
+  loadAction,
+  unloadAction,
+  loginAction,
+  logoutAction,
+} = actions;
 export default reducer;
