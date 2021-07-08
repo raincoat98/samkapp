@@ -12,6 +12,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Divider,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
@@ -26,6 +27,7 @@ function TestBox() {
       borderWidth="1px"
       borderRadius="lg"
       overflow={"hidden"}
+      flex={1}
     >
       <Box bg={"blue.200"} p={2}>
         생산제품
@@ -52,9 +54,9 @@ function GridItemFrame(props: GridItemFrameProps) {
       colSpan={props.col}
       overflow="auto"
     >
-      {/* <Tooltip label={props.tooltip}>
+      <Tooltip label={props.tooltip}>
         <Badge position={"absolute"}>{props.badge}</Badge>
-      </Tooltip> */}
+      </Tooltip>
       {props.child}
     </GridItem>
   );
@@ -63,7 +65,7 @@ function GridItemFrame(props: GridItemFrameProps) {
 function Home() {
   return (
     <Flex direction={"column"} height={"100%"} p={3}>
-      <HStack p={3} mb={2.5} spacing={5} borderWidth="1px" borderRadius="lg">
+      <HStack p={3} mb={3} spacing={5} borderWidth="1px" borderRadius="lg">
         <TestBox />
         <TestBox />
         <TestBox />
@@ -93,7 +95,58 @@ function Home() {
           tooltip="현재 카운터 목록입니다."
           col={4}
           row={2}
-          child={<Box />}
+          child={
+            <Flex justify="center" align="center" height="100%">
+              <Box
+                flex="1"
+                borderWidth="1px"
+                borderRadius="lg"
+                p="3"
+                mx="1"
+                align="center"
+              >
+                <Box>카운트</Box>
+                <Divider my="1" />
+                <Box>1000</Box>
+              </Box>
+              <Box
+                flex="1"
+                borderWidth="1px"
+                borderRadius="lg"
+                p="3"
+                mx="1"
+                align="center"
+              >
+                <Box>카운트</Box>
+                <Divider my="1" />
+                <Box>1000</Box>
+              </Box>
+              <Box
+                flex="1"
+                borderWidth="1px"
+                borderRadius="lg"
+                p="3"
+                mx="1"
+                align="center"
+              >
+                <Box>카운트</Box>
+                <Divider my="1" />
+                <Box>1000</Box>
+              </Box>
+              <Box
+                flex="1"
+                borderWidth="1px"
+                borderRadius="lg"
+                p="3"
+                mx="1"
+                align="center"
+              >
+                <Box>카운트</Box>
+                <Divider my="1" />
+                <Box>1000</Box>
+              </Box>
+            </Flex>
+          }
         />
         <GridItemFrame
           badge="제품양품률"
