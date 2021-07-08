@@ -28,6 +28,31 @@ function TestBox() {
   );
 }
 
+type GridItemFrameProps = {
+  badge: string;
+  tooltip: string;
+  row: number;
+  col: number;
+  child: React.ReactNode;
+};
+function GridItemFrame(props: GridItemFrameProps) {
+  return (
+    <GridItem
+      borderWidth="1px"
+      p={3}
+      borderRadius="lg"
+      rowSpan={props.row}
+      colSpan={props.col}
+      overflow="auto"
+    >
+      <Tooltip label={props.tooltip}>
+        <Badge>{props.badge}</Badge>
+      </Tooltip>
+      {props.child}
+    </GridItem>
+  );
+}
+
 function Home() {
   return (
     <Flex direction={"column"} height={"100%"} p={3}>
@@ -37,79 +62,49 @@ function Home() {
         <TestBox />
         <Button>작업 종료</Button>
       </HStack>
-      <Box
-        p={3}
+      <Grid // 6x6 사이즈의 그리드
         flex={1}
-        borderRadius="lg"
-        borderWidth="1px"
         overflow={"hidden"}
+        templateRows="repeat(6, 1fr)"
+        templateColumns="repeat(6, 1fr)"
+        gap={3}
       >
-        <Grid // 6x6 사이즈의 그리드
-          h={"100%"}
-          templateRows="repeat(6, 1fr)"
-          templateColumns="repeat(6, 1fr)"
-          gap={3}
-        >
-          <GridItem
-            p={3}
-            borderWidth="1px"
-            borderRadius="lg"
-            rowSpan={2}
-            colSpan={4}
-          >
-            <Tooltip label="현재 카운터 목록입니다.">
-              <Badge>카운터</Badge>
-            </Tooltip>
-          </GridItem>
-          <GridItem
-            borderWidth="1px"
-            p={3}
-            borderRadius="lg"
-            rowSpan={2}
-            colSpan={2}
-          >
-            <Tooltip label="현재 제품양품률입니다.">
-              <Badge>제품양품률</Badge>
-            </Tooltip>
-            <ChartPieFrame />
-          </GridItem>
-          <GridItem
-            borderWidth="1px"
-            overflow={"auto"}
-            p={3}
-            borderRadius="lg"
-            rowSpan={4}
-            colSpan={4}
-          >
-            <Tooltip label="현재 작업 지시서 목록입니다.">
-              <Badge>작업 지시서</Badge>
-            </Tooltip>
-            <TableFrame />
-          </GridItem>
-          <GridItem
-            borderWidth="1px"
-            p={3}
-            borderRadius="lg"
-            rowSpan={2}
-            colSpan={2}
-          >
-            <Tooltip label="현재 일간 생산 추이입니다.">
-              <Badge>일간 생산 추이</Badge>
-            </Tooltip>
-          </GridItem>
-          <GridItem
-            borderWidth="1px"
-            p={3}
-            borderRadius="lg"
-            rowSpan={2}
-            colSpan={2}
-          >
-            <Tooltip label="현재 주간 생산 추이입니다.">
-              <Badge>주간 생산 추이</Badge>
-            </Tooltip>
-          </GridItem>
-        </Grid>
-      </Box>
+        <GridItemFrame
+          badge="카운터"
+          tooltip="현재 카운터 목록입니다."
+          col={4}
+          row={2}
+          child={<Box />}
+        />
+        <GridItemFrame
+          badge="제품양품률"
+          tooltip="현재 제품양품률입니다."
+          col={2}
+          row={2}
+          child={<ChartPieFrame />}
+        />
+        <GridItemFrame
+          badge="작업 지시서"
+          tooltip="현재 작업 지시서 목록입니다."
+          col={4}
+          row={4}
+          child={<TableFrame />}
+        />
+        <GridItemFrame
+          badge="일간 생산 추이"
+          tooltip="현재 일간 생산 추이입니다."
+          col={2}
+          row={2}
+          child={<Box />}
+        />
+        <GridItemFrame
+          badge="주간 생산 추이"
+          tooltip="현재 주간 생산 추이입니다."
+          col={2}
+          row={2}
+          child={<Box />}
+        />
+      </Grid>
     </Flex>
   );
 }

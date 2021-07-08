@@ -17,7 +17,7 @@ function Sidebar() {
   };
 
   return (
-    <Flex direction={"column"} p={3} w={250}>
+    <Flex direction={"column"} p={3} w={250} borderRightWidth="1px">
       <Box p={30}>
         <Image
           objectFit="contain"
