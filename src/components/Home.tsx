@@ -12,10 +12,10 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import TableFrame from "./frames/TableFrame";
 import ChartPieFrame from "./frames/ChartPieFrame";
 import ChartLineFrame from "./frames/ChartLineFrame";
 import MenuFrame from "./frames/MenuFrame";
+import { WorkOrderListTable } from "./WorkOrderList";
 
 function TestBox() {
   return (
@@ -153,7 +153,7 @@ function Home() {
           tooltip="현재 작업 지시서 목록입니다."
           col={4}
           row={4}
-          child={<TableFrame />}
+          child={<WorkOrderListTable />}
         />
         <GridItemFrame
           badge="일간 생산 추이"
