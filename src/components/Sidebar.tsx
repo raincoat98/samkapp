@@ -10,12 +10,13 @@ import {
   Center,
 } from "@chakra-ui/react";
 import {
-  FcHome,
-  FcSupport,
-  FcSettings,
-  FcManager,
-  FcCancel,
-} from "react-icons/fc";
+  AiOutlineHome,
+  AiOutlineContainer,
+  AiOutlineStop,
+  AiOutlineSetting,
+  AiOutlineUser,
+  AiOutlineCheck,
+} from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import MenuFrame from "./frames/MenuFrame";
 
@@ -41,31 +42,31 @@ function Sidebar() {
       </Center>
       <Flex flex={1} direction={"column"}>
         <Link to="/home">
-          <Button leftIcon={<Icon as={FcHome} />} w={"100%"}>
+          <Button leftIcon={<Icon as={AiOutlineHome} />} w={"100%"}>
             홈 화면
           </Button>
         </Link>
         <Spacer />
         <Link to="/work_order_list">
-          <Button leftIcon={<Icon as={FcSupport} />} w={"100%"}>
+          <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
             작업 지시서
           </Button>
         </Link>
         <Spacer />
         <Link to="/">
-          <Button leftIcon={<Icon as={FcSupport} />} w={"100%"}>
+          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
             버튼
           </Button>
         </Link>
         <Spacer />
         <Link to="/">
-          <Button leftIcon={<Icon as={FcSupport} />} w={"100%"}>
+          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
             버튼
           </Button>
         </Link>
         <Spacer />
         <Link to="/">
-          <Button isDisabled leftIcon={<Icon as={FcCancel} />} w={"100%"}>
+          <Button isDisabled leftIcon={<Icon as={AiOutlineStop} />} w={"100%"}>
             현재 사용 불가
           </Button>
         </Link>
@@ -76,7 +77,7 @@ function Sidebar() {
         />
         <Spacer />
         <Link to="/setting">
-          <Button leftIcon={<Icon as={FcSettings} />} w={"100%"}>
+          <Button leftIcon={<Icon as={AiOutlineSetting} />} w={"100%"}>
             설정
           </Button>
         </Link>
@@ -85,7 +86,7 @@ function Sidebar() {
       <Box>
         <Button
           colorScheme="facebook"
-          leftIcon={<Icon as={FcManager} />}
+          leftIcon={<Icon as={AiOutlineUser} />}
           onClick={onToggleLoginForm}
         >
           로그인
