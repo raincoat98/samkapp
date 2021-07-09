@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import { RootState } from "../store";
-import { Icon, Box, Image, Flex, Button, Spacer } from "@chakra-ui/react";
+import {
+  Icon,
+  Box,
+  Image,
+  Flex,
+  Button,
+  Spacer,
+  Center,
+} from "@chakra-ui/react";
 import {
   FcHome,
   FcSupport,
@@ -12,6 +20,9 @@ import { useSelector, useDispatch } from "react-redux";
 import MenuFrame from "./frames/MenuFrame";
 
 function Sidebar() {
+  const isDarkTheme = useSelector(
+    (state: RootState) => state.system.isDarkTheme
+  );
   const logo = useSelector((state: RootState) => state.system.logo);
   const dispatch = useDispatch();
   const onToggleLoginForm = () => {
@@ -20,9 +31,14 @@ function Sidebar() {
 
   return (
     <Flex direction={"column"} p={3} w={250} borderRightWidth="1px">
-      <Box p={30}>
-        <Image objectFit="contain" src={logo} />
-      </Box>
+      <Center w={"100%"} h={100} px={2}>
+        <Image
+          objectFit="contain"
+          src={logo}
+          transition={"0.5s"}
+          filter={isDarkTheme ? "contrast(0%) brightness(2)" : ""}
+        />
+      </Center>
       <Flex flex={1} direction={"column"}>
         <Link to="/home">
           <Button leftIcon={<Icon as={FcHome} />} w={"100%"}>

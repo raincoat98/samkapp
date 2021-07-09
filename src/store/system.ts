@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import logoNormal from "../images/logo.png";
-import logoWhite from "../images/logo-white.png";
+import logo from "../images/logo.png";
 
 export type SystemState = {
   isDarkTheme: boolean;
@@ -11,7 +10,7 @@ export type SystemState = {
 const initialState: SystemState = {
   isDarkTheme: false,
   isLogin: false,
-  logo: logoNormal,
+  logo: logo,
 };
 
 const userSlice = createSlice({
@@ -21,11 +20,6 @@ const userSlice = createSlice({
     toggleDarkThemeAction(state, colorMode) {
       const isDarkTheme = colorMode.payload === "light" ? false : true;
       state.isDarkTheme = isDarkTheme;
-      if (!isDarkTheme) {
-        state.logo = logoNormal;
-      } else {
-        state.logo = logoWhite;
-      }
     },
     loginAction(state) {
       state.isLogin = true;
