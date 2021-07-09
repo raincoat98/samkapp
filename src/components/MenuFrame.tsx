@@ -3,9 +3,9 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  MenuDivider,
   Button,
   Icon,
-  Divider,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
@@ -15,9 +15,10 @@ type MenuFrameProps = {
 };
 
 function MenuFrame(props: MenuFrameProps) {
-  const MenuItems = props.items.map((name, index) => (
-    <MenuItem key={index}>{name}</MenuItem>
-  ));
+  const MenuItems = props.items.map((name, index) =>
+    // 받은 name 이 "" 일 경우 MenuDivider (메뉴 분할) 리턴
+    name !== "" ? <MenuItem key={index}>{name}</MenuItem> : <MenuDivider />
+  );
 
   return (
     <Menu>

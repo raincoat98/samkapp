@@ -73,7 +73,7 @@ function Home() {
           <Heading size="lg">장비 1</Heading>
           <MenuFrame
             name="장비 변경"
-            items={["모든 장비 보기", "장비 1 (현재)", "장비 2"]}
+            items={["모든 장비 보기", "", "장비 1 (현재)", "장비 2"]}
           />
         </VStack>
         <TestBox />
