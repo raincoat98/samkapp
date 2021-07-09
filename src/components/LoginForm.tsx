@@ -9,7 +9,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Center,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -35,39 +34,37 @@ function LoginForm() {
   return (
     <Modal isOpen={!isLogin} onClose={onToggleLoginForm} isCentered>
       <ModalOverlay />
-      <Center>
-        <ModalContent>
-          <ModalHeader>로그인</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <FormControl>
-              <FormLabel>아이디</FormLabel>
-              <Input placeholder="아이디" />
-            </FormControl>
+      <ModalContent>
+        <ModalHeader>로그인</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl>
+            <FormLabel>아이디</FormLabel>
+            <Input placeholder="아이디" />
+          </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>비밀번호</FormLabel>
-              <InputGroup>
-                <Input
-                  type={passwordShow ? "text" : "password"}
-                  placeholder="비밀번호"
-                />
-                <InputRightElement>
-                  <Button onClick={togglePasswordShow}>
-                    {passwordShow ? "숨기기" : "보기"}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <HStack>
-              <Button colorScheme="blue">로그인</Button>
-              <Button colorScheme="blue">비밀번호 찾기</Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Center>
+          <FormControl mt={4}>
+            <FormLabel>비밀번호</FormLabel>
+            <InputGroup>
+              <Input
+                type={passwordShow ? "text" : "password"}
+                placeholder="비밀번호"
+              />
+              <InputRightElement>
+                <Button onClick={togglePasswordShow}>
+                  {passwordShow ? "숨기기" : "보기"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+        </ModalBody>
+        <ModalFooter>
+          <HStack>
+            <Button colorScheme="blue">로그인</Button>
+            <Button colorScheme="blue">비밀번호 찾기</Button>
+          </HStack>
+        </ModalFooter>
+      </ModalContent>
     </Modal>
   );
 }
