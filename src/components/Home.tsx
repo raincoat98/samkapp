@@ -1,5 +1,6 @@
 import {
   HStack,
+  VStack,
   Icon,
   Box,
   Flex,
@@ -13,12 +14,14 @@ import {
   MenuList,
   MenuItem,
   Divider,
+  Heading,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
 import TableFrame from "./TableFrame";
 import ChartPieFrame from "./ChartPieFrame";
 import ChartLineFrame from "./ChartLineFrame";
+import MenuFrame from "./MenuFrame";
 
 function TestBox() {
   return (
@@ -66,6 +69,13 @@ function Home() {
   return (
     <Flex direction={"column"} height={"100%"} p={3}>
       <HStack p={3} mb={3} spacing={5} borderWidth="1px" borderRadius="lg">
+        <VStack>
+          <Heading size="lg">장비 1</Heading>
+          <MenuFrame
+            name="장비 변경"
+            items={["모든 장비 보기", "장비 1 (현재)", "장비 2"]}
+          />
+        </VStack>
         <TestBox />
         <TestBox />
         <TestBox />
