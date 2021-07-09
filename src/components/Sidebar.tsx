@@ -1,16 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  Icon,
-  Box,
-  Image,
-  Flex,
-  Button,
-  Spacer,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from "@chakra-ui/react";
+import { Icon, Box, Image, Flex, Button, Spacer } from "@chakra-ui/react";
 import {
   FcHome,
   FcSupport,
@@ -20,7 +9,7 @@ import {
 } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import MenuFrame from "./MenuFrame";
-import logo from "../logo.png";
+import logo from "../images/logo.png";
 
 function Sidebar() {
   const dispatch = useDispatch();

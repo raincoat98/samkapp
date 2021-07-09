@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "샘터 앱",
+  "name": "샘터 테스트 앱",
   "icons": [
     {
       "src": "favicon.ico",
