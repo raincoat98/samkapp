@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store/modules";
+import { RootState } from "../store";
 import {
   useColorMode,
   Divider,

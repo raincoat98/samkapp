@@ -6,7 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import rootReducer from "./store/modules";
+import rootReducer from "./store";
 
 const store = createStore(rootReducer);
 
