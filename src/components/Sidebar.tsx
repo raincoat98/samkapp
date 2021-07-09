@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { RootState } from "../store";
 import {
+  useColorMode,
   Icon,
   Box,
   Image,
@@ -21,9 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import MenuFrame from "./frames/MenuFrame";
 
 function Sidebar() {
-  const isDarkTheme = useSelector(
-    (state: RootState) => state.system.isDarkTheme
-  );
+  const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const dispatch = useDispatch();
   const onToggleLoginForm = () => {
@@ -37,7 +36,7 @@ function Sidebar() {
           objectFit="contain"
           src={logo}
           transition={"0.5s"}
-          filter={isDarkTheme ? "contrast(0%) brightness(2)" : ""}
+          filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
         />
       </Center>
       <Flex flex={1} direction={"column"}>

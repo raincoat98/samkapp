@@ -1,5 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
 import {
   useColorMode,
   Divider,
@@ -15,17 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 function Setting() {
-  const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
-
-  // 최초에 다크모드 값 가져오기
-  const isDakMode = useSelector((state: RootState) => state.system.isDarkTheme);
-
-  // 다크모드 토글 함수
-  function toggleDarkTheme() {
-    toggleColorMode();
-    dispatch({ type: "system/toggleDarkThemeAction", payload: colorMode });
-  }
 
   return (
     <Box>
@@ -49,7 +37,7 @@ function Setting() {
         <Divider my={3} />
         <FormControl display="flex" alignItems="center">
           <FormLabel>다크 모드</FormLabel>
-          <Switch isChecked={isDakMode} onChange={toggleDarkTheme} />
+          <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />
         </FormControl>
         <Divider my={3} />
         <FormControl>
