@@ -9,7 +9,7 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import ModalFrame from "./ModalFrame";
+import ModalFrame from "./frames/ModalFrame";
 
 function LoginForm() {
   const dispatch = useDispatch();

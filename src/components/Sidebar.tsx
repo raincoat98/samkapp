@@ -8,7 +8,7 @@ import {
   FcCancel,
 } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import MenuFrame from "./MenuFrame";
+import MenuFrame from "./frames/MenuFrame";
 import logo from "../images/logo.png";
 
 function Sidebar() {

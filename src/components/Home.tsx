@@ -12,10 +12,10 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import TableFrame from "./TableFrame";
-import ChartPieFrame from "./ChartPieFrame";
-import ChartLineFrame from "./ChartLineFrame";
-import MenuFrame from "./MenuFrame";
+import TableFrame from "./frames/TableFrame";
+import ChartPieFrame from "./frames/ChartPieFrame";
+import ChartLineFrame from "./frames/ChartLineFrame";
+import MenuFrame from "./frames/MenuFrame";
 
 function TestBox() {
   return (
