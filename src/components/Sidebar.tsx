@@ -46,9 +46,9 @@ function Sidebar() {
           </Button>
         </Link>
         <Spacer />
-        <Link to="/">
+        <Link to="/work_order_list">
           <Button leftIcon={<Icon as={FcSupport} />} w={"100%"}>
-            버튼
+            작업 지시서
           </Button>
         </Link>
         <Spacer />
