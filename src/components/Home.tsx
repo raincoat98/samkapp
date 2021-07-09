@@ -74,7 +74,7 @@ function Home() {
         <TestBox />
         <TestBox />
         <MenuFrame name="작업 변경" items={["작업 A", "작업 B", "작업 C"]} />
-        <Button>작업 종료</Button>
+        <Button colorScheme="red">작업 종료</Button>
       </HStack>
       <Grid // 6x6 사이즈의 그리드
         flex={1}
