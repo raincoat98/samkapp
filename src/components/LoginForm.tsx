@@ -2,27 +2,20 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/modules";
 import {
-  HStack,
   Input,
   InputRightElement,
   InputGroup,
   Button,
   FormControl,
   FormLabel,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
 } from "@chakra-ui/react";
+import ModalFrame from "./ModalFrame";
 
 function LoginForm() {
   const dispatch = useDispatch();
-  const onToggleLoginForm = () => {
+  function onToggleLoginForm() {
     dispatch({ type: "system/loginAction" });
-  };
+  }
 
   // 로그인 정보 가져오기
   const isLogin = useSelector((state: RootState) => state.system.isLogin);
@@ -32,12 +25,12 @@ function LoginForm() {
   const togglePasswordShow = () => setPasswordShow(!passwordShow);
 
   return (
-    <Modal isOpen={!isLogin} onClose={onToggleLoginForm} isCentered>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>로그인</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
+    <ModalFrame
+      isOpen={!isLogin}
+      onClose={onToggleLoginForm}
+      header="로그인"
+      body={
+        <>
           <FormControl>
             <FormLabel>아이디</FormLabel>
             <Input placeholder="아이디" />
@@ -57,15 +50,13 @@ function LoginForm() {
               </InputRightElement>
             </InputGroup>
           </FormControl>
-        </ModalBody>
-        <ModalFooter>
-          <HStack>
-            <Button colorScheme="blue">로그인</Button>
-            <Button colorScheme="blue">비밀번호 찾기</Button>
-          </HStack>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </>
+      }
+      buttons={[
+        <Button colorScheme="blue">로그인</Button>,
+        <Button colorScheme="blue">비밀번호 찾기</Button>,
+      ]}
+    />
   );
 }
 
