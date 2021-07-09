@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,7 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import "./App.css";
-import { Box, Flex } from "@chakra-ui/react";
+import { useColorMode, Box, Flex } from "@chakra-ui/react";
 
 // 컴포넌트
 import Sidebar from "./components/Sidebar";
@@ -15,6 +16,14 @@ import Setting from "./components/Setting";
 import LoginForm from "./components/LoginForm";
 
 function App() {
+  const { colorMode } = useColorMode();
+
+  //최초 렌더링 시 store에 현재 테마 저장
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch({ type: "system/toggleDarkThemeAction", payload: colorMode });
+  });
+
   return (
     <div className="App">
       <LoginForm />

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { RootState } from "../store";
 import { Icon, Box, Image, Flex, Button, Spacer } from "@chakra-ui/react";
 import {
   FcHome,
@@ -7,11 +8,11 @@ import {
   FcManager,
   FcCancel,
 } from "react-icons/fc";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MenuFrame from "./frames/MenuFrame";
-import logo from "../images/logo.png";
 
 function Sidebar() {
+  const logo = useSelector((state: RootState) => state.system.logo);
   const dispatch = useDispatch();
   const onToggleLoginForm = () => {
     dispatch({ type: "system/logoutAction" });

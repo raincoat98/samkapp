@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
@@ -19,14 +18,8 @@ function Setting() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  // 최초에 다크모드인지를 저장 및 값 가져오기
-  // dispatch(toggleDarkThemeAction(colorMode));
+  // 최초에 다크모드 값 가져오기
   const isDakMode = useSelector((state: RootState) => state.system.isDarkTheme);
-
-  //최초 렌더링 시 store에 현재 테마 저장
-  useEffect(() => {
-    dispatch({ type: "system/toggleDarkThemeAction", payload: colorMode });
-  });
 
   // 다크모드 토글 함수
   function toggleDarkTheme() {
