@@ -8,7 +8,6 @@ import {
   Select,
   Heading,
   Box,
-  Tag,
   Input,
 } from "@chakra-ui/react";
 
@@ -20,8 +19,10 @@ function Setting() {
       <Heading p={3}>설정</Heading>
 
       <Box p={3}>
-        <Tag>계정</Tag>
-        <Divider my={3} />
+        <Heading as="h4" size="md">
+          계정
+        </Heading>
+        <br />
         <FormControl>
           <FormLabel>비밀번호 변경</FormLabel>
           <Input placeholder="현재 비밀번호" />
@@ -33,8 +34,10 @@ function Setting() {
       <Divider />
 
       <Box p={3}>
-        <Tag>시스템</Tag>
-        <Divider my={3} />
+        <Heading as="h4" size="md">
+          시스템
+        </Heading>
+        <br />
         <FormControl display="flex" alignItems="center">
           <FormLabel>다크 모드</FormLabel>
           <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />
@@ -61,8 +64,10 @@ function Setting() {
       <Divider />
 
       <Box p={3}>
-        <Tag>기타</Tag>
-        <Divider my={3} />
+        <Heading as="h4" size="md">
+          기타
+        </Heading>
+        <br />
         <Button>홈페이지</Button>
         <Divider my={3} />
         <Button>고객문의</Button>
