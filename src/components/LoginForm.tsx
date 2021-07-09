@@ -18,7 +18,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import "./LoginForm.css";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -34,7 +33,7 @@ function LoginForm() {
   const togglePasswordShow = () => setPasswordShow(!passwordShow);
 
   return (
-    <Modal isOpen={!isLogin} onClose={onToggleLoginForm}>
+    <Modal isOpen={!isLogin} onClose={onToggleLoginForm} isCentered>
       <ModalOverlay />
       <Center>
         <ModalContent>
