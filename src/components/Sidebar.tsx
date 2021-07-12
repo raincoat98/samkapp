@@ -17,6 +17,7 @@ import {
   AiOutlineSetting,
   AiOutlineUser,
   AiOutlineCheck,
+  AiOutlineDesktop,
 } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import MenuFrame from "./frames/MenuFrame";
@@ -52,9 +53,9 @@ function Sidebar() {
           </Button>
         </Link>
         <Spacer />
-        <Link to="/">
-          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
-            버튼
+        <Link to="/work_condition">
+          <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
+            작업 현황
           </Button>
         </Link>
         <Spacer />
