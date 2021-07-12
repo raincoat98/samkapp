@@ -71,10 +71,7 @@ function Sidebar() {
           </Button>
         </Link>
         <Spacer />
-        <MenuFrame
-          name="메뉴"
-          items={["화면 캡처", "화면 캡처", "화면 캡처"]}
-        />
+        <MenuFrame name="메뉴" items={[{ name: "화면 캡처" }]} />
         <Spacer />
         <Link to="/setting">
           <Button leftIcon={<Icon as={AiOutlineSetting} />} w={"100%"}>

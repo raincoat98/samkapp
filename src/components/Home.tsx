@@ -67,13 +67,20 @@ function Home() {
           <Heading size="lg">장비 1</Heading>
           <MenuFrame
             name="장비 변경"
-            items={["모든 장비 보기", "", "장비 1 (현재)", "장비 2"]}
+            items={[
+              { name: "모든 장비 보기", link: "/work_condition" },
+              { isDivider: true },
+              { name: "장비 1" },
+            ]}
           />
         </VStack>
         <TestBox />
         <TestBox />
         <TestBox />
-        <MenuFrame name="작업 변경" items={["작업 A", "작업 B", "작업 C"]} />
+        <MenuFrame
+          name="작업 변경"
+          items={[{ name: "작업 A" }, { name: "작업 B" }, { name: "작업 C" }]}
+        />
         <Button colorScheme="red">작업 종료</Button>
       </HStack>
       <Grid // 6x6 사이즈의 그리드

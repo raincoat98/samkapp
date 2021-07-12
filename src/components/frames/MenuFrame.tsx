@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Menu,
   MenuButton,
@@ -9,16 +10,44 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
-type MenuFrameProps = {
-  name: string;
-  items: string[];
+// 메뉴 버튼 Props
+type MenuFrameButtonProps = {
+  name?: string;
+  isDivider?: boolean | false;
+  onClick?: () => {};
+  link?: string;
 };
 
+// 메뉴 버튼
+function MenuFrameButton(props: MenuFrameButtonProps) {
+  if (props.isDivider) return <MenuDivider />;
+
+  if (props.link) {
+    return (
+      <Link to={props.link}>
+        <MenuItem>{props.name}</MenuItem>
+      </Link>
+    );
+  } else return <MenuItem>{props.name}</MenuItem>;
+}
+
+// 메뉴 Props
+type MenuFrameProps = {
+  name: string;
+  items: MenuFrameButtonProps[];
+};
+
+// 메뉴
 function MenuFrame(props: MenuFrameProps) {
-  const MenuItems = props.items.map((name, index) =>
-    // 받은 name 이 "" 일 경우 MenuDivider (메뉴 분할) 리턴
-    name !== "" ? <MenuItem key={index}>{name}</MenuItem> : <MenuDivider />
-  );
+  const MenuItems = props.items.map((MenuFrameButtonProps, index) => (
+    <MenuFrameButton
+      name={MenuFrameButtonProps.name}
+      onClick={MenuFrameButtonProps.onClick}
+      isDivider={MenuFrameButtonProps.isDivider}
+      link={MenuFrameButtonProps.link}
+      key={index}
+    />
+  ));
 
   return (
     <Menu>
