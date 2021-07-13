@@ -1,6 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
+  useDisclosure,
+  Button,
+  IconButton,
   Box,
   Heading,
   Table,
@@ -11,7 +14,16 @@ import {
   Th,
   Td,
   TableCaption,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
+import { AiOutlineEdit } from "react-icons/ai";
+import WorkOrderWrite from "./WorkOrderWrite";
 
 export function WorkOrderListTable() {
   const workOrderList = useSelector(
@@ -55,6 +67,8 @@ export function WorkOrderListTable() {
 }
 
 export default function WorkOrderList() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const dispatch = useDispatch();
 
   function add() {
@@ -72,6 +86,33 @@ export default function WorkOrderList() {
 
   return (
     <Box onClick={add}>
+      <IconButton
+        aria-label="작업 지시서 작성"
+        icon={<AiOutlineEdit />}
+        onClick={onOpen}
+        size="lg"
+        position="absolute"
+        bottom={5}
+        right={5}
+        colorScheme="blue"
+        borderRadius="full"
+      />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>작업 지시서 작성</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <WorkOrderWrite />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              저장
+            </Button>
+            <Button>닫기</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Heading variant="page-title">작업 지시서</Heading>
       <WorkOrderListTable />
     </Box>
