@@ -6,9 +6,11 @@ import {
   Box,
   Image,
   Flex,
+  IconButton,
   Button,
-  Spacer,
+  Divider,
   Center,
+  Spacer,
 } from "@chakra-ui/react";
 import {
   AiOutlineHome,
@@ -20,7 +22,6 @@ import {
   AiOutlineDesktop,
 } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
-import MenuFrame from "./frames/MenuFrame";
 
 function Sidebar() {
   const { colorMode } = useColorMode();
@@ -33,63 +34,99 @@ function Sidebar() {
   const router = useSelector((state: RootState) => state.router);
 
   return (
-    <Flex direction={"column"} p={3} w={250} borderRightWidth="1px">
-      <Center w={"100%"} h={100} px={2}>
+    <Flex direction={"column"} w={250} borderRightWidth="1px">
+      <Center w={"100%"} h={100}>
         <Image
-          objectFit="contain"
           src={logo}
-          transition={"0.5s"}
+          transition={"var(--chakra-transition-duration-normal)"}
           filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
+          p="5"
         />
       </Center>
-      <Flex flex={1} direction={"column"}>
+
+      <Divider />
+
+      <Flex
+        flex="1"
+        direction="column"
+        w="100%"
+        px={5}
+        py={10}
+        justify="center"
+      >
         <Link to={router.home}>
-          <Button leftIcon={<Icon as={AiOutlineHome} />} w={"100%"}>
+          <Button
+            leftIcon={<Icon as={AiOutlineHome} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             홈 화면
           </Button>
         </Link>
         <Spacer />
         <Link to={router.WorkOrderList}>
-          <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
+          <Button
+            leftIcon={<Icon as={AiOutlineContainer} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             작업 지시서
           </Button>
         </Link>
         <Spacer />
         <Link to={router.WorkCondition}>
-          <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
+          <Button
+            leftIcon={<Icon as={AiOutlineDesktop} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             작업 현황
           </Button>
         </Link>
         <Spacer />
         <Link to={router.default}>
-          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
+          <Button
+            leftIcon={<Icon as={AiOutlineCheck} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             버튼
           </Button>
         </Link>
         <Spacer />
         <Link to={router.default}>
-          <Button isDisabled leftIcon={<Icon as={AiOutlineStop} />} w={"100%"}>
+          <Button
+            isDisabled
+            leftIcon={<Icon as={AiOutlineStop} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             현재 사용 불가
           </Button>
         </Link>
         <Spacer />
-        <MenuFrame name="메뉴" items={[{ name: "화면 캡처" }]} />
-        <Spacer />
         <Link to={router.setting}>
-          <Button leftIcon={<Icon as={AiOutlineSetting} />} w={"100%"}>
+          <Button
+            leftIcon={<Icon as={AiOutlineSetting} />}
+            w={"100%"}
+            colorScheme="blue"
+          >
             설정
           </Button>
         </Link>
-        <Spacer />
       </Flex>
-      <Box>
-        <Button
-          colorScheme="facebook"
-          leftIcon={<Icon as={AiOutlineUser} />}
+
+      <Divider />
+
+      <Box p="5">
+        <IconButton
+          aria-label="로그인"
+          icon={<Icon as={AiOutlineUser} />}
           onClick={onToggleLoginForm}
-        >
-          로그인
-        </Button>
+          variant="outline"
+          colorScheme="blue"
+          borderRadius="full"
+        />
       </Box>
     </Flex>
   );
