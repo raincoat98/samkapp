@@ -30,6 +30,8 @@ function Sidebar() {
     dispatch({ type: "system/logoutAction" });
   };
 
+  const router = useSelector((state: RootState) => state.router);
+
   return (
     <Flex direction={"column"} p={3} w={250} borderRightWidth="1px">
       <Center w={"100%"} h={100} px={2}>
@@ -41,31 +43,31 @@ function Sidebar() {
         />
       </Center>
       <Flex flex={1} direction={"column"}>
-        <Link to="/home">
+        <Link to={router.home}>
           <Button leftIcon={<Icon as={AiOutlineHome} />} w={"100%"}>
             홈 화면
           </Button>
         </Link>
         <Spacer />
-        <Link to="/work_order_list">
+        <Link to={router.WorkOrderList}>
           <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
             작업 지시서
           </Button>
         </Link>
         <Spacer />
-        <Link to="/work_condition">
+        <Link to={router.WorkCondition}>
           <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
             작업 현황
           </Button>
         </Link>
         <Spacer />
-        <Link to="/">
+        <Link to={router.default}>
           <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
             버튼
           </Button>
         </Link>
         <Spacer />
-        <Link to="/">
+        <Link to={router.default}>
           <Button isDisabled leftIcon={<Icon as={AiOutlineStop} />} w={"100%"}>
             현재 사용 불가
           </Button>
@@ -73,7 +75,7 @@ function Sidebar() {
         <Spacer />
         <MenuFrame name="메뉴" items={[{ name: "화면 캡처" }]} />
         <Spacer />
-        <Link to="/setting">
+        <Link to={router.setting}>
           <Button leftIcon={<Icon as={AiOutlineSetting} />} w={"100%"}>
             설정
           </Button>

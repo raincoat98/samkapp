@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,6 +18,8 @@ import Setting from "./components/Setting";
 import LoginForm from "./components/LoginForm";
 
 function App() {
+  const router = useSelector((state: RootState) => state.router);
+
   return (
     <div className="App">
       <LoginForm />
@@ -24,23 +28,28 @@ function App() {
           <Sidebar />
           <Box flex={1} overflow="auto">
             <Switch>
+              {/* Home으로 리다이렉트 */}
               <Route path="/" exact={true}>
                 <Redirect
                   to={{
-                    pathname: "/home",
+                    pathname: router.home,
                   }}
                 />
               </Route>
-              <Route path="/home">
+              {/* 홈 */}
+              <Route path={router.home}>
                 <Home />
               </Route>
-              <Route path="/work_condition">
+              {/* 작업 현황 */}
+              <Route path={router.WorkCondition}>
                 <WorkCondition />
               </Route>
-              <Route path="/work_order_list">
+              {/* 작업 지시서 리스트 */}
+              <Route path={router.WorkOrderList}>
                 <WorkOrderList />
               </Route>
-              <Route path="/setting">
+              {/* 설정 */}
+              <Route path={router.setting}>
                 <Setting />
               </Route>
             </Switch>
