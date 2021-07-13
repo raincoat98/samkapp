@@ -58,6 +58,7 @@ function Sidebar() {
           <Button
             leftIcon={<Icon as={AiOutlineHome} />}
             w={"100%"}
+            height={50}
             colorScheme="blue"
           >
             홈 화면
@@ -68,6 +69,7 @@ function Sidebar() {
           <Button
             leftIcon={<Icon as={AiOutlineContainer} />}
             w={"100%"}
+            height={50}
             colorScheme="blue"
           >
             작업 지시서
@@ -78,6 +80,7 @@ function Sidebar() {
           <Button
             leftIcon={<Icon as={AiOutlineDesktop} />}
             w={"100%"}
+            height={50}
             colorScheme="blue"
           >
             작업 현황
@@ -88,20 +91,10 @@ function Sidebar() {
           <Button
             leftIcon={<Icon as={AiOutlineCheck} />}
             w={"100%"}
+            height={50}
             colorScheme="blue"
           >
             버튼
-          </Button>
-        </Link>
-        <Spacer />
-        <Link to={router.default}>
-          <Button
-            isDisabled
-            leftIcon={<Icon as={AiOutlineStop} />}
-            w={"100%"}
-            colorScheme="blue"
-          >
-            현재 사용 불가
           </Button>
         </Link>
         <Spacer />
@@ -109,6 +102,7 @@ function Sidebar() {
           <Button
             leftIcon={<Icon as={AiOutlineSetting} />}
             w={"100%"}
+            height={50}
             colorScheme="blue"
           >
             설정
