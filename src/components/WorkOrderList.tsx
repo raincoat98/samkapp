@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
-  Heading,
   Box,
   Table,
   Thead,
@@ -12,6 +11,7 @@ import {
   Td,
   TableCaption,
 } from "@chakra-ui/react";
+import HeaderFrame from "./frames/HeaderFrame";
 
 export function WorkOrderListTable() {
   const workOrderList = useSelector(
@@ -71,10 +71,8 @@ export default function WorkOrderList() {
   }
 
   return (
-    <Box>
-      <Heading p={3} onClick={add}>
-        작업 지시서
-      </Heading>
+    <Box onClick={add}>
+      <HeaderFrame title="작업 지시서" />
       <WorkOrderListTable />
     </Box>
   );
