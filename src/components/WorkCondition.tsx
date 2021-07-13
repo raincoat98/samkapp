@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { Heading, Box, VStack, Flex } from "@chakra-ui/react";
+import { Heading, Box, VStack, Flex, Image } from "@chakra-ui/react";
+import machineImage from "../images/machine.png";
 
 export default function WorkCondition() {
   const machineList = useSelector((state: RootState) => state.work.machineList);
@@ -8,7 +9,7 @@ export default function WorkCondition() {
   return (
     <Box>
       <Heading p={3}>작업 현황</Heading>
-      <VStack>
+      <VStack m={3}>
         {machineList.map((machine, index) => (
           <Flex
             key={index}
@@ -16,7 +17,13 @@ export default function WorkCondition() {
             align="center"
             width="100%"
             textAlign="center"
+            borderWidth="1px"
+            borderRadius="lg"
+            flexShrink={1}
           >
+            <Box flex={1}>
+              <Image src={machineImage}></Image>
+            </Box>
             <Box flex={1}>{machine.name}</Box>
             <Box flex={1}>{machine.condition}</Box>
             <Box flex={1}>{machine.place}</Box>
