@@ -26,7 +26,9 @@ function ModalFrame(props: ModalFrameProps) {
         <ModalCloseButton />
         <ModalBody>{props.body}</ModalBody>
         <ModalFooter>
-          <HStack>{props.buttons}</HStack>
+          {props.buttons.map((button, index) => (
+            <HStack key={index}>{button}</HStack>
+          ))}
         </ModalFooter>
       </ModalContent>
     </Modal>
