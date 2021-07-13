@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Heading, Box, VStack, Flex, Image } from "@chakra-ui/react";
-import HeaderFrame from "./frames/HeaderFrame";
 import machineImage from "../images/machine.png";
 
 export default function WorkCondition() {
@@ -9,7 +8,7 @@ export default function WorkCondition() {
 
   return (
     <Box>
-      <HeaderFrame title="작업 현황" />
+      <Heading variant="page-title">작업 현황</Heading>
       <VStack m={3}>
         {machineList.map((machine, index) => (
           <Flex

@@ -10,14 +10,13 @@ import {
   Box,
   Input,
 } from "@chakra-ui/react";
-import HeaderFrame from "./frames/HeaderFrame";
 
 function Setting() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Box>
-      <HeaderFrame title="설정" />
+      <Heading variant="page-title">설정</Heading>
 
       <Box p={3}>
         <Heading as="h4" size="md">
