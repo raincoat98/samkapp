@@ -2,25 +2,38 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import { ChakraProvider } from "@chakra-ui/react";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
-import rootReducer from "./store";
+
+import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import rootReducer from "./store";
+
 const store = createStore(rootReducer);
+const persistor = persistStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <App />
-      </ChakraProvider>
+      <PersistGate persistor={persistor}>
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.unregister();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
