@@ -43,7 +43,7 @@ export function WorkOrderListTable() {
       </Thead>
       <Tbody>
         {workOrderList.map((workOrder, index) => (
-          <Tr key={index}>
+          <Tr data-id={workOrder.id} key={index}>
             <Td>{workOrder.companyName}</Td>
             <Td>{workOrder.productName}</Td>
             <Td>{workOrder.productColor}</Td>
@@ -84,6 +84,12 @@ export default function WorkOrderList() {
     });
   }
 
+  function deleteAll() {
+    dispatch({
+      type: "work-order/deleteAllWorkOrder",
+    });
+  }
+
   return (
     <Box onClick={add}>
       <IconButton
@@ -113,7 +119,9 @@ export default function WorkOrderList() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Heading variant="page-title">작업 지시서</Heading>
+      <Heading variant="page-title" onClick={deleteAll}>
+        작업 지시서
+      </Heading>
       <WorkOrderListTable />
     </Box>
   );
