@@ -2,10 +2,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import {
   useDisclosure,
+  ButtonGroup,
   Button,
-  IconButton,
   Box,
   Heading,
+  Flex,
+  Spacer,
   Table,
   Thead,
   Tbody,
@@ -20,9 +22,7 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
 } from "@chakra-ui/react";
-import { AiOutlineEdit } from "react-icons/ai";
 import WorkOrderWrite from "./WorkOrderWrite";
 
 export function WorkOrderListTable() {
@@ -71,19 +71,6 @@ export default function WorkOrderList() {
 
   const dispatch = useDispatch();
 
-  function add() {
-    dispatch({
-      type: "work-order/addWorkOrder",
-      payload: {
-        companyName: "이레상사",
-        productName: "PAD (mm)",
-        productColor: "NONE",
-        productType: "패드",
-        quantity: 10,
-      },
-    });
-  }
-
   function deleteAll() {
     dispatch({
       type: "work-order/deleteAllWorkOrder",
@@ -91,36 +78,30 @@ export default function WorkOrderList() {
   }
 
   return (
-    <Box onClick={add}>
-      <IconButton
-        aria-label="작업 지시서 작성"
-        icon={<AiOutlineEdit />}
-        onClick={onOpen}
-        size="lg"
-        position="absolute"
-        bottom={5}
-        right={5}
-        colorScheme="blue"
-        borderRadius="full"
-      />
+    <Box>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>작업 지시서 작성</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <WorkOrderWrite />
+            <WorkOrderWrite onSubmit={onClose} />
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              저장
-            </Button>
-            <Button>닫기</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
-      <Heading variant="page-title" onClick={deleteAll}>
-        작업 지시서
+      <Heading variant="page-title">
+        <Flex align="center">
+          <Box>작업 지시서</Box>
+          <Spacer />
+          <ButtonGroup variant="outline" spacing="3">
+            <Button onClick={onOpen} colorScheme="blue">
+              추가
+            </Button>
+            <Button onClick={deleteAll} colorScheme="red">
+              삭제
+            </Button>
+          </ButtonGroup>
+        </Flex>
       </Heading>
       <WorkOrderListTable />
     </Box>
