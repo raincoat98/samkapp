@@ -31,7 +31,7 @@ export function WorkOrderListTable() {
   );
 
   return (
-    <Table>
+    <Table wordBreak="break-all">
       <Thead>
         <Tr>
           <Th>거래처</Th>
@@ -79,7 +79,7 @@ export default function WorkOrderList() {
 
   return (
     <Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>작업 지시서 작성</ModalHeader>
