@@ -72,7 +72,11 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
 
   //  Form 초기화할 때
   const onReset = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log(event);
+    setCompanyName("");
+    setProductName("");
+    setProductColor("");
+    setProductType("");
+    setQuantity("");
   };
 
   return (
