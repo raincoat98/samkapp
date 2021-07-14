@@ -8,6 +8,7 @@ import {
   Flex,
   IconButton,
   Button,
+  ButtonGroup,
   Divider,
   Center,
   Spacer,
@@ -46,64 +47,49 @@ function Sidebar() {
       <Divider />
 
       <Flex
+        as={ButtonGroup}
         flex="1"
         direction="column"
-        w="100%"
         px={5}
         py={10}
-        justify="center"
+        size="lg"
+        variant="outline"
+        spacing="0"
       >
         <Link to={router.home}>
-          <Button
-            leftIcon={<Icon as={AiOutlineHome} />}
-            w={"100%"}
-            height={50}
-            colorScheme="blue"
-          >
+          <Button leftIcon={<Icon as={AiOutlineHome} />} w={"100%"}>
             홈 화면
           </Button>
         </Link>
+
         <Spacer />
+
         <Link to={router.WorkOrderList}>
-          <Button
-            leftIcon={<Icon as={AiOutlineContainer} />}
-            w={"100%"}
-            height={50}
-            colorScheme="blue"
-          >
+          <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
             작업 지시서
           </Button>
         </Link>
+
         <Spacer />
+
         <Link to={router.WorkCondition}>
-          <Button
-            leftIcon={<Icon as={AiOutlineDesktop} />}
-            w={"100%"}
-            height={50}
-            colorScheme="blue"
-          >
+          <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
             작업 현황
           </Button>
         </Link>
+
         <Spacer />
+
         <Link to={router.default}>
-          <Button
-            leftIcon={<Icon as={AiOutlineCheck} />}
-            w={"100%"}
-            height={50}
-            colorScheme="blue"
-          >
+          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
             버튼
           </Button>
         </Link>
+
         <Spacer />
+
         <Link to={router.setting}>
-          <Button
-            leftIcon={<Icon as={AiOutlineSetting} />}
-            w={"100%"}
-            height={50}
-            colorScheme="blue"
-          >
+          <Button leftIcon={<Icon as={AiOutlineSetting} />} w={"100%"}>
             설정
           </Button>
         </Link>
