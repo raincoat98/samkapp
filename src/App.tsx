@@ -6,7 +6,6 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import "./App.css";
 import { Box, Flex } from "@chakra-ui/react";
 
 // 컴포넌트
@@ -21,7 +20,7 @@ function App() {
   const router = useSelector((state: RootState) => state.router);
 
   return (
-    <div className="App">
+    <Box fontFamily="맑은 고딕" w="100%" h="100vh">
       <LoginForm />
       <Router>
         <Flex h={"100%"} w={"100%"}>
@@ -56,7 +55,7 @@ function App() {
           </Box>
         </Flex>
       </Router>
-    </div>
+    </Box>
   );
 }
 
