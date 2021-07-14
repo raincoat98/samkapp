@@ -15,7 +15,6 @@ import {
 import {
   AiOutlineHome,
   AiOutlineContainer,
-  AiOutlineStop,
   AiOutlineSetting,
   AiOutlineUser,
   AiOutlineCheck,

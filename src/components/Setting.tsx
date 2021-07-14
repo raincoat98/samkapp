@@ -1,13 +1,15 @@
 import {
   useColorMode,
-  Divider,
-  Button,
+  Box,
+  Heading,
   FormControl,
   FormLabel,
+  FormHelperText,
+  Divider,
+  Button,
   Switch,
   Select,
-  Heading,
-  Box,
+  InputGroup,
   Input,
 } from "@chakra-ui/react";
 
@@ -23,12 +25,21 @@ function Setting() {
           계정
         </Heading>
         <br />
-        <FormControl>
-          <FormLabel>비밀번호 변경</FormLabel>
-          <Input placeholder="현재 비밀번호" />
-          <Input placeholder="변경할 비밀번호" />
-          <Button>확인</Button>
-        </FormControl>
+        <form>
+          <FormControl>
+            <FormLabel>비밀번호 변경</FormLabel>
+            <InputGroup>
+              <Input
+                id={"current-password"}
+                placeholder="현재 비밀번호"
+                mr={3}
+              />
+              <Input id={"new-password"} placeholder="변경할 비밀번호" mr={3} />
+              <Button type="submit">확인</Button>
+            </InputGroup>
+            <FormHelperText>비밀번호 변경시에만 입력해주세요.</FormHelperText>
+          </FormControl>
+        </form>
       </Box>
 
       <Divider />
