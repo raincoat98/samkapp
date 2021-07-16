@@ -8,61 +8,53 @@ import {
   Heading,
   Flex,
   Spacer,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
+} from "@chakra-ui/react";
+import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
   ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
+import { Cell, Column, Table2 } from "@blueprintjs/table";
+import { Menu, MenuItem } from "@blueprintjs/core";
+import { ContextMenu2 } from "@blueprintjs/popover2";
+
 import WorkOrderWrite from "./WorkOrderWrite";
+import React from "react";
 
 export function WorkOrderListTable() {
   const workOrderList = useSelector(
     (state: RootState) => state.workOrder.workOrderList
   );
 
+  console.log(workOrderList);
+
+  // workOrderList.map((workOrder, index) => cells.push(<Cell>{"asd"}</Cell>));
+
+  const cellRenderer = (rowIndex: number, columnIndex: number) => (
+    <Cell>{"ㅁㅁ"}</Cell>
+  );
+
   return (
-    <Table wordBreak="break-all">
-      <Thead>
-        <Tr>
-          <Th>거래처</Th>
-          <Th>품명</Th>
-          <Th>칼라</Th>
-          <Th>지종</Th>
-          <Th>수량</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {workOrderList.map((workOrder, index) => (
-          <Tr data-id={workOrder.id} key={index}>
-            <Td>{workOrder.companyName}</Td>
-            <Td>{workOrder.productName}</Td>
-            <Td>{workOrder.productColor}</Td>
-            <Td>{workOrder.productType}</Td>
-            <Td>{workOrder.quantity}</Td>
-          </Tr>
-        ))}
-      </Tbody>
-      <Tfoot>
-        <Tr>
-          <Th>거래처</Th>
-          <Th>품명</Th>
-          <Th>지종</Th>
-          <Th>칼라</Th>
-          <Th>수량</Th>
-        </Tr>
-      </Tfoot>
-      <TableCaption>목록의 마지막입니다.</TableCaption>
-    </Table>
+    <ContextMenu2
+      content={
+        <Menu>
+          <MenuItem text="Save" />
+          <MenuItem text="Save as..." />
+          <MenuItem text="Delete..." intent="danger" />
+        </Menu>
+      }
+    >
+      <Table2 numRows={workOrderList.length}>
+        <Column name="거래처" cellRenderer={cellRenderer} />
+        <Column name="품명" cellRenderer={cellRenderer} />
+        <Column name="컬러" cellRenderer={cellRenderer} />
+        <Column name="지종" cellRenderer={cellRenderer} />
+        <Column name="수량" cellRenderer={cellRenderer} />
+      </Table2>
+    </ContextMenu2>
   );
 }
 

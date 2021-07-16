@@ -8,6 +8,10 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/table/lib/css/table.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { PersistGate } from "redux-persist/integration/react";
