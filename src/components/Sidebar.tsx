@@ -38,7 +38,6 @@ function Sidebar() {
       <Center w={"100%"} h={100}>
         <Image
           src={logo}
-          transition={"var(--chakra-transition-duration-normal)"}
           filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
           p="5"
         />
