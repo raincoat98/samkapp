@@ -11,7 +11,6 @@ const theme = extendTheme({
           p: 3,
           borderBottomWidth: "1px",
           bg: props.colorMode === "light" ? "white" : "gray.800",
-          transition: "var(--chakra-transition-duration-normal)",
         }),
       },
     },
