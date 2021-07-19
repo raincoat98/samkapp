@@ -11,7 +11,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -52,15 +51,6 @@ export function WorkOrderListTable() {
           </Tr>
         ))}
       </Tbody>
-      <Tfoot>
-        <Tr>
-          <Th>거래처</Th>
-          <Th>품명</Th>
-          <Th>지종</Th>
-          <Th>칼라</Th>
-          <Th>수량</Th>
-        </Tr>
-      </Tfoot>
       <TableCaption>목록의 마지막입니다.</TableCaption>
     </Table>
   );
