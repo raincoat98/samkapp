@@ -17,20 +17,36 @@ type WorkOrderWriteProps = {
 export default function WorkOrderWrite(props: WorkOrderWriteProps) {
   const dispatch = useDispatch();
 
-  const formId = {
-    companyName: "company-name",
-    productName: "product-name",
-    productColor: "product-color",
-    productType: "product-type",
-    quantity: "quantity",
-  };
-
   // state 생성
   const [companyName, setCompanyName] = React.useState("");
   const [productName, setProductName] = React.useState("");
   const [productColor, setProductColor] = React.useState("");
   const [productType, setProductType] = React.useState("");
   const [quantity, setQuantity] = React.useState("");
+
+  type workOrderForm = {
+    companyName: typeof companyName;
+    productName: typeof productName;
+    productColor: typeof productColor;
+    productType: typeof productType;
+    quantity: typeof quantity;
+  };
+
+  const formId: workOrderForm = {
+    companyName: "companyName",
+    productName: "productName",
+    productColor: "productColor",
+    productType: "productType",
+    quantity: "quantity",
+  };
+
+  const formName: workOrderForm = {
+    companyName: "거래처",
+    productName: "품명",
+    productColor: "색상",
+    productType: "지종",
+    quantity: "수량",
+  };
 
   // 값이 바뀌었을 때 state 저장 및 input의 value 변경
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,53 +95,27 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
     setQuantity("");
   };
 
+  function createWorkOrderForm(id: keyof typeof formId, value: string) {
+    return (
+      <FormControl isRequired>
+        <FormLabel>{formName[id]}</FormLabel>
+        <Input
+          placeholder={formName[id]}
+          data-id={id}
+          value={value}
+          onChange={onChange}
+        />
+      </FormControl>
+    );
+  }
+
   return (
     <form onSubmit={onSubmit} onReset={onReset}>
-      <FormControl isRequired>
-        <FormLabel>거래처</FormLabel>
-        <Input
-          placeholder="거래처"
-          data-id={formId.companyName}
-          value={companyName}
-          onChange={onChange}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>품명</FormLabel>
-        <Input
-          placeholder="품명"
-          data-id={formId.productName}
-          value={productName}
-          onChange={onChange}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>색상</FormLabel>
-        <Input
-          placeholder="색상"
-          data-id={formId.productColor}
-          value={productColor}
-          onChange={onChange}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>지종</FormLabel>
-        <Input
-          placeholder="지종"
-          data-id={formId.productType}
-          value={productType}
-          onChange={onChange}
-        />
-      </FormControl>
-      <FormControl isRequired>
-        <FormLabel>수량</FormLabel>
-        <Input
-          placeholder="수량"
-          data-id={formId.quantity}
-          value={quantity}
-          onChange={onChange}
-        />
-      </FormControl>
+      {createWorkOrderForm("companyName", companyName)}
+      {createWorkOrderForm("productName", productName)}
+      {createWorkOrderForm("productColor", productColor)}
+      {createWorkOrderForm("productType", productType)}
+      {createWorkOrderForm("quantity", quantity)}
       <Flex align="center" my={3}>
         <Spacer />
         <ButtonGroup spacing="3">
