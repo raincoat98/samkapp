@@ -8,6 +8,7 @@ type workOrder = {
   productColor: string;
   productType: string;
   quantity: number;
+  dueDate: Date;
 };
 
 export type WorkOrderState = {

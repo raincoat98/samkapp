@@ -33,9 +33,7 @@ export function WorkOrderListTable() {
   const workOrderList = useSelector(
     (state: RootState) => state.workOrder.workOrderList
   );
-
-  const data = React.useMemo(() => workOrderList, []);
-
+  const data = React.useMemo(() => workOrderList, [workOrderList]);
   const columns = React.useMemo(
     () => [
       {
@@ -47,7 +45,7 @@ export function WorkOrderListTable() {
         accessor: "productName",
       },
       {
-        Header: "칼라",
+        Header: "색상",
         accessor: "productColor",
       },
       {
@@ -57,6 +55,10 @@ export function WorkOrderListTable() {
       {
         Header: "수량",
         accessor: "quantity",
+      },
+      {
+        Header: "만기일",
+        accessor: "dueDate",
       },
     ],
     []
@@ -72,8 +74,11 @@ export function WorkOrderListTable() {
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              // @ts-ignore
-              <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
+              <Th
+                // @ts-ignore
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                textAlign="center"
+              >
                 {column.render("Header")}
                 <chakra.span pl="2">
                   {/* @ts-ignore */}
@@ -97,7 +102,9 @@ export function WorkOrderListTable() {
           return (
             <Tr {...row.getRowProps()}>
               {row.cells.map((cell) => (
-                <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+                <Td {...cell.getCellProps()} textAlign="center">
+                  {cell.render("Cell")}
+                </Td>
               ))}
             </Tr>
           );

@@ -23,29 +23,24 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
   const [productColor, setProductColor] = React.useState("");
   const [productType, setProductType] = React.useState("");
   const [quantity, setQuantity] = React.useState("");
+  const [dueDate, setDueDate] = React.useState("");
 
-  type workOrderForm = {
-    companyName: typeof companyName;
-    productName: typeof productName;
-    productColor: typeof productColor;
-    productType: typeof productType;
-    quantity: typeof quantity;
-  };
-
-  const formId: workOrderForm = {
+  const formId = {
     companyName: "companyName",
     productName: "productName",
     productColor: "productColor",
     productType: "productType",
     quantity: "quantity",
+    dueDate: "dueDate",
   };
 
-  const formName: workOrderForm = {
+  const formName = {
     companyName: "거래처",
     productName: "품명",
     productColor: "색상",
     productType: "지종",
     quantity: "수량",
+    dueDate: "납기일",
   };
 
   // 값이 바뀌었을 때 state 저장 및 input의 value 변경
@@ -67,6 +62,9 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
       case formId.quantity:
         setQuantity(event.target.value);
         break;
+      case formId.dueDate:
+        setDueDate(event.target.value);
+        break;
     }
   };
 
@@ -81,6 +79,7 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
         productColor,
         productType,
         quantity,
+        dueDate,
       },
     });
     props.onSubmit();
@@ -93,13 +92,20 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
     setProductColor("");
     setProductType("");
     setQuantity("");
+    setDueDate("");
   };
 
-  function createWorkOrderForm(id: keyof typeof formId, value: string) {
+  function createWorkOrderForm(
+    id: keyof typeof formId,
+    value: any,
+    inputType: string,
+    isRequired: boolean
+  ) {
     return (
-      <FormControl isRequired>
+      <FormControl isRequired={isRequired}>
         <FormLabel>{formName[id]}</FormLabel>
         <Input
+          type={inputType}
           placeholder={formName[id]}
           data-id={id}
           value={value}
@@ -111,11 +117,12 @@ export default function WorkOrderWrite(props: WorkOrderWriteProps) {
 
   return (
     <form onSubmit={onSubmit} onReset={onReset}>
-      {createWorkOrderForm("companyName", companyName)}
-      {createWorkOrderForm("productName", productName)}
-      {createWorkOrderForm("productColor", productColor)}
-      {createWorkOrderForm("productType", productType)}
-      {createWorkOrderForm("quantity", quantity)}
+      {createWorkOrderForm("companyName", companyName, "text", true)}
+      {createWorkOrderForm("productName", productName, "text", true)}
+      {createWorkOrderForm("productColor", productColor, "text", true)}
+      {createWorkOrderForm("productType", productType, "text", true)}
+      {createWorkOrderForm("quantity", quantity, "text", true)}
+      {createWorkOrderForm("dueDate", dueDate, "date", false)}
       <Flex align="center" my={3}>
         <Spacer />
         <ButtonGroup spacing="3">
