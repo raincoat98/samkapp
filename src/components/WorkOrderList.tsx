@@ -1,5 +1,7 @@
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import { useTable, useGlobalFilter, useSortBy } from "react-table";
 import {
   useDisclosure,
   ButtonGroup,
@@ -21,7 +23,10 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
+  Icon,
+  chakra,
 } from "@chakra-ui/react";
+import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import WorkOrderWrite from "./WorkOrderWrite";
 
 export function WorkOrderListTable() {
@@ -29,27 +34,74 @@ export function WorkOrderListTable() {
     (state: RootState) => state.workOrder.workOrderList
   );
 
+  const data = React.useMemo(() => workOrderList, []);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "거래처",
+        accessor: "companyName",
+      },
+      {
+        Header: "품명",
+        accessor: "productName",
+      },
+      {
+        Header: "칼라",
+        accessor: "productColor",
+      },
+      {
+        Header: "지종",
+        accessor: "productType",
+      },
+      {
+        Header: "수량",
+        accessor: "quantity",
+      },
+    ],
+    []
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    // @ts-ignore (react-table 라이브러리를 타입스크립트에서 사용시 타입 관련 오류 지우기용 - 실사용엔 지장없음)
+    useTable({ columns, data }, useGlobalFilter, useSortBy);
+
   return (
-    <Table wordBreak="break-all">
+    <Table {...getTableProps()} wordBreak="break-all">
       <Thead>
-        <Tr>
-          <Th>거래처</Th>
-          <Th>품명</Th>
-          <Th>칼라</Th>
-          <Th>지종</Th>
-          <Th>수량</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {workOrderList.map((workOrder, index) => (
-          <Tr data-id={workOrder.id} key={index}>
-            <Td>{workOrder.companyName}</Td>
-            <Td>{workOrder.productName}</Td>
-            <Td>{workOrder.productColor}</Td>
-            <Td>{workOrder.productType}</Td>
-            <Td>{workOrder.quantity}</Td>
+        {headerGroups.map((headerGroup) => (
+          <Tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              // @ts-ignore
+              <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render("Header")}
+                <chakra.span pl="2">
+                  {/* @ts-ignore */}
+                  {column.isSorted ? (
+                    // @ts-ignore
+                    column.isSortedDesc ? (
+                      <Icon as={AiOutlineCaretDown} />
+                    ) : (
+                      <Icon as={AiOutlineCaretUp} />
+                    )
+                  ) : null}
+                </chakra.span>
+              </Th>
+            ))}
           </Tr>
         ))}
+      </Thead>
+      <Tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <Tr {...row.getRowProps()}>
+              {row.cells.map((cell) => (
+                <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+              ))}
+            </Tr>
+          );
+        })}
       </Tbody>
       <TableCaption>목록의 마지막입니다.</TableCaption>
     </Table>
@@ -58,7 +110,6 @@ export function WorkOrderListTable() {
 
 export default function WorkOrderList() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const dispatch = useDispatch();
 
   function deleteAll() {
