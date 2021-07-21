@@ -1,5 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
 import {
   Modal,
   ModalOverlay,
@@ -12,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 type WorkOrderDetailProps = {
+  id: string;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -23,12 +22,14 @@ export default function WorkOrderDetail(props: WorkOrderDetailProps) {
       <ModalContent>
         <ModalHeader>작업 지시서 상세</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>aaa</ModalBody>
+        <ModalBody>{props.id}</ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={props.onClose}>
-            Close
+          <Button variant="ghost" colorScheme="green">
+            엑셀 파일로 저장
           </Button>
-          <Button variant="ghost">Secondary Action</Button>
+          <Button colorScheme="blue" mr={3} onClick={props.onClose}>
+            닫기
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

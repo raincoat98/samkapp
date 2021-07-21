@@ -28,11 +28,19 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import WorkOrderWrite from "./WorkOrderWrite";
+import WorkOrderDetail from "./WorkOrderDetail";
 
 export function WorkOrderListTable() {
+  const [workOrderDetailActive, setWorkOrderDetailActive] =
+    React.useState(false);
+  const [workOrderDetailId, setWorkOrderDetailId] = React.useState("");
   const workOrderList = useSelector(
     (state: RootState) => state.workOrder.workOrderList
   );
+  const toggleWorkOrderDetail = () => {
+    setWorkOrderDetailActive(!workOrderDetailActive);
+  };
+
   const data = React.useMemo(() => workOrderList, [workOrderList]);
   const columns = React.useMemo(
     () => [
@@ -60,58 +68,86 @@ export function WorkOrderListTable() {
         Header: "만기일",
         accessor: "dueDate",
       },
+      {
+        Header: "아이디",
+        accessor: "id",
+      },
     ],
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+  const {
+    headerGroups,
+    allColumns,
+    rows,
+    getTableProps,
+    getTableBodyProps,
+    prepareRow,
+    getToggleHideAllColumnsProps,
+  } =
     // @ts-ignore (react-table 라이브러리를 타입스크립트에서 사용시 타입 관련 오류 지우기용 - 실사용엔 지장없음)
     useTable({ columns, data }, useGlobalFilter, useSortBy);
 
+  // getToggleHideAllColumnsProps("id");
+
   return (
-    <Table {...getTableProps()} wordBreak="break-all">
-      <Thead>
-        {headerGroups.map((headerGroup) => (
-          <Tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <Th
-                // @ts-ignore
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                textAlign="center"
-              >
-                {column.render("Header")}
-                <chakra.span pl="2">
-                  {/* @ts-ignore */}
-                  {column.isSorted ? (
-                    // @ts-ignore
-                    column.isSortedDesc ? (
-                      <Icon as={AiOutlineCaretDown} />
-                    ) : (
-                      <Icon as={AiOutlineCaretUp} />
-                    )
-                  ) : null}
-                </chakra.span>
-              </Th>
-            ))}
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <Tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <Td {...cell.getCellProps()} textAlign="center">
-                  {cell.render("Cell")}
-                </Td>
+    <>
+      <WorkOrderDetail
+        id={workOrderDetailId}
+        isOpen={workOrderDetailActive}
+        onClose={toggleWorkOrderDetail}
+      />
+      <Table {...getTableProps()} wordBreak="break-all">
+        <Thead>
+          {headerGroups.map((headerGroup) => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Th
+                  // @ts-ignore
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  textAlign="center"
+                >
+                  {(column.isVisible = false)}
+                  {column.render("Header")}
+                  <chakra.span pl="2">
+                    {/* @ts-ignore */}
+                    {column.isSorted ? (
+                      // @ts-ignore
+                      column.isSortedDesc ? (
+                        <Icon as={AiOutlineCaretDown} />
+                      ) : (
+                        <Icon as={AiOutlineCaretUp} />
+                      )
+                    ) : null}
+                  </chakra.span>
+                </Th>
               ))}
             </Tr>
-          );
-        })}
-      </Tbody>
-      <TableCaption>목록의 마지막입니다.</TableCaption>
-    </Table>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <Tr
+                {...row.getRowProps()}
+                onClick={(e: any) => {
+                  setWorkOrderDetailId(row.original.id);
+                  toggleWorkOrderDetail();
+                }}
+              >
+                {row.cells.map((cell) => (
+                  <Td {...cell.getCellProps()} textAlign="center">
+                    {cell.render("Cell")}
+                  </Td>
+                ))}
+              </Tr>
+            );
+          })}
+        </Tbody>
+        <TableCaption>목록의 마지막입니다.</TableCaption>
+      </Table>
+    </>
   );
 }
 
