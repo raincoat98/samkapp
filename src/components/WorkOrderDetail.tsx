@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import {
   Modal,
   ModalOverlay,
@@ -10,19 +12,22 @@ import {
 } from "@chakra-ui/react";
 
 type WorkOrderDetailProps = {
-  id: string;
   isOpen: boolean;
   onClose: () => void;
 };
 
 export default function WorkOrderDetail(props: WorkOrderDetailProps) {
+  const workOrder = useSelector(
+    (state: RootState) => state.workOrder.workOrderSelected
+  );
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>작업 지시서 상세</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>{props.id}</ModalBody>
+        <ModalBody></ModalBody>
         <ModalFooter>
           <Button variant="ghost" colorScheme="green">
             엑셀 파일로 저장

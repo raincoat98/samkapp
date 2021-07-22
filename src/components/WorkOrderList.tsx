@@ -33,13 +33,16 @@ import WorkOrderDetail from "./WorkOrderDetail";
 export function WorkOrderListTable() {
   const [workOrderDetailActive, setWorkOrderDetailActive] =
     React.useState(false);
-  const [workOrderDetailId, setWorkOrderDetailId] = React.useState("");
+
   const workOrderList = useSelector(
     (state: RootState) => state.workOrder.workOrderList
   );
+
   const toggleWorkOrderDetail = () => {
     setWorkOrderDetailActive(!workOrderDetailActive);
   };
+
+  const dispatch = useDispatch();
 
   const data = React.useMemo(() => workOrderList, [workOrderList]);
   const columns = React.useMemo(
@@ -76,15 +79,7 @@ export function WorkOrderListTable() {
     []
   );
 
-  const {
-    headerGroups,
-    allColumns,
-    rows,
-    getTableProps,
-    getTableBodyProps,
-    prepareRow,
-    getToggleHideAllColumnsProps,
-  } =
+  const { headerGroups, rows, getTableProps, getTableBodyProps, prepareRow } =
     // @ts-ignore (react-table 라이브러리를 타입스크립트에서 사용시 타입 관련 오류 지우기용 - 실사용엔 지장없음)
     useTable({ columns, data }, useGlobalFilter, useSortBy);
 
@@ -93,7 +88,6 @@ export function WorkOrderListTable() {
   return (
     <>
       <WorkOrderDetail
-        id={workOrderDetailId}
         isOpen={workOrderDetailActive}
         onClose={toggleWorkOrderDetail}
       />
@@ -131,8 +125,11 @@ export function WorkOrderListTable() {
             return (
               <Tr
                 {...row.getRowProps()}
-                onClick={(e: any) => {
-                  setWorkOrderDetailId(row.original.id);
+                onClick={() => {
+                  dispatch({
+                    type: "work-order/selectWorkOrder",
+                    payload: row.original.id,
+                  });
                   toggleWorkOrderDetail();
                 }}
               >
