@@ -83,7 +83,13 @@ export function WorkOrderListTable() {
     // @ts-ignore (react-table 라이브러리를 타입스크립트에서 사용시 타입 관련 오류 지우기용 - 실사용엔 지장없음)
     useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-  // getToggleHideAllColumnsProps("id");
+  function selectWorkOrder(id: string) {
+    dispatch({
+      type: "work-order/selectWorkOrder",
+      payload: id,
+    });
+    toggleWorkOrderDetail();
+  }
 
   return (
     <>
@@ -126,11 +132,7 @@ export function WorkOrderListTable() {
               <Tr
                 {...row.getRowProps()}
                 onClick={() => {
-                  dispatch({
-                    type: "work-order/selectWorkOrder",
-                    payload: row.original.id,
-                  });
-                  toggleWorkOrderDetail();
+                  selectWorkOrder(row.original.id);
                 }}
               >
                 {row.cells.map((cell) => (

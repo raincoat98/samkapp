@@ -12,12 +12,12 @@ type workOrder = {
 };
 
 export type WorkOrderState = {
-  workOrderSelected: workOrder;
+  selected: workOrder;
   workOrderList: workOrder[];
 };
 
 const initialState: WorkOrderState = {
-  workOrderSelected: {
+  selected: {
     id: "",
     companyName: "",
     productName: "",
@@ -36,28 +36,20 @@ const workOrderSlice = createSlice({
     selectWorkOrder(state, action: PayloadAction<string>) {
       for (let index = 0; index < state.workOrderList.length; index++) {
         if (action.payload === state.workOrderList[index].id) {
-          state.workOrderSelected = state.workOrderList[index];
+          state.selected = state.workOrderList[index];
           return;
         }
       }
     },
-    addWorkOrder(state, workOrder) {
-      if (!workOrder.payload.id) workOrder.payload.id = uuidv4();
-      state.workOrderList.push(workOrder.payload);
+    addWorkOrder(state, action: PayloadAction<workOrder>) {
+      if (!action.payload.id) action.payload.id = uuidv4();
+      state.workOrderList.push(action.payload);
     },
-    deleteWorkOrder(state, workOrder) {
-      state.workOrderList.push(workOrder.payload);
+    deleteWorkOrder(state, action: PayloadAction<workOrder>) {
+      state.workOrderList.push(action.payload);
     },
     deleteAllWorkOrder(state) {
       state.workOrderList = [];
-    },
-    getWorkOrderById(state, action) {
-      return {
-        ...state,
-        workOrder: state.workOrderList.filter(
-          (workOrder) => workOrder.id === action.payload
-        ),
-      };
     },
   },
 });
