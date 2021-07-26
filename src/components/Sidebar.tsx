@@ -18,7 +18,7 @@ import {
   AiOutlineContainer,
   AiOutlineSetting,
   AiOutlineUser,
-  AiOutlineCheck,
+  AiOutlinePieChart,
   AiOutlineDesktop,
 } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
@@ -63,6 +63,14 @@ export default function Sidebar() {
 
         <Spacer />
 
+        <Link to={router.lineCondition}>
+          <Button leftIcon={<Icon as={AiOutlinePieChart} />} w={"100%"}>
+            라인 현황
+          </Button>
+        </Link>
+
+        <Spacer />
+
         <Link to={router.workOrderList}>
           <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
             작업 지시서
@@ -74,14 +82,6 @@ export default function Sidebar() {
         <Link to={router.workCondition}>
           <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
             작업 현황
-          </Button>
-        </Link>
-
-        <Spacer />
-
-        <Link to={router.default}>
-          <Button leftIcon={<Icon as={AiOutlineCheck} />} w={"100%"}>
-            버튼
           </Button>
         </Link>
 

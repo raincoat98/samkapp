@@ -11,6 +11,7 @@ import { Box, Flex } from "@chakra-ui/react";
 // 컴포넌트
 import Sidebar from "./components/Sidebar";
 import OperateCondition from "./components/OperateCondition";
+import LineCondition from "./components/LineCondition";
 import WorkCondition from "./components/WorkCondition";
 import WorkOrderList from "./components/WorkOrderList";
 import Setting from "./components/Setting";
@@ -38,6 +39,10 @@ function App() {
               {/* 가동 상황 */}
               <Route path={router.operateCondition}>
                 <OperateCondition />
+              </Route>
+              {/* 라인 현황 */}
+              <Route path={router.lineCondition}>
+                <LineCondition />
               </Route>
               {/* 작업 현황 */}
               <Route path={router.workCondition}>

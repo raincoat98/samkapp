@@ -6,6 +6,7 @@ export type RouterState = {
   setting: string;
   workCondition: string;
   workOrderList: string;
+  lineCondition: string;
 };
 
 const initialState: RouterState = {
@@ -14,6 +15,7 @@ const initialState: RouterState = {
   setting: "/setting",
   workCondition: "/work_condition",
   workOrderList: "/work_order_list",
+  lineCondition: "/line_condition",
 };
 
 const userSlice = createSlice({
