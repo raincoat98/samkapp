@@ -22,8 +22,6 @@ const options = {
   },
 };
 
-function ChartPieFrame() {
+export default function ChartPieFrame() {
   return <Pie type={"pie"} data={data} options={options} />;
 }
-
-export default ChartPieFrame;

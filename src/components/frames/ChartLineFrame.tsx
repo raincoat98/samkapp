@@ -23,7 +23,7 @@ const options = {
   },
 };
 
-function ChartLineFrame() {
+export default function ChartLineFrame() {
   return (
     <Line
       type={"line"}
@@ -33,5 +33,3 @@ function ChartLineFrame() {
     />
   );
 }
-
-export default ChartLineFrame;

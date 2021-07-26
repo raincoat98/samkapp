@@ -13,7 +13,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-function Setting() {
+export default function Setting() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -95,5 +95,3 @@ function Setting() {
     </Box>
   );
 }
-
-export default Setting;

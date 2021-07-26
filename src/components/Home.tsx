@@ -5,15 +5,12 @@ import {
   HStack,
   VStack,
   Heading,
-  Badge,
-  Tag,
   Image,
-  Tooltip,
   Icon,
 } from "@chakra-ui/react";
 import { BsCircleFill } from "react-icons/bs";
 
-function Home() {
+export default function Home() {
   function MachineLine(props: {
     lineState: [string, string, string, string, string];
   }) {
@@ -119,5 +116,3 @@ function Home() {
     </Box>
   );
 }
-
-export default Home;

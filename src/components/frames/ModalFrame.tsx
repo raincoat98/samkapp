@@ -17,7 +17,7 @@ type ModalFrameProps = {
   buttons: React.ReactNode[];
 };
 
-function ModalFrame(props: ModalFrameProps) {
+export default function ModalFrame(props: ModalFrameProps) {
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} isCentered>
       <ModalOverlay />
@@ -34,5 +34,3 @@ function ModalFrame(props: ModalFrameProps) {
     </Modal>
   );
 }
-
-export default ModalFrame;

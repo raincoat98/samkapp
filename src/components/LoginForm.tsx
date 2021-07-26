@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import ModalFrame from "./frames/ModalFrame";
 
-function LoginForm() {
+export default function LoginForm() {
   const dispatch = useDispatch();
   function onToggleLoginForm() {
     dispatch({ type: "system/loginAction" });
@@ -59,5 +59,3 @@ function LoginForm() {
     />
   );
 }
-
-export default LoginForm;

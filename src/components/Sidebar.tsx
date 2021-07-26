@@ -23,7 +23,7 @@ import {
 } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 
-function Sidebar() {
+export default function Sidebar() {
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const dispatch = useDispatch();
@@ -109,5 +109,3 @@ function Sidebar() {
     </Flex>
   );
 }
-
-export default Sidebar;
