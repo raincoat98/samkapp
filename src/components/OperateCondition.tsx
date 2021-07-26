@@ -1,5 +1,5 @@
 import {
-  useColorMode,
+  useColorModeValue,
   Box,
   Flex,
   HStack,
@@ -10,22 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { BsCircleFill } from "react-icons/bs";
 
-export default function Home() {
+export default function OperateCondition() {
   function MachineLine(props: {
     lineState: [string, string, string, string, string];
   }) {
-    const { colorMode } = useColorMode();
-    const lightColor = {
-      green: "green.500",
-      yellow: "yellow.500",
-      red: "red.500",
-    };
-    const darkColor = {
-      green: "green.300",
-      yellow: "yellow.300",
-      red: "red.300",
-    };
-    const color = colorMode === "light" ? lightColor : darkColor;
+    const color = useColorModeValue("white", "black");
+    const bgStop = useColorModeValue("red.500", "red.200");
+    const bgWarning = useColorModeValue("yellow.500", "yellow.200");
+    const bgNormal = useColorModeValue("green.500", "green.red");
+
     return (
       <HStack spacing={5}>
         {props.lineState.map((state, index) => (
@@ -45,14 +38,14 @@ export default function Home() {
             ></Image>
             <Box
               fontWeight="bold"
-              color={colorMode === "light" ? "white" : "black"}
+              color={color}
               py={2}
               backgroundColor={
                 state === "OK"
-                  ? color.green
+                  ? bgNormal
                   : state === "WAIT"
-                  ? color.yellow
-                  : color.red
+                  ? bgWarning
+                  : bgStop
               }
             >
               {state}

@@ -2,18 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type RouterState = {
   default: string;
-  home: string;
+  operateCondition: string;
   setting: string;
-  WorkCondition: string;
-  WorkOrderList: string;
+  workCondition: string;
+  workOrderList: string;
 };
 
 const initialState: RouterState = {
-  default: "/",
-  home: "/home",
+  default: "/operate_condition",
+  operateCondition: "/operate_condition",
   setting: "/setting",
-  WorkCondition: "/work_condition",
-  WorkOrderList: "/work_order_list",
+  workCondition: "/work_condition",
+  workOrderList: "/work_order_list",
 };
 
 const userSlice = createSlice({

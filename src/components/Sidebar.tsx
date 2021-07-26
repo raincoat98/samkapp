@@ -14,7 +14,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import {
-  AiOutlineHome,
+  AiOutlineProfile,
   AiOutlineContainer,
   AiOutlineSetting,
   AiOutlineUser,
@@ -55,15 +55,15 @@ export default function Sidebar() {
         variant="outline"
         spacing="0"
       >
-        <Link to={router.home}>
-          <Button leftIcon={<Icon as={AiOutlineHome} />} w={"100%"}>
-            홈 화면
+        <Link to={router.operateCondition}>
+          <Button leftIcon={<Icon as={AiOutlineProfile} />} w={"100%"}>
+            가동 상황
           </Button>
         </Link>
 
         <Spacer />
 
-        <Link to={router.WorkOrderList}>
+        <Link to={router.workOrderList}>
           <Button leftIcon={<Icon as={AiOutlineContainer} />} w={"100%"}>
             작업 지시서
           </Button>
@@ -71,7 +71,7 @@ export default function Sidebar() {
 
         <Spacer />
 
-        <Link to={router.WorkCondition}>
+        <Link to={router.workCondition}>
           <Button leftIcon={<Icon as={AiOutlineDesktop} />} w={"100%"}>
             작업 현황
           </Button>
