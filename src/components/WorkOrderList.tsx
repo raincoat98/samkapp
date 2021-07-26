@@ -6,10 +6,6 @@ import {
   useDisclosure,
   ButtonGroup,
   Button,
-  Box,
-  Heading,
-  Flex,
-  Spacer,
   Table,
   Thead,
   Tbody,
@@ -27,6 +23,8 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
+import PageTitle from "./frames/PageTitle";
+import PageContent from "./frames/PageContent";
 import WorkOrderWrite from "./WorkOrderWrite";
 import WorkOrderDetail from "./WorkOrderDetail";
 
@@ -161,7 +159,7 @@ export default function WorkOrderList() {
   }
 
   return (
-    <Box>
+    <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
@@ -172,21 +170,19 @@ export default function WorkOrderList() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <Heading variant="page-title">
-        <Flex align="center">
-          <Box>작업 지시서</Box>
-          <Spacer />
-          <ButtonGroup variant="outline" spacing="3">
-            <Button onClick={onOpen} colorScheme="blue">
-              추가
-            </Button>
-            <Button onClick={deleteAll} colorScheme="red">
-              삭제
-            </Button>
-          </ButtonGroup>
-        </Flex>
-      </Heading>
-      <WorkOrderListTable />
-    </Box>
+      <PageTitle title="작업 지시서">
+        <ButtonGroup variant="outline" spacing="3">
+          <Button onClick={onOpen} colorScheme="blue">
+            추가
+          </Button>
+          <Button onClick={deleteAll} colorScheme="red">
+            삭제
+          </Button>
+        </ButtonGroup>
+      </PageTitle>
+      <PageContent>
+        <WorkOrderListTable />
+      </PageContent>
+    </>
   );
 }

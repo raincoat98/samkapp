@@ -17,9 +17,7 @@ export default function Setting() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box>
-      <Heading variant="page-title">설정</Heading>
-
+    <>
       <Box p={3}>
         <Heading as="h4" size="md">
           계정
@@ -92,6 +90,6 @@ export default function Setting() {
           <Button colorScheme="blue">설정 저장</Button>
         </FormControl>
       </Box>
-    </Box>
+    </>
   );
 }
