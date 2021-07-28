@@ -22,7 +22,6 @@ import {
   Icon,
   chakra,
 } from "@chakra-ui/react";
-import { AiOutlineCaretUp, AiOutlineCaretDown } from "react-icons/ai";
 import PageTitle from "./frames/PageTitle";
 import PageContent from "./frames/PageContent";
 import WorkOrderWrite from "./WorkOrderWrite";
@@ -35,6 +34,9 @@ export function WorkOrderListTable() {
   const workOrderList = useSelector(
     (state: RootState) => state.workOrder.workOrderList
   );
+
+  const upIcon = useSelector((state: RootState) => state.icon.up);
+  const downIcon = useSelector((state: RootState) => state.icon.down);
 
   const toggleWorkOrderDetail = () => {
     setWorkOrderDetailActive(!workOrderDetailActive);
@@ -108,9 +110,9 @@ export function WorkOrderListTable() {
                     {column.isSorted ? (
                       // @ts-ignore
                       column.isSortedDesc ? (
-                        <Icon as={AiOutlineCaretDown} />
+                        <Icon as={downIcon} />
                       ) : (
-                        <Icon as={AiOutlineCaretUp} />
+                        <Icon as={upIcon} />
                       )
                     ) : null}
                   </chakra.span>

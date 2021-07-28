@@ -1,3 +1,5 @@
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 import {
   useColorModeValue,
   Box,
@@ -8,9 +10,10 @@ import {
   Image,
   Icon,
 } from "@chakra-ui/react";
-import { BsCircleFill } from "react-icons/bs";
 
 export default function OperateCondition() {
+  const circleIcon = useSelector((state: RootState) => state.icon.circle);
+
   function MachineLine(props: {
     lineState: [string, string, string, string, string];
   }) {
@@ -96,15 +99,15 @@ export default function OperateCondition() {
       >
         <Heading>범례</Heading>
         <Box>
-          <Icon mr={2} color="green" as={BsCircleFill} />
+          <Icon mr={2} color="green" as={circleIcon} />
           정상
         </Box>
         <Box>
-          <Icon mr={2} color="yellow.500" as={BsCircleFill} />
+          <Icon mr={2} color="yellow.500" as={circleIcon} />
           경고
         </Box>
         <Box>
-          <Icon mr={2} color="red" as={BsCircleFill} />
+          <Icon mr={2} color="red" as={circleIcon} />
           정지
         </Box>
       </VStack>
