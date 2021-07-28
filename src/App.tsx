@@ -12,6 +12,7 @@ import Sidebar from "./components/Sidebar";
 import PageContainer from "./components/frames/PageContainer";
 import LineCondition from "./components/LineCondition";
 import ClientManage from "./components/ClientManage";
+import WorkOrderList from "./components/WorkOrderList";
 
 function App() {
   const router = useSelector((state: RootState) => state.router);
@@ -59,7 +60,7 @@ function App() {
               </Route>
               {/* 작업 지시서 리스트 */}
               <Route path={router.workOrderList.path}>
-                <LineCondition />
+                <WorkOrderList />
               </Route>
               {/* 설정 */}
               <Route path={router.setting.path}>
