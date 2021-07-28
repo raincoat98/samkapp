@@ -8,15 +8,16 @@ import {
   AiOutlineUser,
   AiOutlinePieChart,
   AiOutlineDesktop,
-  AiOutlineCaretUp,
-  AiOutlineCaretDown,
 } from "react-icons/ai";
 import { IoBusinessOutline } from "react-icons/io5";
 import { BsCircleFill } from "react-icons/bs";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
 export type IconState = {
-  up: IconType;
-  down: IconType;
+  sort: IconType;
+  sortUp: IconType;
+  sortDown: IconType;
+
   circle: IconType;
   menu: IconType;
   profile: IconType;
@@ -29,8 +30,10 @@ export type IconState = {
 };
 
 const initialState: IconState = {
-  up: AiOutlineCaretUp,
-  down: AiOutlineCaretDown,
+  sort: FaSort,
+  sortUp: FaSortUp,
+  sortDown: FaSortDown,
+
   circle: BsCircleFill,
   menu: AiOutlineMenu,
   profile: AiOutlineProfile,

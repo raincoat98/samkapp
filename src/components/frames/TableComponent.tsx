@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useTable, useGlobalFilter, useSortBy, Column } from "react-table";
@@ -21,8 +21,9 @@ type TableComponentProps = {
 };
 
 export default function TableComponent(props: TableComponentProps) {
-  const upIcon = useSelector((state: RootState) => state.icon.up);
-  const downIcon = useSelector((state: RootState) => state.icon.down);
+  const sortIcon = useSelector((state: RootState) => state.icon.sort);
+  const upIcon = useSelector((state: RootState) => state.icon.sortUp);
+  const downIcon = useSelector((state: RootState) => state.icon.sortDown);
 
   const columns = React.useMemo(() => props.columns, []);
   const data = React.useMemo(() => props.data, []);
@@ -33,7 +34,7 @@ export default function TableComponent(props: TableComponentProps) {
 
   return (
     <Table {...getTableProps()} wordBreak="break-all">
-      <Thead>
+      <Thead userSelect="none">
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
@@ -53,7 +54,9 @@ export default function TableComponent(props: TableComponentProps) {
                     ) : (
                       <Icon as={upIcon} />
                     )
-                  ) : null}
+                  ) : (
+                    <Icon as={sortIcon} />
+                  )}
                 </chakra.span>
               </Th>
             ))}
