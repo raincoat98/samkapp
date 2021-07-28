@@ -5,7 +5,7 @@ export default function PageContainer(props: BoxProps) {
   const styles = useStyleConfig("PageContainer");
 
   return (
-    <Box __css={styles} {...rest} flex="1" overflow="auto">
+    <Box __css={styles} {...rest} flex="1" overflow="auto" title="">
       {children}
     </Box>
   );
