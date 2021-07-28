@@ -69,10 +69,6 @@ export function WorkOrderListTable() {
         Header: "만기일",
         accessor: "dueDate",
       },
-      {
-        Header: "아이디",
-        accessor: "id",
-      },
     ],
     []
   );
