@@ -1,21 +1,48 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+type route = {
+  title: string;
+  path: string;
+};
+
 export type RouterState = {
-  default: string;
-  operateCondition: string;
-  setting: string;
-  workCondition: string;
-  workOrderList: string;
-  lineCondition: string;
+  clientManage: route;
+
+  default: route;
+  operateCondition: route;
+  setting: route;
+  workCondition: route;
+  workOrderList: route;
+  lineCondition: route;
 };
 
 const initialState: RouterState = {
-  default: "/operate_condition",
-  operateCondition: "/operate_condition",
-  setting: "/setting",
-  workCondition: "/work_condition",
-  workOrderList: "/work_order_list",
-  lineCondition: "/line_condition",
+  default: {
+    title: "거래처 관리",
+    path: "/client_manage",
+  },
+  clientManage: {
+    title: "거래처 관리",
+    path: "/client_manage",
+  },
+
+  operateCondition: {
+    title: "설비 가동 상황",
+    path: "/operate_condition",
+  },
+  setting: { title: "설정", path: "/setting" },
+  workCondition: {
+    title: "작업 현황",
+    path: "/work_condition",
+  },
+  workOrderList: {
+    title: "작업 지시서",
+    path: "/work_order_list",
+  },
+  lineCondition: {
+    title: "라인 현황",
+    path: "/line_condition",
+  },
 };
 
 const userSlice = createSlice({

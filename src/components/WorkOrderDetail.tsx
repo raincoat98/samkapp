@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../store";
 import {
   Modal,
   ModalOverlay,
@@ -17,7 +17,7 @@ type WorkOrderDetailProps = {
 };
 
 export default function WorkOrderDetail(props: WorkOrderDetailProps) {
-  const workOrder = useSelector((state: RootState) => state.workOrder.selected);
+  // const workOrder = useSelector((state: RootState) => state.workOrder.selected);
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose}>

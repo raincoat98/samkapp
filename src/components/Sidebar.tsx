@@ -12,7 +12,14 @@ import {
   Center,
   Spacer,
 } from "@chakra-ui/react";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuGroup,
+  MenuDivider,
+} from "@chakra-ui/react";
 
 export default function Sidebar() {
   const { colorMode } = useColorMode();
@@ -42,41 +49,44 @@ export default function Sidebar() {
         size="lg"
         spacing="0"
       >
-        <Link to={router.operateCondition}>
-          <Button leftIcon={<Icon as={icons.profile} />} w={"100%"}>
-            가동 상황
-          </Button>
-        </Link>
-
-        <Spacer />
-
-        <Link to={router.lineCondition}>
-          <Button leftIcon={<Icon as={icons.chart} />} w={"100%"}>
-            라인 현황
-          </Button>
-        </Link>
-
-        <Spacer />
-
-        <Link to={router.workOrderList}>
-          <Button leftIcon={<Icon as={icons.container} />} w={"100%"}>
-            작업 지시서
-          </Button>
-        </Link>
-
-        <Spacer />
-
-        <Link to={router.workCondition}>
-          <Button leftIcon={<Icon as={icons.desktop} />} w={"100%"}>
-            작업 현황
-          </Button>
+        <Link to={router.clientManage.path}>
+          <Button w={"100%"}>거래처 관리</Button>
         </Link>
 
         <Spacer />
 
         <Menu>
           <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            관리
+            생산 관리
+          </MenuButton>
+          <MenuList>
+            <MenuGroup title="생산 지시">
+              <MenuItem>작업 지시</MenuItem>
+              <MenuItem>외주 가공</MenuItem>
+            </MenuGroup>
+            <MenuDivider />
+            <MenuGroup title="생산 실행">
+              <MenuItem>생산 실적</MenuItem>
+              <MenuItem>불량처리</MenuItem>
+              <MenuItem>자재투입</MenuItem>
+              <MenuItem>작업장 관리</MenuItem>
+            </MenuGroup>
+            <MenuDivider />
+            <MenuItem>일정 관리</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Link to={router.workCondition.path}>
+          <Button w={"100%"}>설비 관리</Button>
+        </Link>
+
+        <Spacer />
+
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            공급업체 관리
           </MenuButton>
           <MenuList>
             <MenuItem>목형</MenuItem>
@@ -86,35 +96,65 @@ export default function Sidebar() {
 
         <Spacer />
 
-        <Link to={router.workCondition}>
-          <Button leftIcon={<Icon as={icons.bussiness} />} w={"100%"}>
-            거래처 관리
-          </Button>
-        </Link>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            재고 관리
+          </MenuButton>
+          <MenuList>
+            <MenuItem>입고 관리</MenuItem>
+            <MenuItem>출고 관리</MenuItem>
+            <MenuItem>재고결산</MenuItem>
+          </MenuList>
+        </Menu>
 
         <Spacer />
 
-        <Link to={router.workCondition}>
-          <Button leftIcon={<Icon as={icons.user} />} w={"100%"}>
-            사용자 관리
-          </Button>
-        </Link>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            출하 관리
+          </MenuButton>
+          <MenuList>
+            <MenuItem>출하지시</MenuItem>
+            <MenuItem>출하처리</MenuItem>
+          </MenuList>
+        </Menu>
 
         <Spacer />
 
-        <Link to={router.workCondition}>
-          <Button leftIcon={<Icon as={icons.desktop} />} w={"100%"}>
-            KPI
-          </Button>
-        </Link>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            목형 관리
+          </MenuButton>
+          <MenuList>
+            <MenuItem>목형 관리</MenuItem>
+            <MenuItem>적재 관리</MenuItem>
+          </MenuList>
+        </Menu>
 
         <Spacer />
 
-        <Link to={router.setting}>
-          <Button leftIcon={<Icon as={icons.setting} />} w={"100%"}>
-            설정
-          </Button>
-        </Link>
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            조판지 관리
+          </MenuButton>
+          <MenuList>
+            <MenuItem>조판지 관리</MenuItem>
+            <MenuItem>적재 관리</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu>
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            기준정보 관리
+          </MenuButton>
+          <MenuList>
+            <MenuItem>제품 마스터</MenuItem>
+            <MenuItem>자재 마스터</MenuItem>
+            <MenuItem>사원 정보</MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
     </Flex>
   );

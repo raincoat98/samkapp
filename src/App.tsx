@@ -8,22 +8,16 @@ import {
 } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
 
-// 컴포넌트
 import Sidebar from "./components/Sidebar";
 import PageContainer from "./components/frames/PageContainer";
-import OperateCondition from "./components/OperateCondition";
 import LineCondition from "./components/LineCondition";
-import WorkCondition from "./components/WorkCondition";
-import WorkOrderList from "./components/WorkOrderList";
-import Setting from "./components/Setting";
-import LoginForm from "./components/LoginForm";
+import ClientManage from "./components/ClientManage";
 
 function App() {
   const router = useSelector((state: RootState) => state.router);
 
   return (
     <Box fontFamily="맑은 고딕" w="100%" h="100vh">
-      <LoginForm />
       <Router>
         <Flex h={"100%"} w={"100%"}>
           <Sidebar />
@@ -33,36 +27,44 @@ function App() {
               <Route path="/" exact={true}>
                 <Redirect
                   to={{
-                    pathname: router.default,
+                    pathname: router.default.path,
                   }}
                 />
               </Route>
+
+              {/* 거래처 관리 */}
+              <Route path={router.clientManage.path}>
+                <PageContainer title={router.clientManage.title}>
+                  <ClientManage />
+                </PageContainer>
+              </Route>
+
               {/* 설비 가동 상황 */}
-              <Route path={router.operateCondition}>
-                <PageContainer title="설비 가동 상황">
-                  <OperateCondition />
+              <Route path={router.operateCondition.path}>
+                <PageContainer title={router.operateCondition.title}>
+                  <LineCondition />
                 </PageContainer>
               </Route>
               {/* 라인 현황 */}
-              <Route path={router.lineCondition}>
-                <PageContainer title="라인 현황">
+              <Route path={router.lineCondition.path}>
+                <PageContainer title={router.lineCondition.title}>
                   <LineCondition />
                 </PageContainer>
               </Route>
               {/* 작업 현황 */}
-              <Route path={router.workCondition}>
-                <PageContainer title="작업 현황">
-                  <WorkCondition />
+              <Route path={router.workCondition.path}>
+                <PageContainer title={router.workCondition.title}>
+                  <LineCondition />
                 </PageContainer>
               </Route>
               {/* 작업 지시서 리스트 */}
-              <Route path={router.workOrderList}>
-                <WorkOrderList />
+              <Route path={router.workOrderList.path}>
+                <LineCondition />
               </Route>
               {/* 설정 */}
-              <Route path={router.setting}>
-                <PageContainer title="설정">
-                  <Setting />
+              <Route path={router.setting.path}>
+                <PageContainer title={router.setting.title}>
+                  <LineCondition />
                 </PageContainer>
               </Route>
             </Switch>
