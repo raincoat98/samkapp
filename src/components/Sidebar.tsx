@@ -24,7 +24,10 @@ import {
 export default function Sidebar() {
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
-  const router = useSelector((state: RootState) => state.router);
+  const routes = useSelector((state: RootState) => state.router.routes);
+
+  const clientManage =
+    routes[routes.findIndex((route) => route.id === "clientManage")];
 
   // 아이콘
   const icons = useSelector((state: RootState) => state.icon);
@@ -49,7 +52,7 @@ export default function Sidebar() {
         size="lg"
         spacing="0"
       >
-        <Link to={router.clientManage.path}>
+        <Link to={clientManage.path}>
           <Button w={"100%"}>거래처 관리</Button>
         </Link>
 
@@ -78,7 +81,7 @@ export default function Sidebar() {
 
         <Spacer />
 
-        <Link to={router.workCondition.path}>
+        <Link to={clientManage.path}>
           <Button w={"100%"}>설비 관리</Button>
         </Link>
 

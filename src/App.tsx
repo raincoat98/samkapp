@@ -10,12 +10,10 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import Sidebar from "./components/Sidebar";
 import PageContainer from "./components/frames/PageContainer";
-import LineCondition from "./components/LineCondition";
-import ClientManage from "./components/ClientManage";
-import WorkOrderList from "./components/WorkOrderList";
 
 function App() {
-  const router = useSelector((state: RootState) => state.router);
+  const defaultRoute = useSelector((state: RootState) => state.router.default);
+  const routes = useSelector((state: RootState) => state.router.routes);
 
   return (
     <Box fontFamily="맑은 고딕" w="100%" h="100vh">
@@ -28,46 +26,19 @@ function App() {
               <Route path="/" exact={true}>
                 <Redirect
                   to={{
-                    pathname: router.default.path,
+                    pathname: defaultRoute,
                   }}
                 />
               </Route>
 
-              {/* 거래처 관리 */}
-              <Route path={router.clientManage.path}>
-                <PageContainer title={router.clientManage.title}>
-                  <ClientManage />
-                </PageContainer>
-              </Route>
-
-              {/* 설비 가동 상황 */}
-              <Route path={router.operateCondition.path}>
-                <PageContainer title={router.operateCondition.title}>
-                  <LineCondition />
-                </PageContainer>
-              </Route>
-              {/* 라인 현황 */}
-              <Route path={router.lineCondition.path}>
-                <PageContainer title={router.lineCondition.title}>
-                  <LineCondition />
-                </PageContainer>
-              </Route>
-              {/* 작업 현황 */}
-              <Route path={router.workCondition.path}>
-                <PageContainer title={router.workCondition.title}>
-                  <LineCondition />
-                </PageContainer>
-              </Route>
-              {/* 작업 지시서 리스트 */}
-              <Route path={router.workOrderList.path}>
-                <WorkOrderList />
-              </Route>
-              {/* 설정 */}
-              <Route path={router.setting.path}>
-                <PageContainer title={router.setting.title}>
-                  <LineCondition />
-                </PageContainer>
-              </Route>
+              {/* 주소 매핑 */}
+              {routes.map((route) => (
+                <Route path={route.path} key={route.id}>
+                  <PageContainer title={route.title}>
+                    <route.component />
+                  </PageContainer>
+                </Route>
+              ))}
             </Switch>
           </Box>
         </Flex>

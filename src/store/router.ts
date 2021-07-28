@@ -1,48 +1,53 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import ClientManage from "../components/ClientManage";
+import Setting from "../components/Setting";
+
 type route = {
+  id: string;
   title: string;
   path: string;
+  component: () => JSX.Element;
 };
 
 export type RouterState = {
-  clientManage: route;
-
-  default: route;
-  operateCondition: route;
-  setting: route;
-  workCondition: route;
-  workOrderList: route;
-  lineCondition: route;
+  default: string;
+  routes: route[];
 };
 
 const initialState: RouterState = {
-  default: {
-    title: "거래처 관리",
-    path: "/client_manage",
-  },
-  clientManage: {
-    title: "거래처 관리",
-    path: "/client_manage",
-  },
+  default: "/client_manage",
+  routes: [
+    {
+      id: "clientManage",
+      title: "거래처 관리",
+      path: "/client_manage",
+      component: ClientManage,
+    },
+    {
+      id: "setting",
+      title: "설정",
+      path: "/setting",
+      component: Setting,
+    },
+  ],
 
-  operateCondition: {
-    title: "설비 가동 상황",
-    path: "/operate_condition",
-  },
-  setting: { title: "설정", path: "/setting" },
-  workCondition: {
-    title: "작업 현황",
-    path: "/work_condition",
-  },
-  workOrderList: {
-    title: "작업 지시서",
-    path: "/work_order_list",
-  },
-  lineCondition: {
-    title: "라인 현황",
-    path: "/line_condition",
-  },
+  // operateCondition: {
+  //   title: "설비 가동 상황",
+  //   path: "/operate_condition",
+  // },
+  // workCondition: {
+  //   title: "작업 현황",
+  //   path: "/work_condition",
+  // },
+  // workOrderList: {
+  //   title: "작업 지시서",
+  //   path: "/work_order_list",
+  // },
+  // lineCondition: {
+  //   title: "라인 현황",
+  //   path: "/line_condition",
+  // },
 };
 
 const userSlice = createSlice({
