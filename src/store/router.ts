@@ -12,12 +12,12 @@ type route = {
 };
 
 export type RouterState = {
-  default: string;
+  defaultPath: string;
   routes: route[];
 };
 
 const initialState: RouterState = {
-  default: "/client_manage",
+  defaultPath: "/client_manage",
   routes: [
     {
       id: "clientManage",

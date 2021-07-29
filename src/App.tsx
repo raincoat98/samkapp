@@ -10,9 +10,12 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import Sidebar from "./components/Sidebar";
 import PageContainer from "./components/frames/PageContainer";
+import NoMatch from "./components/NoMatch";
 
 function App() {
-  const defaultRoute = useSelector((state: RootState) => state.router.default);
+  const defaultPath = useSelector(
+    (state: RootState) => state.router.defaultPath
+  );
   const routes = useSelector((state: RootState) => state.router.routes);
 
   return (
@@ -26,19 +29,27 @@ function App() {
               <Route path="/" exact={true}>
                 <Redirect
                   to={{
-                    pathname: defaultRoute,
+                    pathname: defaultPath,
                   }}
                 />
               </Route>
 
               {/* 주소 매핑 */}
               {routes.map((route) => (
-                <Route path={route.path} key={route.id}>
-                  <PageContainer title={route.title}>
-                    <route.component />
-                  </PageContainer>
-                </Route>
+                <Route
+                  path={route.path}
+                  key={route.id}
+                  children={
+                    <PageContainer title={route.title}>
+                      <route.component />
+                    </PageContainer>
+                  }
+                ></Route>
               ))}
+
+              <Route path="*">
+                <NoMatch />
+              </Route>
             </Switch>
           </Box>
         </Flex>

@@ -26,7 +26,7 @@ export default function Sidebar() {
   const logo = useSelector((state: RootState) => state.system.logo);
   const routes = useSelector((state: RootState) => state.router.routes);
 
-  // const clientManage = findRoute("clientManage");
+  const clientManage = findRoute("clientManage");
   const toolManage = findRoute("toolManage");
 
   // 아이콘
