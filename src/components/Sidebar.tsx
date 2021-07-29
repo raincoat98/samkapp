@@ -26,11 +26,15 @@ export default function Sidebar() {
   const logo = useSelector((state: RootState) => state.system.logo);
   const routes = useSelector((state: RootState) => state.router.routes);
 
-  const clientManage =
-    routes[routes.findIndex((route) => route.id === "clientManage")];
+  // const clientManage = findRoute("clientManage");
+  const toolManage = findRoute("toolManage");
 
   // 아이콘
   const icons = useSelector((state: RootState) => state.icon);
+
+  function findRoute(routeId: string) {
+    return routes[routes.findIndex((route) => route.id === routeId)];
+  }
 
   return (
     <Flex direction={"column"} w={250} borderRightWidth="1px">
@@ -52,110 +56,128 @@ export default function Sidebar() {
         size="lg"
         spacing="0"
       >
-        <Link to={clientManage.path}>
-          <Button w={"100%"}>거래처 관리</Button>
-        </Link>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            생산 관리
-          </MenuButton>
-          <MenuList>
-            <MenuGroup title="생산 지시">
-              <MenuItem>작업 지시</MenuItem>
-              <MenuItem>외주 가공</MenuItem>
-            </MenuGroup>
-            <MenuDivider />
-            <MenuGroup title="생산 실행">
-              <MenuItem>생산 실적</MenuItem>
-              <MenuItem>불량처리</MenuItem>
-              <MenuItem>자재투입</MenuItem>
-              <MenuItem>작업장 관리</MenuItem>
-            </MenuGroup>
-            <MenuDivider />
-            <MenuItem>일정 관리</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Link to={clientManage.path}>
-          <Button w={"100%"}>설비 관리</Button>
-        </Link>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            공급업체 관리
-          </MenuButton>
-          <MenuList>
-            <MenuItem>목형</MenuItem>
-            <MenuItem>조판지</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            재고 관리
-          </MenuButton>
-          <MenuList>
-            <MenuItem>입고 관리</MenuItem>
-            <MenuItem>출고 관리</MenuItem>
-            <MenuItem>재고결산</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            출하 관리
-          </MenuButton>
-          <MenuList>
-            <MenuItem>출하지시</MenuItem>
-            <MenuItem>출하처리</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            목형 관리
-          </MenuButton>
-          <MenuList>
-            <MenuItem>목형 관리</MenuItem>
-            <MenuItem>적재 관리</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Menu>
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            조판지 관리
-          </MenuButton>
-          <MenuList>
-            <MenuItem>조판지 관리</MenuItem>
-            <MenuItem>적재 관리</MenuItem>
-          </MenuList>
-        </Menu>
-
-        <Spacer />
-
-        <Menu>
+        <Menu placement="right-start">
           <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
             기준정보 관리
           </MenuButton>
-          <MenuList>
-            <MenuItem>제품 마스터</MenuItem>
-            <MenuItem>자재 마스터</MenuItem>
-            <MenuItem>사원 정보</MenuItem>
+          <MenuList boxShadow="md" borderWidth="1px">
+            <MenuItem>공통자료관리</MenuItem>
+            <MenuItem>고객관리</MenuItem>
+            <MenuItem>제품관리</MenuItem>
+            <MenuItem>구매관리</MenuItem>
+            <MenuItem>공정관리</MenuItem>
+            <MenuItem>설비관리</MenuItem>
+            <MenuItem>작업자관리</MenuItem>
+            <MenuItem>작업장관리</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            영업 관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>입고관리 </MenuItem>
+            <MenuItem>출고관리</MenuItem>
+            <MenuItem>출하지시</MenuItem>
+            <MenuItem>출하현황</MenuItem>
+            <MenuItem>판매계획</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            자재 관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>입고 관리</MenuItem>
+            <MenuItem>출고 관리</MenuItem>
+            <MenuDivider />
+            <MenuGroup title="재고 관리">
+              <MenuItem>재고결산</MenuItem>
+              <MenuItem>투입이력</MenuItem>
+            </MenuGroup>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            생산 관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>생산계획</MenuItem>
+            <MenuItem>생산지시</MenuItem>
+            <MenuItem>외주지시</MenuItem>
+            <MenuItem>도구관리</MenuItem>
+            <MenuItem>실적조회</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            설비 관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>설비점검</MenuItem>
+            <MenuItem>점검내역</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            도구 관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <Link to={toolManage.path}>
+              <MenuItem>목형관리</MenuItem>
+            </Link>
+            <Link to={toolManage.path}>
+              <MenuItem>적치대관리</MenuItem>
+            </Link>
+            <Link to={toolManage.path}>
+              <MenuItem>조판지관리</MenuItem>
+            </Link>
+            <Link to={toolManage.path}>
+              <MenuItem>조판지걸이관리</MenuItem>
+            </Link>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            모니터링
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>공정작업 현황</MenuItem>
+            <MenuItem>설비가동 현황</MenuItem>
+            <MenuItem>생산실적 현황</MenuItem>
+          </MenuList>
+        </Menu>
+
+        <Spacer />
+
+        <Menu placement="right-start">
+          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+            시스템관리
+          </MenuButton>
+          <MenuList boxShadow="md">
+            <MenuItem>사용자관리</MenuItem>
+            <MenuItem>부서관리</MenuItem>
+            <MenuItem>암호변경</MenuItem>
+            <MenuItem>공지사항</MenuItem>
+            <MenuItem>접속관리</MenuItem>
           </MenuList>
         </Menu>
       </Flex>

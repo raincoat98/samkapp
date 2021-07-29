@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import ClientManage from "../components/ClientManage";
 import Setting from "../components/Setting";
+import ToolManage from "../components/ToolManage";
 
 type route = {
   id: string;
@@ -30,24 +31,13 @@ const initialState: RouterState = {
       path: "/setting",
       component: Setting,
     },
+    {
+      id: "toolManage",
+      title: "제품 관리",
+      path: "/tool_manage",
+      component: ToolManage,
+    },
   ],
-
-  // operateCondition: {
-  //   title: "설비 가동 상황",
-  //   path: "/operate_condition",
-  // },
-  // workCondition: {
-  //   title: "작업 현황",
-  //   path: "/work_condition",
-  // },
-  // workOrderList: {
-  //   title: "작업 지시서",
-  //   path: "/work_order_list",
-  // },
-  // lineCondition: {
-  //   title: "라인 현황",
-  //   path: "/line_condition",
-  // },
 };
 
 const userSlice = createSlice({
