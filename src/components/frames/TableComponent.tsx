@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { useTable, useGlobalFilter, useSortBy, Column } from "react-table";
 import {
+  useColorModeValue,
   Table,
   Thead,
   Tbody,
@@ -26,6 +27,11 @@ export default function TableComponent(props: TableComponentProps) {
   const upIcon = useSelector((state: RootState) => state.icon.sortUp);
   const downIcon = useSelector((state: RootState) => state.icon.sortDown);
 
+  // 색상 가져오기
+  const background = useSelector(
+    (state: RootState) => state.system.color.background
+  );
+
   const columns = React.useMemo(() => props.columns, [props.columns]);
   const data = React.useMemo(() => props.data, [props.data]);
 
@@ -34,7 +40,13 @@ export default function TableComponent(props: TableComponentProps) {
 
   return (
     <Table {...getTableProps()} wordBreak="break-all">
-      <Thead userSelect="none">
+      <Thead
+        userSelect="none"
+        position="sticky"
+        top="0px"
+        boxShadow="base"
+        bg={useColorModeValue(background.light, background.dark)}
+      >
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (

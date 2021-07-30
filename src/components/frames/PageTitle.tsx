@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 import {
   useStyleConfig,
   Heading,
@@ -12,6 +14,11 @@ export default function PageTitle(props: HeadingProps) {
   const { children, ...rest } = props;
   const styles = useStyleConfig("PageTitle");
 
+  // 색상 가져오기
+  const background = useSelector(
+    (state: RootState) => state.system.color.background
+  );
+
   return (
     <Heading
       __css={styles}
@@ -21,7 +28,7 @@ export default function PageTitle(props: HeadingProps) {
       variant="page-title"
       padding="3"
       borderBottomWidth="1px"
-      bg={useColorModeValue("white", "gray.800")}
+      bg={useColorModeValue(background.light, background.dark)}
       transition={"var(--chakra-transition-duration-normal)"}
     >
       <Flex align="center">

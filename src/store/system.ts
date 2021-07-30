@@ -1,14 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import logo from "../images/logo.png";
 
+type colorType = { light: string; dark: string };
+
 export type SystemState = {
   isLogin: boolean;
   logo: string;
+  color: {
+    background: colorType;
+  };
 };
 
 const initialState: SystemState = {
   isLogin: false,
   logo: logo,
+  color: {
+    background: { light: "white", dark: "gray.800" },
+  },
 };
 
 const userSlice = createSlice({
