@@ -66,14 +66,16 @@ export default function Sidebar() {
             기준정보 관리
           </MenuButton>
           <MenuList boxShadow="md" borderWidth="1px">
-            <MenuItem>공통자료관리</MenuItem>
-            <MenuItem>고객관리</MenuItem>
-            <MenuItem>제품관리</MenuItem>
-            <MenuItem>구매관리</MenuItem>
-            <MenuItem>공정관리</MenuItem>
-            <MenuItem>설비관리</MenuItem>
-            <MenuItem>작업자관리</MenuItem>
-            <MenuItem>작업장관리</MenuItem>
+            <MenuGroup title="기준정보 관리">
+              <MenuItem>공통자료관리</MenuItem>
+              <MenuItem>고객관리</MenuItem>
+              <MenuItem>제품관리</MenuItem>
+              <MenuItem>구매관리</MenuItem>
+              <MenuItem>공정관리</MenuItem>
+              <MenuItem>설비관리</MenuItem>
+              <MenuItem>작업자관리</MenuItem>
+              <MenuItem>작업장관리</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -84,11 +86,13 @@ export default function Sidebar() {
             영업 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>입고관리 </MenuItem>
-            <MenuItem>출고관리</MenuItem>
-            <MenuItem>출하지시</MenuItem>
-            <MenuItem>출하현황</MenuItem>
-            <MenuItem>판매계획</MenuItem>
+            <MenuGroup title="영업 관리">
+              <MenuItem>입고관리 </MenuItem>
+              <MenuItem>출고관리</MenuItem>
+              <MenuItem>출하지시</MenuItem>
+              <MenuItem>출하현황</MenuItem>
+              <MenuItem>판매계획</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -99,8 +103,10 @@ export default function Sidebar() {
             자재 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>입고 관리</MenuItem>
-            <MenuItem>출고 관리</MenuItem>
+            <MenuGroup title="자재 관리">
+              <MenuItem>입고 관리</MenuItem>
+              <MenuItem>출고 관리</MenuItem>
+            </MenuGroup>
             <MenuDivider />
             <MenuGroup title="재고 관리">
               <MenuItem>재고결산</MenuItem>
@@ -116,11 +122,13 @@ export default function Sidebar() {
             생산 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>생산계획</MenuItem>
-            <MenuItem>생산지시</MenuItem>
-            <MenuItem>외주지시</MenuItem>
-            <MenuItem>도구관리</MenuItem>
-            <MenuItem>실적조회</MenuItem>
+            <MenuGroup title="생산 관리">
+              <MenuItem>생산계획</MenuItem>
+              <MenuItem>생산지시</MenuItem>
+              <MenuItem>외주지시</MenuItem>
+              <MenuItem>도구관리</MenuItem>
+              <MenuItem>실적조회</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -131,8 +139,10 @@ export default function Sidebar() {
             설비 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>설비점검</MenuItem>
-            <MenuItem>점검내역</MenuItem>
+            <MenuGroup title="설비 관리">
+              <MenuItem>설비점검</MenuItem>
+              <MenuItem>점검내역</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -143,18 +153,20 @@ export default function Sidebar() {
             도구 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <Link to={toolManage.path + "/wooden"}>
-              <MenuItem>목형관리</MenuItem>
-            </Link>
-            <Link to={toolManage.path + "/stash"}>
-              <MenuItem>적치대관리</MenuItem>
-            </Link>
-            <Link to={toolManage.path + "/typesetting_paper"}>
-              <MenuItem>조판지관리</MenuItem>
-            </Link>
-            <Link to={toolManage.path + "/typesetting_paper_hanger"}>
-              <MenuItem>조판지걸이관리</MenuItem>
-            </Link>
+            <MenuGroup title="도구 관리">
+              <Link to={toolManage.path + "/wooden"}>
+                <MenuItem>목형관리</MenuItem>
+              </Link>
+              <Link to={toolManage.path + "/stash"}>
+                <MenuItem>적치대관리</MenuItem>
+              </Link>
+              <Link to={toolManage.path + "/typesetting_paper"}>
+                <MenuItem>조판지관리</MenuItem>
+              </Link>
+              <Link to={toolManage.path + "/typesetting_paper_hanger"}>
+                <MenuItem>조판지걸이관리</MenuItem>
+              </Link>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -165,9 +177,11 @@ export default function Sidebar() {
             모니터링
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>공정작업 현황</MenuItem>
-            <MenuItem>설비가동 현황</MenuItem>
-            <MenuItem>생산실적 현황</MenuItem>
+            <MenuGroup title="모니터링">
+              <MenuItem>공정작업 현황</MenuItem>
+              <MenuItem>설비가동 현황</MenuItem>
+              <MenuItem>생산실적 현황</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
 
@@ -175,14 +189,16 @@ export default function Sidebar() {
 
         <Menu placement="right-start">
           <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            시스템관리
+            시스템 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <MenuItem>사용자관리</MenuItem>
-            <MenuItem>부서관리</MenuItem>
-            <MenuItem>암호변경</MenuItem>
-            <MenuItem>공지사항</MenuItem>
-            <MenuItem>접속관리</MenuItem>
+            <MenuGroup title="시스템 관리">
+              <MenuItem>사용자관리</MenuItem>
+              <MenuItem>부서관리</MenuItem>
+              <MenuItem>암호변경</MenuItem>
+              <MenuItem>공지사항</MenuItem>
+              <MenuItem>접속관리</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
       </Flex>
