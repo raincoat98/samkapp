@@ -9,6 +9,8 @@ type route = {
   title: string;
   path: string;
   component: () => JSX.Element;
+  params?: string[];
+  container: boolean;
 };
 
 export type RouterState = {
@@ -24,18 +26,22 @@ const initialState: RouterState = {
       title: "거래처 관리",
       path: "/client_manage",
       component: ClientManage,
+      container: true,
     },
     {
       id: "setting",
       title: "설정",
       path: "/setting",
       component: Setting,
+      container: true,
     },
     {
       id: "toolManage",
-      title: "제품 관리",
+      title: "도구 관리",
       path: "/tool_manage",
       component: ToolManage,
+      params: ["/:id"],
+      container: false,
     },
   ],
 };

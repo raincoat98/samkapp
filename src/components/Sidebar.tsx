@@ -25,8 +25,11 @@ export default function Sidebar() {
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const routes = useSelector((state: RootState) => state.router.routes);
+  const defaultPath = useSelector(
+    (state: RootState) => state.router.defaultPath
+  );
 
-  const clientManage = findRoute("clientManage");
+  // const clientManage = findRoute("clientManage");
   const toolManage = findRoute("toolManage");
 
   // 아이콘
@@ -38,13 +41,15 @@ export default function Sidebar() {
 
   return (
     <Flex direction={"column"} w={250} borderRightWidth="1px">
-      <Center w={"100%"} h={100}>
-        <Image
-          src={logo}
-          filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
-          p="5"
-        />
-      </Center>
+      <Link to={defaultPath}>
+        <Center w={"100%"} h={100}>
+          <Image
+            src={logo}
+            filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
+            p="5"
+          />
+        </Center>
+      </Link>
 
       <Divider />
 
@@ -138,16 +143,16 @@ export default function Sidebar() {
             도구 관리
           </MenuButton>
           <MenuList boxShadow="md">
-            <Link to={toolManage.path}>
+            <Link to={toolManage.path + "/wooden"}>
               <MenuItem>목형관리</MenuItem>
             </Link>
-            <Link to={toolManage.path}>
+            <Link to={toolManage.path + "/stash"}>
               <MenuItem>적치대관리</MenuItem>
             </Link>
-            <Link to={toolManage.path}>
+            <Link to={toolManage.path + "/typesetting_paper"}>
               <MenuItem>조판지관리</MenuItem>
             </Link>
-            <Link to={toolManage.path}>
+            <Link to={toolManage.path + "/typesetting_paper_hanger"}>
               <MenuItem>조판지걸이관리</MenuItem>
             </Link>
           </MenuList>

@@ -37,16 +37,21 @@ function App() {
               {/* 주소 매핑 */}
               {routes.map((route) => (
                 <Route
-                  path={route.path}
+                  path={route.path + (route.params || "")}
                   key={route.id}
                   children={
-                    <PageContainer title={route.title}>
+                    route.container ? (
+                      <PageContainer title={route.title}>
+                        <route.component />
+                      </PageContainer>
+                    ) : (
                       <route.component />
-                    </PageContainer>
+                    )
                   }
                 ></Route>
               ))}
 
+              {/* 404 매핑 */}
               <Route path="*">
                 <NoMatch />
               </Route>
