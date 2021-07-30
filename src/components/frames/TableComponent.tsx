@@ -21,15 +21,15 @@ type TableComponentProps = {
 };
 
 export default function TableComponent(props: TableComponentProps) {
+  // 정렬 아이콘
   const sortIcon = useSelector((state: RootState) => state.icon.sort);
   const upIcon = useSelector((state: RootState) => state.icon.sortUp);
   const downIcon = useSelector((state: RootState) => state.icon.sortDown);
 
-  const columns = React.useMemo(() => props.columns, []);
-  const data = React.useMemo(() => props.data, []);
+  const columns = React.useMemo(() => props.columns, [props.columns]);
+  const data = React.useMemo(() => props.data, [props.data]);
 
   const { headerGroups, rows, getTableProps, getTableBodyProps, prepareRow } =
-    // @ts-ignore (react-table 라이브러리를 타입스크립트에서 사용시 타입 관련 오류 지우기용 - 실사용엔 지장없음)
     useTable({ columns, data }, useGlobalFilter, useSortBy);
 
   return (
@@ -70,6 +70,7 @@ export default function TableComponent(props: TableComponentProps) {
             <Tr
               {...row.getRowProps()}
               onClick={() => {
+                // 클릭시 원본 데이터 리턴
                 if (props.clickEvent) props.clickEvent(row.original);
               }}
             >
