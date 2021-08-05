@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../store";
+import { RootState } from "../../store";
 import { Box, VStack, Flex, Image } from "@chakra-ui/react";
 import machineImage from "../images/machine.png";
 

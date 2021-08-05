@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
@@ -28,6 +29,8 @@ export default function Sidebar() {
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
+  const { t, i18n } = useTranslation();
+
   // 아이콘
   const icons = useSelector((state: RootState) => state.icon);
 
@@ -70,13 +73,13 @@ export default function Sidebar() {
       >
         <Menu placement="right-start">
           <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            기준정보 관리
+            {t("Master Data Management")}
           </MenuButton>
           <MenuList boxShadow="md" borderWidth="1px">
-            <MenuGroup title="기준정보 관리">
+            <MenuGroup title={t("Master Data Management")}>
               <MenuItem>공통자료관리</MenuItem>
               <Link to={customerManage.path}>
-                <MenuItem>{customerManage.title}</MenuItem>
+                <MenuItem>{t("Customer Management")}</MenuItem>
               </Link>
               <MenuItem>제품관리</MenuItem>
               <MenuItem>구매관리</MenuItem>

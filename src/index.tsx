@@ -1,3 +1,4 @@
+// React
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -5,9 +6,14 @@ import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
+// i18next - 다국어 지원
+import "./i18n";
+
+// chakra - UI 라이브러리
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 
+// redux - 상태 저장소
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { PersistGate } from "redux-persist/integration/react";

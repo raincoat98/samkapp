@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
+import { RootState } from "../../store";
 import {
   useDisclosure,
   ButtonGroup,
@@ -12,11 +12,11 @@ import {
   ModalCloseButton,
   ModalBody,
 } from "@chakra-ui/react";
-import PageTitle from "./frames/PageTitle";
-import PageContent from "./frames/PageContent";
+import PageTitle from "../frames/PageTitle";
+import PageContent from "../frames/PageContent";
 import WorkOrderWrite from "./WorkOrderWrite";
 import WorkOrderDetail from "./WorkOrderDetail";
-import TableComponent from "./frames/TableComponent";
+import TableComponent from "../frames/TableComponent";
 
 export function WorkOrderListTable() {
   const [workOrderDetailActive, setWorkOrderDetailActive] =
