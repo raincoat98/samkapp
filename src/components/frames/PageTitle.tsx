@@ -30,6 +30,7 @@ export default function PageTitle(props: HeadingProps) {
       borderBottomWidth="1px"
       bg={useColorModeValue(background.light, background.dark)}
       transition={"var(--chakra-transition-duration-normal)"}
+      userSelect="none"
     >
       <Flex align="center">
         <Box>{props.title}</Box>

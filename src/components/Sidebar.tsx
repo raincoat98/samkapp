@@ -38,6 +38,7 @@ export default function Sidebar() {
             src={logo}
             filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
             p="5"
+            userSelect="none"
           />
         </Center>
       </Link>
@@ -213,7 +214,11 @@ function SidebarMenu(props: {
       </MenuButton>
       <MenuList boxShadow="md" borderWidth="1px">
         {props.menuItemGroups.map((menuItemGroup, index) => (
-          <MenuGroup title={t(menuItemGroup.title)} key={menuItemGroup.title}>
+          <MenuGroup
+            title={t(menuItemGroup.title)}
+            key={menuItemGroup.title}
+            userSelect="none"
+          >
             {menuItemGroup.items.map((menuItemName) =>
               findRouteById(menuItemName) ? (
                 <Link to={findRouteById(menuItemName).path} key={menuItemName}>
