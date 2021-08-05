@@ -11,7 +11,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-export default function OperateCondition() {
+export default function ProcessManage() {
   const circleIcon = useSelector((state: RootState) => state.icon.circle);
 
   function MachineLine(props: {

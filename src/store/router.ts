@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import ClientManage from "../components/ClientManage";
+import CustomerManage from "../components/CustomerManage";
 import Setting from "../components/Setting";
 import ToolManage from "../components/ToolManage";
+import ProcessManage from "../components/ProcessManage";
 
 type route = {
   id: string;
@@ -19,13 +20,13 @@ export type RouterState = {
 };
 
 const initialState: RouterState = {
-  defaultPath: "/client_manage",
+  defaultPath: "/setting",
   routes: [
     {
-      id: "clientManage",
-      title: "거래처 관리",
-      path: "/client_manage",
-      component: ClientManage,
+      id: "customerManage",
+      title: "고객 관리",
+      path: "/customer_manage",
+      component: CustomerManage,
       container: true,
     },
     {
@@ -42,6 +43,13 @@ const initialState: RouterState = {
       component: ToolManage,
       params: ["/:id"],
       container: false,
+    },
+    {
+      id: "processManage",
+      title: "공정관리",
+      path: "/process_manage",
+      component: ProcessManage,
+      container: true,
     },
   ],
 };

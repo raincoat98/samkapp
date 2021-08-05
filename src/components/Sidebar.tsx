@@ -28,12 +28,17 @@ export default function Sidebar() {
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
-
-  // const clientManage = findRoute("clientManage");
-  const toolManage = findRoute("toolManage");
-
   // 아이콘
   const icons = useSelector((state: RootState) => state.icon);
+
+  // 기준정보 관리
+  const customerManage = findRoute("customerManage");
+
+  // 도구 관리
+  const toolManage = findRoute("toolManage");
+
+  // 모니터링
+  const processManage = findRoute("processManage");
 
   function findRoute(routeId: string) {
     return routes[routes.findIndex((route) => route.id === routeId)];
@@ -57,9 +62,11 @@ export default function Sidebar() {
         as={ButtonGroup}
         flex="1"
         direction="column"
-        p={5}
+        px={5}
+        py={10}
         size="lg"
         spacing="0"
+        variant="outline"
       >
         <Menu placement="right-start">
           <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
@@ -68,7 +75,9 @@ export default function Sidebar() {
           <MenuList boxShadow="md" borderWidth="1px">
             <MenuGroup title="기준정보 관리">
               <MenuItem>공통자료관리</MenuItem>
-              <MenuItem>고객관리</MenuItem>
+              <Link to={customerManage.path}>
+                <MenuItem>{customerManage.title}</MenuItem>
+              </Link>
               <MenuItem>제품관리</MenuItem>
               <MenuItem>구매관리</MenuItem>
               <MenuItem>공정관리</MenuItem>
@@ -178,6 +187,9 @@ export default function Sidebar() {
           </MenuButton>
           <MenuList boxShadow="md">
             <MenuGroup title="모니터링">
+              <Link to={processManage.path}>
+                <MenuItem>{processManage.title}</MenuItem>
+              </Link>
               <MenuItem>공정작업 현황</MenuItem>
               <MenuItem>설비가동 현황</MenuItem>
               <MenuItem>생산실적 현황</MenuItem>
