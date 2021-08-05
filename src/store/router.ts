@@ -7,7 +7,6 @@ import ProcessManage from "../components/Monitoring/ProcessManage";
 
 type route = {
   id: string;
-  title: string;
   path: string;
   component: () => JSX.Element;
   params?: string[];
@@ -22,33 +21,60 @@ export type RouterState = {
 const initialState: RouterState = {
   defaultPath: "/setting",
   routes: [
+    // 기준정보 관리
     {
-      id: "customerManage",
-      title: "고객 관리",
+      id: "Customer Management",
       path: "/customer_manage",
       component: CustomerManage,
       container: true,
     },
+
+    // 도구 관리
     {
-      id: "setting",
-      title: "설정",
-      path: "/setting",
-      component: Setting,
-      container: true,
-    },
-    {
-      id: "toolManage",
-      title: "도구 관리",
+      id: "Tool Management",
       path: "/tool_manage",
       component: ToolManage,
       params: ["/:id"],
       container: false,
     },
     {
-      id: "processManage",
-      title: "공정관리",
+      id: "Wooden Management",
+      path: "/tool_manage/wooden",
+      component: ToolManage,
+      container: false,
+    },
+    {
+      id: "Stash Management",
+      path: "/tool_manage/stash",
+      component: ToolManage,
+      container: false,
+    },
+    {
+      id: "Typesetting Paper Management",
+      path: "/tool_manage/typesetting_paper",
+      component: ToolManage,
+      container: false,
+    },
+    {
+      id: "Typesetting Paper Hanger Management",
+      path: "/tool_manage/typesetting_paper_hanger",
+      component: ToolManage,
+      container: false,
+    },
+
+    // 모니터링
+    {
+      id: "Process Management",
       path: "/process_manage",
       component: ProcessManage,
+      container: true,
+    },
+
+    // 설정
+    {
+      id: "Setting",
+      path: "/setting",
+      component: Setting,
       container: true,
     },
   ],

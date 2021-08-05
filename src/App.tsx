@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import {
@@ -17,6 +18,7 @@ function App() {
     (state: RootState) => state.router.defaultPath
   );
   const routes = useSelector((state: RootState) => state.router.routes);
+  const { t } = useTranslation();
 
   return (
     <Box fontFamily="맑은 고딕" w="100%" h="100vh">
@@ -41,7 +43,7 @@ function App() {
                   key={route.id}
                   children={
                     route.container ? (
-                      <PageContainer title={route.title}>
+                      <PageContainer title={t(route.id)}>
                         <route.component />
                       </PageContainer>
                     ) : (

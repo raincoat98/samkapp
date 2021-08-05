@@ -25,27 +25,10 @@ import {
 export default function Sidebar() {
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
-  const routes = useSelector((state: RootState) => state.router.routes);
+
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
-  const { t, i18n } = useTranslation();
-
-  // 아이콘
-  const icons = useSelector((state: RootState) => state.icon);
-
-  // 기준정보 관리
-  const customerManage = findRoute("customerManage");
-
-  // 도구 관리
-  const toolManage = findRoute("toolManage");
-
-  // 모니터링
-  const processManage = findRoute("processManage");
-
-  function findRoute(routeId: string) {
-    return routes[routes.findIndex((route) => route.id === routeId)];
-  }
 
   return (
     <Flex direction={"column"} w={250} borderRightWidth="1px">
@@ -71,152 +54,183 @@ export default function Sidebar() {
         spacing="0"
         variant="outline"
       >
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            {t("Master Data Management")}
-          </MenuButton>
-          <MenuList boxShadow="md" borderWidth="1px">
-            <MenuGroup title={t("Master Data Management")}>
-              <MenuItem>공통자료관리</MenuItem>
-              <Link to={customerManage.path}>
-                <MenuItem>{t("Customer Management")}</MenuItem>
-              </Link>
-              <MenuItem>제품관리</MenuItem>
-              <MenuItem>구매관리</MenuItem>
-              <MenuItem>공정관리</MenuItem>
-              <MenuItem>설비관리</MenuItem>
-              <MenuItem>작업자관리</MenuItem>
-              <MenuItem>작업장관리</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="Master Data Management"
+          menuItemGroups={[
+            {
+              title: "Master Data Management",
+              items: [
+                "공통자료 관리",
+                "Customer Management",
+                "제품 관리",
+                "구매 관리",
+                "공정 관리",
+                "설비 관리",
+                "작업자 관리",
+                "작업장 관리",
+              ],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            영업 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="영업 관리">
-              <MenuItem>입고관리 </MenuItem>
-              <MenuItem>출고관리</MenuItem>
-              <MenuItem>출하지시</MenuItem>
-              <MenuItem>출하현황</MenuItem>
-              <MenuItem>판매계획</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="영업 관리"
+          menuItemGroups={[
+            {
+              title: "영업 관리",
+              items: [
+                "입고 관리",
+                "출고 관리",
+                "출하 지시",
+                "출하 현황",
+                "판매 계획",
+              ],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            자재 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="자재 관리">
-              <MenuItem>입고 관리</MenuItem>
-              <MenuItem>출고 관리</MenuItem>
-            </MenuGroup>
-            <MenuDivider />
-            <MenuGroup title="재고 관리">
-              <MenuItem>재고결산</MenuItem>
-              <MenuItem>투입이력</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="자재 관리"
+          menuItemGroups={[
+            {
+              title: "자재 관리",
+              items: ["입고 관리", "출고 관리"],
+            },
+            {
+              title: "재고 관리",
+              items: ["재고 결산", "투입 이력"],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            생산 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="생산 관리">
-              <MenuItem>생산계획</MenuItem>
-              <MenuItem>생산지시</MenuItem>
-              <MenuItem>외주지시</MenuItem>
-              <MenuItem>도구관리</MenuItem>
-              <MenuItem>실적조회</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="생산 관리"
+          menuItemGroups={[
+            {
+              title: "생산 관리",
+              items: [
+                "생산 계획",
+                "생산 지시",
+                "외주 지시",
+                "도구 관리",
+                "실적 조회",
+              ],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            설비 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="설비 관리">
-              <MenuItem>설비점검</MenuItem>
-              <MenuItem>점검내역</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="설비 관리"
+          menuItemGroups={[
+            {
+              title: "설비 관리",
+              items: ["설비 점검", "점검내역"],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            도구 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="도구 관리">
-              <Link to={toolManage.path + "/wooden"}>
-                <MenuItem>목형관리</MenuItem>
-              </Link>
-              <Link to={toolManage.path + "/stash"}>
-                <MenuItem>적치대관리</MenuItem>
-              </Link>
-              <Link to={toolManage.path + "/typesetting_paper"}>
-                <MenuItem>조판지관리</MenuItem>
-              </Link>
-              <Link to={toolManage.path + "/typesetting_paper_hanger"}>
-                <MenuItem>조판지걸이관리</MenuItem>
-              </Link>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="Tool Management"
+          menuItemGroups={[
+            {
+              title: "Tool Management",
+              items: [
+                "Wooden Management",
+                "Stash Management",
+                "Typesetting Paper Management",
+                "Typesetting Paper Hanger Management",
+              ],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            모니터링
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="모니터링">
-              <Link to={processManage.path}>
-                <MenuItem>{processManage.title}</MenuItem>
-              </Link>
-              <MenuItem>공정작업 현황</MenuItem>
-              <MenuItem>설비가동 현황</MenuItem>
-              <MenuItem>생산실적 현황</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="Monitoring"
+          menuItemGroups={[
+            {
+              title: "Monitoring",
+              items: [
+                "Process Management",
+                "공정작업 현황",
+                "설비가동 현황",
+                "생산실적 현황",
+              ],
+            },
+          ]}
+        />
 
         <Spacer />
 
-        <Menu placement="right-start">
-          <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-            시스템 관리
-          </MenuButton>
-          <MenuList boxShadow="md">
-            <MenuGroup title="시스템 관리">
-              <MenuItem>사용자관리</MenuItem>
-              <MenuItem>부서관리</MenuItem>
-              <MenuItem>암호변경</MenuItem>
-              <MenuItem>공지사항</MenuItem>
-              <MenuItem>접속관리</MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+        <SidebarMenu
+          menuName="System Management"
+          menuItemGroups={[
+            {
+              title: "System Management",
+              items: [
+                "사용자 관리",
+                "부서 관리",
+                "암호 변경",
+                "공지사항",
+                "접속 관리",
+              ],
+            },
+          ]}
+        />
       </Flex>
     </Flex>
+  );
+}
+
+function SidebarMenu(props: {
+  menuName: string;
+  menuItemGroups: { title: string; items: string[] }[];
+}) {
+  const routes = useSelector((state: RootState) => state.router.routes);
+  // 아이콘
+  const icons = useSelector((state: RootState) => state.icon);
+  const { t } = useTranslation();
+
+  function findRouteById(routeId: string) {
+    return routes[routes.findIndex((route) => route.id === routeId)];
+  }
+
+  return (
+    <Menu placement="right-start">
+      <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+        {t(props.menuName)}
+      </MenuButton>
+      <MenuList boxShadow="md" borderWidth="1px">
+        {props.menuItemGroups.map((menuItemGroup, index) => (
+          <MenuGroup title={t(menuItemGroup.title)} key={menuItemGroup.title}>
+            {menuItemGroup.items.map((menuItemName) =>
+              findRouteById(menuItemName) ? (
+                <Link to={findRouteById(menuItemName).path} key={menuItemName}>
+                  <MenuItem>{t(menuItemName)}</MenuItem>
+                </Link>
+              ) : (
+                <MenuItem isDisabled={true} key={menuItemName}>
+                  {t(menuItemName)}
+                </MenuItem>
+              )
+            )}
+            {props.menuItemGroups.length - 1 !== index ? (
+              <MenuDivider />
+            ) : undefined}
+          </MenuGroup>
+        ))}
+      </MenuList>
+    </Menu>
   );
 }
