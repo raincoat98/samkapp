@@ -1,5 +1,5 @@
 import faker from "faker";
-import TableComponent from "./frames/TableComponent";
+import TableComponent from "../frames/TableComponent";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 export default function CustomerManage() {

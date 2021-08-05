@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import CustomerManage from "../components/CustomerManage";
+import CustomerManage from "../components/MasterDataManagement/CustomerManage";
 import Setting from "../components/Setting";
-import ToolManage from "../components/ToolManage";
-import ProcessManage from "../components/ProcessManage";
+import ToolManage from "../components/ToolManagement/ToolManage";
+import ProcessManage from "../components/Monitoring/ProcessManage";
 
 type route = {
   id: string;
