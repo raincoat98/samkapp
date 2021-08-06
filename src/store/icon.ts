@@ -8,10 +8,11 @@ import {
   AiOutlineUser,
   AiOutlinePieChart,
   AiOutlineDesktop,
+  AiFillPrinter,
 } from "react-icons/ai";
 import { IoBusinessOutline } from "react-icons/io5";
 import { BsCircleFill } from "react-icons/bs";
-import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
 
 export type IconState = {
   sort: IconType;
@@ -27,6 +28,8 @@ export type IconState = {
   chart: IconType;
   desktop: IconType;
   bussiness: IconType;
+  fax: IconType;
+  phone: IconType;
 };
 
 const initialState: IconState = {
@@ -43,6 +46,8 @@ const initialState: IconState = {
   chart: AiOutlinePieChart,
   desktop: AiOutlineDesktop,
   bussiness: IoBusinessOutline,
+  fax: AiFillPrinter,
+  phone: FaPhoneAlt,
 };
 
 const userSlice = createSlice({

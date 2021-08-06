@@ -43,11 +43,9 @@ const workOrderSlice = createSlice({
     },
     addWorkOrder(state, action: PayloadAction<workOrder>) {
       if (!action.payload.id) action.payload.id = uuidv4();
-      state.workOrderList.push(action.payload);
+      state.workOrderList = [...state.workOrderList, action.payload];
     },
-    deleteWorkOrder(state, action: PayloadAction<workOrder>) {
-      state.workOrderList.push(action.payload);
-    },
+    deleteWorkOrder(state, action: PayloadAction<workOrder>) {},
     deleteAllWorkOrder(state) {
       state.workOrderList = [];
     },

@@ -12,8 +12,7 @@ import {
   ModalCloseButton,
   ModalBody,
 } from "@chakra-ui/react";
-import PageTitle from "../frames/PageTitle";
-import PageContent from "../frames/PageContent";
+import PageContainer from "../frames/PageContainer";
 import WorkOrderWrite from "./WorkOrderWrite";
 import WorkOrderDetail from "./WorkOrderDetail";
 import TableComponent from "../frames/TableComponent";
@@ -107,19 +106,22 @@ export default function WorkOrderList() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <PageTitle title="작업 지시서">
-        <ButtonGroup variant="outline" spacing="3">
-          <Button onClick={onOpen} colorScheme="blue">
-            추가
-          </Button>
-          <Button onClick={deleteAll} colorScheme="red">
-            삭제
-          </Button>
-        </ButtonGroup>
-      </PageTitle>
-      <PageContent>
+
+      <PageContainer
+        title="작업 지시서"
+        headerChildren={
+          <ButtonGroup variant="outline" spacing="3">
+            <Button onClick={onOpen} colorScheme="blue">
+              추가
+            </Button>
+            <Button onClick={deleteAll} colorScheme="red">
+              삭제
+            </Button>
+          </ButtonGroup>
+        }
+      >
         <WorkOrderListTable />
-      </PageContent>
+      </PageContainer>
     </>
   );
 }

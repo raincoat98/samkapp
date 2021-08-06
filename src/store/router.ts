@@ -26,7 +26,7 @@ const initialState: RouterState = {
       id: "Customer Management",
       path: "/customer_manage",
       component: CustomerManage,
-      container: true,
+      container: false,
     },
 
     // 도구 관리
