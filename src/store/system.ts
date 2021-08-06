@@ -8,6 +8,7 @@ export type SystemState = {
   logo: string;
   color: {
     background: colorType;
+    backgroundSelected: colorType;
   };
 };
 
@@ -16,6 +17,7 @@ const initialState: SystemState = {
   logo: logo,
   color: {
     background: { light: "white", dark: "gray.800" },
+    backgroundSelected: { light: "gray.100", dark: "gray.700" },
   },
 };
 

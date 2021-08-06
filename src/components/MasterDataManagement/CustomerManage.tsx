@@ -13,8 +13,6 @@ import {
   Radio,
   FormLabel,
   FormControl,
-  NumberInput,
-  NumberInputField,
   Input,
   InputGroup,
   Textarea,
@@ -33,6 +31,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function CustomerManage() {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -87,6 +86,24 @@ export default function CustomerManage() {
     },
   ];
 
+  function onCustomerDelete(selectedData: any[]) {
+    for (let i = 0; i < selectedData.length; i++) {
+      dispatch({
+        type: "database/deleteCustomer",
+        payload: selectedData[i].id,
+      });
+    }
+  }
+
+  function onVendorDelete(selectedData: any[]) {
+    for (let i = 0; i < selectedData.length; i++) {
+      dispatch({
+        type: "database/deleteVendor",
+        payload: selectedData[i].id,
+      });
+    }
+  }
+
   return (
     <>
       <PageContainer
@@ -107,10 +124,18 @@ export default function CustomerManage() {
           </TabList>
           <TabPanels>
             <TabPanel p={0}>
-              <TableComponent columns={customerColumns} data={customerList} />
+              <TableComponent
+                columns={customerColumns}
+                data={customerList}
+                onDelete={onCustomerDelete}
+              />
             </TabPanel>
             <TabPanel p={0}>
-              <TableComponent columns={vendorColumns} data={vendorList} />
+              <TableComponent
+                columns={vendorColumns}
+                data={vendorList}
+                onDelete={onVendorDelete}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -198,20 +223,12 @@ function CustomerManageDrawer(props: {
 
               <FormControl isRequired={true}>
                 <FormLabel>{t("Contact")}</FormLabel>
-                <InputGroup>
-                  <NumberInput inputMode="tel" width="100%">
-                    <NumberInputField ref={contact} />
-                  </NumberInput>
-                </InputGroup>
+                <Input ref={contact} />
               </FormControl>
 
               <FormControl>
                 <FormLabel>{t("Fax")}</FormLabel>
-                <InputGroup>
-                  <NumberInput inputMode="tel" width="100%">
-                    <NumberInputField ref={fax} />
-                  </NumberInput>
-                </InputGroup>
+                <Input ref={fax} />
               </FormControl>
 
               <FormControl>
