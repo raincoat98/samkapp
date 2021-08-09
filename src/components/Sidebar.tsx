@@ -61,14 +61,15 @@ export default function Sidebar() {
             {
               title: "Master Data Management",
               items: [
-                "공통자료 관리",
+                "공통자료관리",
                 "Customer Management",
-                "제품 관리",
-                "구매 관리",
-                "공정 관리",
-                "설비 관리",
-                "작업자 관리",
-                "작업장 관리",
+                "제품관리",
+                "구매관리",
+                "공정관리",
+                "설비관리",
+                "작업자관리",
+                "작업장관리",
+                "도구관리",
               ],
             },
           ]}
@@ -82,11 +83,11 @@ export default function Sidebar() {
             {
               title: "영업 관리",
               items: [
-                "입고 관리",
-                "출고 관리",
-                "출하 지시",
-                "출하 현황",
-                "판매 계획",
+                "수주관리",
+                "생산계획",
+                "출하지시",
+                "출하현황",
+                "판매계획",
               ],
             },
           ]}
@@ -95,32 +96,23 @@ export default function Sidebar() {
         <Spacer />
 
         <SidebarMenu
-          menuName="자재 관리"
+          menuName="자재관리"
           menuItemGroups={[
             {
-              title: "자재 관리",
-              items: ["입고 관리", "출고 관리"],
+              title: "자재관리",
+              items: ["입고관리", "출고관리"],
             },
             {
-              title: "재고 관리",
-              items: ["재고 결산", "투입 이력"],
+              title: "재고관리",
+              items: ["재고결산", "투입이력"],
             },
-          ]}
-        />
-
-        <Spacer />
-
-        <SidebarMenu
-          menuName="생산 관리"
-          menuItemGroups={[
             {
-              title: "생산 관리",
               items: [
-                "생산 계획",
-                "생산 지시",
-                "외주 지시",
-                "도구 관리",
-                "실적 조회",
+                "자재이력",
+                "제품이력",
+                "자재별 재고",
+                "제품별 재고",
+                "재고마감",
               ],
             },
           ]}
@@ -129,11 +121,29 @@ export default function Sidebar() {
         <Spacer />
 
         <SidebarMenu
-          menuName="설비 관리"
+          menuName="생산관리"
           menuItemGroups={[
             {
-              title: "설비 관리",
-              items: ["설비 점검", "점검내역"],
+              title: "생산관리",
+              items: [
+                "생산계획",
+                "생산지시",
+                "외주지시",
+                "도구관리",
+                "실적조회",
+              ],
+            },
+          ]}
+        />
+
+        <Spacer />
+
+        <SidebarMenu
+          menuName="설비관리"
+          menuItemGroups={[
+            {
+              title: "설비관리",
+              items: ["설비 마스터", "설비점검", "점검내역", "점검현황"],
             },
           ]}
         />
@@ -158,16 +168,11 @@ export default function Sidebar() {
         <Spacer />
 
         <SidebarMenu
-          menuName="Monitoring"
+          menuName="공정관리"
           menuItemGroups={[
             {
-              title: "Monitoring",
-              items: [
-                "Process Management",
-                "공정작업 현황",
-                "설비가동 현황",
-                "생산실적 현황",
-              ],
+              title: "공정관리",
+              items: ["시스템 기동", "작업자로그인", "시스템설정", "도구교체"],
             },
           ]}
         />
@@ -180,12 +185,24 @@ export default function Sidebar() {
             {
               title: "System Management",
               items: [
-                "사용자 관리",
-                "부서 관리",
-                "암호 변경",
+                "사용자관리",
+                "부서관리",
+                "암호변경",
                 "공지사항",
-                "접속 관리",
+                "접속관리",
               ],
+            },
+          ]}
+        />
+
+        <Spacer />
+
+        <SidebarMenu
+          menuName="Monitoring"
+          menuItemGroups={[
+            {
+              title: "Monitoring",
+              items: ["공정작업 현황", "설비가동 현황", "생산실적 현황"],
             },
           ]}
         />
@@ -196,7 +213,7 @@ export default function Sidebar() {
 
 function SidebarMenu(props: {
   menuName: string;
-  menuItemGroups: { title: string; items: string[] }[];
+  menuItemGroups: { title?: string; items: string[] }[];
 }) {
   const routes = useSelector((state: RootState) => state.router.routes);
   // 아이콘
@@ -215,8 +232,8 @@ function SidebarMenu(props: {
       <MenuList boxShadow="md" borderWidth="1px">
         {props.menuItemGroups.map((menuItemGroup, index) => (
           <MenuGroup
-            title={t(menuItemGroup.title)}
-            key={menuItemGroup.title}
+            title={menuItemGroup.title ? t(menuItemGroup.title) : ""}
+            key={menuItemGroup.title || ""}
             userSelect="none"
           >
             {menuItemGroup.items.map((menuItemName) =>
