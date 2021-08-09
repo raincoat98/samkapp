@@ -230,16 +230,3 @@ export default function CustomerManage() {
     </>
   );
 }
-
-function inputBox(props: {
-  isRequired: boolean;
-  name: string;
-  ref: React.RefObject<HTMLInputElement>;
-}) {
-  return (
-    <FormControl isRequired={props.isRequired}>
-      <FormLabel>{props.name}</FormLabel>
-      <Input ref={props.ref} />
-    </FormControl>
-  );
-}
