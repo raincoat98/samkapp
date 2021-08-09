@@ -2,7 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { useTable, useGlobalFilter, useSortBy, Column } from "react-table";
+import {
+  useTable,
+  useRowSelect,
+  useGlobalFilter,
+  useSortBy,
+  Column,
+} from "react-table";
 import {
   useColorModeValue,
   Table,
@@ -15,6 +21,8 @@ import {
   Icon,
   chakra,
   MenuItem,
+  Checkbox,
+  CheckboxProps,
 } from "@chakra-ui/react";
 import ContextMenu from "./ContextMenu";
 
@@ -27,11 +35,6 @@ type TableComponentProps = {
 
 export default function TableComponent(props: TableComponentProps) {
   const { t } = useTranslation();
-
-  // 정렬 아이콘
-  const sortIcon = useSelector((state: RootState) => state.icon.sort);
-  const upIcon = useSelector((state: RootState) => state.icon.sortUp);
-  const downIcon = useSelector((state: RootState) => state.icon.sortDown);
 
   // 색상 가져오기
   const background = useSelector(
@@ -46,11 +49,6 @@ export default function TableComponent(props: TableComponentProps) {
     backgroundSelected.dark
   );
 
-  // 셀렉트 모드
-  const [selectMode, setSelectMode] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<any[]>([]);
-  const [selectedRowData, setSelectedRowData] = React.useState<any[]>([]);
-
   // 컨텍스트 메뉴
   const [contextMenuActive, setContextMenuActive] = React.useState(false);
   const [contextMenuPosition, setContextMenuPosition] = React.useState<{
@@ -61,28 +59,56 @@ export default function TableComponent(props: TableComponentProps) {
     y: 0,
   });
 
-  const columns = React.useMemo(() => props.columns, [props.columns]);
-  const data = React.useMemo(() => props.data, [props.data]);
+  // React-Table
+  const memoColumns = React.useMemo(() => props.columns, [props.columns]);
+  const memoData = React.useMemo(() => props.data, [props.data]);
 
-  const { headerGroups, rows, getTableProps, getTableBodyProps, prepareRow } =
-    useTable({ columns, data }, useGlobalFilter, useSortBy);
-
-  function toggleSelectMode() {
-    setSelectMode(!selectMode);
-    deselect();
-    setContextMenuActive(false);
-  }
-
-  function deselect() {
-    for (let i = 0; i < selectedRow.length; i++) {
-      if (selectedRow[i]?.dataset.selected)
-        delete selectedRow[i]?.dataset?.selected;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    // @ts-ignore
+    state: { selectedRowIds },
+  } = useTable(
+    {
+      columns: memoColumns,
+      data: memoData,
+    },
+    useGlobalFilter,
+    useSortBy,
+    useRowSelect,
+    // @ts-ignore
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
+        {
+          id: "selection",
+          // @ts-ignore
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <TableCheckBox {...getToggleAllRowsSelectedProps()} />
+          ),
+          Cell: ({ row }) => (
+            // @ts-ignore
+            <TableCheckBox {...row.getToggleRowSelectedProps()} />
+          ),
+        },
+        ...columns,
+      ]);
     }
-  }
+  );
 
   function deleteSelected() {
-    if (props.onDelete) props.onDelete(selectedRowData);
-    deselect();
+    const selectedRows = [];
+    for (let i = 0; i < rows.length; i++) {
+      for (const key in selectedRowIds) {
+        if (Object.prototype.hasOwnProperty.call(selectedRowIds, key)) {
+          // @ts-ignore
+          if (rows[i].id === key) selectedRows.push(rows[i].original.id);
+        }
+      }
+    }
+    if (props.onDelete) props.onDelete(selectedRows);
     setContextMenuActive(false);
   }
 
@@ -93,21 +119,22 @@ export default function TableComponent(props: TableComponentProps) {
         x={contextMenuPosition.x}
         y={contextMenuPosition.y}
       >
-        <MenuItem onClick={toggleSelectMode}>{t("Select")}</MenuItem>
         <MenuItem onClick={deleteSelected}>{t("Delete")}</MenuItem>
       </ContextMenu>
 
       <Table
-        {...getTableProps()}
         wordBreak="break-all"
         onClick={() => {
           setContextMenuActive(false);
         }}
+        {...getTableProps()}
       >
         <Thead
-          userSelect="none"
-          position="sticky"
-          top="0px"
+          style={{
+            userSelect: "none",
+            position: "sticky",
+            top: "0px",
+          }}
           boxShadow="base"
           bg={backgroundColor}
         >
@@ -115,53 +142,27 @@ export default function TableComponent(props: TableComponentProps) {
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <Th
+                  textAlign="center"
                   // @ts-ignore
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  textAlign="center"
                 >
                   {(column.isVisible = false)}
                   {column.render("Header")}
-                  <chakra.span pl="2">
-                    {/* @ts-ignore */}
-                    {column.isSorted ? (
-                      // @ts-ignore
-                      column.isSortedDesc ? (
-                        <Icon as={downIcon} />
-                      ) : (
-                        <Icon as={upIcon} />
-                      )
-                    ) : (
-                      <Icon as={sortIcon} />
-                    )}
-                  </chakra.span>
+                  <TableSortIcon column={column} />
                 </Th>
               ))}
             </Tr>
           ))}
         </Thead>
-        <Tbody
-          {...getTableBodyProps()}
-          cursor={selectMode ? "pointer" : "default"}
-        >
+        <Tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
             return (
               <Tr
                 {...row.getRowProps()}
-                onClick={(event: any) => {
-                  if (selectMode) {
-                    const rowElement = event.target.closest("tr");
-                    if (!rowElement.dataset.selected) {
-                      setSelectedRow([...selectedRow, rowElement]);
-                      setSelectedRowData([...selectedRowData, row.original]);
-                      rowElement.dataset.selected = true;
-                    } else {
-                      delete rowElement.dataset.selected;
-                    }
-                  } else {
-                    // 클릭시 원본 데이터 리턴
-                    if (props.clickEvent) props.clickEvent(row.original);
-                  }
+                onClick={() => {
+                  // 클릭시 원본 데이터 리턴
+                  if (props.clickEvent) props.clickEvent(row.original);
                 }}
                 onContextMenu={(event: any) => {
                   event.preventDefault();
@@ -174,12 +175,15 @@ export default function TableComponent(props: TableComponentProps) {
                 _hover={{
                   background: backgroundColorSelected,
                 }}
-                _selected={{
-                  background: backgroundColorSelected,
-                }}
               >
                 {row.cells.map((cell) => (
-                  <Td {...cell.getCellProps()} textAlign="center">
+                  <Td
+                    {...cell.getCellProps()}
+                    style={{
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                    }}
+                  >
                     {cell.render("Cell")}
                   </Td>
                 ))}
@@ -191,4 +195,32 @@ export default function TableComponent(props: TableComponentProps) {
       </Table>
     </>
   );
+}
+
+function TableSortIcon(column: any) {
+  // 정렬 아이콘
+  const sortIcon = useSelector((state: RootState) => state.icon.sort);
+  const upIcon = useSelector((state: RootState) => state.icon.sortUp);
+  const downIcon = useSelector((state: RootState) => state.icon.sortDown);
+
+  return (
+    <chakra.span pl="2">
+      {/* @ts-ignore */}
+      {column.isSorted ? (
+        // @ts-ignore
+        column.isSortedDesc ? (
+          <Icon as={downIcon} />
+        ) : (
+          <Icon as={upIcon} />
+        )
+      ) : (
+        <Icon as={sortIcon} />
+      )}
+    </chakra.span>
+  );
+}
+
+function TableCheckBox(props: CheckboxProps & { indeterminate: boolean }) {
+  const { indeterminate, title, ...rest } = props;
+  return <Checkbox isIndeterminate={indeterminate} {...rest}></Checkbox>;
 }

@@ -89,20 +89,20 @@ export default function CustomerManage() {
     },
   ];
 
-  function onCustomerDelete(selectedData: any[]) {
-    for (let i = 0; i < selectedData.length; i++) {
+  function onCustomerDelete(selectedRowIds: string[]) {
+    for (let i = 0; i < selectedRowIds.length; i++) {
       dispatch({
         type: "database/deleteCustomer",
-        payload: selectedData[i].id,
+        payload: selectedRowIds[i],
       });
     }
   }
 
-  function onVendorDelete(selectedData: any[]) {
-    for (let i = 0; i < selectedData.length; i++) {
+  function onVendorDelete(selectedRowIds: string[]) {
+    for (let i = 0; i < selectedRowIds.length; i++) {
       dispatch({
         type: "database/deleteVendor",
-        payload: selectedData[i].id,
+        payload: selectedRowIds[i],
       });
     }
   }

@@ -25,6 +25,7 @@ export default function ContextMenu(props: MenuProps & ContextMenuProps) {
           position="absolute"
           left={x + "px"}
           top={y + "px"}
+          boxShadow="md"
         >
           {children}
         </MenuList>
