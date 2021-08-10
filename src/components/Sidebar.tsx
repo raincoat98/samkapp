@@ -52,16 +52,14 @@ export default function Sidebar() {
         size="lg"
         spacing="0"
         variant="outline"
+        justify="center"
       >
         {sidebarDatas.map((sidebarData, index) => (
-          <>
-            <SidebarMenu
-              title={sidebarData.title}
-              items={sidebarData.items}
-              key={index}
-            />
-            <Spacer />
-          </>
+          <SidebarMenu
+            title={sidebarData.title}
+            items={sidebarData.items}
+            key={index}
+          />
         ))}
       </Flex>
     </Flex>
@@ -103,15 +101,18 @@ function SidebarMenu(props: SidebarMenuItemType) {
   }
 
   return (
-    <Menu placement="right-start">
-      {/* 메뉴 버튼 */}
-      <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
-        {t(props.title)}
-      </MenuButton>
-      {/* 메뉴 내용 */}
-      <MenuList boxShadow="md" borderWidth="1px">
-        <SidebarMenuGroup title={props.title} items={props.items} />
-      </MenuList>
-    </Menu>
+    <>
+      <Menu placement="right-start">
+        {/* 메뉴 버튼 */}
+        <MenuButton as={Button} rightIcon={<Icon as={icons.menu} />}>
+          {t(props.title)}
+        </MenuButton>
+        {/* 메뉴 내용 */}
+        <MenuList boxShadow="md" borderWidth="1px" zIndex="dropdown">
+          <SidebarMenuGroup title={props.title} items={props.items} />
+        </MenuList>
+      </Menu>
+      <Spacer />
+    </>
   );
 }

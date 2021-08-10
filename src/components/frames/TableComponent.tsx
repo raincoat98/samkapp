@@ -135,6 +135,7 @@ export default function TableComponent(props: TableComponentProps) {
             position: "sticky",
             top: "0px",
           }}
+          zIndex="docked"
           boxShadow="base"
           bg={backgroundColor}
         >
