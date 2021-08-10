@@ -149,7 +149,14 @@ export default function TableComponent(props: TableComponentProps) {
                 >
                   {(column.isVisible = false)}
                   {column.render("Header")}
-                  <TableSortIcon column={column} />
+                  {column.id !== "selection" ? (
+                    <TableSortIcon
+                      // @ts-ignore
+                      isSorted={column.isSorted}
+                      // @ts-ignore
+                      isSortedDesc={column.isSortedDesc}
+                    />
+                  ) : null}
                 </Th>
               ))}
             </Tr>
@@ -198,7 +205,7 @@ export default function TableComponent(props: TableComponentProps) {
   );
 }
 
-function TableSortIcon(column: any) {
+function TableSortIcon(props: { isSorted: boolean; isSortedDesc: boolean }) {
   // 정렬 아이콘
   const sortIcon = useSelector((state: RootState) => state.icon.sort);
   const upIcon = useSelector((state: RootState) => state.icon.sortUp);
@@ -207,9 +214,9 @@ function TableSortIcon(column: any) {
   return (
     <chakra.span pl="2">
       {/* @ts-ignore */}
-      {column.isSorted ? (
+      {props.isSorted ? (
         // @ts-ignore
-        column.isSortedDesc ? (
+        props.isSortedDesc ? (
           <Icon as={downIcon} />
         ) : (
           <Icon as={upIcon} />
