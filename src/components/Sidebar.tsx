@@ -53,9 +53,13 @@ export default function Sidebar() {
         spacing="0"
         variant="outline"
       >
-        {sidebarDatas.map((sidebarData) => (
+        {sidebarDatas.map((sidebarData, index) => (
           <>
-            <SidebarMenu title={sidebarData.title} items={sidebarData.items} />
+            <SidebarMenu
+              title={sidebarData.title}
+              items={sidebarData.items}
+              key={index}
+            />
             <Spacer />
           </>
         ))}
@@ -74,8 +78,8 @@ function SidebarMenu(props: SidebarMenuItemType) {
   function SidebarMenuGroup(props: SidebarMenuItemType) {
     return (
       <MenuGroup title={t(props.title)}>
-        {props.items.map((item) => (
-          <SidebarMenuItem name={item} />
+        {props.items.map((item, index) => (
+          <SidebarMenuItem name={item} key={index} />
         ))}
       </MenuGroup>
     );
@@ -90,13 +94,11 @@ function SidebarMenu(props: SidebarMenuItemType) {
     }
 
     return findRouteById(props.name) ? (
-      <Link to={findRouteById(props.name).path} key={props.name}>
+      <Link to={findRouteById(props.name).path}>
         <MenuItem>{t(props.name)}</MenuItem>
       </Link>
     ) : (
-      <MenuItem isDisabled={true} key={props.name}>
-        {t(props.name)}
-      </MenuItem>
+      <MenuItem isDisabled={true}>{t(props.name)}</MenuItem>
     );
   }
 

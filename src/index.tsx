@@ -7,7 +7,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
 // i18next - 다국어 지원
-import "./i18n";
+import "./i18n/";
 
 // chakra - UI 라이브러리
 import { ChakraProvider } from "@chakra-ui/react";
