@@ -1,0 +1,65 @@
+{
+  "sidebar": [
+    {
+      "title": "Master Data Management",
+      "items": [
+        "공통자료관리",
+        "Customer Management",
+        "제품관리",
+        "구매관리",
+        "공정관리",
+        "설비관리",
+        "작업자관리",
+        "작업장관리",
+        "도구관리"
+      ]
+    },
+    {
+      "title": "영업 관리",
+      "items": ["수주관리", "생산계획", "출하지시", "출하현황", "판매계획"]
+    },
+    {
+      "title": "자재 관리",
+      "items": [
+        "입고관리",
+        "출고관리",
+        "재고결산",
+        "투입이력",
+        "자재이력",
+        "제품이력",
+        "자재별 재고",
+        "제품별 재고",
+        "재고마감"
+      ]
+    },
+    {
+      "title": "생산관리",
+      "items": ["생산계획", "생산지시", "외주지시", "도구관리", "실적조회"]
+    },
+    {
+      "title": "설비관리",
+      "items": ["설비 마스터", "설비점검", "점검내역", "점검현황"]
+    },
+    {
+      "title": "Tool Management",
+      "items": [
+        "Wooden Management",
+        "Stash Management",
+        "Typesetting Paper Management",
+        "Typesetting Paper Hanger Management"
+      ]
+    },
+    {
+      "title": "공정관리",
+      "items": ["시스템 기동", "작업자로그인", "시스템설정", "도구교체"]
+    },
+    {
+      "title": "System Management",
+      "items": ["사용자관리", "부서관리", "암호변경", "공지사항", "접속관리"]
+    },
+    {
+      "title": "Monitoring",
+      "items": ["공정작업 현황", "설비가동 현황", "생산실적 현황"]
+    }
+  ]
+}
