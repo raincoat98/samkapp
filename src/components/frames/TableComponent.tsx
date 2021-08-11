@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
@@ -8,6 +7,7 @@ import {
   useGlobalFilter,
   useSortBy,
   Column,
+  TableInstance,
 } from "react-table";
 import {
   useColorModeValue,
@@ -20,22 +20,25 @@ import {
   TableCaption,
   Icon,
   chakra,
-  MenuItem,
   Checkbox,
-  CheckboxProps,
 } from "@chakra-ui/react";
-import ContextMenu from "./ContextMenu";
 
 type TableComponentProps = {
   columns: Array<Column>;
   data: Array<any>;
-  clickEvent?: Function;
+  onClick?: Function;
+  onSelect?: Function;
   onDelete?: Function;
+  stateReducer?: any;
 };
 
-export default function TableComponent(props: TableComponentProps) {
-  const { t } = useTranslation();
+let tableInstance: TableInstance;
 
+export function getTableInstance() {
+  return tableInstance;
+}
+
+export default function TableComponent(props: TableComponentProps) {
   // 색상 가져오기
   const background = useSelector(
     (state: RootState) => state.system.color.background
@@ -49,32 +52,14 @@ export default function TableComponent(props: TableComponentProps) {
     backgroundSelected.dark
   );
 
-  // 컨텍스트 메뉴
-  const [contextMenuActive, setContextMenuActive] = React.useState(false);
-  const [contextMenuPosition, setContextMenuPosition] = React.useState<{
-    x: number;
-    y: number;
-  }>({
-    x: 0,
-    y: 0,
-  });
-
   // React-Table
   const memoColumns = React.useMemo(() => props.columns, [props.columns]);
   const memoData = React.useMemo(() => props.data, [props.data]);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    // @ts-ignore
-    state: { selectedRowIds },
-  } = useTable(
+  tableInstance = useTable(
     {
       columns: memoColumns,
       data: memoData,
+      stateReducer: props.stateReducer,
     },
     useGlobalFilter,
     useSortBy,
@@ -86,122 +71,94 @@ export default function TableComponent(props: TableComponentProps) {
           id: "selection",
           // @ts-ignore
           Header: ({ getToggleAllRowsSelectedProps }) => (
-            <TableCheckBox {...getToggleAllRowsSelectedProps()} />
+            <Checkbox
+              onChange={getToggleAllRowsSelectedProps().onChange}
+              checked={getToggleAllRowsSelectedProps().checked}
+              isIndeterminate={getToggleAllRowsSelectedProps().indeterminate}
+            />
           ),
           Cell: ({ row }) => (
-            // @ts-ignore
-            <TableCheckBox {...row.getToggleRowSelectedProps()} />
+            <Checkbox
+              // @ts-ignore
+              onChange={row.getToggleRowSelectedProps().onChange}
+              // @ts-ignore
+              checked={row.getToggleRowSelectedProps().checked}
+            />
           ),
         },
         ...columns,
       ]);
     }
   );
-
-  function deleteSelected() {
-    const selectedRows = [];
-    for (let i = 0; i < rows.length; i++) {
-      for (const key in selectedRowIds) {
-        if (Object.prototype.hasOwnProperty.call(selectedRowIds, key)) {
-          // @ts-ignore
-          if (rows[i].id === key) selectedRows.push(rows[i].original.id);
-        }
-      }
-    }
-    if (props.onDelete) props.onDelete(selectedRows);
-    setContextMenuActive(false);
-  }
+  const { getTableProps, getTableBodyProps, headerGroups, prepareRow } =
+    tableInstance;
 
   return (
-    <>
-      <ContextMenu
-        isOpen={contextMenuActive}
-        x={contextMenuPosition.x}
-        y={contextMenuPosition.y}
-      >
-        <MenuItem onClick={deleteSelected}>{t("Delete")}</MenuItem>
-      </ContextMenu>
-
-      <Table
-        wordBreak="break-all"
-        onClick={() => {
-          setContextMenuActive(false);
+    <Table wordBreak="break-all" {...getTableProps()}>
+      <Thead
+        style={{
+          userSelect: "none",
+          position: "sticky",
+          top: "0px",
         }}
-        {...getTableProps()}
+        zIndex="docked"
+        boxShadow="base"
+        bg={backgroundColor}
       >
-        <Thead
-          style={{
-            userSelect: "none",
-            position: "sticky",
-            top: "0px",
-          }}
-          zIndex="docked"
-          boxShadow="base"
-          bg={backgroundColor}
-        >
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <Th
-                  textAlign="center"
-                  // @ts-ignore
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
+        {headerGroups.map((headerGroup) => (
+          <Tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <Th
+                textAlign="center"
+                // @ts-ignore
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
+                {(column.isVisible = false)}
+                {column.render("Header")}
+                {column.id !== "selection" ? (
+                  <TableSortIcon
+                    // @ts-ignore
+                    isSorted={column.isSorted}
+                    // @ts-ignore
+                    isSortedDesc={column.isSortedDesc}
+                  />
+                ) : null}
+              </Th>
+            ))}
+          </Tr>
+        ))}
+      </Thead>
+      <Tbody {...getTableBodyProps()}>
+        {tableInstance.rows.map((row) => {
+          prepareRow(row);
+          return (
+            <Tr
+              {...row.getRowProps()}
+              onClick={() => {
+                // 클릭시 원본 데이터 리턴
+                if (props.onClick) props.onClick(row.original);
+              }}
+              _hover={{
+                background: backgroundColorSelected,
+              }}
+            >
+              {row.cells.map((cell) => (
+                <Td
+                  {...cell.getCellProps()}
+                  style={{
+                    textAlign: "center",
+                    verticalAlign: "middle",
+                  }}
                 >
-                  {(column.isVisible = false)}
-                  {column.render("Header")}
-                  {column.id !== "selection" ? (
-                    <TableSortIcon
-                      // @ts-ignore
-                      isSorted={column.isSorted}
-                      // @ts-ignore
-                      isSortedDesc={column.isSortedDesc}
-                    />
-                  ) : null}
-                </Th>
+                  {cell.render("Cell")}
+                </Td>
               ))}
             </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <Tr
-                {...row.getRowProps()}
-                onClick={() => {
-                  // 클릭시 원본 데이터 리턴
-                  if (props.clickEvent) props.clickEvent(row.original);
-                }}
-                onContextMenu={(event: any) => {
-                  event.preventDefault();
-                  setContextMenuActive(true);
-                  setContextMenuPosition({
-                    x: event.clientX,
-                    y: event.clientY,
-                  });
-                }}
-                _hover={{
-                  background: backgroundColorSelected,
-                }}
-              >
-                {row.cells.map((cell) => (
-                  <Td
-                    {...cell.getCellProps()}
-                    style={{
-                      textAlign: "center",
-                      verticalAlign: "middle",
-                    }}
-                  >
-                    {cell.render("Cell")}
-                  </Td>
-                ))}
-              </Tr>
-            );
-          })}
-        </Tbody>
-        <TableCaption>목록의 마지막입니다.</TableCaption>
-      </Table>
-    </>
+          );
+        })}
+      </Tbody>
+      <TableCaption>목록의 마지막입니다.</TableCaption>
+    </Table>
   );
 }
 
@@ -226,9 +183,4 @@ function TableSortIcon(props: { isSorted: boolean; isSortedDesc: boolean }) {
       )}
     </chakra.span>
   );
-}
-
-function TableCheckBox(props: CheckboxProps & { indeterminate: boolean }) {
-  const { indeterminate, title, ...rest } = props;
-  return <Checkbox isIndeterminate={indeterminate} {...rest}></Checkbox>;
 }

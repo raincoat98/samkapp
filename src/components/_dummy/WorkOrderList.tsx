@@ -76,7 +76,7 @@ export function WorkOrderListTable() {
       <TableComponent
         columns={columns}
         data={data}
-        clickEvent={(original: any) => {
+        onClick={(original: any) => {
           selectWorkOrder(original.id);
         }}
       />

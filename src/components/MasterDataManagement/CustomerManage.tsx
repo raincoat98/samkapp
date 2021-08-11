@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { useTranslation } from "react-i18next";
 import PageContainer from "../frames/PageContainer";
-import TableComponent from "../frames/TableComponent";
+import TableComponent, { getTableInstance } from "../frames/TableComponent";
 import DrawerComponent from "../frames/DrawerComponent";
 import {
   useDisclosure,
@@ -28,6 +28,7 @@ export default function CustomerManage() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const selectedRowIds = React.useRef<string[]>([]);
 
   const isCustomer = React.useRef<HTMLInputElement>(null);
   const isVendor = React.useRef<HTMLInputElement>(null);
@@ -89,23 +90,47 @@ export default function CustomerManage() {
     },
   ];
 
-  function onCustomerDelete(selectedRowIds: string[]) {
-    for (let i = 0; i < selectedRowIds.length; i++) {
+  function deleteCustomer() {
+    for (let i = 0; i < selectedRowIds.current.length; i++) {
       dispatch({
         type: "database/deleteCustomer",
-        payload: selectedRowIds[i],
+        payload: selectedRowIds.current[i],
       });
     }
   }
 
-  function onVendorDelete(selectedRowIds: string[]) {
-    for (let i = 0; i < selectedRowIds.length; i++) {
+  function deleteVendor() {
+    for (let i = 0; i < selectedRowIds.current.length; i++) {
       dispatch({
         type: "database/deleteVendor",
-        payload: selectedRowIds[i],
+        payload: selectedRowIds.current[i],
       });
     }
   }
+
+  const stateReducer = React.useCallback(
+    (newState: any, action: any) => {
+      if (!getTableInstance()) return newState;
+      const selectedRows: string[] = [];
+      const rows = getTableInstance().rows;
+      if (
+        action.type === "toggleRowSelected" ||
+        action.type === "toggleAllRowsSelected"
+      ) {
+        for (let i = 0; i < rows.length; i++) {
+          for (const key in newState.selectedRowIds) {
+            if (rows[i].id === key)
+              // @ts-ignore
+              selectedRows.push(rows[i].original.id);
+          }
+        }
+
+        selectedRowIds.current = selectedRows;
+      }
+      return newState;
+    },
+    [selectedRowIds]
+  );
 
   return (
     <>
@@ -113,7 +138,15 @@ export default function CustomerManage() {
         title={t("Customer Management")}
         headerChildren={
           <ButtonGroup spacing="3">
-            <Button>{t("Select")}</Button>
+            <Button
+              onClick={() => {
+                deleteCustomer();
+                deleteVendor();
+              }}
+              colorScheme="red"
+            >
+              {t("Delete")}
+            </Button>
             <Button onClick={onOpen} colorScheme="blue">
               {t("Add")}
             </Button>
@@ -130,15 +163,11 @@ export default function CustomerManage() {
               <TableComponent
                 columns={customerColumns}
                 data={customerList}
-                onDelete={onCustomerDelete}
+                stateReducer={stateReducer}
               />
             </TabPanel>
             <TabPanel p={0}>
-              <TableComponent
-                columns={vendorColumns}
-                data={vendorList}
-                onDelete={onVendorDelete}
-              />
+              <TableComponent columns={vendorColumns} data={vendorList} />
             </TabPanel>
           </TabPanels>
         </Tabs>
