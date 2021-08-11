@@ -1,5 +1,6 @@
 import React, { FormEvent } from "react";
 import {
+  Portal,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -15,8 +16,6 @@ export default function DrawerComponent(
   props: DrawerProps & {
     headerChildren: React.ReactNode;
     footerChildren: React.ReactNode;
-    isOpen: boolean;
-    onClose: () => void;
     isForm?: boolean | false;
     onSubmit?: Function;
   }
@@ -25,28 +24,40 @@ export default function DrawerComponent(
     children,
     headerChildren,
     footerChildren,
-    isOpen,
-    onClose,
     isForm,
     onSubmit,
     ...rest
   } = props;
 
   return (
-    <Drawer
-      {...rest}
-      isOpen={isOpen}
-      placement="right"
-      size="sm"
-      onClose={onClose}
-    >
-      <DrawerOverlay />
-      {isForm && (
-        <form
-          onSubmit={(event: FormEvent) => {
-            if (onSubmit) onSubmit(event);
-          }}
-        >
+    <Portal>
+      <Drawer
+        {...rest}
+        isOpen={props.isOpen}
+        placement="right"
+        size="sm"
+        onClose={props.onClose}
+      >
+        <DrawerOverlay />
+        {isForm && (
+          <form
+            onSubmit={(event: FormEvent) => {
+              if (onSubmit) onSubmit(event);
+            }}
+          >
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader borderBottomWidth="1px">
+                {headerChildren}
+              </DrawerHeader>
+              <DrawerBody>
+                <Stack spacing={5}>{children}</Stack>
+              </DrawerBody>
+              <DrawerFooter borderTopWidth="1px">{footerChildren}</DrawerFooter>
+            </DrawerContent>
+          </form>
+        )}
+        {!isForm && (
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth="1px">
@@ -57,18 +68,8 @@ export default function DrawerComponent(
             </DrawerBody>
             <DrawerFooter borderTopWidth="1px">{footerChildren}</DrawerFooter>
           </DrawerContent>
-        </form>
-      )}
-      {!isForm && (
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">{headerChildren}</DrawerHeader>
-          <DrawerBody>
-            <Stack spacing={5}>{children}</Stack>
-          </DrawerBody>
-          <DrawerFooter borderTopWidth="1px">{footerChildren}</DrawerFooter>
-        </DrawerContent>
-      )}
-    </Drawer>
+        )}
+      </Drawer>
+    </Portal>
   );
 }

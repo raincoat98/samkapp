@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import PageContainer from "../frames/PageContainer";
 import TableComponent, { getTableInstance } from "../frames/TableComponent";
 import DrawerComponent from "../frames/DrawerComponent";
+import Dialog from "../frames/DialogComponent";
 import {
   useDisclosure,
   ButtonGroup,
@@ -27,7 +28,10 @@ import {
 export default function CustomerManage() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const drawerDisclosure = useDisclosure();
+  const dialogDisclosure = useDisclosure();
+
   const selectedRowIds = React.useRef<string[]>([]);
 
   const isCustomer = React.useRef<HTMLInputElement>(null);
@@ -111,77 +115,65 @@ export default function CustomerManage() {
   const stateReducer = React.useCallback(
     (newState: any, action: any) => {
       if (!getTableInstance()) return newState;
+
       const selectedRows: string[] = [];
       const rows = getTableInstance().rows;
-      if (
-        action.type === "toggleRowSelected" ||
-        action.type === "toggleAllRowsSelected"
-      ) {
-        for (let i = 0; i < rows.length; i++) {
-          for (const key in newState.selectedRowIds) {
-            if (rows[i].id === key)
-              // @ts-ignore
-              selectedRows.push(rows[i].original.id);
-          }
+      for (let i = 0; i < rows.length; i++) {
+        for (const key in newState.selectedRowIds) {
+          if (rows[i].id === key)
+            // @ts-ignore
+            selectedRows.push(rows[i].original.id);
         }
-
-        selectedRowIds.current = selectedRows;
       }
+
+      selectedRowIds.current = selectedRows;
       return newState;
     },
     [selectedRowIds]
   );
 
   return (
-    <>
-      <PageContainer
-        title={t("Customer Management")}
-        headerChildren={
-          <ButtonGroup spacing="3">
-            <Button
-              onClick={() => {
-                deleteCustomer();
-                deleteVendor();
-              }}
-              colorScheme="red"
-            >
-              {t("Delete")}
-            </Button>
-            <Button onClick={onOpen} colorScheme="blue">
-              {t("Add")}
-            </Button>
-          </ButtonGroup>
-        }
-      >
-        <Tabs isFitted>
-          <TabList>
-            <Tab>{t("Customer")}</Tab>
-            <Tab>{t("Vendor")}</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <TableComponent
-                columns={customerColumns}
-                data={customerList}
-                stateReducer={stateReducer}
-              />
-            </TabPanel>
-            <TabPanel p={0}>
-              <TableComponent columns={vendorColumns} data={vendorList} />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </PageContainer>
+    <PageContainer
+      title={t("Customer Management")}
+      headerChildren={
+        <ButtonGroup spacing="3">
+          <Button onClick={dialogDisclosure.onOpen} colorScheme="red">
+            {t("Delete")}
+          </Button>
+          <Button onClick={drawerDisclosure.onOpen} colorScheme="blue">
+            {t("Add")}
+          </Button>
+        </ButtonGroup>
+      }
+    >
+      <Tabs isFitted>
+        <TabList>
+          <Tab>{t("Customer")}</Tab>
+          <Tab>{t("Vendor")}</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel p={0}>
+            <TableComponent
+              columns={customerColumns}
+              data={customerList}
+              stateReducer={stateReducer}
+            />
+          </TabPanel>
+          <TabPanel p={0}>
+            <TableComponent columns={vendorColumns} data={vendorList} />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
 
       {/* 추가 폼 */}
       <DrawerComponent
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={drawerDisclosure.isOpen}
+        onClose={drawerDisclosure.onClose}
         isForm={true}
         headerChildren={<>{t("Add")}</>}
         footerChildren={
           <ButtonGroup>
-            <Button variant="outline" mr={3} onClick={onClose}>
+            <Button variant="outline" mr={3} onClick={drawerDisclosure.onClose}>
               {t("Cancel")}
             </Button>
             <Button type="submit" colorScheme="blue">
@@ -206,7 +198,7 @@ export default function CustomerManage() {
             },
           });
 
-          onClose();
+          drawerDisclosure.onClose();
         }}
       >
         <Stack spacing={5}>
@@ -256,6 +248,30 @@ export default function CustomerManage() {
           </FormControl>
         </Stack>
       </DrawerComponent>
-    </>
+
+      <Dialog
+        isOpen={dialogDisclosure.isOpen}
+        onClose={dialogDisclosure.onClose}
+        leastDestructiveRef={undefined}
+        headerChildren={"Delete Customer"}
+        footerChildren={
+          <ButtonGroup>
+            <Button onClick={dialogDisclosure.onClose}>{t("Cancel")}</Button>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                dialogDisclosure.onClose();
+                deleteCustomer();
+                deleteVendor();
+              }}
+            >
+              {t("Delete")}
+            </Button>
+          </ButtonGroup>
+        }
+      >
+        Are you sure? You can't undo this action afterwards.
+      </Dialog>
+    </PageContainer>
   );
 }

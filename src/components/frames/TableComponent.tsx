@@ -20,7 +20,6 @@ import {
   TableCaption,
   Icon,
   chakra,
-  Checkbox,
 } from "@chakra-ui/react";
 
 type TableComponentProps = {
@@ -61,30 +60,22 @@ export default function TableComponent(props: TableComponentProps) {
       columns: memoColumns,
       data: memoData,
       stateReducer: props.stateReducer,
+      autoResetHiddenColumns: false,
     },
     useGlobalFilter,
     useSortBy,
     useRowSelect,
-    // @ts-ignore
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         {
           id: SELECTION_COLUMN,
           // @ts-ignore
           Header: ({ getToggleAllRowsSelectedProps }) => (
-            <Checkbox
-              onChange={getToggleAllRowsSelectedProps().onChange}
-              checked={getToggleAllRowsSelectedProps().checked}
-              isIndeterminate={getToggleAllRowsSelectedProps().indeterminate}
-            />
+            <TableCheckbox {...getToggleAllRowsSelectedProps()} />
           ),
           Cell: ({ row }) => (
-            <Checkbox
-              // @ts-ignore
-              onChange={row.getToggleRowSelectedProps().onChange}
-              // @ts-ignore
-              checked={row.getToggleRowSelectedProps().checked}
-            />
+            // @ts-ignore
+            <TableCheckbox {...row.getToggleRowSelectedProps()} />
           ),
         },
         ...columns,
@@ -110,13 +101,11 @@ export default function TableComponent(props: TableComponentProps) {
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <Th
-                width={column.id === SELECTION_COLUMN ? "50px" : ""}
-                textAlign="center"
                 // @ts-ignore
                 {...column.getHeaderProps(column.getSortByToggleProps())}
+                width={column.id === SELECTION_COLUMN ? "50px" : ""}
+                textAlign="center"
               >
-                {(column.isVisible = false)}
-                {column.render("Header")}
                 {column.id !== SELECTION_COLUMN ? (
                   <TableSortIcon
                     // @ts-ignore
@@ -125,6 +114,7 @@ export default function TableComponent(props: TableComponentProps) {
                     isSortedDesc={column.isSortedDesc}
                   />
                 ) : null}
+                {column.render("Header")}
               </Th>
             ))}
           </Tr>
@@ -161,6 +151,13 @@ export default function TableComponent(props: TableComponentProps) {
       </Tbody>
       <TableCaption>목록의 마지막입니다.</TableCaption>
     </Table>
+  );
+}
+
+function TableCheckbox(props: any) {
+  const { indeterminate, ...rest } = props;
+  return (
+    <input type="checkbox" indeterminate={indeterminate.toString()} {...rest} />
   );
 }
 
