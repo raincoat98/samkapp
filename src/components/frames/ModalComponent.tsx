@@ -1,5 +1,4 @@
 import {
-  useStyleConfig,
   Modal,
   ModalOverlay,
   ModalContent,

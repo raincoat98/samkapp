@@ -1,11 +1,11 @@
 {
-    "@chakra-ui/react@1.6.4": {
+    "@chakra-ui/react@1.6.6": {
         "licenses": "MIT",
         "repository": "https://github.com/chakra-ui/chakra-ui",
         "licenseUrl": "https://github.com/chakra-ui/chakra-ui",
         "parents": "my-app"
     },
-    "@emotion/react@11.4.0": {
+    "@emotion/react@11.4.1": {
         "licenses": "MIT",
         "repository": "https://github.com/emotion-js/emotion/tree/main/packages/react",
         "licenseUrl": "https://github.com/emotion-js/emotion/tree/main/packages/react/raw/master/LICENSE",
@@ -17,7 +17,7 @@
         "licenseUrl": "https://github.com/emotion-js/emotion/tree/main/packages/styled/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@reduxjs/toolkit@1.6.0": {
+    "@reduxjs/toolkit@1.6.1": {
         "licenses": "MIT",
         "repository": "https://github.com/reduxjs/redux-toolkit",
         "licenseUrl": "https://github.com/reduxjs/redux-toolkit/raw/master/LICENSE",
@@ -29,13 +29,13 @@
         "licenseUrl": "https://github.com/testing-library/jest-dom/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@testing-library/react@11.2.7": {
+    "@testing-library/react@12.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/testing-library/react-testing-library",
         "licenseUrl": "https://github.com/testing-library/react-testing-library/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@testing-library/user-event@12.8.3": {
+    "@testing-library/user-event@13.2.1": {
         "licenses": "MIT",
         "repository": "https://github.com/testing-library/user-event",
         "licenseUrl": "https://github.com/testing-library/user-event/raw/master/LICENSE",
@@ -59,19 +59,19 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/jest@26.0.24": {
+    "@types/jest@27.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/node@12.20.15": {
+    "@types/node@16.4.13": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/react-dom@17.0.8": {
+    "@types/react-dom@17.0.9": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -83,7 +83,7 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/react@17.0.13": {
+    "@types/react@17.0.17": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -95,7 +95,7 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "chart.js@3.4.1": {
+    "chart.js@3.5.0": {
         "licenses": "MIT",
         "repository": "https://github.com/chartjs/Chart.js",
         "licenseUrl": "https://github.com/chartjs/Chart.js/raw/master/LICENSE.md",
@@ -119,7 +119,7 @@
         "licenseUrl": "https://github.com/framer/motion//raw/master/LICENSE.md",
         "parents": "my-app"
     },
-    "i18next@20.3.5": {
+    "i18next@20.4.0": {
         "licenses": "MIT",
         "repository": "https://github.com/i18next/i18next",
         "licenseUrl": "https://github.com/i18next/i18next/raw/master/LICENSE",
@@ -131,7 +131,7 @@
         "licenseUrl": "http://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "react-chartjs-2@3.0.3": {
+    "react-chartjs-2@3.0.4": {
         "licenses": "MIT",
         "repository": "https://github.com/reactchartjs/react-chartjs-2",
         "licenseUrl": "https://github.com/reactchartjs/react-chartjs-2/raw/master/LICENSE",
@@ -203,7 +203,7 @@
         "licenseUrl": "https://github.com/uuidjs/uuid/raw/master/LICENSE.md",
         "parents": "my-app"
     },
-    "web-vitals@1.1.2": {
+    "web-vitals@2.1.0": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/GoogleChrome/web-vitals",
         "licenseUrl": "https://github.com/GoogleChrome/web-vitals/raw/master/LICENSE",
