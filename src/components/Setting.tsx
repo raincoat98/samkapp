@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import PageContainer from "./frames/PageContainer";
 import {
   useColorMode,
   Box,
@@ -11,13 +13,23 @@ import {
   Select,
   InputGroup,
   Input,
+  ButtonGroup,
 } from "@chakra-ui/react";
 
 export default function Setting() {
+  const { t } = useTranslation();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <>
+    <PageContainer
+      title={t("Setting")}
+      headerChildren={
+        <ButtonGroup spacing="3">
+          <Button colorScheme="red">{t("Reset")}</Button>
+          <Button colorScheme="blue">{t("Save")}</Button>
+        </ButtonGroup>
+      }
+    >
       <Box p={3}>
         <Heading as="h4" size="md">
           계정
@@ -81,15 +93,6 @@ export default function Setting() {
         <Divider my={3} />
         <Button>고객문의</Button>
       </Box>
-
-      <Divider />
-
-      <Box p={3}>
-        <FormControl>
-          <Button colorScheme="red">설정 초기화</Button>
-          <Button colorScheme="blue">설정 저장</Button>
-        </FormControl>
-      </Box>
-    </>
+    </PageContainer>
   );
 }

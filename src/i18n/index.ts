@@ -44,6 +44,7 @@ const resources = {
       Delete: "삭제",
       Remove: "제거",
       Cancel: "취소",
+      Reset: "초기화",
       Save: "저장",
       Setting: "설정",
     },

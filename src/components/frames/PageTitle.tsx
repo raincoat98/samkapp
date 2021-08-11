@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function PageTitle(props: HeadingProps) {
-  const { children, ...rest } = props;
+  const { children, title, ...rest } = props;
   const styles = useStyleConfig("PageTitle");
 
   // 색상 가져오기
@@ -33,7 +33,7 @@ export default function PageTitle(props: HeadingProps) {
       userSelect="none"
     >
       <Flex align="center">
-        <Box>{props.title}</Box>
+        <Box>{title}</Box>
         <Spacer />
         {children}
       </Flex>

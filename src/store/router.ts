@@ -11,7 +11,6 @@ type route = {
   path: string;
   component: () => JSX.Element;
   params?: string[];
-  container: boolean;
 };
 
 export type RouterState = {
@@ -27,7 +26,6 @@ const initialState: RouterState = {
       id: "Customer Management",
       path: "/customer_manage",
       component: CustomerManage,
-      container: false,
     },
 
     // 도구 관리
@@ -36,31 +34,26 @@ const initialState: RouterState = {
       path: "/tool_manage",
       component: ToolManage,
       params: ["/:id"],
-      container: false,
     },
     {
       id: "Wooden Management",
       path: "/tool_manage/wooden",
       component: ToolManage,
-      container: false,
     },
     {
       id: "Stash Management",
       path: "/tool_manage/stash",
       component: ToolManage,
-      container: false,
     },
     {
       id: "Typesetting Paper Management",
       path: "/tool_manage/typesetting_paper",
       component: ToolManage,
-      container: false,
     },
     {
       id: "Typesetting Paper Hanger Management",
       path: "/tool_manage/typesetting_paper_hanger",
       component: ToolManage,
-      container: false,
     },
 
     // 모니터링
@@ -68,7 +61,6 @@ const initialState: RouterState = {
       id: "Process Management",
       path: "/process_manage",
       component: ProcessManage,
-      container: true,
     },
 
     // 시스템 관리
@@ -76,7 +68,6 @@ const initialState: RouterState = {
       id: "Announcement",
       path: "/announcement",
       component: Announcement,
-      container: false,
     },
 
     // 설정
@@ -84,7 +75,6 @@ const initialState: RouterState = {
       id: "Setting",
       path: "/setting",
       component: Setting,
-      container: true,
     },
   ],
 };

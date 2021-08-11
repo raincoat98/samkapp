@@ -34,6 +34,7 @@ export default function Sidebar() {
         <Center w={"100%"} h={100}>
           <Image
             src={logo}
+            alt=""
             filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
             p="5"
             userSelect="none"

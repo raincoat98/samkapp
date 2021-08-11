@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import {
@@ -8,9 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Box, Flex } from "@chakra-ui/react";
-
 import Sidebar from "./components/Sidebar";
-import PageContainer from "./components/frames/PageContainer";
 import NoMatch from "./components/NoMatch";
 
 function App() {
@@ -18,10 +15,15 @@ function App() {
     (state: RootState) => state.router.defaultPath
   );
   const routes = useSelector((state: RootState) => state.router.routes);
-  const { t } = useTranslation();
 
   return (
-    <Box fontFamily="맑은 고딕" w="100%" h="100vh">
+    <div
+      style={{
+        fontFamily: "맑은 고딕",
+        width: "100%",
+        height: "100vh",
+      }}
+    >
       <Router>
         <Flex h={"100%"} w={"100%"}>
           <Sidebar />
@@ -41,15 +43,7 @@ function App() {
                 <Route
                   path={route.path + (route.params || "")}
                   key={route.id}
-                  children={
-                    route.container ? (
-                      <PageContainer title={t(route.id)}>
-                        <route.component />
-                      </PageContainer>
-                    ) : (
-                      <route.component />
-                    )
-                  }
+                  children={<route.component />}
                 ></Route>
               ))}
 
@@ -61,7 +55,7 @@ function App() {
           </Box>
         </Flex>
       </Router>
-    </Box>
+    </div>
   );
 }
 
