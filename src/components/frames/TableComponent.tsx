@@ -53,6 +53,7 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   // React-Table
+  const SELECTION_COLUMN = "_selection";
   const memoColumns = React.useMemo(() => props.columns, [props.columns]);
   const memoData = React.useMemo(() => props.data, [props.data]);
   tableInstance = useTable(
@@ -68,7 +69,7 @@ export default function TableComponent(props: TableComponentProps) {
     (hooks) => {
       hooks.visibleColumns.push((columns) => [
         {
-          id: "selection",
+          id: SELECTION_COLUMN,
           // @ts-ignore
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <Checkbox
@@ -115,7 +116,7 @@ export default function TableComponent(props: TableComponentProps) {
               >
                 {(column.isVisible = false)}
                 {column.render("Header")}
-                {column.id !== "selection" ? (
+                {column.id !== SELECTION_COLUMN ? (
                   <TableSortIcon
                     // @ts-ignore
                     isSorted={column.isSorted}
