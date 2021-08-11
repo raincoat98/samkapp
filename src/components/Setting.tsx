@@ -1,6 +1,9 @@
 import { useTranslation } from "react-i18next";
 import PageContainer from "./frames/PageContainer";
+import ModalComponent from "./frames/ModalComponent";
+import LicensesList from "./LicensesList";
 import {
+  useDisclosure,
   useColorMode,
   Box,
   Heading,
@@ -19,6 +22,7 @@ import {
 export default function Setting() {
   const { t } = useTranslation();
   const { colorMode, toggleColorMode } = useColorMode();
+  const licenseModalDisclosure = useDisclosure();
 
   return (
     <PageContainer
@@ -92,7 +96,19 @@ export default function Setting() {
         <Button>홈페이지</Button>
         <Divider my={3} />
         <Button>고객문의</Button>
+        <Divider my={3} />
+        <Button onClick={licenseModalDisclosure.onOpen}>
+          오픈소스 라이센스
+        </Button>
       </Box>
+
+      <ModalComponent
+        headerChildren={"오픈소스 라이센스"}
+        isOpen={licenseModalDisclosure.isOpen}
+        onClose={licenseModalDisclosure.onClose}
+      >
+        <LicensesList />
+      </ModalComponent>
     </PageContainer>
   );
 }

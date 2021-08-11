@@ -15,18 +15,18 @@ export default function Dialog(
     footerChildren?: React.ReactNode;
   }
 ) {
-  const { children, ...rest } = props;
+  const { children, headerChildren, footerChildren, ...rest } = props;
 
   return (
     <Portal>
-      <AlertDialog {...rest} isOpen={props.isOpen} onClose={props.onClose}>
+      <AlertDialog {...rest}>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              {props.headerChildren}
+              {headerChildren}
             </AlertDialogHeader>
-            <AlertDialogBody>{props.children}</AlertDialogBody>
-            <AlertDialogFooter>{props.footerChildren}</AlertDialogFooter>
+            <AlertDialogBody>{children}</AlertDialogBody>
+            <AlertDialogFooter>{footerChildren}</AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>

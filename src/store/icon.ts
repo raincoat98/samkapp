@@ -10,6 +10,7 @@ import {
   AiOutlineDesktop,
   AiFillPrinter,
 } from "react-icons/ai";
+import { FiExternalLink } from "react-icons/fi";
 import { IoBusinessOutline } from "react-icons/io5";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
@@ -18,6 +19,8 @@ export type IconState = {
   sort: IconType;
   sortUp: IconType;
   sortDown: IconType;
+
+  externalLink: IconType;
 
   circle: IconType;
   menu: IconType;
@@ -36,6 +39,8 @@ const initialState: IconState = {
   sort: FaSort,
   sortUp: FaSortUp,
   sortDown: FaSortDown,
+
+  externalLink: FiExternalLink,
 
   circle: BsCircleFill,
   menu: AiOutlineMenu,
