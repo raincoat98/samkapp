@@ -24,6 +24,7 @@ const resources = {
 
       // 시스템 관리
       "System Management": "시스템 관리",
+      Announcement: "공지사항",
 
       // 기타
       Customer: "거래처",

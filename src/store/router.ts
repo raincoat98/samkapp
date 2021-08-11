@@ -4,6 +4,7 @@ import CustomerManage from "../components/MasterDataManagement/CustomerManage";
 import Setting from "../components/Setting";
 import ToolManage from "../components/ToolManagement/ToolManage";
 import ProcessManage from "../components/Monitoring/ProcessManage";
+import Announcement from "../components/SystemManagement/Announcement";
 
 type route = {
   id: string;
@@ -68,6 +69,14 @@ const initialState: RouterState = {
       path: "/process_manage",
       component: ProcessManage,
       container: true,
+    },
+
+    // 시스템 관리
+    {
+      id: "Announcement",
+      path: "/announcement",
+      component: Announcement,
+      container: false,
     },
 
     // 설정
