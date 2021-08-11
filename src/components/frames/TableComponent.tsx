@@ -110,6 +110,7 @@ export default function TableComponent(props: TableComponentProps) {
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <Th
+                width={column.id === SELECTION_COLUMN ? "50px" : ""}
                 textAlign="center"
                 // @ts-ignore
                 {...column.getHeaderProps(column.getSortByToggleProps())}
