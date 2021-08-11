@@ -6,6 +6,7 @@ import PageContainer from "../frames/PageContainer";
 import TableComponent, { getTableInstance } from "../frames/TableComponent";
 import DrawerComponent from "../frames/DrawerComponent";
 import Dialog from "../frames/DialogComponent";
+import faker from "faker";
 import {
   useDisclosure,
   ButtonGroup,
@@ -112,6 +113,21 @@ export default function CustomerManage() {
     }
   }
 
+  function addCustomerOrVendor(props: { isCustomer?: boolean }) {
+    dispatch({
+      type: "database/" + (isCustomer ? "addCustomer" : "addVendor"),
+      payload: {
+        companyName: companyName.current?.value,
+        managerName: managerName.current?.value,
+        contact: contact.current?.value,
+        fax: fax.current?.value,
+        address: address.current?.value,
+        description: description.current?.value,
+      },
+    });
+    drawerDisclosure.onClose();
+  }
+
   const stateReducer = React.useCallback(
     (newState: any, action: any) => {
       if (!getTableInstance()) return newState;
@@ -137,6 +153,29 @@ export default function CustomerManage() {
       title={t("Customer Management")}
       headerChildren={
         <ButtonGroup spacing="3">
+          <Button
+            variant="outline"
+            onClick={() => {
+              for (let index = 0; index < 10; index++) {
+                dispatch({
+                  type:
+                    "database/" + (isCustomer ? "addCustomer" : "addVendor"),
+                  payload: {
+                    companyName: faker.company.companyName(),
+                    managerName: faker.fake(
+                      "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
+                    ),
+                    contact: faker.phone.phoneNumber(),
+                    fax: faker.phone.phoneNumber(),
+                    address: faker.address.streetAddress(),
+                    description: faker.lorem.words(),
+                  },
+                });
+              }
+            }}
+          >
+            더미 데이터 생성
+          </Button>
           <Button onClick={dialogDisclosure.onOpen} colorScheme="red">
             {t("Delete")}
           </Button>
@@ -172,8 +211,8 @@ export default function CustomerManage() {
         isForm={true}
         headerChildren={<>{t("Add")}</>}
         footerChildren={
-          <ButtonGroup>
-            <Button variant="outline" mr={3} onClick={drawerDisclosure.onClose}>
+          <ButtonGroup spacing={3}>
+            <Button variant="outline" onClick={drawerDisclosure.onClose}>
               {t("Cancel")}
             </Button>
             <Button type="submit" colorScheme="blue">
@@ -183,22 +222,7 @@ export default function CustomerManage() {
         }
         onSubmit={(event: FormEvent) => {
           event.preventDefault();
-
-          dispatch({
-            type:
-              "database/" +
-              (isCustomer.current?.checked ? "addCustomer" : "addVendor"),
-            payload: {
-              companyName: companyName.current?.value,
-              managerName: managerName.current?.value,
-              contact: contact.current?.value,
-              fax: fax.current?.value,
-              address: address.current?.value,
-              description: description.current?.value,
-            },
-          });
-
-          drawerDisclosure.onClose();
+          addCustomerOrVendor({ isCustomer: isCustomer.current?.checked });
         }}
       >
         <Stack spacing={5}>
