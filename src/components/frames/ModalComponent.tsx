@@ -9,12 +9,10 @@ import {
   ModalProps,
   Portal,
 } from "@chakra-ui/react";
+import { HeaderAndFooterProps } from "../props";
 
 export default function ModalComponent(
-  props: ModalProps & {
-    headerChildren?: React.ReactNode;
-    footerChildren?: React.ReactNode;
-  }
+  props: ModalProps & HeaderAndFooterProps
 ) {
   const { children, headerChildren, footerChildren, ...rest } = props;
 

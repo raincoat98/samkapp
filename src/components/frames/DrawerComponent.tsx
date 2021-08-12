@@ -11,14 +11,14 @@ import {
   DrawerProps,
   Stack,
 } from "@chakra-ui/react";
+import { HeaderAndFooterProps } from "../props";
 
 export default function DrawerComponent(
-  props: DrawerProps & {
-    headerChildren: React.ReactNode;
-    footerChildren: React.ReactNode;
-    isForm?: boolean | false;
-    onSubmit?: Function;
-  }
+  props: DrawerProps &
+    HeaderAndFooterProps & {
+      isForm?: boolean | false;
+      onSubmit?: Function;
+    }
 ) {
   const {
     children,

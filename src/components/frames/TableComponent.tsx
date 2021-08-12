@@ -7,7 +7,6 @@ import {
   useGlobalFilter,
   useSortBy,
   Column,
-  TableInstance,
 } from "react-table";
 import {
   useColorModeValue,

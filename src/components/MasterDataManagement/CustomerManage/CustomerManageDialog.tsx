@@ -1,5 +1,5 @@
-import Dialog from "../frames/DialogComponent";
-import { HeaderAndFooterProps } from "../props";
+import Dialog from "../../frames/DialogComponent";
+import { HeaderAndFooterProps } from "../../props";
 import { AlertDialogProps } from "@chakra-ui/react";
 
 export default function CustomerManageDialog(

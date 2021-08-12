@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../../store";
 import { useTranslation } from "react-i18next";
-import PageContainer from "../frames/PageContainer";
-import TableComponent from "../frames/TableComponent";
+import PageContainer from "../../frames/PageContainer";
+import TableComponent from "../../frames/TableComponent";
 import CustomerManageDialog from "./CustomerManageDialog";
 import CustomerManageDrawer from "./CustomerManageDrawer";
 import faker from "faker";
