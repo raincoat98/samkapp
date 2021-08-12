@@ -1,24 +1,16 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import { useTranslation } from "react-i18next";
 import PageContainer from "../frames/PageContainer";
-import TableComponent, { getTableInstance } from "../frames/TableComponent";
-import DrawerComponent from "../frames/DrawerComponent";
-import Dialog from "../frames/DialogComponent";
+import TableComponent from "../frames/TableComponent";
+import CustomerManageDialog from "./CustomerManageDialog";
+import CustomerManageDrawer from "./CustomerManageDrawer";
 import faker from "faker";
 import {
   useDisclosure,
   ButtonGroup,
   Button,
-  Stack,
-  RadioGroup,
-  Radio,
-  FormLabel,
-  FormControl,
-  Input,
-  InputGroup,
-  Textarea,
   Tabs,
   TabList,
   TabPanels,
@@ -35,14 +27,8 @@ export default function CustomerManage() {
 
   const selectedRowIds = React.useRef<string[]>([]);
 
-  const isCustomer = React.useRef<HTMLInputElement>(null);
-  const isVendor = React.useRef<HTMLInputElement>(null);
-  const companyName = React.useRef<HTMLInputElement>(null);
-  const managerName = React.useRef<HTMLInputElement>(null);
-  const contact = React.useRef<HTMLInputElement>(null);
-  const fax = React.useRef<HTMLInputElement>(null);
-  const address = React.useRef<HTMLInputElement>(null);
-  const description = React.useRef<HTMLTextAreaElement>(null);
+  // 0 === customerList, 1 === vendorList
+  const [currentTabIndex, setCurrentTabIndex] = React.useState(0);
 
   const customerList = useSelector(
     (state: RootState) => state.database.customer
@@ -95,88 +81,133 @@ export default function CustomerManage() {
     },
   ];
 
-  function deleteCustomer() {
-    for (let i = 0; i < selectedRowIds.current.length; i++) {
-      dispatch({
-        type: "database/deleteCustomer",
-        payload: selectedRowIds.current[i],
-      });
-    }
-  }
-
-  function deleteVendor() {
-    for (let i = 0; i < selectedRowIds.current.length; i++) {
-      dispatch({
-        type: "database/deleteVendor",
-        payload: selectedRowIds.current[i],
-      });
-    }
-  }
-
-  function addCustomerOrVendor(props: { isCustomer?: boolean }) {
-    dispatch({
-      type: "database/" + (isCustomer ? "addCustomer" : "addVendor"),
-      payload: {
-        companyName: companyName.current?.value,
-        managerName: managerName.current?.value,
-        contact: contact.current?.value,
-        fax: fax.current?.value,
-        address: address.current?.value,
-        description: description.current?.value,
+  let customerTableInstance: any;
+  const CustomerTable = TableComponent({
+    columns: customerColumns,
+    data: customerList,
+    stateReducer: React.useCallback(
+      (newState: any, action: any) => {
+        if (customerTableInstance && action.type !== "init") {
+          updateSelectedRowIds({
+            tableInstance: customerTableInstance,
+            newState,
+          });
+        }
+        return newState;
       },
+      [customerTableInstance]
+    ),
+  });
+  customerTableInstance = CustomerTable.tableInstance;
+
+  let vendorTableInstance: any;
+  const VendorTable = TableComponent({
+    columns: vendorColumns,
+    data: vendorList,
+    stateReducer: React.useCallback(
+      (newState: any, action: any) => {
+        if (vendorTableInstance && action.type !== "init") {
+          updateSelectedRowIds({
+            tableInstance: vendorTableInstance,
+            newState,
+          });
+        }
+        return newState;
+      },
+      [vendorTableInstance]
+    ),
+  });
+  vendorTableInstance = VendorTable.tableInstance;
+
+  function updateSelectedRowIds(props: { tableInstance: any; newState: any }) {
+    const selectedRows: string[] = [];
+    const rows = props.tableInstance.rows;
+    for (let i = 0; i < rows.length; i++) {
+      for (const key in props.newState.selectedRowIds) {
+        if (rows[i].id === key)
+          // @ts-ignore
+          selectedRows.push(rows[i].original.id);
+      }
+    }
+    selectedRowIds.current = [...selectedRows];
+  }
+
+  function deleteCustomerAndVendor() {
+    for (let i = 0; i < selectedRowIds.current.length; i++) {
+      if (currentTabIndex === 0) {
+        dispatch({
+          type: "database/deleteCustomer",
+          payload: selectedRowIds.current[i],
+        });
+      } else if (currentTabIndex === 1) {
+        dispatch({
+          type: "database/deleteVendor",
+          payload: selectedRowIds.current[i],
+        });
+      }
+    }
+  }
+
+  function addCustomerOrVendor(props: {
+    isCustomer?: boolean;
+    data: {
+      companyName: string;
+      managerName: string;
+      contact: string;
+      fax: string;
+      address: string;
+      description: string;
+    };
+  }) {
+    dispatch({
+      type: "database/" + (props.isCustomer ? "addCustomer" : "addVendor"),
+      payload: props.data,
     });
     drawerDisclosure.onClose();
   }
 
-  const stateReducer = React.useCallback(
-    (newState: any, action: any) => {
-      if (!getTableInstance()) return newState;
+  function makeDummy() {
+    for (let index = 0; index < 10; index++) {
+      addCustomerOrVendor({
+        isCustomer: index < 5 ? true : false,
+        data: {
+          companyName: faker.company.companyName(),
+          managerName: faker.fake(
+            "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
+          ),
+          contact: faker.phone.phoneNumber(),
+          fax: faker.phone.phoneNumber(),
+          address: faker.address.streetAddress(),
+          description: faker.lorem.words(),
+        },
+      });
+    }
+  }
 
-      const selectedRows: string[] = [];
-      const rows = getTableInstance().rows;
-      for (let i = 0; i < rows.length; i++) {
-        for (const key in newState.selectedRowIds) {
-          if (rows[i].id === key)
-            // @ts-ignore
-            selectedRows.push(rows[i].original.id);
-        }
-      }
+  function onTabIndexChange(tabIndex: number) {
+    setCurrentTabIndex(tabIndex);
 
-      selectedRowIds.current = selectedRows;
-      return newState;
-    },
-    [selectedRowIds]
-  );
+    // @ts-ignore
+    if (customerTableInstance) {
+      // @ts-ignore
+      customerTableInstance.state.selectedRowIds = {};
+      selectedRowIds.current.splice(0);
+    }
+  }
 
   return (
     <PageContainer
       title={t("Customer Management")}
       headerChildren={
         <ButtonGroup spacing="3">
-          <Button
-            variant="outline"
-            onClick={() => {
-              for (let index = 0; index < 10; index++) {
-                dispatch({
-                  type:
-                    "database/" + (isCustomer ? "addCustomer" : "addVendor"),
-                  payload: {
-                    companyName: faker.company.companyName(),
-                    managerName: faker.fake(
-                      "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
-                    ),
-                    contact: faker.phone.phoneNumber(),
-                    fax: faker.phone.phoneNumber(),
-                    address: faker.address.streetAddress(),
-                    description: faker.lorem.words(),
-                  },
-                });
-              }
-            }}
-          >
+          <Button variant="outline" onClick={makeDummy}>
             더미 데이터 생성
           </Button>
-          <Button onClick={dialogDisclosure.onOpen} colorScheme="red">
+          <Button
+            onClick={dialogDisclosure.onOpen}
+            colorScheme="red"
+            isDisabled={selectedRowIds.current?.length ? false : true}
+          >
             {t("Delete")}
           </Button>
           <Button onClick={drawerDisclosure.onOpen} colorScheme="blue">
@@ -185,99 +216,29 @@ export default function CustomerManage() {
         </ButtonGroup>
       }
     >
-      <Tabs isFitted>
+      <Tabs isFitted onChange={onTabIndexChange}>
         <TabList>
           <Tab>{t("Customer")}</Tab>
           <Tab>{t("Vendor")}</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel p={0}>
-            <TableComponent
-              columns={customerColumns}
-              data={customerList}
-              stateReducer={stateReducer}
-            />
-          </TabPanel>
-          <TabPanel p={0}>
-            <TableComponent columns={vendorColumns} data={vendorList} />
-          </TabPanel>
+          <TabPanel p={0}>{CustomerTable.component}</TabPanel>
+          <TabPanel p={0}>{VendorTable.component}</TabPanel>
         </TabPanels>
       </Tabs>
 
       {/* 추가 폼 */}
-      <DrawerComponent
+      <CustomerManageDrawer
         isOpen={drawerDisclosure.isOpen}
         onClose={drawerDisclosure.onClose}
-        isForm={true}
-        headerChildren={<>{t("Add")}</>}
-        footerChildren={
-          <ButtonGroup spacing={3}>
-            <Button variant="outline" onClick={drawerDisclosure.onClose}>
-              {t("Cancel")}
-            </Button>
-            <Button type="submit" colorScheme="blue">
-              {t("Save")}
-            </Button>
-          </ButtonGroup>
-        }
-        onSubmit={(event: FormEvent) => {
-          event.preventDefault();
-          addCustomerOrVendor({ isCustomer: isCustomer.current?.checked });
-        }}
-      >
-        <Stack spacing={5}>
-          <FormControl>
-            <RadioGroup defaultValue="customer">
-              <Stack direction="row">
-                <Radio ref={isCustomer} value="customer">
-                  {t("Customer")}
-                </Radio>
-                <Radio ref={isVendor} value="vendor">
-                  {t("Vendor")}
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
+        onSubmit={addCustomerOrVendor}
+      />
 
-          <FormControl isRequired={true}>
-            <FormLabel>{t("Compnany Name")}</FormLabel>
-            <Input ref={companyName} />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>{t("Manager name")}</FormLabel>
-            <Input ref={managerName} />
-          </FormControl>
-
-          <FormControl isRequired={true}>
-            <FormLabel>{t("Contact")}</FormLabel>
-            <Input ref={contact} />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>{t("Fax")}</FormLabel>
-            <Input ref={fax} />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>{t("Address")}</FormLabel>
-            <InputGroup>
-              <Input ref={address} />
-            </InputGroup>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>{t("Description")}</FormLabel>
-            <Textarea ref={description} />
-          </FormControl>
-        </Stack>
-      </DrawerComponent>
-
-      <Dialog
+      <CustomerManageDialog
         isOpen={dialogDisclosure.isOpen}
         onClose={dialogDisclosure.onClose}
         leastDestructiveRef={undefined}
-        headerChildren={"Delete Customer"}
+        headerChildren={"선택한 항목 삭제"}
         footerChildren={
           <ButtonGroup>
             <Button onClick={dialogDisclosure.onClose}>{t("Cancel")}</Button>
@@ -285,8 +246,7 @@ export default function CustomerManage() {
               colorScheme="red"
               onClick={() => {
                 dialogDisclosure.onClose();
-                deleteCustomer();
-                deleteVendor();
+                deleteCustomerAndVendor();
               }}
             >
               {t("Delete")}
@@ -294,8 +254,8 @@ export default function CustomerManage() {
           </ButtonGroup>
         }
       >
-        Are you sure? You can't undo this action afterwards.
-      </Dialog>
+        정말로 삭제하시겠습니까?
+      </CustomerManageDialog>
     </PageContainer>
   );
 }

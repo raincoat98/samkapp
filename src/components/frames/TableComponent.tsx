@@ -31,12 +31,6 @@ type TableComponentProps = {
   stateReducer?: any;
 };
 
-let tableInstance: TableInstance;
-
-export function getTableInstance() {
-  return tableInstance;
-}
-
 export default function TableComponent(props: TableComponentProps) {
   // 색상 가져오기
   const background = useSelector(
@@ -55,7 +49,7 @@ export default function TableComponent(props: TableComponentProps) {
   const SELECTION_COLUMN = "_selection";
   const memoColumns = React.useMemo(() => props.columns, [props.columns]);
   const memoData = React.useMemo(() => props.data, [props.data]);
-  tableInstance = useTable(
+  const tableInstance = useTable(
     {
       columns: memoColumns,
       data: memoData,
@@ -85,73 +79,76 @@ export default function TableComponent(props: TableComponentProps) {
   const { getTableProps, getTableBodyProps, headerGroups, prepareRow } =
     tableInstance;
 
-  return (
-    <Table wordBreak="break-all" {...getTableProps()}>
-      <Thead
-        style={{
-          userSelect: "none",
-          position: "sticky",
-          top: "0px",
-        }}
-        zIndex="docked"
-        boxShadow="base"
-        bg={backgroundColor}
-      >
-        {headerGroups.map((headerGroup) => (
-          <Tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <Th
-                // @ts-ignore
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                width={column.id === SELECTION_COLUMN ? "50px" : ""}
-                textAlign="center"
-              >
-                {column.id !== SELECTION_COLUMN ? (
-                  <TableSortIcon
-                    // @ts-ignore
-                    isSorted={column.isSorted}
-                    // @ts-ignore
-                    isSortedDesc={column.isSortedDesc}
-                  />
-                ) : null}
-                {column.render("Header")}
-              </Th>
-            ))}
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody {...getTableBodyProps()}>
-        {tableInstance.rows.map((row) => {
-          prepareRow(row);
-          return (
-            <Tr
-              {...row.getRowProps()}
-              onClick={() => {
-                // 클릭시 원본 데이터 리턴
-                if (props.onClick) props.onClick(row.original);
-              }}
-              _hover={{
-                background: backgroundColorSelected,
-              }}
-            >
-              {row.cells.map((cell) => (
-                <Td
-                  {...cell.getCellProps()}
-                  style={{
-                    textAlign: "center",
-                    verticalAlign: "middle",
-                  }}
+  return {
+    tableInstance,
+    component: (
+      <Table wordBreak="break-all" {...getTableProps()}>
+        <Thead
+          style={{
+            userSelect: "none",
+            position: "sticky",
+            top: "0px",
+          }}
+          zIndex="docked"
+          boxShadow="base"
+          bg={backgroundColor}
+        >
+          {headerGroups.map((headerGroup) => (
+            <Tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Th
+                  // @ts-ignore
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  width={column.id === SELECTION_COLUMN ? "50px" : ""}
+                  textAlign="center"
                 >
-                  {cell.render("Cell")}
-                </Td>
+                  {column.id !== SELECTION_COLUMN ? (
+                    <TableSortIcon
+                      // @ts-ignore
+                      isSorted={column.isSorted}
+                      // @ts-ignore
+                      isSortedDesc={column.isSortedDesc}
+                    />
+                  ) : null}
+                  {column.render("Header")}
+                </Th>
               ))}
             </Tr>
-          );
-        })}
-      </Tbody>
-      <TableCaption>목록의 마지막입니다.</TableCaption>
-    </Table>
-  );
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          {tableInstance.rows.map((row) => {
+            prepareRow(row);
+            return (
+              <Tr
+                {...row.getRowProps()}
+                onClick={() => {
+                  // 클릭시 원본 데이터 리턴
+                  if (props.onClick) props.onClick(row.original);
+                }}
+                _hover={{
+                  background: backgroundColorSelected,
+                }}
+              >
+                {row.cells.map((cell) => (
+                  <Td
+                    {...cell.getCellProps()}
+                    style={{
+                      textAlign: "center",
+                      verticalAlign: "middle",
+                    }}
+                  >
+                    {cell.render("Cell")}
+                  </Td>
+                ))}
+              </Tr>
+            );
+          })}
+        </Tbody>
+        <TableCaption>목록의 마지막입니다.</TableCaption>
+      </Table>
+    ),
+  };
 }
 
 function TableCheckbox(props: any) {

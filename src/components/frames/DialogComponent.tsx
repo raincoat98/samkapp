@@ -8,13 +8,9 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from "@chakra-ui/react";
+import { HeaderAndFooterProps } from "../props";
 
-export default function Dialog(
-  props: AlertDialogProps & {
-    headerChildren?: React.ReactNode;
-    footerChildren?: React.ReactNode;
-  }
-) {
+export default function Dialog(props: AlertDialogProps & HeaderAndFooterProps) {
   const { children, headerChildren, footerChildren, ...rest } = props;
 
   return (

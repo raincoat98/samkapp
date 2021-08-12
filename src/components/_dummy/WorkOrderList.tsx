@@ -59,6 +59,14 @@ export function WorkOrderListTable() {
     },
   ];
 
+  const table = TableComponent({
+    columns: columns,
+    data: data,
+    onClick: (original: any) => {
+      selectWorkOrder(original.id);
+    },
+  });
+
   function selectWorkOrder(id: string) {
     dispatch({
       type: "work-order/selectWorkOrder",
@@ -73,13 +81,7 @@ export function WorkOrderListTable() {
         isOpen={workOrderDetailActive}
         onClose={toggleWorkOrderDetail}
       />
-      <TableComponent
-        columns={columns}
-        data={data}
-        onClick={(original: any) => {
-          selectWorkOrder(original.id);
-        }}
-      />
+      {table.component}
     </>
   );
 }

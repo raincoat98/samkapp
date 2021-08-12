@@ -52,9 +52,7 @@ export default function ToolManage() {
       throw new Error("잘못된 접근입니다.");
   }
 
-  return (
-    <PageContainer title={pageName}>
-      <TableComponent columns={columns} data={data} />
-    </PageContainer>
-  );
+  const table = TableComponent({ columns, data });
+
+  return <PageContainer title={pageName}>{table.component}</PageContainer>;
 }
