@@ -10,7 +10,8 @@ import {
   AiOutlineDesktop,
   AiFillPrinter,
 } from "react-icons/ai";
-import { FiExternalLink } from "react-icons/fi";
+import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
+import { HiIdentification, HiKey } from "react-icons/hi";
 import { IoBusinessOutline } from "react-icons/io5";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
@@ -21,6 +22,12 @@ export type IconState = {
   sortDown: IconType;
 
   externalLink: IconType;
+
+  lightMode: IconType;
+  darkMode: IconType;
+
+  id: IconType;
+  password: IconType;
 
   circle: IconType;
   menu: IconType;
@@ -41,6 +48,12 @@ const initialState: IconState = {
   sortDown: FaSortDown,
 
   externalLink: FiExternalLink,
+
+  lightMode: FiSun,
+  darkMode: FiMoon,
+
+  id: HiIdentification,
+  password: HiKey,
 
   circle: BsCircleFill,
   menu: AiOutlineMenu,

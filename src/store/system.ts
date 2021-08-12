@@ -4,6 +4,7 @@ import logo from "../images/logo.png";
 type colorType = { light: string; dark: string };
 
 export type SystemState = {
+  appName: string;
   isLogin: boolean;
   logo: string;
   color: {
@@ -13,6 +14,7 @@ export type SystemState = {
 };
 
 const initialState: SystemState = {
+  appName: "SamKapp",
   isLogin: false,
   logo: logo,
   color: {
