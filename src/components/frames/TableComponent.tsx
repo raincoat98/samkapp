@@ -123,8 +123,11 @@ export default function TableComponent(props: TableComponentProps) {
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   width={column.id === SELECTION_COLUMN ? "50px" : ""}
                   textAlign="center"
+                  whiteSpace="pre"
                 >
-                  {column.id !== SELECTION_COLUMN ? (
+                  {column.render("Header")}
+                  {column.id !== SELECTION_COLUMN &&
+                  column.id !== INDEX_COLUMN ? (
                     <TableSortIcon
                       // @ts-ignore
                       isSorted={column.isSorted}
@@ -132,7 +135,6 @@ export default function TableComponent(props: TableComponentProps) {
                       isSortedDesc={column.isSortedDesc}
                     />
                   ) : null}
-                  {column.render("Header")}
                 </Th>
               ))}
             </Tr>
@@ -210,7 +212,11 @@ function TableSearch(props: {
 function TableCheckbox(props: any) {
   const { indeterminate, ...rest } = props;
   return (
-    <input type="checkbox" indeterminate={indeterminate.toString()} {...rest} />
+    <chakra.input
+      type="checkbox"
+      indeterminate={indeterminate.toString()}
+      {...rest}
+    />
   );
 }
 
