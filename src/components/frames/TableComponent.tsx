@@ -1,11 +1,14 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
   useTable,
   useRowSelect,
+  useFilters,
   useGlobalFilter,
   useSortBy,
+  useAsyncDebounce,
   Column,
 } from "react-table";
 import {
@@ -18,6 +21,7 @@ import {
   Td,
   TableCaption,
   Icon,
+  Input,
   chakra,
 } from "@chakra-ui/react";
 
@@ -31,6 +35,8 @@ type TableComponentProps = {
 };
 
 export default function TableComponent(props: TableComponentProps) {
+  const { t } = useTranslation();
+
   // 색상 가져오기
   const background = useSelector(
     (state: RootState) => state.system.color.background
@@ -45,6 +51,7 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   // React-Table
+  const INDEX_COLUMN = "_index";
   const SELECTION_COLUMN = "_selection";
   const memoColumns = React.useMemo(() => props.columns, [props.columns]);
   const memoData = React.useMemo(() => props.data, [props.data]);
@@ -55,6 +62,7 @@ export default function TableComponent(props: TableComponentProps) {
       stateReducer: props.stateReducer,
       autoResetHiddenColumns: false,
     },
+    useFilters,
     useGlobalFilter,
     useSortBy,
     useRowSelect,
@@ -71,12 +79,27 @@ export default function TableComponent(props: TableComponentProps) {
             <TableCheckbox {...row.getToggleRowSelectedProps()} />
           ),
         },
+        {
+          id: INDEX_COLUMN,
+          // @ts-ignore
+          Header: <span>{t("Index")}</span>,
+          Cell: ({ row }) => <span>{row.index}</span>,
+        },
         ...columns,
       ]);
     }
   );
-  const { getTableProps, getTableBodyProps, headerGroups, prepareRow } =
-    tableInstance;
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    state: tableState,
+    // @ts-ignore
+    preGlobalFilteredRows,
+    // @ts-ignore
+    setGlobalFilter,
+  } = tableInstance;
 
   return {
     tableInstance,
@@ -114,6 +137,16 @@ export default function TableComponent(props: TableComponentProps) {
               ))}
             </Tr>
           ))}
+          <Tr>
+            <Th colSpan={tableInstance.visibleColumns.length}>
+              <TableSearch
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                // @ts-ignore
+                globalFilter={tableState.globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+            </Th>
+          </Tr>
         </Thead>
         <Tbody {...getTableBodyProps()}>
           {tableInstance.rows.map((row) => {
@@ -148,6 +181,30 @@ export default function TableComponent(props: TableComponentProps) {
       </Table>
     ),
   };
+}
+
+function TableSearch(props: {
+  preGlobalFilteredRows: any;
+  globalFilter: any;
+  setGlobalFilter: any;
+}) {
+  const { t } = useTranslation();
+  const count = props.preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(props.globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    props.setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <Input
+      value={value || ""}
+      onChange={(e) => {
+        setValue(e.target.value);
+        onChange(e.target.value);
+      }}
+      placeholder={t("Search")}
+    />
+  );
 }
 
 function TableCheckbox(props: any) {

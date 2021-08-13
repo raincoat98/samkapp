@@ -38,7 +38,8 @@ const resources = {
       Description: "설명",
 
       "Compnany Name": "회사명",
-      Name: "이름",
+      Index: "인덱스",
+      Search: "검색",
       Select: "선택",
       Add: "추가",
       Delete: "삭제",
