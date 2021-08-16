@@ -1,8 +1,8 @@
-import { RootState } from "../../store";
+import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import PageContainer from "../frames/PageContainer";
-import TableComponent from "../frames/TableComponent";
+import PageContainer from "components/frames/PageContainer";
+import TableComponent from "components/frames/TableComponent";
 import faker from "faker";
 
 export default function ToolManage() {

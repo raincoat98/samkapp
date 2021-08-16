@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { RootState } from "../store";
+import { RootState } from "store";
 import { useSelector } from "react-redux";
 import {
   Alert,

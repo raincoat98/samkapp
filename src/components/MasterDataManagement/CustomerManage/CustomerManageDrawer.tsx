@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import DrawerComponent from "../../frames/DrawerComponent";
+import DrawerComponent from "components/frames/DrawerComponent";
 import {
   ButtonGroup,
   Button,

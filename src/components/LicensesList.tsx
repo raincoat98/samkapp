@@ -9,9 +9,9 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { RootState } from "../store";
+import { RootState } from "store";
 import { useSelector } from "react-redux";
-import licenses from "../data/licenses.json";
+import licenses from "data/licenses.json";
 
 type licenseType = {
   name: string;

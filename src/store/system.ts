@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import logo from "../images/logo.png";
+import logo from "images/logo.png";
 
 type colorType = { light: string; dark: string };
 

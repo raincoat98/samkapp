@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
+import { RootState } from "store";
 import {
   useColorMode,
   Center,

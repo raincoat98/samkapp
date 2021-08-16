@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "store";
 import {
   useTable,
   useRowSelect,
