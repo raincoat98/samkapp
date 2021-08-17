@@ -24,6 +24,8 @@ import {
   Td,
   TableCaption,
   Icon,
+  InputGroup,
+  InputLeftElement,
   Input,
   chakra,
   TableCellProps,
@@ -209,6 +211,9 @@ function TableSearch(props: {
   globalFilter: any;
   setGlobalFilter: any;
 }) {
+  //검색 아이콘
+  const searchIcon = useSelector((state: RootState) => state.icon.search);
+
   const { t } = useTranslation();
   const [value, setValue] = React.useState(props.globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -216,14 +221,20 @@ function TableSearch(props: {
   }, 200);
 
   return (
-    <Input
-      value={value || ""}
-      onChange={(event) => {
-        setValue(event.target.value);
-        onChange(event.target.value);
-      }}
-      placeholder={t("Search")}
-    />
+    <InputGroup>
+      <InputLeftElement
+        pointerEvents="none"
+        children={<Icon as={searchIcon} />}
+      />
+      <Input
+        value={value || ""}
+        onChange={(event) => {
+          setValue(event.target.value);
+          onChange(event.target.value);
+        }}
+        placeholder={t("Search")}
+      />
+    </InputGroup>
   );
 }
 

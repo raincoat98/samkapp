@@ -9,6 +9,7 @@ import {
   AiOutlinePieChart,
   AiOutlineDesktop,
   AiFillPrinter,
+  AiOutlineSearch,
 } from "react-icons/ai";
 import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
@@ -28,6 +29,8 @@ export type IconState = {
 
   id: IconType;
   password: IconType;
+
+  search: IconType;
 
   circle: IconType;
   menu: IconType;
@@ -54,6 +57,8 @@ const initialState: IconState = {
 
   id: HiIdentification,
   password: HiKey,
+
+  search: AiOutlineSearch,
 
   circle: BsCircleFill,
   menu: AiOutlineMenu,
