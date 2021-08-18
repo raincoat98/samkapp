@@ -1,8 +1,7 @@
 import React, { FormEvent } from "react";
-import { useSelector } from "react-redux";
-import * as RealmWeb from "realm-web";
-import { RealmLogIn } from "utils/realm";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
+import * as RealmWeb from "realm-web";
 import {
   useColorMode,
   Center,
@@ -23,12 +22,14 @@ import {
 } from "@chakra-ui/react";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [logInError, setLogInError] = React.useState(false);
 
+  const realmApp = useSelector((state: RootState) => state.realm.app);
   const icon = useSelector((state: RootState) => state.icon);
   const appName = useSelector((state: RootState) => state.system.appName);
 
@@ -43,7 +44,22 @@ export default function Home() {
     event.preventDefault();
     setLogInError(false);
     const credentials = RealmWeb.Credentials.emailPassword(email, password);
-    RealmLogIn(credentials);
+
+    try {
+      if (!realmApp) throw new Error("realmApp 생성되지 않음");
+      await realmApp.logIn(credentials);
+      dispatch({
+        type: "realm/logIn",
+        payload: realmApp.currentUser,
+      });
+      dispatch({
+        type: "system/setCredentials",
+        payload: credentials,
+      });
+      return true;
+    } catch (error) {
+      return error;
+    }
   }
 
   return (

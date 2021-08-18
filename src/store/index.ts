@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["database", "work", "workOrder", "system"],
+  whitelist: ["work", "workOrder", "system"],
 };
 
 export default persistReducer(persistConfig, rootReducer);

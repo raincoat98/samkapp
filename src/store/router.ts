@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import CustomerManage from "components/MasterDataManagement/CustomerManage";
 import Setting from "components/Setting";
 import ToolManage from "components/ToolManagement/ToolManage";
+import InventoryManagement from "components/InventoryManagement";
 import ProcessManage from "components/Monitoring/ProcessManage";
 import Announcement from "components/SystemManagement/Announcement";
 
@@ -54,6 +55,13 @@ const initialState: RouterState = {
       id: "Typesetting Paper Hanger Management",
       path: "/tool_manage/typesetting_paper_hanger",
       component: ToolManage,
+    },
+
+    // 재고관리
+    {
+      id: "Inventory Management",
+      path: "/inventory_manage",
+      component: InventoryManagement,
     },
 
     // 모니터링

@@ -34,6 +34,7 @@ import {
 type TableComponentProps = {
   columns: Array<Column>;
   data: Array<any>;
+  useIndex?: boolean;
   onClick?: Function;
   onSelect?: Function;
   onDelete?: Function;
@@ -74,26 +75,33 @@ export default function TableComponent(props: TableComponentProps) {
     useSortBy,
     useRowSelect,
     (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        {
+      hooks.visibleColumns.push((columns) => {
+        const optionColumns = [];
+
+        // 선택 컬럼
+        optionColumns.push({
           id: SELECTION_COLUMN,
           // @ts-ignore
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <TableCheckbox {...getToggleAllRowsSelectedProps()} />
           ),
+          // @ts-ignore
           Cell: ({ row }) => (
-            // @ts-ignore
             <TableCheckbox {...row.getToggleRowSelectedProps()} />
           ),
-        },
-        {
-          id: INDEX_COLUMN,
-          // @ts-ignore
-          Header: <span>{t("Index")}</span>,
-          Cell: ({ row }) => <span>{row.index}</span>,
-        },
-        ...columns,
-      ]);
+        });
+
+        // 인덱스 컬럼
+        if (props.useIndex) {
+          optionColumns.push({
+            id: INDEX_COLUMN,
+            Header: <span>{t("Index")}</span>,
+            // @ts-ignore
+            Cell: ({ row }) => <span>{row.index}</span>,
+          });
+        }
+        return [...optionColumns, ...columns];
+      });
     }
   );
   const {

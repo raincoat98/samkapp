@@ -1,7 +1,7 @@
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
 import * as RealmWeb from "realm-web";
-import { RealmLogIn } from "utils/realm";
 import {
   BrowserRouter as Router,
   Switch,
@@ -24,9 +24,6 @@ function App() {
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
-  const credentials = useSelector(
-    (state: RootState) => state.system.credentials
-  );
 
   if (!realmApp) {
     dispatch({
@@ -34,8 +31,6 @@ function App() {
       payload: new RealmWeb.App({ id: realmAppId }),
     });
   }
-
-  if (credentials) RealmLogIn(credentials);
 
   return (
     <div
