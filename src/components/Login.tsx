@@ -1,5 +1,6 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import * as RealmWeb from "realm-web";
 import { RootState } from "store";
 import {
   useColorMode,
@@ -14,29 +15,62 @@ import {
   InputLeftElement,
   InputRightElement,
   Input,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 export default function Home() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const [passwordShow, setPasswordShow] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [logInError, setLogInError] = React.useState(false);
+
   const icon = useSelector((state: RootState) => state.icon);
   const appName = useSelector((state: RootState) => state.system.appName);
+
+  const [passwordShow, setPasswordShow] = React.useState(false);
+
+  // RealmWeb 로그인
+  const REALM_APP_ID = "samkapp-dzval";
+  const app = new RealmWeb.App({ id: REALM_APP_ID });
 
   function togglePasswordShow(event: FormEvent) {
     event.preventDefault();
     setPasswordShow(!passwordShow);
   }
 
-  function login() {
-    dispatch({
-      type: "system/loginAction",
-    });
+  async function login(event: FormEvent) {
+    event.preventDefault();
+
+    const credentials = RealmWeb.Credentials.emailPassword(email, password);
+    setLogInError(false);
+
+    try {
+      await app.logIn(credentials);
+      dispatch({
+        type: "system/logIn",
+        payload: app.currentUser,
+      });
+    } catch (error) {
+      setLogInError(true);
+      console.error(error);
+    }
   }
 
   return (
     <Center w={"100%"} h={"100%"}>
+      {logInError ? (
+        <Alert status="error" position="absolute" top="0px" left="0px">
+          <AlertIcon />
+          <AlertTitle mr={2}>이메일 및 비밀번호가 잘못되었습니다!</AlertTitle>
+          <AlertDescription>다시 로그인 해주세요.</AlertDescription>
+        </Alert>
+      ) : null}
+
       <form action="" onSubmit={login}>
         <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
           <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
@@ -47,9 +81,12 @@ export default function Home() {
               children={<Icon as={icon.id} />}
             />
             <Input
-              placeholder="아이디"
+              placeholder="이메일"
               autoComplete="username"
               isRequired={true}
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
             />
           </InputGroup>
 
@@ -64,6 +101,9 @@ export default function Home() {
               autoComplete="current-password"
               pr="4.5rem"
               isRequired={true}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
             />
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={togglePasswordShow}>

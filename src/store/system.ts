@@ -1,11 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import * as RealmWeb from "realm-web";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import logo from "images/logo.png";
 
 type colorType = { light: string; dark: string };
 
 export type SystemState = {
   appName: string;
-  isLogin: boolean;
+  user: RealmWeb.User | null;
   logo: string;
   color: {
     background: colorType;
@@ -15,7 +16,7 @@ export type SystemState = {
 
 const initialState: SystemState = {
   appName: "SamKapp",
-  isLogin: false,
+  user: null,
   logo: logo,
   color: {
     background: { light: "white", dark: "gray.800" },
@@ -27,15 +28,15 @@ const userSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    loginAction(state) {
-      state.isLogin = true;
+    logIn(state, action: PayloadAction<RealmWeb.User>) {
+      state.user = action.payload;
     },
-    logoutAction(state) {
-      state.isLogin = false;
+    logOut(state) {
+      state.user = null;
     },
   },
 });
 
 const { reducer, actions } = userSlice;
-export const { loginAction, logoutAction } = actions;
+export const { logIn, logOut } = actions;
 export default reducer;

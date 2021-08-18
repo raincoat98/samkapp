@@ -15,7 +15,7 @@ function App() {
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
-  const isLogin = useSelector((state: RootState) => state.system.isLogin);
+  const user = useSelector((state: RootState) => state.system.user);
   const routes = useSelector((state: RootState) => state.router.routes);
 
   return (
@@ -26,7 +26,7 @@ function App() {
         height: "100vh",
       }}
     >
-      {!isLogin ? (
+      {!user ? (
         <Login />
       ) : (
         <Router>
