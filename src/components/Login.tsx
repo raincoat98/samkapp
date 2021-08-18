@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import * as RealmWeb from "realm-web";
 import {
+  useDisclosure,
   useColorMode,
   Center,
   Stack,
@@ -20,9 +21,11 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
+import SpinnerComponent from "components/frames/SpinnerComponent";
 
 export default function Home() {
   const dispatch = useDispatch();
+  const spinnerDisclosure = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const [email, setEmail] = React.useState("");
@@ -47,6 +50,8 @@ export default function Home() {
 
     try {
       if (!realmApp) throw new Error("realmApp 생성되지 않음");
+      spinnerDisclosure.onOpen();
+
       await realmApp.logIn(credentials);
       dispatch({
         type: "realm/logIn",
@@ -63,78 +68,86 @@ export default function Home() {
   }
 
   return (
-    <Center w={"100%"} h={"100%"}>
-      {logInError ? (
-        <Alert status="error" position="absolute" top="0px" left="0px">
-          <AlertIcon />
-          <AlertTitle mr={2}>이메일 및 비밀번호가 잘못되었습니다!</AlertTitle>
-          <AlertDescription>다시 로그인 해주세요.</AlertDescription>
-        </Alert>
-      ) : null}
+    <>
+      <SpinnerComponent isOpen={spinnerDisclosure.isOpen} />
 
-      <form action="" onSubmit={login}>
-        <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
-          <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
+      <Center w={"100%"} h={"100%"}>
+        {logInError ? (
+          <Alert status="error" position="absolute" top="0px" left="0px">
+            <AlertIcon />
+            <AlertTitle mr={2}>이메일 및 비밀번호가 잘못되었습니다!</AlertTitle>
+            <AlertDescription>다시 로그인 해주세요.</AlertDescription>
+          </Alert>
+        ) : null}
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Icon as={icon.id} />}
-            />
-            <Input
-              placeholder="이메일"
-              autoComplete="username"
-              isRequired={true}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-            />
-          </InputGroup>
+        <form action="" onSubmit={login}>
+          <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
+            <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Icon as={icon.password} />}
-            />
-            <Input
-              type={passwordShow ? "text" : "password"}
-              placeholder="비밀번호"
-              autoComplete="current-password"
-              pr="4.5rem"
-              isRequired={true}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={togglePasswordShow}>
-                {passwordShow ? "숨기기" : "보기"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Icon as={icon.id} />}
+              />
+              <Input
+                placeholder="이메일"
+                autoComplete="username"
+                isRequired={true}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            </InputGroup>
 
-          <Button type="submit" colorScheme="blue">
-            로그인
-          </Button>
-        </Stack>
-      </form>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Icon as={icon.password} />}
+              />
+              <Input
+                type={passwordShow ? "text" : "password"}
+                placeholder="비밀번호"
+                autoComplete="current-password"
+                pr="4.5rem"
+                isRequired={true}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={togglePasswordShow}>
+                  {passwordShow ? "숨기기" : "보기"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
 
-      <Tooltip
-        hasArrow
-        placement="left"
-        label={colorMode === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
-      >
-        <IconButton
-          icon={
-            <Icon as={colorMode === "dark" ? icon.lightMode : icon.darkMode} />
+            <Button type="submit" colorScheme="blue">
+              로그인
+            </Button>
+          </Stack>
+        </form>
+
+        <Tooltip
+          hasArrow
+          placement="left"
+          label={
+            colorMode === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"
           }
-          onClick={toggleColorMode}
-          position="absolute"
-          right={5}
-          bottom={5}
-          aria-label="라이트 모드 & 다크모드 전환"
-        />
-      </Tooltip>
-    </Center>
+        >
+          <IconButton
+            icon={
+              <Icon
+                as={colorMode === "dark" ? icon.lightMode : icon.darkMode}
+              />
+            }
+            onClick={toggleColorMode}
+            position="absolute"
+            right={5}
+            bottom={5}
+            aria-label="라이트 모드 & 다크모드 전환"
+          />
+        </Tooltip>
+      </Center>
+    </>
   );
 }
