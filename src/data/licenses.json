@@ -185,6 +185,12 @@
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
         "parents": "my-app"
     },
+    "realm-web@1.3.0": {
+        "licenses": "SEE LICENSE IN LICENSE",
+        "repository": "https://github.com/realm/realm-js",
+        "licenseUrl": "https://github.com/realm/realm-js",
+        "parents": "my-app"
+    },
     "redux-persist@6.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/rt2zz/redux-persist",
