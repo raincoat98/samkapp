@@ -1,5 +1,7 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
+import * as RealmWeb from "realm-web";
+import { RealmLogIn } from "utils/realm";
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,11 +14,28 @@ import Sidebar from "./components/Sidebar";
 import NoMatch from "./components/NoMatch";
 
 function App() {
+  const dispatch = useDispatch();
+
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
-  const user = useSelector((state: RootState) => state.system.user);
   const routes = useSelector((state: RootState) => state.router.routes);
+
+  const realmApp = useSelector((state: RootState) => state.realm.app);
+  const realmAppId = useSelector((state: RootState) => state.realm.appId);
+  const realmAppUser = useSelector((state: RootState) => state.realm.user);
+  const credentials = useSelector(
+    (state: RootState) => state.system.credentials
+  );
+
+  if (!realmApp) {
+    dispatch({
+      type: "realm/init",
+      payload: new RealmWeb.App({ id: realmAppId }),
+    });
+  }
+
+  if (credentials) RealmLogIn(credentials);
 
   return (
     <div
@@ -26,7 +45,7 @@ function App() {
         height: "100vh",
       }}
     >
-      {!user ? (
+      {!realmAppUser ? (
         <Login />
       ) : (
         <Router>

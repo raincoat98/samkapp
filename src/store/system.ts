@@ -5,8 +5,8 @@ import logo from "images/logo.png";
 type colorType = { light: string; dark: string };
 
 export type SystemState = {
+  credentials: RealmWeb.Credentials | null;
   appName: string;
-  user: RealmWeb.User | null;
   logo: string;
   color: {
     background: colorType;
@@ -15,8 +15,8 @@ export type SystemState = {
 };
 
 const initialState: SystemState = {
+  credentials: null,
   appName: "SamKapp",
-  user: null,
   logo: logo,
   color: {
     background: { light: "white", dark: "gray.800" },
@@ -28,15 +28,12 @@ const userSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    logIn(state, action: PayloadAction<RealmWeb.User>) {
-      state.user = action.payload;
-    },
-    logOut(state) {
-      state.user = null;
+    setCredentials(state, action: PayloadAction<RealmWeb.Credentials>) {
+      state.credentials = action.payload;
     },
   },
 });
 
 const { reducer, actions } = userSlice;
-export const { logIn, logOut } = actions;
+export const { setCredentials } = actions;
 export default reducer;

@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import * as RealmWeb from "realm-web";
+import { RealmLogIn } from "utils/realm";
 import { RootState } from "store";
 import {
   useColorMode,
@@ -22,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 
 export default function Home() {
-  const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const [email, setEmail] = React.useState("");
@@ -34,10 +34,6 @@ export default function Home() {
 
   const [passwordShow, setPasswordShow] = React.useState(false);
 
-  // RealmWeb 로그인
-  const REALM_APP_ID = "samkapp-dzval";
-  const app = new RealmWeb.App({ id: REALM_APP_ID });
-
   function togglePasswordShow(event: FormEvent) {
     event.preventDefault();
     setPasswordShow(!passwordShow);
@@ -45,20 +41,9 @@ export default function Home() {
 
   async function login(event: FormEvent) {
     event.preventDefault();
-
-    const credentials = RealmWeb.Credentials.emailPassword(email, password);
     setLogInError(false);
-
-    try {
-      await app.logIn(credentials);
-      dispatch({
-        type: "system/logIn",
-        payload: app.currentUser,
-      });
-    } catch (error) {
-      setLogInError(true);
-      console.error(error);
-    }
+    const credentials = RealmWeb.Credentials.emailPassword(email, password);
+    RealmLogIn(credentials);
   }
 
   return (
