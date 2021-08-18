@@ -18,7 +18,7 @@ export default function SpinnerComponent(
     return (
       <Modal isOpen={isOpen} onClose={() => {}} isCentered={true}>
         <ModalOverlay />
-        <ModalContent background="none">
+        <ModalContent background="none" boxShadow="none">
           <Center>
             <Spinner {...rest} />
           </Center>
