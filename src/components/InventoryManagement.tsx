@@ -3,15 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import {
-  ButtonGroup,
-  Button,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { ButtonGroup, Button, Tabs, TabList, Tab } from "@chakra-ui/react";
 
 export default function InventoryManagement() {
   const [isAllLoaded, setIsAllLoaded] = React.useState(false);
@@ -76,6 +68,17 @@ export default function InventoryManagement() {
     // realmApp?.currentUser?.functions.delete_product({ name: "조판지" });
   }
 
+  async function onTabChange(tab: number) {
+    const type = productTypes[--tab];
+    if (type) {
+      // @ts-ignore
+      mainTable.tableInstance.setAllFilters([{ id: "name", value: type.name }]);
+    } else {
+      // @ts-ignore
+      mainTable.tableInstance.setAllFilters([]);
+    }
+  }
+
   return (
     <PageContainer
       title={"재고 관리"}
@@ -87,17 +90,15 @@ export default function InventoryManagement() {
         </ButtonGroup>
       }
     >
-      <Tabs isFitted>
+      <Tabs onChange={onTabChange} isFitted>
         <TabList>
           <Tab>{"전체"}</Tab>
           {productTypes.map((type, index) => (
             <Tab key={index}>{type.name}</Tab>
           ))}
         </TabList>
-        <TabPanels>
-          <TabPanel p={0}>{mainTable.component}</TabPanel>
-        </TabPanels>
       </Tabs>
+      {mainTable.component}
     </PageContainer>
   );
 }
