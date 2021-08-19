@@ -2,14 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import PageContainer from "components/frames/PageContainer";
-import { ButtonGroup, Button } from "@chakra-ui/react";
-import { DataGrid } from "@material-ui/data-grid";
+import TableComponent from "components/frames/TableComponent";
+import { ButtonGroup, Button, Tabs, TabList, Tab } from "@chakra-ui/react";
 
 export default function InventoryManagement() {
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productTypes, setProductTypes] = React.useState<any[]>([]);
   const [products, setProducts] = React.useState<any[]>([]);
-  const [selectedProducts, setSelectedProducts] = React.useState<any[]>([]);
 
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
   const productTypeCollection = mongodb
@@ -17,58 +16,61 @@ export default function InventoryManagement() {
     .collection("product_type");
   const productCollection = mongodb?.db("database").collection("product");
 
-  React.useEffect(() => {
-    find();
-    // watchStart();
+  // 테이블
+  const mainTable = TableComponent({
+    columns: [
+      {
+        Header: "제품명",
+        accessor: "name",
+      },
+      {
+        Header: "규격",
+        accessor: "standard",
+      },
+      {
+        Header: "두께",
+        accessor: "thickness",
+      },
+      {
+        Header: "폭",
+        accessor: "width",
+      },
+      {
+        Header: "현재고",
+        accessor: "stock",
+      },
+      {
+        Header: "비고",
+        accessor: "note",
+      },
+    ],
+    data: products,
+  });
 
-    async function find() {
-      console.log("find start");
+  React.useEffect(() => {
+    init();
+
+    async function init() {
       if (productTypeCollection)
         await setProductTypes(await productTypeCollection.find());
       if (productCollection) await setProducts(await productCollection.find());
+      console.log("updated");
     }
-
-    // async function watchStart() {
-    //   console.log("watch start");
-    //   for await (const change of productCollectionWatcher) {
-    //     console.log(change);
-    //     switch (change.operationType) {
-    //       case "insert": {
-    //         const { documentKey, fullDocument } = change;
-    //         console.log(`new document with _id: ${documentKey}`, fullDocument);
-    //         break;
-    //       }
-    //       case "update": {
-    //         const { documentKey, fullDocument } = change;
-    //         console.log(`updated document: ${documentKey}`, fullDocument);
-    //         break;
-    //       }
-    //       case "replace": {
-    //         const { documentKey, fullDocument } = change;
-    //         console.log(`replaced document: ${documentKey}`, fullDocument);
-    //         break;
-    //       }
-    //       case "delete": {
-    //         const { documentKey } = change;
-    //         console.log(`deleted document: ${documentKey}`);
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
   }, []);
 
-  async function deleteSelected() {
-    for (let i = 0; i < selectedProducts.length; i++) {
-      realmApp?.currentUser?.functions
-        .delete_product({ _id: selectedProducts[i] })
-        .then((result) => console.log(result))
-        .catch((err) => console.error(`Delete failed with error: ${err}`));
-    }
+  async function deleteAll() {
+    // realmApp?.currentUser?.functions.delete_product({ name: "조판지" });
   }
 
-  function onSelectionModelChange(selected: any) {
-    setSelectedProducts(selected);
+  async function onTabChange(tab: number) {
+    const type = productTypes[--tab];
+    if (type) {
+      // @ts-ignore
+      mainTable.tableInstance.setAllFilters([{ id: "name", value: type.name }]);
+    } else {
+      // @ts-ignore
+      mainTable.tableInstance.setAllFilters([]);
+    }
   }
 
   return (
@@ -76,66 +78,21 @@ export default function InventoryManagement() {
       title={"재고 관리"}
       headerChildren={
         <ButtonGroup spacing="3">
-          <Button variant="outline" colorScheme="red" onClick={deleteSelected}>
+          <Button variant="outline" colorScheme="red" onClick={deleteAll}>
             삭제
           </Button>
         </ButtonGroup>
       }
     >
-      <DataGrid
-        autoHeight={true}
-        pagination
-        checkboxSelection
-        disableSelectionOnClick
-        disableColumnSelector
-        onSelectionModelChange={onSelectionModelChange}
-        getRowId={(r) => r._id}
-        rows={products}
-        columns={[
-          {
-            headerName: "제품명",
-            field: "name",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-          },
-          {
-            headerName: "규격",
-            field: "standard",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-          },
-          {
-            headerName: "두께",
-            field: "thickness",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-          },
-          {
-            headerName: "폭",
-            field: "width",
-            flex: 1,
-            headerAlign: "center",
-          },
-          {
-            headerName: "현재고",
-            field: "stock",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-            type: "number",
-          },
-          {
-            headerName: "비고",
-            field: "note",
-            flex: 1,
-            headerAlign: "center",
-            align: "center",
-          },
-        ]}
-      />
+      <Tabs onChange={onTabChange} isFitted>
+        <TabList>
+          <Tab>{"전체"}</Tab>
+          {productTypes.map((type, index) => (
+            <Tab key={index}>{type.name}</Tab>
+          ))}
+        </TabList>
+      </Tabs>
+      {mainTable.component}
     </PageContainer>
   );
 }

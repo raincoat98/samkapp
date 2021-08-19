@@ -9,9 +9,11 @@ import {
   useGlobalFilter,
   useSortBy,
   useAsyncDebounce,
+  usePagination,
   HeaderGroup,
   Column,
   Cell,
+  Row,
   TableHeaderProps,
 } from "react-table";
 import {
@@ -19,10 +21,13 @@ import {
   Table,
   Thead,
   Tbody,
+  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
+  Center,
+  Stack,
+  Button,
   Icon,
   InputGroup,
   InputLeftElement,
@@ -35,9 +40,6 @@ type TableComponentProps = {
   columns: Array<Column>;
   data: Array<any>;
   useIndex?: boolean;
-  onClick?: Function;
-  onSelect?: Function;
-  onDelete?: Function;
   stateReducer?: any;
 };
 
@@ -69,10 +71,15 @@ export default function TableComponent(props: TableComponentProps) {
       data: memoData,
       stateReducer: props.stateReducer,
       autoResetHiddenColumns: false,
+      initialState: {
+        // @ts-ignore
+        pageSize: 30,
+      },
     },
     useFilters,
     useGlobalFilter,
     useSortBy,
+    usePagination,
     useRowSelect,
     (hooks) => {
       hooks.visibleColumns.push((columns) => {
@@ -82,8 +89,8 @@ export default function TableComponent(props: TableComponentProps) {
         optionColumns.push({
           id: SELECTION_COLUMN,
           // @ts-ignore
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <TableCheckbox {...getToggleAllRowsSelectedProps()} />
+          Header: ({ getToggleAllPageRowsSelectedProps }) => (
+            <TableCheckbox {...getToggleAllPageRowsSelectedProps()} />
           ),
           // @ts-ignore
           Cell: ({ row }) => (
@@ -104,12 +111,29 @@ export default function TableComponent(props: TableComponentProps) {
       });
     }
   );
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
     state: tableState,
+    // @ts-ignore
+    page,
+    // @ts-ignore
+    canPreviousPage,
+    // @ts-ignore
+    canNextPage,
+    // @ts-ignore
+    pageOptions,
+    // @ts-ignore
+    pageCount,
+    // @ts-ignore
+    gotoPage,
+    // @ts-ignore
+    nextPage,
+    // @ts-ignore
+    previousPage,
     // @ts-ignore
     preGlobalFilteredRows,
     // @ts-ignore
@@ -149,15 +173,11 @@ export default function TableComponent(props: TableComponentProps) {
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {tableInstance.rows.map((row) => {
+          {page.map((row: Row) => {
             prepareRow(row);
             return (
               <Tr
                 {...row.getRowProps()}
-                onClick={() => {
-                  // 클릭시 원본 데이터 리턴
-                  if (props.onClick) props.onClick(row.original);
-                }}
                 _hover={{
                   background: backgroundColorSelected,
                 }}
@@ -169,7 +189,38 @@ export default function TableComponent(props: TableComponentProps) {
             );
           })}
         </Tbody>
-        <TableCaption>목록의 마지막입니다.</TableCaption>
+        <Tfoot>
+          <Tr>
+            <Th colSpan={tableInstance.visibleColumns.length}>
+              <Center>
+                <Stack direction="column" spacing={3} isInline={true}>
+                  <Button
+                    onClick={() => gotoPage(0)}
+                    disabled={!canPreviousPage}
+                  >
+                    맨 앞으로
+                  </Button>
+                  <Button onClick={previousPage} isDisabled={!canPreviousPage}>
+                    이전
+                  </Button>
+                  <Center>
+                    {/* @ts-ignore */}
+                    {tableState.pageIndex + 1} / {pageOptions.length}
+                  </Center>
+                  <Button onClick={nextPage} isDisabled={!canNextPage}>
+                    다음
+                  </Button>
+                  <Button
+                    onClick={() => gotoPage(pageCount - 1)}
+                    disabled={!canNextPage}
+                  >
+                    맨 뒤로
+                  </Button>
+                </Stack>
+              </Center>
+            </Th>
+          </Tr>
+        </Tfoot>
       </Table>
     ),
   };

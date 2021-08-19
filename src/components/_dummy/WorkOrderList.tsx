@@ -29,8 +29,6 @@ export function WorkOrderListTable() {
     setWorkOrderDetailActive(!workOrderDetailActive);
   };
 
-  const dispatch = useDispatch();
-
   const data = workOrderList;
   const columns = [
     {
@@ -62,18 +60,7 @@ export function WorkOrderListTable() {
   const table = TableComponent({
     columns: columns,
     data: data,
-    onClick: (original: any) => {
-      selectWorkOrder(original.id);
-    },
   });
-
-  function selectWorkOrder(id: string) {
-    dispatch({
-      type: "work-order/selectWorkOrder",
-      payload: id,
-    });
-    toggleWorkOrderDetail();
-  }
 
   return (
     <>
