@@ -17,13 +17,10 @@ export default function InventoryManagement() {
   const spinnerDisclosure = useDisclosure();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
-  const [productTypes, setProductTypes] = React.useState<any[]>([]);
+  const [productNames, setProductNames] = React.useState<string[]>([]);
   const [products, setProducts] = React.useState<any[]>([]);
 
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
-  const productTypeCollection = mongodb
-    ?.db("database")
-    .collection("product_type");
   const productCollection = mongodb?.db("database").collection("product");
 
   // 테이블
@@ -63,9 +60,14 @@ export default function InventoryManagement() {
     async function init() {
       spinnerDisclosure.onOpen();
 
-      if (productTypeCollection)
-        await setProductTypes(await productTypeCollection.find());
-      if (productCollection) await setProducts(await productCollection.find());
+      if (productCollection) {
+        await realmApp?.currentUser?.functions
+          .get_product_names()
+          .then((names: string[]) => {
+            setProductNames(names);
+          });
+        await setProducts(await productCollection.find());
+      }
       console.log("updated");
 
       spinnerDisclosure.onClose();
@@ -97,10 +99,10 @@ export default function InventoryManagement() {
   }
 
   async function onTabChange(tab: number) {
-    const type = productTypes[--tab];
-    if (type) {
+    const name = productNames[--tab];
+    if (name) {
       // @ts-ignore
-      mainTable.tableInstance.setAllFilters([{ id: "name", value: type.name }]);
+      mainTable.tableInstance.setAllFilters([{ id: "name", value: name }]);
     } else {
       // @ts-ignore
       mainTable.tableInstance.setAllFilters([]);
@@ -127,8 +129,8 @@ export default function InventoryManagement() {
         <Tabs onChange={onTabChange} isFitted>
           <TabList>
             <Tab>{"전체"}</Tab>
-            {productTypes.map((type, index) => (
-              <Tab key={index}>{type.name}</Tab>
+            {productNames.map((name, index) => (
+              <Tab key={index}>{name}</Tab>
             ))}
           </TabList>
         </Tabs>
