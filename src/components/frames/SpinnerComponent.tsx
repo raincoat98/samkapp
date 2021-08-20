@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 import {
   Center,
   Spinner,
@@ -7,25 +9,19 @@ import {
   ModalContent,
 } from "@chakra-ui/react";
 
-export default function SpinnerComponent(
-  props: SpinnerProps & {
-    isOpen: boolean;
-  }
-) {
-  const { children, isOpen, ...rest } = props;
+export default function SpinnerComponent(props: SpinnerProps) {
+  const { children, ...rest } = props;
 
-  if (isOpen) {
-    return (
-      <Modal isOpen={isOpen} onClose={() => {}} isCentered={true}>
-        <ModalOverlay />
-        <ModalContent background="none" boxShadow="none">
-          <Center>
-            <Spinner {...rest} />
-          </Center>
-        </ModalContent>
-      </Modal>
-    );
-  } else {
-    return <></>;
-  }
+  const isProgress = useSelector((state: RootState) => state.system.isProgress);
+
+  return (
+    <Modal isOpen={isProgress} onClose={() => {}} isCentered={true}>
+      <ModalOverlay />
+      <ModalContent background="none" boxShadow="none">
+        <Center>
+          <Spinner {...rest} />
+        </Center>
+      </ModalContent>
+    </Modal>
+  );
 }

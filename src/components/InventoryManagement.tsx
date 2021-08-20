@@ -1,21 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { product, productSchema } from "realmObjectModes";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import SpinnerComponent from "components/frames/SpinnerComponent";
-import {
-  useDisclosure,
-  ButtonGroup,
-  Button,
-  Tabs,
-  TabList,
-  Tab,
-} from "@chakra-ui/react";
+import { ButtonGroup, Button, Tabs, TabList, Tab } from "@chakra-ui/react";
 
 export default function InventoryManagement() {
-  const spinnerDisclosure = useDisclosure();
+  const dispatch = useDispatch();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
@@ -61,7 +53,9 @@ export default function InventoryManagement() {
     init();
 
     async function init() {
-      spinnerDisclosure.onOpen();
+      dispatch({
+        type: "system/openProgress",
+      });
 
       if (productCollection) {
         await realmApp?.currentUser?.functions
@@ -80,7 +74,9 @@ export default function InventoryManagement() {
             console.log("watch start");
             watchStart(productCollection);
 
-            spinnerDisclosure.onClose();
+            dispatch({
+              type: "system/closeProgress",
+            });
           });
       }
     }
@@ -104,7 +100,9 @@ export default function InventoryManagement() {
   }
 
   async function deleteSelected() {
-    spinnerDisclosure.onOpen();
+    dispatch({
+      type: "system/openProgress",
+    });
 
     const selectedProductIds: any[] = [];
     const rowsById = mainTable.tableInstance.rowsById;
@@ -124,7 +122,9 @@ export default function InventoryManagement() {
         }
       });
 
-    spinnerDisclosure.onClose();
+    dispatch({
+      type: "system/closeProgress",
+    });
   }
 
   async function onTabChange(tab: number) {
@@ -139,32 +139,25 @@ export default function InventoryManagement() {
   }
 
   return (
-    <>
-      <SpinnerComponent isOpen={spinnerDisclosure.isOpen} />
-      <PageContainer
-        title={"재고 관리"}
-        headerChildren={
-          <ButtonGroup spacing="3">
-            <Button
-              variant="outline"
-              colorScheme="red"
-              onClick={deleteSelected}
-            >
-              삭제
-            </Button>
-          </ButtonGroup>
-        }
-      >
-        <Tabs onChange={onTabChange} isFitted>
-          <TabList>
-            <Tab>{"전체"}</Tab>
-            {productNames.map((name, index) => (
-              <Tab key={index}>{name}</Tab>
-            ))}
-          </TabList>
-        </Tabs>
-        {mainTable.component}
-      </PageContainer>
-    </>
+    <PageContainer
+      title={"재고 관리"}
+      headerChildren={
+        <ButtonGroup spacing="3">
+          <Button variant="outline" colorScheme="red" onClick={deleteSelected}>
+            삭제
+          </Button>
+        </ButtonGroup>
+      }
+    >
+      <Tabs onChange={onTabChange} isFitted>
+        <TabList>
+          <Tab>{"전체"}</Tab>
+          {productNames.map((name, index) => (
+            <Tab key={index}>{name}</Tab>
+          ))}
+        </TabList>
+      </Tabs>
+      {mainTable.component}
+    </PageContainer>
   );
 }

@@ -5,6 +5,7 @@ import logo from "images/logo.png";
 type colorType = { light: string; dark: string };
 
 export type SystemState = {
+  isProgress: boolean;
   credentials: RealmWeb.Credentials | null;
   appName: string;
   logo: string;
@@ -15,6 +16,7 @@ export type SystemState = {
 };
 
 const initialState: SystemState = {
+  isProgress: false,
   credentials: null,
   appName: "SamKapp",
   logo: logo,
@@ -28,6 +30,12 @@ const userSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
+    openProgress(state, action: PayloadAction<boolean>) {
+      state.isProgress = true;
+    },
+    closeProgress(state, action: PayloadAction<boolean>) {
+      state.isProgress = false;
+    },
     setCredentials(state, action: PayloadAction<RealmWeb.Credentials>) {
       state.credentials = action.payload;
     },
