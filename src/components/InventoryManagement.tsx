@@ -18,7 +18,8 @@ export default function InventoryManagement() {
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
-  const [products, setProducts] = React.useState<any[]>([]);
+  // const [products, setProducts] = React.useState<any[]>([]);
+  const products = React.useRef<any[]>([]);
 
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
   const productCollection = mongodb?.db("database").collection("product");
@@ -51,7 +52,7 @@ export default function InventoryManagement() {
         accessor: "note",
       },
     ],
-    data: products,
+    data: products.current,
   });
 
   React.useEffect(() => {
@@ -66,15 +67,37 @@ export default function InventoryManagement() {
           .then((names: string[]) => {
             setProductNames(names);
           });
-        await setProducts(await productCollection.find());
 
-        console.log("updated");
-        spinnerDisclosure.onClose();
+        await productCollection
+          .find()
+          .then((value) => {
+            products.current = value;
+            console.log("updated");
+          })
+          .finally(() => {
+            console.log("watch start");
+            watchStart(productCollection);
+
+            spinnerDisclosure.onClose();
+          });
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function watchStart(collection: any) {
+    for await (const changeEvent of collection.watch()) {
+      console.log("changeEvent:", changeEvent);
+      switch (changeEvent.operationType) {
+        case "delete": {
+          products.current = products.current.filter(
+            (product) => !product._id.equals(changeEvent.documentKey._id)
+          );
+        }
+      }
+    }
+  }
 
   async function deleteSelected() {
     spinnerDisclosure.onOpen();
