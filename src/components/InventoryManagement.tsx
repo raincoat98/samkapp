@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
+import { product, productSchema } from "realmObjectModes";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import SpinnerComponent from "components/frames/SpinnerComponent";
@@ -18,11 +19,12 @@ export default function InventoryManagement() {
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
-  // const [products, setProducts] = React.useState<any[]>([]);
-  const products = React.useRef<any[]>([]);
+  const products = React.useRef<product[]>([]);
 
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
-  const productCollection = mongodb?.db("database").collection("product");
+  const productCollection = mongodb
+    ?.db("database")
+    .collection<product>("product");
 
   // 테이블
   const mainTable = TableComponent({
@@ -86,7 +88,9 @@ export default function InventoryManagement() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function watchStart(collection: any) {
+  async function watchStart(
+    collection: Realm.Services.MongoDB.MongoDBCollection<product>
+  ) {
     for await (const changeEvent of collection.watch()) {
       console.log("changeEvent:", changeEvent);
       switch (changeEvent.operationType) {

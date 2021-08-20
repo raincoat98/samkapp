@@ -41,6 +41,12 @@
         "licenseUrl": "https://github.com/testing-library/user-event/raw/master/LICENSE",
         "parents": "my-app"
     },
+    "@types/bson@4.0.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "my-app"
+    },
     "@types/chart.js@2.9.34": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
@@ -93,6 +99,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "my-app"
+    },
+    "bson@4.5.0": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/mongodb/js-bson",
+        "licenseUrl": "https://github.com/mongodb/js-bson/raw/master/LICENSE.md",
         "parents": "my-app"
     },
     "chart.js@3.5.0": {
