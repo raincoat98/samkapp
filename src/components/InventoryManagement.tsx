@@ -67,18 +67,19 @@ export default function InventoryManagement() {
             setProductNames(names);
           });
         await setProducts(await productCollection.find());
-      }
-      console.log("updated");
 
-      spinnerDisclosure.onClose();
+        console.log("updated");
+        spinnerDisclosure.onClose();
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function deleteSelected() {
     spinnerDisclosure.onOpen();
 
-    const selectedProductIds: string[] = [];
+    const selectedProductIds: any[] = [];
     const rowsById = mainTable.tableInstance.rowsById;
     // @ts-ignore
     const selectedRowIds = mainTable.tableInstance.state.selectedRowIds;
@@ -88,13 +89,14 @@ export default function InventoryManagement() {
       selectedProductIds.push(rowsById[key].original._id);
     }
 
-    for (let i = 0; i < selectedProductIds.length; i++) {
-      await realmApp?.currentUser?.functions
-        .delete_product({ _id: selectedProductIds[i] })
-        .then((result) => {
+    await realmApp?.currentUser?.functions
+      .delete_product_by_id(selectedProductIds)
+      .then((result) => {
+        if (result.succeed) {
           console.log(result);
-        });
-    }
+        }
+      });
+
     spinnerDisclosure.onClose();
   }
 
