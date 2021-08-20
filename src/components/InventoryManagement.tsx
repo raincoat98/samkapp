@@ -12,11 +12,9 @@ export default function InventoryManagement() {
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
   const products = React.useRef<product[]>([]);
-
-  const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
-  const productCollection = mongodb
-    ?.db("database")
-    .collection<product>("product");
+  const productCollection = useSelector((state: RootState) =>
+    state.realm.database?.collection<product>("product")
+  );
 
   // 테이블
   const mainTable = TableComponent({

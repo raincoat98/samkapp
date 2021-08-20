@@ -22,15 +22,27 @@ function App() {
   );
   const routes = useSelector((state: RootState) => state.router.routes);
 
-  const realmApp = useSelector((state: RootState) => state.realm.app);
+  let realmApp = useSelector((state: RootState) => state.realm.app);
   const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
 
-  if (!realmApp) {
-    dispatch({
-      type: "realm/init",
-      payload: new RealmWeb.App({ id: realmAppId }),
-    });
+  try {
+    if (!realmApp) {
+      let realmApp = new RealmWeb.App({ id: realmAppId });
+      const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
+      const database = mongodb?.db("database");
+
+      dispatch({
+        type: "realm/init",
+        payload: {
+          app: realmApp,
+          mongodb,
+          database,
+        },
+      });
+    }
+  } catch (err) {
+    throw err;
   }
 
   return (
