@@ -3,27 +3,21 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import realm from "./realm";
-import database from "./database";
 import icon from "./icon";
 import router from "./router";
 import system from "./system";
-import work from "./work";
-import workOrder from "./work-order";
 
 const rootReducer = combineReducers({
   realm,
-  database,
   icon,
   router,
   system,
-  work,
-  workOrder,
 });
 
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["work", "workOrder", "system"],
+  // whitelist: [],
 };
 
 export default persistReducer(persistConfig, rootReducer);

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import CustomerManage from "components/MasterDataManagement/CustomerManage";
 import Setting from "components/Setting";
-import ToolManage from "components/ToolManagement/ToolManage";
 import InventoryManagement from "components/InventoryManagement";
 import ProcessManage from "components/Monitoring/ProcessManage";
 import Announcement from "components/SystemManagement/Announcement";
@@ -27,34 +26,6 @@ const initialState: RouterState = {
       id: "Customer Management",
       path: "/customer_manage",
       component: CustomerManage,
-    },
-
-    // 도구 관리
-    {
-      id: "Tool Management",
-      path: "/tool_manage",
-      component: ToolManage,
-      params: ["/:id"],
-    },
-    {
-      id: "Wooden Management",
-      path: "/tool_manage/wooden",
-      component: ToolManage,
-    },
-    {
-      id: "Stash Management",
-      path: "/tool_manage/stash",
-      component: ToolManage,
-    },
-    {
-      id: "Typesetting Paper Management",
-      path: "/tool_manage/typesetting_paper",
-      component: ToolManage,
-    },
-    {
-      id: "Typesetting Paper Hanger Management",
-      path: "/tool_manage/typesetting_paper_hanger",
-      component: ToolManage,
     },
 
     // 재고관리
