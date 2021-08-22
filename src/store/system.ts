@@ -37,5 +37,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const {} = actions;
+export const { openProgress, closeProgress } = actions;
 export default reducer;

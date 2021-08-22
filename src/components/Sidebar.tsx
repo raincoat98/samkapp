@@ -48,6 +48,10 @@ export default function Sidebar() {
         variant="outline"
         justify="center"
       >
+        <Link to={"/customer_manage"}>
+          <Button w="100%">{t("고객 관리")}</Button>
+        </Link>
+        <br />
         <Link to={"/inventory_manage"}>
           <Button w="100%">{t("재고 관리")}</Button>
         </Link>

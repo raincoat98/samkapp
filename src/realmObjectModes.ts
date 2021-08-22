@@ -25,3 +25,35 @@ export const productSchema = {
   },
   primaryKey: "_id",
 };
+
+export type customer = {
+  _id: bson.ObjectId;
+  companyAddress?: string;
+  companyFax?: string;
+  companyName: string;
+  companyPhone?: string;
+  email?: string;
+  name: string;
+  note?: string;
+  phone?: string;
+  rank?: string;
+  user_id: string;
+};
+
+export const customerSchema = {
+  name: "customer",
+  properties: {
+    _id: "objectId",
+    companyAddress: "string?",
+    companyFax: "string?",
+    companyName: "string",
+    companyPhone: "string?",
+    email: "string?",
+    name: "string",
+    note: "string?",
+    phone: "string?",
+    rank: "string?",
+    user_id: "string",
+  },
+  primaryKey: "_id",
+};

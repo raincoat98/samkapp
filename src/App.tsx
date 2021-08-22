@@ -16,6 +16,10 @@ import SpinnerComponent from "components/frames/SpinnerComponent";
 function App() {
   const dispatch = useDispatch();
 
+  dispatch({
+    type: "system/closeProgress",
+  });
+
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );

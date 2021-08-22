@@ -1,261 +1,102 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { useTranslation } from "react-i18next";
+import { customer, customerSchema } from "realmObjectModes";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import CustomerManageDialog from "./CustomerManageDialog";
 import CustomerManageDrawer from "./CustomerManageDrawer";
-import faker from "faker";
-import {
-  useDisclosure,
-  ButtonGroup,
-  Button,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+import { useDisclosure, ButtonGroup, Button } from "@chakra-ui/react";
 
 export default function CustomerManage() {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
-
   const drawerDisclosure = useDisclosure();
-  const dialogDisclosure = useDisclosure();
 
-  const selectedRowIds = React.useRef<string[]>([]);
+  const realmApp = useSelector((state: RootState) => state.realm.app);
+  const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
+  const customerCollection = mongodb
+    ?.db("database")
+    ?.collection<customer>("customer");
+  const customerList = React.useRef<customer[]>([]);
+  const customerColumns: any[] = [];
 
-  // 0 === customerList, 1 === vendorList
-  const [currentTabIndex, setCurrentTabIndex] = React.useState(0);
+  // for (const key in customerSchema.properties) {
+  //   console.log(key);
 
-  const customerList = useSelector(
-    (state: RootState) => state.database.customer
-  );
-  const vendorList = useSelector((state: RootState) => state.database.vendor);
+  //   customerColumns.push({
+  //     Header: key,
+  //     accessor: key,
+  //   });
+  // }
 
-  const customerColumns = [
-    {
-      Header: t("Customer name"),
-      accessor: "companyName",
-    },
-    {
-      Header: t("Manager name"),
-      accessor: "managerName",
-    },
-    {
-      Header: t("Contact"),
-      accessor: "contact",
-    },
-    {
-      Header: t("Fax"),
-      accessor: "fax",
-    },
-    {
-      Header: t("Address"),
-      accessor: "address",
-    },
-  ];
-
-  const vendorColumns = [
-    {
-      Header: t("Vendor name"),
-      accessor: "companyName",
-    },
-    {
-      Header: t("Manager name"),
-      accessor: "managerName",
-    },
-    {
-      Header: t("Contact"),
-      accessor: "contact",
-    },
-    {
-      Header: t("Fax"),
-      accessor: "fax",
-    },
-    {
-      Header: t("Address"),
-      accessor: "address",
-    },
-  ];
-
-  let customerTableInstance: any;
   const CustomerTable = TableComponent({
     columns: customerColumns,
-    data: customerList,
-    stateReducer: React.useCallback(
-      (newState: any, action: any) => {
-        if (customerTableInstance && action.type !== "init") {
-          updateSelectedRowIds({
-            tableInstance: customerTableInstance,
-            newState,
-          });
-        }
-        return newState;
-      },
-      [customerTableInstance]
-    ),
+    data: customerList.current,
   });
-  customerTableInstance = CustomerTable.tableInstance;
 
-  let vendorTableInstance: any;
-  const VendorTable = TableComponent({
-    columns: vendorColumns,
-    data: vendorList,
-    stateReducer: React.useCallback(
-      (newState: any, action: any) => {
-        if (vendorTableInstance && action.type !== "init") {
-          updateSelectedRowIds({
-            tableInstance: vendorTableInstance,
-            newState,
-          });
-        }
-        return newState;
-      },
-      [vendorTableInstance]
-    ),
-  });
-  vendorTableInstance = VendorTable.tableInstance;
+  React.useEffect(() => {
+    init();
 
-  function updateSelectedRowIds(props: { tableInstance: any; newState: any }) {
-    const selectedRows: string[] = [];
-    const rows = props.tableInstance.rows;
-    for (let i = 0; i < rows.length; i++) {
-      for (const key in props.newState.selectedRowIds) {
-        if (rows[i].id === key)
-          // @ts-ignore
-          selectedRows.push(rows[i].original.id);
-      }
-    }
-    selectedRowIds.current = [...selectedRows];
-  }
-
-  function deleteCustomerAndVendor() {
-    for (let i = 0; i < selectedRowIds.current.length; i++) {
-      if (currentTabIndex === 0) {
+    async function init() {
+      if (customerCollection) {
         dispatch({
-          type: "database/deleteCustomer",
-          payload: selectedRowIds.current[i],
+          type: "system/openProgress",
         });
-      } else if (currentTabIndex === 1) {
+
+        await customerCollection.find().then((value) => {
+          console.log("customer", value);
+          customerList.current = value;
+        });
+
+        console.log(customerList.current);
+
         dispatch({
-          type: "database/deleteVendor",
-          payload: selectedRowIds.current[i],
+          type: "system/closeProgress",
         });
       }
     }
-  }
 
-  function addCustomerOrVendor(props: {
-    isCustomer?: boolean;
-    data: {
-      companyName: string;
-      managerName: string;
-      contact: string;
-      fax: string;
-      address: string;
-      description: string;
-    };
-  }) {
-    dispatch({
-      type: "database/" + (props.isCustomer ? "addCustomer" : "addVendor"),
-      payload: props.data,
-    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function addCustomer() {
     drawerDisclosure.onClose();
   }
 
-  function makeDummy() {
-    for (let index = 0; index < 10; index++) {
-      addCustomerOrVendor({
-        isCustomer: index < 5 ? true : false,
-        data: {
-          companyName: faker.company.companyName(),
-          managerName: faker.fake(
-            "{{name.lastName}}, {{name.firstName}} {{name.suffix}}"
-          ),
-          contact: faker.phone.phoneNumber(),
-          fax: faker.phone.phoneNumber(),
-          address: faker.address.streetAddress(),
-          description: faker.lorem.words(),
-        },
-      });
-    }
-  }
-
-  function onTabIndexChange(tabIndex: number) {
-    setCurrentTabIndex(tabIndex);
-
-    // @ts-ignore
-    if (customerTableInstance) {
-      // @ts-ignore
-      customerTableInstance.state.selectedRowIds = {};
-      selectedRowIds.current.splice(0);
-    }
+  function uploadCustomer() {
+    //   customerCollection
+    //     .insertMany(customerJson)
+    //     .then((result) => {
+    //       console.log(
+    //         `Successfully inserted ${result.insertedIds.length} items!`
+    //       );
+    //       return result;
+    //     })
+    //     .catch((err) => console.error(`Failed to insert documents: ${err}`));
+    // }
   }
 
   return (
     <PageContainer
-      title={t("Customer Management")}
+      title={"고객관리"}
       headerChildren={
         <ButtonGroup spacing="3">
-          <Button variant="outline" onClick={makeDummy}>
-            더미 데이터 생성
-          </Button>
-          <Button
-            onClick={dialogDisclosure.onOpen}
-            colorScheme="red"
-            isDisabled={selectedRowIds.current?.length ? false : true}
-          >
-            {t("Delete")}
+          <Button onClick={uploadCustomer} colorScheme="blue">
+            업로드
           </Button>
           <Button onClick={drawerDisclosure.onOpen} colorScheme="blue">
-            {t("Add")}
+            추가
           </Button>
         </ButtonGroup>
       }
     >
-      <Tabs isFitted onChange={onTabIndexChange}>
-        <TabList>
-          <Tab>{t("Customer")}</Tab>
-          <Tab>{t("Vendor")}</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel p={0}>{CustomerTable.component}</TabPanel>
-          <TabPanel p={0}>{VendorTable.component}</TabPanel>
-        </TabPanels>
-      </Tabs>
+      {CustomerTable.component}
 
       {/* 추가 폼 */}
       <CustomerManageDrawer
         isOpen={drawerDisclosure.isOpen}
         onClose={drawerDisclosure.onClose}
-        onSubmit={addCustomerOrVendor}
+        onSubmit={addCustomer}
       />
-
-      <CustomerManageDialog
-        isOpen={dialogDisclosure.isOpen}
-        onClose={dialogDisclosure.onClose}
-        leastDestructiveRef={undefined}
-        headerChildren={"선택한 항목 삭제"}
-        footerChildren={
-          <ButtonGroup>
-            <Button onClick={dialogDisclosure.onClose}>{t("Cancel")}</Button>
-            <Button
-              colorScheme="red"
-              onClick={() => {
-                dialogDisclosure.onClose();
-                deleteCustomerAndVendor();
-              }}
-            >
-              {t("Delete")}
-            </Button>
-          </ButtonGroup>
-        }
-      >
-        정말로 삭제하시겠습니까?
-      </CustomerManageDialog>
     </PageContainer>
   );
 }
