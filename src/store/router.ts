@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import CustomerManage from "components/MasterDataManagement/CustomerManage";
 import Setting from "components/Setting";
 import InventoryManagement from "components/InventoryManagement";
-import ProcessManage from "components/Monitoring/ProcessManage";
 import Announcement from "components/SystemManagement/Announcement";
 
 type route = {
@@ -33,13 +32,6 @@ const initialState: RouterState = {
       id: "Inventory Management",
       path: "/inventory_manage",
       component: InventoryManagement,
-    },
-
-    // 모니터링
-    {
-      id: "Process Management",
-      path: "/process_manage",
-      component: ProcessManage,
     },
 
     // 시스템 관리
