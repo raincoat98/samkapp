@@ -1,3 +1,4 @@
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
 import * as RealmWeb from "realm-web";
@@ -28,15 +29,17 @@ function App() {
   const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
 
-  try {
-    const realmApp = new RealmWeb.App({ id: realmAppId });
-    dispatch({
-      type: "realm/init",
-      payload: realmApp,
-    });
-  } catch (err) {
-    throw err;
-  }
+  React.useEffect(() => {
+    init();
+
+    async function init() {
+      const realmApp = new RealmWeb.App({ id: realmAppId });
+      dispatch({
+        type: "realm/init",
+        payload: realmApp,
+      });
+    }
+  }, [dispatch, realmAppId]);
 
   return (
     <div
