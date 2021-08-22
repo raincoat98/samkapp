@@ -1,4 +1,3 @@
-import * as RealmWeb from "realm-web";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import logo from "images/logo.png";
 
@@ -6,7 +5,6 @@ type colorType = { light: string; dark: string };
 
 export type SystemState = {
   isProgress: boolean;
-  credentials: RealmWeb.Credentials | null;
   appName: string;
   logo: string;
   color: {
@@ -17,7 +15,6 @@ export type SystemState = {
 
 const initialState: SystemState = {
   isProgress: false,
-  credentials: null,
   appName: "SamKapp",
   logo: logo,
   color: {
@@ -36,12 +33,9 @@ const userSlice = createSlice({
     closeProgress(state, action: PayloadAction<boolean>) {
       state.isProgress = false;
     },
-    setCredentials(state, action: PayloadAction<RealmWeb.Credentials>) {
-      state.credentials = action.payload;
-    },
   },
 });
 
 const { reducer, actions } = userSlice;
-export const { setCredentials } = actions;
+export const {} = actions;
 export default reducer;

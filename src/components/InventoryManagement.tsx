@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { product, productSchema } from "realmObjectModes";
+import { product } from "realmObjectModes";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import { ButtonGroup, Button, Tabs, TabList, Tab } from "@chakra-ui/react";
@@ -12,9 +12,10 @@ export default function InventoryManagement() {
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
   const products = React.useRef<product[]>([]);
-  const productCollection = useSelector((state: RootState) =>
-    state.realm.database?.collection<product>("product")
-  );
+  const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
+  const productCollection = mongodb
+    ?.db("database")
+    ?.collection<product>("product");
 
   // 테이블
   const mainTable = TableComponent({
