@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { customer, customerSchema } from "realmObjectModes";
+import { customer } from "realmObjectModes";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import CustomerManageDrawer from "./CustomerManageDrawer";
@@ -16,17 +16,37 @@ export default function CustomerManage() {
   const customerCollection = mongodb
     ?.db("database")
     ?.collection<customer>("customer");
+  const customerColumns = [
+    {
+      Header: "성함",
+      accessor: "name",
+    },
+    {
+      Header: "직급",
+      accessor: "rank",
+    },
+    {
+      Header: "이메일",
+      accessor: "email",
+    },
+    {
+      Header: "회사명",
+      accessor: "companyName",
+    },
+    {
+      Header: "회사 전화 번호",
+      accessor: "companyPhone",
+    },
+    {
+      Header: "회사 팩스 번호",
+      accessor: "companyFax",
+    },
+    {
+      Header: "비고",
+      accessor: "note",
+    },
+  ];
   const customerList = React.useRef<customer[]>([]);
-  const customerColumns: any[] = [];
-
-  // for (const key in customerSchema.properties) {
-  //   console.log(key);
-
-  //   customerColumns.push({
-  //     Header: key,
-  //     accessor: key,
-  //   });
-  // }
 
   const CustomerTable = TableComponent({
     columns: customerColumns,
@@ -42,16 +62,16 @@ export default function CustomerManage() {
           type: "system/openProgress",
         });
 
-        await customerCollection.find().then((value) => {
-          console.log("customer", value);
-          customerList.current = value;
-        });
-
-        console.log(customerList.current);
-
-        dispatch({
-          type: "system/closeProgress",
-        });
+        await customerCollection
+          .find()
+          .then((value) => {
+            customerList.current = value;
+          })
+          .finally(() => {
+            dispatch({
+              type: "system/closeProgress",
+            });
+          });
       }
     }
 
@@ -62,18 +82,7 @@ export default function CustomerManage() {
     drawerDisclosure.onClose();
   }
 
-  function uploadCustomer() {
-    //   customerCollection
-    //     .insertMany(customerJson)
-    //     .then((result) => {
-    //       console.log(
-    //         `Successfully inserted ${result.insertedIds.length} items!`
-    //       );
-    //       return result;
-    //     })
-    //     .catch((err) => console.error(`Failed to insert documents: ${err}`));
-    // }
-  }
+  function uploadCustomer() {}
 
   return (
     <PageContainer
