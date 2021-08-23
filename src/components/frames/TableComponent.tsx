@@ -41,6 +41,7 @@ type TableComponentProps = {
   data: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
+  onRowClick?: Function;
 };
 
 const INDEX_COLUMN = "_index";
@@ -178,6 +179,12 @@ export default function TableComponent(props: TableComponentProps) {
             return (
               <Tr
                 {...row.getRowProps()}
+                onClick={(event: any) => {
+                  if (props.onRowClick) {
+                    if (event.target.nodeName === "INPUT") return false;
+                    props.onRowClick({ event, row });
+                  }
+                }}
                 _hover={{
                   background: backgroundColorSelected,
                 }}

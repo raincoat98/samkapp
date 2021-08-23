@@ -2,14 +2,17 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { customer } from "realmObjectModes";
+import { Row } from "react-table";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import CustomerManageDrawer from "./CustomerManageDrawer";
+import CustomerModalComponent from "../CustomerManageModal";
 import { useDisclosure, ButtonGroup, Button } from "@chakra-ui/react";
 
 export default function CustomerManage() {
   const dispatch = useDispatch();
   const drawerDisclosure = useDisclosure();
+  const modalDisclosure = useDisclosure();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
@@ -41,16 +44,14 @@ export default function CustomerManage() {
       Header: "회사 팩스 번호",
       accessor: "companyFax",
     },
-    {
-      Header: "비고",
-      accessor: "note",
-    },
   ];
   const customerList = React.useRef<customer[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
 
   const CustomerTable = TableComponent({
     columns: customerColumns,
     data: customerList.current,
+    onRowClick: editCustomer,
   });
 
   React.useEffect(() => {
@@ -77,6 +78,11 @@ export default function CustomerManage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function editCustomer(props: { event: any; row: Row<{}> }) {
+    setSelectedCustomer(props.row.original as customer);
+    modalDisclosure.onOpen();
+  }
 
   function addCustomer() {
     drawerDisclosure.onClose();
@@ -105,6 +111,13 @@ export default function CustomerManage() {
         isOpen={drawerDisclosure.isOpen}
         onClose={drawerDisclosure.onClose}
         onSubmit={addCustomer}
+      />
+
+      <CustomerModalComponent
+        isOpen={modalDisclosure.isOpen}
+        onClose={modalDisclosure.onClose}
+        customerData={selectedCustomer}
+        children={null}
       />
     </PageContainer>
   );
