@@ -2,11 +2,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import {
   useStyleConfig,
-  Heading,
+  chakra,
   HeadingProps,
   useColorModeValue,
   Flex,
-  Box,
+  Heading,
   Spacer,
 } from "@chakra-ui/react";
 
@@ -20,7 +20,7 @@ export default function PageTitle(props: HeadingProps) {
   );
 
   return (
-    <Heading
+    <chakra.header
       __css={styles}
       {...rest}
       position="sticky"
@@ -31,12 +31,13 @@ export default function PageTitle(props: HeadingProps) {
       bg={useColorModeValue(background.light, background.dark)}
       transition={"var(--chakra-transition-duration-normal)"}
       userSelect="none"
+      zIndex="sticky"
     >
       <Flex align="center">
-        <Box>{title}</Box>
+        <Heading>{title}</Heading>
         <Spacer />
         {children}
       </Flex>
-    </Heading>
+    </chakra.header>
   );
 }
