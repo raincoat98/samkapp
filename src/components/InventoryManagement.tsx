@@ -1,13 +1,23 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { product } from "realmObjectModes";
+import { product, productSchema } from "realmObjectModes";
+import { Row } from "react-table";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import { ButtonGroup, Button, Tabs, TabList, Tab } from "@chakra-ui/react";
+import FormModal from "components/frames/FormModal";
+import {
+  useDisclosure,
+  ButtonGroup,
+  Button,
+  Tabs,
+  TabList,
+  Tab,
+} from "@chakra-ui/react";
 
 export default function InventoryManagement() {
   const dispatch = useDispatch();
+  const modalDisclosure = useDisclosure();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const [productNames, setProductNames] = React.useState<string[]>([]);
@@ -16,6 +26,8 @@ export default function InventoryManagement() {
   const productCollection = mongodb
     ?.db("database")
     ?.collection<product>("product");
+  const [selectedProduct, setSelectedProduct] = React.useState<product>();
+  const [modalMode, setModalMode] = React.useState("");
 
   // 테이블
   const mainTable = TableComponent({
@@ -46,6 +58,7 @@ export default function InventoryManagement() {
       },
     ],
     data: products.current,
+    onRowClick: editProduct,
   });
 
   React.useEffect(() => {
@@ -58,7 +71,7 @@ export default function InventoryManagement() {
 
       if (productCollection) {
         await realmApp?.currentUser?.functions
-          .get_product_names()
+          .product_action("get_names", {})
           .then((names: string[]) => {
             setProductNames(names);
           });
@@ -94,6 +107,70 @@ export default function InventoryManagement() {
             (product) => !product._id.equals(changeEvent.documentKey._id)
           );
         }
+      }
+    }
+  }
+
+  function addProduct() {
+    setModalMode("add");
+    setSelectedProduct(undefined);
+    modalDisclosure.onOpen();
+  }
+
+  function editProduct(props: { event: any; row: Row<{}> }) {
+    setModalMode("edit");
+    setSelectedProduct(props.row.original as product);
+    modalDisclosure.onOpen();
+  }
+
+  async function onSave(form: HTMLFormElement) {
+    let doc: any = {};
+    console.dir(form);
+    for (let index = 0; index < form.length; index++) {
+      const input = form[index] as HTMLInputElement;
+      const id = input.id;
+      doc[id] = input.value;
+    }
+
+    switch (modalMode) {
+      case "add": {
+        dispatch({
+          type: "system/openProgress",
+        });
+
+        await realmApp?.currentUser?.functions
+          .product_action("insert", {
+            doc,
+          })
+          .then((result) => {
+            console.log(result);
+            dispatch({
+              type: "system/closeProgress",
+            });
+            modalDisclosure.onClose();
+          });
+        break;
+      }
+      case "edit": {
+        dispatch({
+          type: "system/openProgress",
+        });
+
+        await realmApp?.currentUser?.functions
+          .product_action("update", {
+            doc,
+            filter: {
+              _id: doc._id,
+            },
+          })
+          .then((result) => {
+            console.log(result);
+            dispatch({
+              type: "system/closeProgress",
+            });
+            modalDisclosure.onClose();
+          });
+        break;
       }
     }
   }
@@ -145,9 +222,21 @@ export default function InventoryManagement() {
           <Button variant="outline" colorScheme="red" onClick={deleteSelected}>
             삭제
           </Button>
+          <Button onClick={addProduct} colorScheme="blue">
+            추가
+          </Button>
         </ButtonGroup>
       }
     >
+      <FormModal
+        schmea={productSchema}
+        mode={modalMode}
+        initialValue={selectedProduct}
+        isOpen={modalDisclosure.isOpen}
+        onSave={onSave}
+        onClose={modalDisclosure.onClose}
+        children={null}
+      />
       <Tabs onChange={onTabChange} isFitted>
         <TabList>
           <Tab>{"전체"}</Tab>
