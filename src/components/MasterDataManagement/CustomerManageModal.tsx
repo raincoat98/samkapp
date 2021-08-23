@@ -40,16 +40,18 @@ export default function CustomerModalComponent(
         });
 
         await realmApp?.currentUser?.functions
-          .insert_customer({
-            name: name.current?.value,
-            rank: rank.current?.value,
-            phone: phone.current?.value,
-            email: email.current?.value,
-            companyName: companyName.current?.value,
-            companyPhone: companyPhone.current?.value,
-            companyFax: companyFax.current?.value,
-            companyAddress: companyAddress.current?.value,
-            note: note.current?.value,
+          .customer_action("insert", {
+            doc: {
+              name: name.current?.value,
+              rank: rank.current?.value,
+              phone: phone.current?.value,
+              email: email.current?.value,
+              companyName: companyName.current?.value,
+              companyPhone: companyPhone.current?.value,
+              companyFax: companyFax.current?.value,
+              companyAddress: companyAddress.current?.value,
+              note: note.current?.value,
+            },
           })
           .then((result) => {
             console.log(result);
@@ -61,6 +63,34 @@ export default function CustomerModalComponent(
         break;
       }
       case "edit": {
+        dispatch({
+          type: "system/openProgress",
+        });
+
+        await realmApp?.currentUser?.functions
+          .customer_action("update", {
+            doc: {
+              name: name.current?.value,
+              rank: rank.current?.value,
+              phone: phone.current?.value,
+              email: email.current?.value,
+              companyName: companyName.current?.value,
+              companyPhone: companyPhone.current?.value,
+              companyFax: companyFax.current?.value,
+              companyAddress: companyAddress.current?.value,
+              note: note.current?.value,
+            },
+            filter: {
+              _id: customerData?._id,
+            },
+          })
+          .then((result) => {
+            console.log(result);
+            dispatch({
+              type: "system/closeProgress",
+            });
+            props.onClose();
+          });
         break;
       }
     }
