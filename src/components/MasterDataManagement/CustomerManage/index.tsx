@@ -5,7 +5,7 @@ import { customer } from "realmObjectModes";
 import { Row } from "react-table";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import CustomerModalComponent from "../CustomerManageModal";
+import CustomerModalComponent from "./CustomerManageModal";
 import { useDisclosure, ButtonGroup, Button } from "@chakra-ui/react";
 
 export default function CustomerManage() {
