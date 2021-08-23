@@ -5,13 +5,11 @@ import { customer } from "realmObjectModes";
 import { Row } from "react-table";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
-import CustomerManageDrawer from "./CustomerManageDrawer";
 import CustomerModalComponent from "../CustomerManageModal";
 import { useDisclosure, ButtonGroup, Button } from "@chakra-ui/react";
 
 export default function CustomerManage() {
   const dispatch = useDispatch();
-  const drawerDisclosure = useDisclosure();
   const modalDisclosure = useDisclosure();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
@@ -47,6 +45,7 @@ export default function CustomerManage() {
   ];
   const customerList = React.useRef<customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
+  const [modalMode, setModalMode] = React.useState("");
 
   const CustomerTable = TableComponent({
     columns: customerColumns,
@@ -80,12 +79,15 @@ export default function CustomerManage() {
   }, []);
 
   function editCustomer(props: { event: any; row: Row<{}> }) {
+    setModalMode("edit");
     setSelectedCustomer(props.row.original as customer);
     modalDisclosure.onOpen();
   }
 
   function addCustomer() {
-    drawerDisclosure.onClose();
+    setModalMode("add");
+    setSelectedCustomer(undefined);
+    modalDisclosure.onOpen();
   }
 
   function uploadCustomer() {}
@@ -98,7 +100,7 @@ export default function CustomerManage() {
           <Button onClick={uploadCustomer} colorScheme="blue">
             업로드
           </Button>
-          <Button onClick={drawerDisclosure.onOpen} colorScheme="blue">
+          <Button onClick={addCustomer} colorScheme="blue">
             추가
           </Button>
         </ButtonGroup>
@@ -107,16 +109,11 @@ export default function CustomerManage() {
       {CustomerTable.component}
 
       {/* 추가 폼 */}
-      <CustomerManageDrawer
-        isOpen={drawerDisclosure.isOpen}
-        onClose={drawerDisclosure.onClose}
-        onSubmit={addCustomer}
-      />
-
       <CustomerModalComponent
         isOpen={modalDisclosure.isOpen}
         onClose={modalDisclosure.onClose}
         customerData={selectedCustomer}
+        mode={modalMode}
         children={null}
       />
     </PageContainer>
