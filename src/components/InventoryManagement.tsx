@@ -48,7 +48,7 @@ export default function InventoryManagement() {
 
       if (productCollection) {
         await realmApp?.currentUser?.functions
-          .product_action("get_names", {})
+          .action("get_names", { collectionName: "product" })
           .then((names: string[]) => {
             setProductNames(names);
           });
@@ -60,9 +60,6 @@ export default function InventoryManagement() {
             console.log("updated");
           })
           .finally(() => {
-            console.log("watch start");
-            watchStart(productCollection);
-
             dispatch({
               type: "system/closeProgress",
             });
@@ -72,21 +69,6 @@ export default function InventoryManagement() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  async function watchStart(
-    collection: Realm.Services.MongoDB.MongoDBCollection<product>
-  ) {
-    for await (const changeEvent of collection.watch()) {
-      console.log("changeEvent:", changeEvent);
-      switch (changeEvent.operationType) {
-        case "delete": {
-          productList.current = productList.current.filter(
-            (product) => !product._id.equals(changeEvent.documentKey._id)
-          );
-        }
-      }
-    }
-  }
 
   function addProduct() {
     setModalMode("insert");
@@ -112,12 +94,10 @@ export default function InventoryManagement() {
       type: "system/openProgress",
     });
 
-    const result = await realmApp?.currentUser?.functions.product_action(
-      "insert",
-      {
-        doc,
-      }
-    );
+    const result = await realmApp?.currentUser?.functions.action("insert", {
+      collectionName: "product",
+      doc,
+    });
 
     console.log(result);
     modalDisclosure.onClose();
@@ -138,13 +118,11 @@ export default function InventoryManagement() {
       type: "system/openProgress",
     });
 
-    const result = await realmApp?.currentUser?.functions.product_action(
-      "update",
-      {
-        doc,
-        filter: { _id: doc._id },
-      }
-    );
+    const result = await realmApp?.currentUser?.functions.action("update", {
+      collectionName: "product",
+      doc,
+      filter: { _id: doc._id },
+    });
 
     console.log(result);
     modalDisclosure.onClose();
