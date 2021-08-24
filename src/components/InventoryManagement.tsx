@@ -112,67 +112,68 @@ export default function InventoryManagement() {
   }
 
   function addProduct() {
-    setModalMode("add");
+    setModalMode("insert");
     setSelectedProduct(undefined);
     modalDisclosure.onOpen();
   }
 
   function editProduct(props: { event: any; row: Row<{}> }) {
-    setModalMode("edit");
+    setModalMode("update");
     setSelectedProduct(props.row.original as product);
     modalDisclosure.onOpen();
   }
 
-  async function onSave(form: HTMLFormElement) {
+  async function onInsert(form: HTMLFormElement) {
     let doc: any = {};
-    console.dir(form);
     for (let index = 0; index < form.length; index++) {
       const input = form[index] as HTMLInputElement;
       const id = input.id;
       doc[id] = input.value;
     }
 
-    switch (modalMode) {
-      case "add": {
-        dispatch({
-          type: "system/openProgress",
-        });
+    dispatch({
+      type: "system/openProgress",
+    });
 
-        await realmApp?.currentUser?.functions
-          .product_action("insert", {
-            doc,
-          })
-          .then((result) => {
-            console.log(result);
-            dispatch({
-              type: "system/closeProgress",
-            });
-            modalDisclosure.onClose();
-          });
-        break;
+    const result = await realmApp?.currentUser?.functions.product_action(
+      "insert",
+      {
+        doc,
       }
-      case "edit": {
-        dispatch({
-          type: "system/openProgress",
-        });
+    );
 
-        await realmApp?.currentUser?.functions
-          .product_action("update", {
-            doc,
-            filter: {
-              _id: doc._id,
-            },
-          })
-          .then((result) => {
-            console.log(result);
-            dispatch({
-              type: "system/closeProgress",
-            });
-            modalDisclosure.onClose();
-          });
-        break;
-      }
+    console.log(result);
+    modalDisclosure.onClose();
+    dispatch({
+      type: "system/closeProgress",
+    });
+  }
+
+  async function onUpdate(form: HTMLFormElement) {
+    let doc: any = {};
+    for (let index = 0; index < form.length; index++) {
+      const input = form[index] as HTMLInputElement;
+      const id = input.id;
+      doc[id] = input.value;
     }
+
+    dispatch({
+      type: "system/openProgress",
+    });
+
+    const result = await realmApp?.currentUser?.functions.product_action(
+      "update",
+      {
+        doc,
+        filter: { _id: doc._id },
+      }
+    );
+
+    console.log(result);
+    modalDisclosure.onClose();
+    dispatch({
+      type: "system/closeProgress",
+    });
   }
 
   async function deleteSelected() {
@@ -233,7 +234,8 @@ export default function InventoryManagement() {
         mode={modalMode}
         initialValue={selectedProduct}
         isOpen={modalDisclosure.isOpen}
-        onSave={onSave}
+        onInsert={onInsert}
+        onUpdate={onUpdate}
         onClose={modalDisclosure.onClose}
         children={null}
       />

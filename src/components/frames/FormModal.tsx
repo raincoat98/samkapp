@@ -10,15 +10,18 @@ import {
   ModalProps,
 } from "@chakra-ui/react";
 
+export type modeType = string | "insert" | "update";
+
 export default function InventoryModalComponent(
   props: ModalProps & {
     initialValue?: any;
     schmea: { name: string; primaryKey: string; properties: any };
-    mode: string;
-    onSave: Function;
+    mode: modeType;
+    onInsert?: Function;
+    onUpdate?: Function;
   }
 ) {
-  const { onSave, initialValue, schmea, mode } = props;
+  const { onInsert, onUpdate, initialValue, schmea, mode } = props;
   const formRef = React.useRef<HTMLFormElement>(null);
   const schmeaList: {
     key: string;
@@ -62,6 +65,19 @@ export default function InventoryModalComponent(
     }
   }
 
+  function onSave() {
+    switch (mode) {
+      case "insert": {
+        if (onInsert) onInsert(formRef.current);
+        break;
+      }
+      case "update": {
+        if (onUpdate) onUpdate(formRef.current);
+        break;
+      }
+    }
+  }
+
   return (
     <ModalComponent
       isOpen={props.isOpen}
@@ -69,16 +85,10 @@ export default function InventoryModalComponent(
       isCentered={true}
       size="2xl"
       scrollBehavior="inside"
-      headerChildren={mode === "add" ? "추가" : "수정"}
+      headerChildren={mode === "insert" ? "추가" : "수정"}
       footerChildren={
         <ButtonGroup>
-          <Button
-            type="submit"
-            onClick={() => {
-              onSave(formRef.current);
-            }}
-            colorScheme="blue"
-          >
+          <Button type="submit" onClick={onSave} colorScheme="blue">
             저장
           </Button>
           <Button onClick={props.onClose}>닫기</Button>
