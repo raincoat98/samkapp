@@ -17,11 +17,10 @@ export default function InventoryModalComponent(
     initialValue?: any;
     schmea: Record<string, any>;
     mode: modeType;
-    onInsert?: Function;
-    onUpdate?: Function;
+    onChange: Function;
   }
 ) {
-  const { onInsert, onUpdate, initialValue, schmea, mode } = props;
+  const { onChange, initialValue, schmea, mode } = props;
   const formRef = React.useRef<HTMLFormElement>(null);
   const schmeaList: {
     key: string;
@@ -81,25 +80,11 @@ export default function InventoryModalComponent(
       }
     }
 
-    console.log(doc);
-
-    switch (mode) {
-      case "insert": {
-        if (onInsert)
-          onInsert({
-            document: doc,
-          });
-        break;
-      }
-      case "update": {
-        if (onUpdate)
-          onUpdate({
-            document: doc,
-            initialValue,
-          });
-        break;
-      }
-    }
+    onChange({
+      type: mode,
+      document: doc,
+      initialValue,
+    });
   }
 
   return (

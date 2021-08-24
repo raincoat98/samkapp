@@ -85,44 +85,37 @@ export default function InventoryManagement() {
     modalDisclosure.onOpen();
   }
 
-  async function onInsert(props: { document: Record<string, any> }) {
-    if (realmApp?.currentUser) {
-      const { document } = props;
-
-      dispatch({
-        type: "system/openProgress",
-      });
-
-      await insert({
-        user: realmApp.currentUser,
-        collectionName: "product",
-        document,
-      });
-
-      modalDisclosure.onClose();
-      dispatch({
-        type: "system/closeProgress",
-      });
-    }
-  }
-
-  async function onUpdate(props: {
+  async function onChange(props: {
+    type: string;
     document: Record<string, any>;
     initialValue: Record<string, any>;
   }) {
     if (realmApp?.currentUser) {
-      const { document, initialValue } = props;
+      const { type, document, initialValue } = props;
 
       dispatch({
         type: "system/openProgress",
       });
 
-      await update({
-        user: realmApp.currentUser,
-        collectionName: "product",
-        filter: { _id: initialValue._id },
-        update: { $set: document },
-      });
+      switch (type) {
+        case "insert": {
+          await insert({
+            user: realmApp.currentUser,
+            collectionName: "product",
+            document,
+          });
+          break;
+        }
+        case "update": {
+          await update({
+            user: realmApp.currentUser,
+            collectionName: "product",
+            filter: { _id: initialValue._id },
+            update: { $set: document },
+          });
+          break;
+        }
+      }
 
       modalDisclosure.onClose();
       dispatch({
@@ -189,8 +182,7 @@ export default function InventoryManagement() {
         mode={modalMode}
         initialValue={selectedProduct}
         isOpen={modalDisclosure.isOpen}
-        onInsert={onInsert}
-        onUpdate={onUpdate}
+        onChange={onChange}
         onClose={modalDisclosure.onClose}
         children={null}
       />
