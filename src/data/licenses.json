@@ -41,12 +41,6 @@
         "licenseUrl": "https://github.com/testing-library/user-event/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/bson@4.0.5": {
-        "licenses": "MIT",
-        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
-        "parents": "my-app"
-    },
     "@types/file-saver@2.0.3": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
