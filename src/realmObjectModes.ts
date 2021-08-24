@@ -1,13 +1,55 @@
 import * as bson from "bson";
 
+export type customer = {
+  _id: bson.ObjectId;
+  address?: string;
+  bill_limit_id?: string;
+  business_info?: string;
+  business_number?: string;
+  ceo_name?: string;
+  credit_limit?: string;
+  customer_group_id?: string;
+  customer_name: string;
+  fax?: string;
+  homepage?: string;
+  remark?: string;
+  tel?: string;
+  user_id: string;
+  valid?: boolean;
+  zip_code?: number;
+};
+
+export const customerSchema = {
+  name: "customer",
+  properties: {
+    _id: "objectId",
+    address: "string?",
+    bill_limit_id: "string?",
+    business_info: "string?",
+    business_number: "string?",
+    ceo_name: "string?",
+    credit_limit: "string?",
+    customer_group_id: "string?",
+    customer_name: "string",
+    fax: "string?",
+    homepage: "string?",
+    remark: "string?",
+    tel: "string?",
+    user_id: "string",
+    valid: "bool?",
+    zip_code: "int?",
+  },
+  primaryKey: "_id",
+};
+
 export type product = {
   _id: bson.ObjectId;
-  name: string;
+  name?: string;
   note?: string;
-  standard?: number;
-  stock: number;
-  thickness?: number;
-  user_id?: string;
+  standard?: string;
+  stock?: string;
+  thickness?: string;
+  user_id: string;
   width?: string;
 };
 
@@ -15,44 +57,40 @@ export const productSchema = {
   name: "product",
   properties: {
     _id: "objectId",
-    name: "string",
+    name: "string?",
     note: "string?",
-    standard: "int?",
-    stock: "int",
-    thickness: "int?",
-    user_id: "string?",
+    standard: "string?",
+    stock: "string?",
+    thickness: "string?",
+    user_id: "string",
     width: "string?",
   },
   primaryKey: "_id",
 };
 
-export type customer = {
+export type customer_mngr = {
   _id: bson.ObjectId;
-  companyAddress?: string;
-  companyFax?: string;
-  companyName: string;
-  companyPhone?: string;
+  cell_phone?: string;
+  class_position?: string;
+  customer_id?: string;
   email?: string;
-  name: string;
-  note?: string;
-  phone?: string;
-  rank?: string;
+  fax?: string;
+  name?: string;
+  tel?: string;
   user_id: string;
 };
 
-export const customerSchema = {
-  name: "customer",
+export const customer_mngrSchema = {
+  name: "customer_mngr",
   properties: {
     _id: "objectId",
-    companyAddress: "string?",
-    companyFax: "string?",
-    companyName: "string",
-    companyPhone: "string?",
+    cell_phone: "string?",
+    class_position: "string?",
+    customer_id: "string?",
     email: "string?",
-    name: "string",
-    note: "string?",
-    phone: "string?",
-    rank: "string?",
+    fax: "string?",
+    name: "string?",
+    tel: "string?",
     user_id: "string",
   },
   primaryKey: "_id",
