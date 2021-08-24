@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { product, productSchema } from "realmObjectModes";
 import { Row } from "react-table";
+import { schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
@@ -20,44 +21,20 @@ export default function InventoryManagement() {
   const modalDisclosure = useDisclosure();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
-  const [productNames, setProductNames] = React.useState<string[]>([]);
-  const products = React.useRef<product[]>([]);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
   const productCollection = mongodb
     ?.db("database")
     ?.collection<product>("product");
+  const productColumns = schemaToColums(productSchema);
+  const productList = React.useRef<product[]>([]);
+  const [productNames, setProductNames] = React.useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = React.useState<product>();
   const [modalMode, setModalMode] = React.useState("");
 
   // 테이블
   const mainTable = TableComponent({
-    columns: [
-      {
-        Header: "제품명",
-        accessor: "name",
-      },
-      {
-        Header: "규격",
-        accessor: "standard",
-      },
-      {
-        Header: "두께",
-        accessor: "thickness",
-      },
-      {
-        Header: "폭",
-        accessor: "width",
-      },
-      {
-        Header: "현재고",
-        accessor: "stock",
-      },
-      {
-        Header: "비고",
-        accessor: "note",
-      },
-    ],
-    data: products.current,
+    columns: productColumns,
+    data: productList.current,
     onRowClick: editProduct,
   });
 
@@ -79,7 +56,7 @@ export default function InventoryManagement() {
         await productCollection
           .find()
           .then((value) => {
-            products.current = value;
+            productList.current = value;
             console.log("updated");
           })
           .finally(() => {
@@ -103,7 +80,7 @@ export default function InventoryManagement() {
       console.log("changeEvent:", changeEvent);
       switch (changeEvent.operationType) {
         case "delete": {
-          products.current = products.current.filter(
+          productList.current = productList.current.filter(
             (product) => !product._id.equals(changeEvent.documentKey._id)
           );
         }

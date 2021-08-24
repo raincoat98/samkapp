@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { customer, customerSchema } from "realmObjectModes";
 import { Row } from "react-table";
+import { schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
@@ -18,32 +19,7 @@ export default function CustomerManage() {
   const customerCollection = mongodb
     ?.db("database")
     ?.collection<customer>("customer");
-  const customerColumns = [
-    {
-      Header: "성함",
-      accessor: "name",
-    },
-    {
-      Header: "직급",
-      accessor: "rank",
-    },
-    {
-      Header: "이메일",
-      accessor: "email",
-    },
-    {
-      Header: "회사명",
-      accessor: "companyName",
-    },
-    {
-      Header: "회사 전화 번호",
-      accessor: "companyPhone",
-    },
-    {
-      Header: "회사 팩스 번호",
-      accessor: "companyFax",
-    },
-  ];
+  const customerColumns = schemaToColums(customerSchema);
   const customerList = React.useRef<customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
   const [modalMode, setModalMode] = React.useState("insert");
