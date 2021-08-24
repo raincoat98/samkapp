@@ -26,7 +26,7 @@ export default function InventoryManagement() {
     ?.db("database")
     ?.collection<product>("product");
   const productColumns = schemaToColums(productSchema);
-  const productList = React.useRef<product[]>([]);
+  const [productList, setProductList] = React.useState<product[]>([]);
   const [productNames, setProductNames] = React.useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = React.useState<product>();
   const [modalMode, setModalMode] = React.useState("");
@@ -34,7 +34,7 @@ export default function InventoryManagement() {
   // 테이블
   const mainTable = TableComponent({
     columns: productColumns,
-    data: productList.current,
+    data: productList,
     onRowClick: editProduct,
   });
 
@@ -59,8 +59,7 @@ export default function InventoryManagement() {
         await productCollection
           .find()
           .then((value) => {
-            productList.current = value;
-            console.log("updated");
+            setProductList(value);
           })
           .finally(() => {
             dispatch({
@@ -71,6 +70,11 @@ export default function InventoryManagement() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 테이블 데이터 세팅
+  React.useCallback((productListValue: product[]) => {
+    setProductList(productListValue);
   }, []);
 
   function addProduct() {

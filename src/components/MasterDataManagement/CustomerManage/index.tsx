@@ -20,13 +20,13 @@ export default function CustomerManage() {
     ?.db("database")
     ?.collection<customer>("customer");
   const customerColumns = schemaToColums(customerSchema);
-  const customerList = React.useRef<customer[]>([]);
+  const [customerList, setCustomerList] = React.useState<customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
   const [modalMode, setModalMode] = React.useState("insert");
 
   const CustomerTable = TableComponent({
     columns: customerColumns,
-    data: customerList.current,
+    data: customerList,
     onRowClick: editCustomer,
   });
 
@@ -42,7 +42,7 @@ export default function CustomerManage() {
         await customerCollection
           .find()
           .then((value) => {
-            customerList.current = value;
+            setCustomerList(value);
           })
           .finally(() => {
             dispatch({
@@ -53,6 +53,11 @@ export default function CustomerManage() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 테이블 데이터 세팅
+  React.useCallback((customerListValue: customer[]) => {
+    setCustomerList(customerListValue);
   }, []);
 
   function editCustomer(props: { event: any; row: Row<{}> }) {
