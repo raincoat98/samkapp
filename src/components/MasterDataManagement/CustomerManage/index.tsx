@@ -67,26 +67,20 @@ export default function CustomerManage() {
     modalDisclosure.onOpen();
   }
 
-  async function onInsert(form: HTMLFormElement) {
-    let doc: { [key: string]: any } = {};
-    for (let index = 0; index < form.length; index++) {
-      const input = form[index] as HTMLInputElement;
-      const id = input.id;
-      doc[id] = input.value;
-    }
-
+  async function onInsert(props: { document: Record<string, any> }) {
     if (realmApp?.currentUser) {
+      const { document } = props;
+
       dispatch({
         type: "system/openProgress",
       });
 
-      const result = await insert({
+      await insert({
         user: realmApp.currentUser,
         collectionName: "customer",
-        document: doc,
+        document,
       });
 
-      console.log(result);
       modalDisclosure.onClose();
       dispatch({
         type: "system/closeProgress",
@@ -94,30 +88,24 @@ export default function CustomerManage() {
     }
   }
 
-  async function onUpdate(form: HTMLFormElement) {
-    let doc: any = {};
-    for (let index = 0; index < form.length; index++) {
-      const input = form[index] as HTMLInputElement;
-      const id = input.id;
-      doc[id] = input.value;
-    }
-
-    delete doc["_id"];
-    delete doc["user_id"];
-
+  async function onUpdate(props: {
+    document: Record<string, any>;
+    initialValue: Record<string, any>;
+  }) {
     if (realmApp?.currentUser) {
+      const { document, initialValue } = props;
+
       dispatch({
         type: "system/openProgress",
       });
 
-      const result = await update({
+      await update({
         user: realmApp.currentUser,
         collectionName: "customer",
-        filter: { _id: doc["_id"] },
-        update: doc,
+        filter: { _id: initialValue._id },
+        update: { $set: document },
       });
 
-      console.log(result);
       modalDisclosure.onClose();
       dispatch({
         type: "system/closeProgress",

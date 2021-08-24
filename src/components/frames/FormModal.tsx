@@ -15,7 +15,7 @@ export type modeType = string | "insert" | "update";
 export default function InventoryModalComponent(
   props: ModalProps & {
     initialValue?: any;
-    schmea: { name: string; primaryKey: string; properties: any };
+    schmea: Record<string, any>;
     mode: modeType;
     onInsert?: Function;
     onUpdate?: Function;
@@ -32,47 +32,71 @@ export default function InventoryModalComponent(
   }[] = [];
 
   for (const key in schmea.properties) {
-    if (Object.prototype.hasOwnProperty.call(schmea.properties, key)) {
-      let isRequired = true;
-      let type = schmea.properties[key];
-      let inputType = "";
-      const defaultValue = initialValue ? initialValue[key] : "";
+    let isRequired = true;
+    let type = schmea.properties[key];
+    let inputType = "";
+    const defaultValue = initialValue ? initialValue[key] : "";
 
-      if (key !== schmea.primaryKey && key !== "user_id") {
-        if (type.endsWith("?")) {
-          isRequired = false;
-          type = type.replaceAll("?", "");
-        }
-
-        switch (type) {
-          case "string": {
-            inputType = "text";
-            break;
-          }
-          case "int": {
-            inputType = "number";
-            break;
-          }
-          default: {
-            inputType = "text";
-          }
-        }
-      } else {
-        inputType = "hidden";
+    if (key !== schmea.primaryKey && key !== "user_id") {
+      // ? 로 끝나는 것은 필수값이 아님
+      if (type.endsWith("?")) {
+        isRequired = false;
+        type = type.replaceAll("?", "");
       }
 
-      schmeaList.push({ key, type, inputType, defaultValue, isRequired });
+      switch (type) {
+        case "string": {
+          inputType = "text";
+          break;
+        }
+        case "int": {
+          inputType = "number";
+          break;
+        }
+        default: {
+          inputType = "text";
+        }
+      }
+    } else {
+      continue;
     }
+
+    schmeaList.push({ key, type, inputType, defaultValue, isRequired });
   }
 
   function onSave() {
+    const doc: Record<string, any> = {};
+
+    for (const key in schmea.properties) {
+      // form 에서 값 가져오기
+      if (formRef.current) {
+        const inputElementValue =
+          formRef.current.querySelector<HTMLInputElement>(`#${key}`)?.value;
+
+        if (inputElementValue) {
+          if (!initialValue || initialValue[key] !== inputElementValue) {
+            doc[key] = inputElementValue;
+          }
+        }
+      }
+    }
+
+    console.log(doc);
+
     switch (mode) {
       case "insert": {
-        if (onInsert) onInsert(formRef.current);
+        if (onInsert)
+          onInsert({
+            document: doc,
+          });
         break;
       }
       case "update": {
-        if (onUpdate) onUpdate(formRef.current);
+        if (onUpdate)
+          onUpdate({
+            document: doc,
+            initialValue,
+          });
         break;
       }
     }

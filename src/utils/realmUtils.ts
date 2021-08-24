@@ -1,7 +1,7 @@
 import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 
-type Document = { [key: string]: any };
+type Document = Record<string, any>;
 
 type schemaType = {
   name: string;
@@ -38,6 +38,7 @@ export async function insert(props: {
     document,
   });
 
+  console.log("insert", result);
   return result;
 }
 
@@ -59,6 +60,7 @@ export async function update(props: {
     options: options ? options : {},
   });
 
+  console.log("update", result);
   return result;
 }
 
@@ -80,5 +82,6 @@ export async function distinct(props: {
     options: options ? options : {},
   });
 
+  console.log("distinct", result);
   return result;
 }
