@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { product, productSchema } from "realmObjectModes";
 import { Row } from "react-table";
-import { schemaToColums } from "utils/realmUtils";
+import { insert, update, distinct, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
@@ -47,11 +47,14 @@ export default function InventoryManagement() {
       });
 
       if (productCollection) {
-        await realmApp?.currentUser?.functions
-          .action("get_names", { collectionName: "product" })
-          .then((names: string[]) => {
-            setProductNames(names);
+        if (realmApp?.currentUser) {
+          const value = await distinct({
+            user: realmApp.currentUser,
+            collectionName: "product",
+            field: "name",
           });
+          setProductNames(value.result);
+        }
 
         await productCollection
           .find()
@@ -83,27 +86,30 @@ export default function InventoryManagement() {
   }
 
   async function onInsert(form: HTMLFormElement) {
-    let doc: any = {};
+    let doc: { [key: string]: any } = {};
     for (let index = 0; index < form.length; index++) {
       const input = form[index] as HTMLInputElement;
       const id = input.id;
       doc[id] = input.value;
     }
 
-    dispatch({
-      type: "system/openProgress",
-    });
+    if (realmApp?.currentUser) {
+      dispatch({
+        type: "system/openProgress",
+      });
 
-    const result = await realmApp?.currentUser?.functions.action("insert", {
-      collectionName: "product",
-      doc,
-    });
+      const result = await insert({
+        user: realmApp.currentUser,
+        collectionName: "product",
+        document: doc,
+      });
 
-    console.log(result);
-    modalDisclosure.onClose();
-    dispatch({
-      type: "system/closeProgress",
-    });
+      console.log(result);
+      modalDisclosure.onClose();
+      dispatch({
+        type: "system/closeProgress",
+      });
+    }
   }
 
   async function onUpdate(form: HTMLFormElement) {
@@ -114,21 +120,24 @@ export default function InventoryManagement() {
       doc[id] = input.value;
     }
 
-    dispatch({
-      type: "system/openProgress",
-    });
+    if (realmApp?.currentUser) {
+      dispatch({
+        type: "system/openProgress",
+      });
 
-    const result = await realmApp?.currentUser?.functions.action("update", {
-      collectionName: "product",
-      doc,
-      filter: { _id: doc._id },
-    });
+      const result = await update({
+        user: realmApp.currentUser,
+        collectionName: "product",
+        filter: { _id: doc._id },
+        update: doc,
+      });
 
-    console.log(result);
-    modalDisclosure.onClose();
-    dispatch({
-      type: "system/closeProgress",
-    });
+      console.log(result);
+      modalDisclosure.onClose();
+      dispatch({
+        type: "system/closeProgress",
+      });
+    }
   }
 
   async function deleteSelected() {
