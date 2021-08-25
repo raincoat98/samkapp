@@ -178,12 +178,12 @@ export default function InventoryManagement() {
     const name = productNames[tab - productBasicFilterList.length];
     if (name) {
       // @ts-ignore
-      mainTable.tableInstance.setAllFilters([{ id: "name", value: name }]);
+      mainTable.tableInstance.setAllFilters([
+        { id: "product_name", value: name },
+      ]);
     } else {
       const filter = productBasicFilterList[tab].filter;
       if (filter) {
-        console.log(productBasicFilterList[tab].filter);
-
         // @ts-ignore
         mainTable.tableInstance.setAllFilters([
           productBasicFilterList[tab].filter,
