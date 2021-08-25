@@ -47,7 +47,7 @@ export type product = {
   name?: string;
   note?: string;
   standard?: string;
-  stock?: string;
+  stock: number;
   thickness?: string;
   user_id: string;
   width?: string;
@@ -60,7 +60,7 @@ export const productSchema = {
     name: "string?",
     note: "string?",
     standard: "string?",
-    stock: "string?",
+    stock: "int",
     thickness: "string?",
     user_id: "string",
     width: "string?",

@@ -69,12 +69,26 @@ export default function InventoryModalComponent(
     for (const key in schmea.properties) {
       // form 에서 값 가져오기
       if (formRef.current) {
-        const inputElementValue =
-          formRef.current.querySelector<HTMLInputElement>(`#${key}`)?.value;
+        const inputElement = formRef.current.querySelector<HTMLInputElement>(
+          `#${key}`
+        );
 
-        if (inputElementValue) {
-          if (!initialValue || initialValue[key] !== inputElementValue) {
-            doc[key] = inputElementValue;
+        if (inputElement) {
+          let inputElementValue: string | number = inputElement.value;
+          const inputElementType = inputElement.type;
+
+          switch (inputElementType) {
+            case "number": {
+              inputElementValue = Number(inputElementValue);
+              break;
+            }
+          }
+
+          // inputElementValue가 0일경우 false가 나오므로 undefined 비교 사용
+          if (inputElementValue !== undefined) {
+            if (!initialValue || initialValue[key] !== inputElementValue) {
+              doc[key] = inputElementValue;
+            }
           }
         }
       }

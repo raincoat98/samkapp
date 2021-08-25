@@ -27,9 +27,27 @@ export default function InventoryManagement() {
     ?.collection<product>("product");
   const productColumns = schemaToColums(productSchema);
   const [productList, setProductList] = React.useState<product[]>([]);
+  const productBasicFilterList = [
+    { name: "전체" },
+    {
+      name: "재고 없음",
+      filter: {
+        id: "stock",
+        value: 0,
+      },
+    },
+  ];
   const [productNames, setProductNames] = React.useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = React.useState<product>();
   const [modalMode, setModalMode] = React.useState("");
+
+  // 재고없음 필터에서 재고가 정확히 0일 때만 표시되도록
+  for (let index = 0; index < productColumns.length; index++) {
+    if (productColumns[index].accessor === "stock") {
+      // @ts-ignore
+      productColumns[index].filter = "equals";
+    }
+  }
 
   // 테이블
   const mainTable = TableComponent({
@@ -157,13 +175,23 @@ export default function InventoryManagement() {
   }
 
   async function onTabChange(tab: number) {
-    const name = productNames[--tab];
+    const name = productNames[tab - productBasicFilterList.length];
     if (name) {
       // @ts-ignore
       mainTable.tableInstance.setAllFilters([{ id: "name", value: name }]);
     } else {
-      // @ts-ignore
-      mainTable.tableInstance.setAllFilters([]);
+      const filter = productBasicFilterList[tab].filter;
+      if (filter) {
+        console.log(productBasicFilterList[tab].filter);
+
+        // @ts-ignore
+        mainTable.tableInstance.setAllFilters([
+          productBasicFilterList[tab].filter,
+        ]);
+      } else {
+        // @ts-ignore
+        mainTable.tableInstance.setAllFilters([]);
+      }
     }
   }
 
@@ -192,7 +220,9 @@ export default function InventoryManagement() {
       />
       <Tabs onChange={onTabChange} isFitted>
         <TabList>
-          <Tab>{"전체"}</Tab>
+          {productBasicFilterList.map((filter, index) => (
+            <Tab key={index}>{filter.name}</Tab>
+          ))}
           {productNames.map((name, index) => (
             <Tab key={index}>{name}</Tab>
           ))}
