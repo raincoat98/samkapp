@@ -55,6 +55,10 @@ export default function Sidebar() {
         <Link to={"/inventory_manage"}>
           <Button w="100%">{t("재고 관리")}</Button>
         </Link>
+        <br />
+        <Link to={"/item_manage"}>
+          <Button w="100%">{t("품목 관리")}</Button>
+        </Link>
       </Flex>
     </Flex>
   );

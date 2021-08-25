@@ -101,3 +101,25 @@ export const customer_mngrSchema = {
   },
   primaryKey: "_id",
 };
+
+export type item = {
+  _id: bson.ObjectId;
+  _last_modified: Date;
+  _user_id: string;
+  product_name: string;
+  remark?: string;
+  stock: number;
+};
+
+export const itemSchema = {
+  name: "item",
+  properties: {
+    _id: "objectId",
+    _last_modified: "date",
+    _user_id: "string",
+    product_name: "string",
+    remark: "string?",
+    stock: "int",
+  },
+  primaryKey: "_id",
+};
