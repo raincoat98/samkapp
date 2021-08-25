@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import {
@@ -16,10 +16,10 @@ export default function Sidebar() {
   const { t } = useTranslation();
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
-
   const defaultPath = useSelector(
     (state: RootState) => state.router.defaultPath
   );
+  const history = useHistory();
 
   return (
     <Flex direction={"column"} w={250} borderRightWidth="1px">
@@ -48,17 +48,36 @@ export default function Sidebar() {
         variant="outline"
         justify="center"
       >
-        <Link to={"/customer_manage"}>
-          <Button w="100%">{t("고객 관리")}</Button>
-        </Link>
+        <Button
+          onClick={() => {
+            history.push("/customer_manage");
+          }}
+          w="100%"
+        >
+          {t("고객 관리")}
+        </Button>
+
         <br />
-        <Link to={"/inventory_manage"}>
-          <Button w="100%">{t("재고 관리")}</Button>
-        </Link>
+
+        <Button
+          onClick={() => {
+            history.push("/inventory_manage");
+          }}
+          w="100%"
+        >
+          {t("재고 관리")}
+        </Button>
+
         <br />
-        <Link to={"/item_manage"}>
-          <Button w="100%">{t("품목 관리")}</Button>
-        </Link>
+
+        <Button
+          onClick={() => {
+            history.push("/item_manage");
+          }}
+          w="100%"
+        >
+          {t("품목 관리")}
+        </Button>
       </Flex>
     </Flex>
   );
