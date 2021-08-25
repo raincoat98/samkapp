@@ -80,13 +80,11 @@ export default function CustomerManage() {
     if (realmApp?.currentUser) {
       const { type, document, initialValue } = props;
 
-      dispatch({
-        type: "system/openProgress",
-      });
-
       switch (type) {
         case "insert": {
           await insert({
+            useProgress: true,
+            dispatch: dispatch,
             user: realmApp.currentUser,
             collectionName: "customer",
             document,
@@ -95,6 +93,8 @@ export default function CustomerManage() {
         }
         case "update": {
           await update({
+            useProgress: true,
+            dispatch: dispatch,
             user: realmApp.currentUser,
             collectionName: "customer",
             filter: { _id: initialValue._id },
@@ -105,9 +105,6 @@ export default function CustomerManage() {
       }
 
       modalDisclosure.onClose();
-      dispatch({
-        type: "system/closeProgress",
-      });
     }
   }
 

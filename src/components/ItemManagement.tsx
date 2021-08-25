@@ -120,23 +120,23 @@ export default function InventoryManagement() {
     if (realmApp?.currentUser) {
       const { type, document, initialValue } = props;
 
-      dispatch({
-        type: "system/openProgress",
-      });
-
       switch (type) {
         case "insert": {
           await insert({
+            useProgress: true,
+            dispatch: dispatch,
             user: realmApp.currentUser,
-            collectionName: "product",
+            collectionName: "item",
             document,
           });
           break;
         }
         case "update": {
           await update({
+            useProgress: true,
+            dispatch: dispatch,
             user: realmApp.currentUser,
-            collectionName: "product",
+            collectionName: "item",
             filter: { _id: initialValue._id },
             update: { $set: document },
           });
@@ -145,18 +145,11 @@ export default function InventoryManagement() {
       }
 
       modalDisclosure.onClose();
-      dispatch({
-        type: "system/closeProgress",
-      });
     }
   }
 
   async function deleteSelected() {
     if (realmApp?.currentUser) {
-      dispatch({
-        type: "system/openProgress",
-      });
-
       const selectedItemIdList: ObjectId[] = [];
       const rowsById = mainTable.tableInstance.rowsById;
       // @ts-ignore
@@ -172,15 +165,14 @@ export default function InventoryManagement() {
       };
 
       await deleteMany({
+        useProgress: true,
+        dispatch: dispatch,
         user: realmApp.currentUser,
         collectionName: "item",
         filter,
       });
 
       modalDisclosure.onClose();
-      dispatch({
-        type: "system/closeProgress",
-      });
     }
   }
 

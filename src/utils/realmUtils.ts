@@ -1,3 +1,4 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 import Moment from "moment";
@@ -9,6 +10,11 @@ type schemaType = {
   properties: Record<string, string>;
   primaryKey: string;
 };
+
+type useProgress = { useProgress?: boolean; dispatch?: Dispatch<any> };
+type user = { user: RealmWeb.User };
+type collectionName = { collectionName: string };
+type basicProps = useProgress & user & collectionName;
 
 export function isReadOnly(key: string) {
   return key.startsWith("_");
@@ -48,13 +54,15 @@ export function schemaToColums(schema: schemaType) {
   return columns;
 }
 
-export async function insert(props: {
-  user: RealmWeb.User;
-  collectionName: string;
-  document: Document;
-}) {
-  const { user, collectionName, ...params } = props;
+export async function insert(
+  props: basicProps & {
+    document: Document;
+  }
+) {
+  const { useProgress, dispatch, user, collectionName, ...params } = props;
   const { document } = params;
+
+  if (useProgress) setProgress(dispatch, true);
 
   const result = await user.functions.actionFunc({
     type: "insert",
@@ -62,19 +70,23 @@ export async function insert(props: {
     document,
   });
 
+  if (useProgress) setProgress(dispatch, false);
+
   console.log("insert", result);
   return result;
 }
 
-export async function update(props: {
-  user: RealmWeb.User;
-  collectionName: string;
-  filter: Document;
-  update: Document;
-  options?: object;
-}) {
-  const { user, collectionName, ...params } = props;
+export async function update(
+  props: basicProps & {
+    filter: Document;
+    update: Document;
+    options?: object;
+  }
+) {
+  const { useProgress, dispatch, user, collectionName, ...params } = props;
   const { filter, update, options } = params;
+
+  if (useProgress) setProgress(dispatch, true);
 
   const result = await user.functions.actionFunc({
     type: "update",
@@ -84,17 +96,21 @@ export async function update(props: {
     options: options ? options : {},
   });
 
+  if (useProgress) setProgress(dispatch, false);
+
   console.log("update", result);
   return result;
 }
 
-export async function deleteMany(props: {
-  user: RealmWeb.User;
-  collectionName: string;
-  filter: Document;
-}) {
-  const { user, collectionName, ...params } = props;
+export async function deleteMany(
+  props: basicProps & {
+    filter: Document;
+  }
+) {
+  const { useProgress, dispatch, user, collectionName, ...params } = props;
   const { filter } = params;
+
+  if (useProgress) setProgress(dispatch, true);
 
   const result = await user.functions.actionFunc({
     type: "deleteMany",
@@ -102,19 +118,23 @@ export async function deleteMany(props: {
     filter,
   });
 
+  if (useProgress) setProgress(dispatch, false);
+
   console.log("deleteMany", result);
   return result;
 }
 
-export async function distinct(props: {
-  user: RealmWeb.User;
-  collectionName: string;
-  field: string;
-  query?: Document;
-  options?: object;
-}) {
-  const { user, collectionName, ...params } = props;
+export async function distinct(
+  props: basicProps & {
+    field: string;
+    query?: Document;
+    options?: object;
+  }
+) {
+  const { useProgress, dispatch, user, collectionName, ...params } = props;
   const { field, query, options } = params;
+
+  if (useProgress) setProgress(dispatch, true);
 
   const result = await user.functions.actionFunc({
     type: "distinct",
@@ -124,6 +144,22 @@ export async function distinct(props: {
     options: options ? options : {},
   });
 
+  if (useProgress) setProgress(dispatch, false);
+
   console.log("distinct", result);
   return result;
+}
+
+function setProgress(dispatch?: Dispatch, active?: boolean) {
+  if (!dispatch || active === undefined) return;
+
+  if (active) {
+    dispatch({
+      type: "system/openProgress",
+    });
+  } else {
+    dispatch({
+      type: "system/closeProgress",
+    });
+  }
 }
