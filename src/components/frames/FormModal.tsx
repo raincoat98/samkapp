@@ -115,8 +115,8 @@ export default function InventoryModalComponent(
 
       formItemList.push({ key, element, isRequired, isInline });
     } else {
-      // 데이터 기본 키와 같을 경우 넣지 않음
-      if (key === schmea.primaryKey) continue;
+      // 데이터 기본 키와 같을 경우 넣지 않음, 새로 작성할 때도 넣지 않음
+      if (key === schmea.primaryKey || mode === "insert") continue;
 
       const name = key.replace("_", "");
 
@@ -141,11 +141,6 @@ export default function InventoryModalComponent(
         isDisabled: true,
         isInline: true,
       });
-    }
-
-    if (!key.startsWith("_")) {
-      // formItemList.push({ key, element, isRequired, isDisabled, isInline });
-    } else {
     }
   }
 
@@ -201,7 +196,7 @@ export default function InventoryModalComponent(
             </FormControl>
           ))}
 
-          <Divider />
+          {mode === "insert" ? "" : <Divider />}
 
           {disabledFormItemList.map((schmea, index) =>
             schmea.element ? <Box key={index}>{schmea.element}</Box> : ""
