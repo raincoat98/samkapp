@@ -1,5 +1,6 @@
 import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
+import Moment from "moment";
 
 type Document = Record<string, any>;
 
@@ -9,16 +10,39 @@ type schemaType = {
   primaryKey: string;
 };
 
+export function isReadOnly(key: string) {
+  return key.startsWith("_");
+}
+
+export function isRequired(type: string) {
+  return !type.endsWith("?");
+}
+
 export function schemaToColums(schema: schemaType) {
   const columns: Column[] = [];
 
   for (const key in schema.properties) {
-    if (!schema.properties[key].startsWith("objectId")) {
-      columns.push({
-        Header: key,
-        accessor: key,
-      });
+    if (key === schema.primaryKey) continue;
+
+    let type = schema.properties[key];
+    let accessor: any = key;
+
+    if (type.endsWith("?")) {
+      type = type.replaceAll("?", "");
     }
+
+    if (type === "date") {
+      accessor = (d: Document) => {
+        return Moment(d[key]).local().format("YYYY년 MM월 DD일 hh시 mm분");
+      };
+    }
+
+    // _로 시작하는 key는 유저가 수정할 수 없는 항목
+    // if (!key.startsWith("_")) {
+    columns.push({
+      Header: key,
+      accessor,
+    });
   }
 
   return columns;

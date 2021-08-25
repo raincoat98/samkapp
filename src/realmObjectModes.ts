@@ -2,6 +2,8 @@ import * as bson from "bson";
 
 export type customer = {
   _id: bson.ObjectId;
+  _last_modified: Date;
+  _user_id: string;
   address?: string;
   bill_limit_id?: string;
   business_info?: string;
@@ -14,7 +16,6 @@ export type customer = {
   homepage?: string;
   remark?: string;
   tel?: string;
-  user_id: string;
   valid?: boolean;
   zip_code?: number;
 };
@@ -23,6 +24,8 @@ export const customerSchema = {
   name: "customer",
   properties: {
     _id: "objectId",
+    _last_modified: "date",
+    _user_id: "string",
     address: "string?",
     bill_limit_id: "string?",
     business_info: "string?",
@@ -35,7 +38,6 @@ export const customerSchema = {
     homepage: "string?",
     remark: "string?",
     tel: "string?",
-    user_id: "string",
     valid: "bool?",
     zip_code: "int?",
   },
@@ -44,12 +46,13 @@ export const customerSchema = {
 
 export type product = {
   _id: bson.ObjectId;
+  _last_modified: Date;
+  _user_id: string;
   name?: string;
   note?: string;
   standard?: string;
   stock: number;
   thickness?: string;
-  user_id: string;
   width?: string;
 };
 
@@ -57,12 +60,13 @@ export const productSchema = {
   name: "product",
   properties: {
     _id: "objectId",
+    _last_modified: "date",
+    _user_id: "string",
     name: "string?",
     note: "string?",
     standard: "string?",
     stock: "int",
     thickness: "string?",
-    user_id: "string",
     width: "string?",
   },
   primaryKey: "_id",
@@ -70,6 +74,8 @@ export const productSchema = {
 
 export type customer_mngr = {
   _id: bson.ObjectId;
+  _last_modified: Date;
+  _user_id: string;
   cell_phone?: string;
   class_position?: string;
   customer_id?: string;
@@ -77,13 +83,14 @@ export type customer_mngr = {
   fax?: string;
   name?: string;
   tel?: string;
-  user_id: string;
 };
 
 export const customer_mngrSchema = {
   name: "customer_mngr",
   properties: {
     _id: "objectId",
+    _last_modified: "date",
+    _user_id: "string",
     cell_phone: "string?",
     class_position: "string?",
     customer_id: "string?",
@@ -91,7 +98,6 @@ export const customer_mngrSchema = {
     fax: "string?",
     name: "string?",
     tel: "string?",
-    user_id: "string",
   },
   primaryKey: "_id",
 };

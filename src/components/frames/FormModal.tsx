@@ -7,10 +7,19 @@ import {
   ButtonGroup,
   FormControl,
   FormLabel,
+  Divider,
+  InputProps,
   ModalProps,
 } from "@chakra-ui/react";
 
 export type modeType = string | "insert" | "update";
+export type inputType = {
+  key: string;
+  type: string;
+  inputOptions: InputProps;
+  defaultValue: any;
+  isRequired: boolean;
+};
 
 export default function InventoryModalComponent(
   props: ModalProps & {
@@ -22,21 +31,16 @@ export default function InventoryModalComponent(
 ) {
   const { onChange, initialValue, schmea, mode } = props;
   const formRef = React.useRef<HTMLFormElement>(null);
-  const schmeaList: {
-    key: string;
-    type: string;
-    inputType: string;
-    defaultValue: any;
-    isRequired: boolean;
-  }[] = [];
+  const inputList: inputType[] = [];
+  const disabledInputList: inputType[] = [];
 
   for (const key in schmea.properties) {
     let isRequired = true;
     let type = schmea.properties[key];
-    let inputType = "";
+    const inputOptions: InputProps = {};
     const defaultValue = initialValue ? initialValue[key] : "";
 
-    if (key !== schmea.primaryKey && key !== "user_id") {
+    if (!key.startsWith("_")) {
       // ? 로 끝나는 것은 필수값이 아님
       if (type.endsWith("?")) {
         isRequired = false;
@@ -45,22 +49,32 @@ export default function InventoryModalComponent(
 
       switch (type) {
         case "string": {
-          inputType = "text";
+          inputOptions.type = "text";
           break;
         }
         case "int": {
-          inputType = "number";
+          inputOptions.type = "number";
           break;
         }
-        default: {
-          inputType = "text";
+        case "date": {
+          inputOptions.type = "date";
+          break;
         }
       }
+      inputList.push({ key, type, inputOptions, defaultValue, isRequired });
     } else {
-      continue;
+      // 데이터 기본 키와 같을 경우 넣지 않음
+      if (key === schmea.primaryKey) continue;
+      inputOptions.type = "text";
+      inputOptions.isDisabled = true;
+      disabledInputList.push({
+        key,
+        type,
+        inputOptions,
+        defaultValue,
+        isRequired,
+      });
     }
-
-    schmeaList.push({ key, type, inputType, defaultValue, isRequired });
   }
 
   function onSave() {
@@ -74,6 +88,8 @@ export default function InventoryModalComponent(
         );
 
         if (inputElement) {
+          if (inputElement.disabled) continue;
+
           let inputElementValue: string | number = inputElement.value;
           const inputElementType = inputElement.type;
 
@@ -120,16 +136,33 @@ export default function InventoryModalComponent(
     >
       <form action="" ref={formRef}>
         <Stack>
-          {schmeaList.map((schmea, index) => (
+          {inputList.map((schmea, index) => (
             <FormControl
               id={schmea.key}
               isRequired={schmea.isRequired}
-              hidden={schmea.inputType === "hidden"}
               key={index}
             >
               <FormLabel>{schmea.key}</FormLabel>
               <Input
-                type={schmea.inputType}
+                type={schmea.inputOptions.type}
+                isDisabled={schmea.inputOptions.isDisabled}
+                defaultValue={schmea.defaultValue}
+              />
+            </FormControl>
+          ))}
+
+          <Divider py={2} />
+
+          {disabledInputList.map((schmea, index) => (
+            <FormControl
+              id={schmea.key}
+              isDisabled={schmea.inputOptions.isDisabled}
+              pt={2}
+              key={index}
+            >
+              <FormLabel>{schmea.key}</FormLabel>
+              <Input
+                type={schmea.inputOptions.type}
                 defaultValue={schmea.defaultValue}
               />
             </FormControl>
