@@ -20,6 +20,9 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import rootReducer from "store";
 
+// Moment (시간 관리 라이브러리) - 한국어 지원
+import "moment/locale/ko";
+
 const store = createStore(rootReducer);
 const persistor = persistStore(store);
 

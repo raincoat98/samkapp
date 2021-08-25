@@ -1,4 +1,5 @@
 import React from "react";
+import Moment from "moment";
 import ModalComponent from "components/frames/ModalComponent";
 import {
   Stack,
@@ -38,7 +39,7 @@ export default function InventoryModalComponent(
     let isRequired = true;
     let type = schmea.properties[key];
     const inputOptions: InputProps = {};
-    const defaultValue = initialValue ? initialValue[key] : "";
+    let defaultValue = initialValue ? initialValue[key] : "";
 
     if (!key.startsWith("_")) {
       // ? 로 끝나는 것은 필수값이 아님
@@ -67,6 +68,13 @@ export default function InventoryModalComponent(
       if (key === schmea.primaryKey) continue;
       inputOptions.type = "text";
       inputOptions.isDisabled = true;
+
+      if (type === "date") {
+        defaultValue = Moment(defaultValue)
+          .local()
+          .format("YYYY년 MM월 DD일 a h시 m분");
+      }
+
       disabledInputList.push({
         key,
         type,

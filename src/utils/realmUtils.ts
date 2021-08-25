@@ -33,7 +33,7 @@ export function schemaToColums(schema: schemaType) {
 
     if (type === "date") {
       accessor = (d: Document) => {
-        return Moment(d[key]).local().format("YYYY년 MM월 DD일 hh시 mm분");
+        return Moment(d[key]).local().format("YYYY년 MM월 DD일 a h시 m분");
       };
     }
 
