@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { product, productSchema } from "realmObjectModes";
 import { Row } from "react-table";
-import { insert, update, distinct, schemaToColums } from "utils/realmUtils";
+import {
+  insert,
+  update,
+  distinct,
+  schemaToColums,
+  deleteMany,
+} from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
@@ -15,6 +21,7 @@ import {
   TabList,
   Tab,
 } from "@chakra-ui/react";
+import { ObjectId } from "bson";
 
 export default function InventoryManagement() {
   const dispatch = useDispatch();
@@ -147,31 +154,36 @@ export default function InventoryManagement() {
   }
 
   async function deleteSelected() {
-    dispatch({
-      type: "system/openProgress",
-    });
-
-    const selectedProductIds: any[] = [];
-    const rowsById = mainTable.tableInstance.rowsById;
-    // @ts-ignore
-    const selectedRowIds = mainTable.tableInstance.state.selectedRowIds;
-
-    for (const key in selectedRowIds) {
-      // @ts-ignore
-      selectedProductIds.push(rowsById[key].original._id);
-    }
-
-    await realmApp?.currentUser?.functions
-      .delete_product_by_id(selectedProductIds)
-      .then((result) => {
-        if (result.succeed) {
-          console.log(result);
-        }
+    if (realmApp?.currentUser) {
+      dispatch({
+        type: "system/openProgress",
       });
 
-    dispatch({
-      type: "system/closeProgress",
-    });
+      const selectedProductIdList: ObjectId[] = [];
+      const rowsById = mainTable.tableInstance.rowsById;
+      // @ts-ignore
+      const selectedRowIds = mainTable.tableInstance.state.selectedRowIds;
+
+      for (const key in selectedRowIds) {
+        const doc = rowsById[key].original as product;
+        selectedProductIdList.push(doc._id);
+      }
+
+      const filter = {
+        _id: { $in: selectedProductIdList },
+      };
+
+      await deleteMany({
+        user: realmApp.currentUser,
+        collectionName: "product",
+        filter,
+      });
+
+      modalDisclosure.onClose();
+      dispatch({
+        type: "system/closeProgress",
+      });
+    }
   }
 
   async function onTabChange(tab: number) {

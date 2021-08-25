@@ -88,6 +88,24 @@ export async function update(props: {
   return result;
 }
 
+export async function deleteMany(props: {
+  user: RealmWeb.User;
+  collectionName: string;
+  filter: Document;
+}) {
+  const { user, collectionName, ...params } = props;
+  const { filter } = params;
+
+  const result = await user.functions.actionFunc({
+    type: "deleteMany",
+    collectionName,
+    filter,
+  });
+
+  console.log("deleteMany", result);
+  return result;
+}
+
 export async function distinct(props: {
   user: RealmWeb.User;
   collectionName: string;
