@@ -69,7 +69,7 @@ export default function InventoryManagement() {
           const value = await distinct({
             user: realmApp.currentUser,
             collectionName: "product",
-            field: "name",
+            field: "product_name",
           });
           setProductNames(value.result);
         }

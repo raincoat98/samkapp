@@ -48,8 +48,8 @@ export type product = {
   _id: bson.ObjectId;
   _last_modified: Date;
   _user_id: string;
-  name?: string;
-  note?: string;
+  product_name: string;
+  remark?: string;
   standard?: string;
   stock: number;
   thickness?: string;
@@ -62,8 +62,8 @@ export const productSchema = {
     _id: "objectId",
     _last_modified: "date",
     _user_id: "string",
-    name: "string?",
-    note: "string?",
+    product_name: "string",
+    remark: "string?",
     standard: "string?",
     stock: "int",
     thickness: "string?",
