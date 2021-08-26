@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ObjectId } from "bson";
 
-export default function InventoryManagement() {
+export default function ItemManagement() {
   const dispatch = useDispatch();
   const modalDisclosure = useDisclosure();
 

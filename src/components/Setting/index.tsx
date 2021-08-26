@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import PageContainer from "./frames/PageContainer";
-import ModalComponent from "./frames/ModalComponent";
+import PageContainer from "../frames/PageContainer";
+import ModalComponent from "../frames/ModalComponent";
 import LicensesList from "./LicensesList";
 import {
   useDisclosure,
