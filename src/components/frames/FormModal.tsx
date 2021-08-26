@@ -1,5 +1,8 @@
 import React from "react";
+import { RootState } from "store";
+import { useSelector } from "react-redux";
 import Moment from "moment";
+import validator from "validator";
 import ModalComponent from "components/frames/ModalComponent";
 import DaumAddressPopup from "components/frames/DaumAddressPopup";
 import {
@@ -8,6 +11,7 @@ import {
   Tag,
   Stack,
   Button,
+  IconButton,
   Input,
   Switch,
   ButtonGroup,
@@ -53,6 +57,11 @@ export default function InventoryModalComponent(
 
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
+  // 외부 링크 아이콘
+  const ExternalLinkIcon = useSelector(
+    (state: RootState) => state.icon.externalLink
+  );
+
   for (const key in schmea.properties) {
     let type = schmea.properties[key];
     let defaultValue = initialValue ? initialValue[key] : undefined;
@@ -67,24 +76,26 @@ export default function InventoryModalComponent(
     // key가 _로 시작하는 값은 유저가 수정할 수 없는 값
     if (!key.startsWith("_")) {
       let isInline = false;
+      const options: Record<string, any> = {};
 
+      // ref 추가
       formItemRefRecord.current[key] = React.createRef();
+      options.ref = formItemRefRecord.current[key];
 
       switch (type) {
         case "string": {
+          defaultValue = defaultValue as string;
+          options.type = "text";
+          options.defaultValue = defaultValue;
+          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            onEdited({ key, value: event.target.value });
+          };
+
           // 주소 값인지 판단
           if (key.includes("address")) {
             element = (
               <Box display="flex">
-                <Input
-                  type="text"
-                  defaultValue={defaultValue}
-                  onChange={(event) => {
-                    onEdited({ key, value: event.target.value });
-                  }}
-                  ref={formItemRefRecord.current[key]}
-                  mr={3}
-                />
+                <Input mr={3} {...options} />
                 <Button
                   onClick={() => {
                     addressPopupDisclosure.onToggle();
@@ -98,54 +109,54 @@ export default function InventoryModalComponent(
                 </Button>
               </Box>
             );
-          } else {
+            // URL 값일 때
+          } else if (key.includes("homepage") || key.includes("url")) {
             element = (
-              <Input
-                type="text"
-                defaultValue={defaultValue}
-                onChange={(event) => {
-                  onEdited({ key, value: event.target.value });
-                }}
-              />
+              <Box display="flex">
+                <Input mr={3} {...options} />
+                <IconButton
+                  aria-label="페이지 열기"
+                  onClick={() => {
+                    const value = formItemRefRecord.current[key].current.value;
+                    if (validator.isURL(value)) window.open(value);
+                  }}
+                  icon={<ExternalLinkIcon />}
+                />
+              </Box>
             );
+          } else {
+            element = <Input {...options} />;
           }
 
           break;
         }
         case "int": {
-          element = (
-            <Input
-              type="number"
-              defaultValue={defaultValue}
-              onChange={(event) => {
-                onEdited({ key, value: event.target.value });
-              }}
-            />
-          );
+          options.type = "number";
+          options.defaultValue = defaultValue;
+          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            onEdited({ key, value: event.target.value });
+          };
+
+          element = <Input {...options} />;
           break;
         }
         case "date": {
-          element = (
-            <Input
-              type="date"
-              defaultValue={defaultValue}
-              onChange={(event) => {
-                onEdited({ key, value: event.target.value });
-              }}
-            />
-          );
+          options.type = "date";
+          options.defaultValue = defaultValue;
+          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            onEdited({ key, value: event.target.value });
+          };
+
+          element = <Input {...options} />;
           break;
         }
         case "bool": {
-          const checked = defaultValue ? true : false;
-          element = (
-            <Switch
-              defaultChecked={checked}
-              onChange={(event) => {
-                onEdited({ key, value: event.target.checked });
-              }}
-            />
-          );
+          options.defaultChecked = defaultValue ? true : false;
+          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            onEdited({ key, value: event.target.checked });
+          };
+
+          element = <Switch {...options} />;
           isInline = true;
           break;
         }
