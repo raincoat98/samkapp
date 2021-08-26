@@ -8,7 +8,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { Box, Flex } from "@chakra-ui/react";
+import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import NoMatch from "./components/NoMatch";
@@ -41,6 +41,8 @@ function App() {
     }
   }, [dispatch, realmAppId]);
 
+  const [isLandscape] = useMediaQuery("(orientation: landscape)");
+
   return (
     <div
       style={{
@@ -56,7 +58,7 @@ function App() {
       ) : (
         <Router>
           <Flex h={"100%"} w={"100%"}>
-            <Sidebar />
+            {isLandscape ? <Sidebar /> : ""}
 
             <Box flex={1} overflow="auto">
               <Switch>
