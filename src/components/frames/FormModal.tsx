@@ -1,7 +1,9 @@
 import React from "react";
 import Moment from "moment";
 import ModalComponent from "components/frames/ModalComponent";
+import DaumAddressPopup from "components/frames/DaumAddressPopup";
 import {
+  useDisclosure,
   Box,
   Tag,
   Stack,
@@ -17,7 +19,6 @@ import {
 
 export type modeType = string | "insert" | "update";
 export type formItem = {
-  key: string;
   element?: JSX.Element;
   isDisabled?: boolean;
   isRequired?: boolean;
@@ -37,8 +38,20 @@ export default function InventoryModalComponent(
   >({});
   const { onChange, initialValue, schmea, mode } = props;
   const formRef = React.useRef<HTMLFormElement>(null);
-  const formItemList: formItem[] = [];
-  const disabledFormItemList: formItem[] = [];
+
+  const formItemRecord: Record<string, formItem> = {};
+  const formItemKeyList: string[] = [];
+
+  const disabledFormItemRecord: Record<string, formItem> = {};
+  const disabledFormItemKeyList: string[] = [];
+
+  const addressPopupDisclosure = useDisclosure();
+  const [addressPopupOpner, setAddressPopupOpner] = React.useState({
+    formItemKey: "",
+    dataKey: "",
+  });
+
+  const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   for (const key in schmea.properties) {
     let type = schmea.properties[key];
@@ -55,17 +68,48 @@ export default function InventoryModalComponent(
     if (!key.startsWith("_")) {
       let isInline = false;
 
+      formItemRefRecord.current[key] = React.createRef();
+
       switch (type) {
         case "string": {
-          element = (
-            <Input
-              type="text"
-              defaultValue={defaultValue}
-              onChange={(event) => {
-                onEdited({ key, value: event.target.value });
-              }}
-            />
-          );
+          // 주소 값인지 판단
+          if (key.includes("address")) {
+            element = (
+              <Box display="flex">
+                <Input
+                  type="text"
+                  defaultValue={defaultValue}
+                  onChange={(event) => {
+                    onEdited({ key, value: event.target.value });
+                  }}
+                  ref={formItemRefRecord.current[key]}
+                  mr={3}
+                />
+                <Button
+                  onClick={() => {
+                    addressPopupDisclosure.onToggle();
+                    setAddressPopupOpner({
+                      formItemKey: key,
+                      dataKey: "fullAddress",
+                    });
+                  }}
+                >
+                  주소 검색
+                </Button>
+              </Box>
+            );
+          } else {
+            element = (
+              <Input
+                type="text"
+                defaultValue={defaultValue}
+                onChange={(event) => {
+                  onEdited({ key, value: event.target.value });
+                }}
+              />
+            );
+          }
+
           break;
         }
         case "int": {
@@ -113,7 +157,8 @@ export default function InventoryModalComponent(
         }
       }
 
-      formItemList.push({ key, element, isRequired, isInline });
+      formItemKeyList.push(key);
+      formItemRecord[key] = { element, isRequired, isInline };
     } else {
       // 데이터 기본 키와 같을 경우 넣지 않음, 새로 작성할 때도 넣지 않음
       if (key === schmea.primaryKey || mode === "insert") continue;
@@ -134,13 +179,13 @@ export default function InventoryModalComponent(
         }
       }
 
-      disabledFormItemList.push({
-        key,
+      disabledFormItemKeyList.push(key);
+      disabledFormItemRecord[key] = {
         element,
         // 수정 불가
         isDisabled: true,
         isInline: true,
-      });
+      };
     }
   }
 
@@ -153,56 +198,88 @@ export default function InventoryModalComponent(
     props.onClose();
   }
 
+  function onAddressComplete(data: Record<string, any>) {
+    const value = data[addressPopupOpner.dataKey];
+
+    const element =
+      formItemRefRecord.current[addressPopupOpner.formItemKey].current;
+
+    if (element) element.value = value;
+
+    onEdited({
+      key: addressPopupOpner.formItemKey,
+      value,
+    });
+
+    addressPopupDisclosure.onClose();
+  }
+
   return (
-    <ModalComponent
-      isOpen={props.isOpen}
-      onClose={onClose}
-      isCentered={true}
-      size="2xl"
-      scrollBehavior="inside"
-      headerChildren={mode === "insert" ? "추가" : "수정"}
-      footerChildren={
-        <ButtonGroup>
-          <Button
-            type="submit"
-            onClick={() => {
-              onChange({
-                type: mode,
-                document: editedDocument,
-                initialValue,
-              });
-            }}
-            isDisabled={Object.keys(editedDocument).length === 0}
-            colorScheme="blue"
-          >
-            저장
-          </Button>
-          <Button onClick={onClose}>닫기</Button>
-        </ButtonGroup>
-      }
-    >
-      <form action="" ref={formRef}>
-        <Stack>
-          {formItemList.map((formItem, index) => (
-            <FormControl
-              id={formItem.key}
-              isRequired={formItem.isRequired}
-              key={index}
-              display={formItem.isInline ? "flex" : ""}
-              alignItems="center"
+    <>
+      <DaumAddressPopup
+        isOpen={addressPopupDisclosure.isOpen}
+        onClose={addressPopupDisclosure.onClose}
+        isCentered={true}
+        onComplete={onAddressComplete}
+        children={null}
+      />
+
+      <ModalComponent
+        isOpen={props.isOpen}
+        onClose={onClose}
+        isCentered={true}
+        size="2xl"
+        scrollBehavior="inside"
+        headerChildren={mode === "insert" ? "추가" : "수정"}
+        footerChildren={
+          <ButtonGroup>
+            <Button
+              type="submit"
+              onClick={() => {
+                onChange({
+                  type: mode,
+                  document: editedDocument,
+                  initialValue,
+                });
+              }}
+              isDisabled={Object.keys(editedDocument).length === 0}
+              colorScheme="blue"
             >
-              <FormLabel>{formItem.key}</FormLabel>
-              {formItem.element}
-            </FormControl>
-          ))}
+              저장
+            </Button>
+            <Button onClick={onClose}>닫기</Button>
+          </ButtonGroup>
+        }
+      >
+        <form action="" ref={formRef}>
+          <Stack>
+            {formItemKeyList.map((formItemKey, index) => (
+              <FormControl
+                id={formItemKey}
+                isRequired={formItemRecord[formItemKey].isRequired}
+                key={index}
+                display={formItemRecord[formItemKey].isInline ? "flex" : ""}
+                alignItems="center"
+              >
+                <FormLabel>{formItemKey}</FormLabel>
+                {formItemRecord[formItemKey].element}
+              </FormControl>
+            ))}
 
-          {mode === "insert" ? "" : <Divider />}
+            {mode === "insert" ? "" : <Divider />}
 
-          {disabledFormItemList.map((schmea, index) =>
-            schmea.element ? <Box key={index}>{schmea.element}</Box> : ""
-          )}
-        </Stack>
-      </form>
-    </ModalComponent>
+            {disabledFormItemKeyList.map((formItemKey, index) =>
+              disabledFormItemRecord[formItemKey].element ? (
+                <Box key={index}>
+                  {disabledFormItemRecord[formItemKey].element}
+                </Box>
+              ) : (
+                ""
+              )
+            )}
+          </Stack>
+        </form>
+      </ModalComponent>
+    </>
   );
 }
