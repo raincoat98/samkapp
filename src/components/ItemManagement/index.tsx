@@ -14,11 +14,15 @@ import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
 import {
+  BaseButtonGroups,
+  AddButton,
+  DeleteButton,
+} from "components/frames/Buttons";
+import {
   useDisclosure,
   Box,
   Flex,
   ButtonGroup,
-  Button,
   Wrap,
   Tabs,
   TabList,
@@ -204,14 +208,10 @@ export default function ItemManagement() {
     <PageContainer
       title={"품목 관리"}
       headerChildren={
-        <ButtonGroup spacing="3">
-          <Button variant="outline" colorScheme="red" onClick={deleteSelected}>
-            삭제
-          </Button>
-          <Button onClick={addProduct} colorScheme="blue">
-            추가
-          </Button>
-        </ButtonGroup>
+        <BaseButtonGroups>
+          <DeleteButton onClick={deleteSelected}></DeleteButton>
+          <AddButton onClick={addProduct}></AddButton>
+        </BaseButtonGroups>
       }
     >
       <FormModal

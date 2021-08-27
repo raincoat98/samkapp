@@ -7,13 +7,8 @@ import { insert, update, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
-import {
-  useDisclosure,
-  Box,
-  ButtonGroup,
-  Button,
-  Flex,
-} from "@chakra-ui/react";
+import { BaseButtonGroups, AddButton } from "components/frames/Buttons";
+import { useDisclosure, Box, Button, Flex } from "@chakra-ui/react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 export default function CustomerManage() {
@@ -118,17 +113,15 @@ export default function CustomerManage() {
     <PageContainer
       title={"고객관리"}
       headerChildren={
-        <ButtonGroup spacing="3">
+        <BaseButtonGroups>
           <Menu>
             <MenuButton as={Button}>업로드</MenuButton>
             <MenuList position="sticky" zIndex="dropdown">
               <MenuItem>엑셀 파일에서 업로드</MenuItem>
             </MenuList>
           </Menu>
-          <Button onClick={addCustomer} colorScheme="blue">
-            추가
-          </Button>
-        </ButtonGroup>
+          <AddButton onClick={addCustomer}></AddButton>
+        </BaseButtonGroups>
       }
     >
       <Flex direction="column" width="100%" height="100%">
