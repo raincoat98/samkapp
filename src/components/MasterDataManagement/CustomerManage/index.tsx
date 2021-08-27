@@ -126,7 +126,7 @@ export default function CustomerManage() {
     >
       <Flex direction="column" width="100%" height="100%">
         <Box p={3}>{mainTable.component.search}</Box>
-        <Box width="100%" overflow="auto">
+        <Box flex="1" overflow="auto">
           {mainTable.component.table}
         </Box>
         <Box p={3}>{mainTable.component.pagination}</Box>

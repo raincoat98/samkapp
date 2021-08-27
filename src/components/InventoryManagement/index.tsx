@@ -239,7 +239,9 @@ export default function InventoryManagement() {
         </Tabs>
 
         <Box p={3}>{mainTable.component.search}</Box>
-        <Box overflow="auto">{mainTable.component.table}</Box>
+        <Box flex="1" overflow="auto">
+          {mainTable.component.table}
+        </Box>
         <Box p={3}>{mainTable.component.pagination}</Box>
       </Flex>
     </PageContainer>
