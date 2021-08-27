@@ -18,15 +18,17 @@ import {
 } from "react-table";
 import {
   useColorModeValue,
+  useMediaQuery,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   Center,
   Stack,
+  Flex,
+  Box,
   Button,
   Icon,
   InputGroup,
@@ -48,6 +50,10 @@ const INDEX_COLUMN = "_index";
 const SELECTION_COLUMN = "_selection";
 
 export default function TableComponent(props: TableComponentProps) {
+  // 가로모드
+  const [isLandscape] = useMediaQuery("(orientation: landscape)");
+
+  // 번역
   const { t } = useTranslation();
 
   // 색상 가져오기
@@ -141,87 +147,106 @@ export default function TableComponent(props: TableComponentProps) {
     setGlobalFilter,
   } = tableInstance;
 
+  const searchElement = (
+    <TableSearch
+      preGlobalFilteredRows={preGlobalFilteredRows}
+      // @ts-ignore
+      globalFilter={tableState.globalFilter}
+      setGlobalFilter={setGlobalFilter}
+    />
+  );
+
+  const paginationElement = (
+    <Center>
+      <Stack direction="column" spacing={3} isInline={true}>
+        <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          맨 앞으로
+        </Button>
+        <Button onClick={previousPage} isDisabled={!canPreviousPage}>
+          이전
+        </Button>
+        <Center>
+          {/* @ts-ignore */}
+          {tableState.pageIndex + 1} / {pageOptions.length}
+        </Center>
+        <Button onClick={nextPage} isDisabled={!canNextPage}>
+          다음
+        </Button>
+        <Button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          맨 뒤로
+        </Button>
+      </Stack>
+    </Center>
+  );
+
+  const tableElement = (
+    <Table {...getTableProps()} wordBreak="break-all">
+      <Thead
+        style={{
+          userSelect: "none",
+          position: "sticky",
+          top: "0px",
+        }}
+        zIndex="docked"
+        boxShadow="base"
+        bg={backgroundColor}
+      >
+        {headerGroups.map((headerGroup) => (
+          <Tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column, index) => (
+              <TableHeaderCell column={column} key={index} />
+            ))}
+          </Tr>
+        ))}
+      </Thead>
+      <Tbody {...getTableBodyProps()}>
+        {page.map((row: Row) => {
+          prepareRow(row);
+          return (
+            <Tr
+              {...row.getRowProps()}
+              onClick={(event: any) => {
+                if (props.onRowClick) {
+                  if (event.target.nodeName === "INPUT") return false;
+                  props.onRowClick({ event, row });
+                }
+              }}
+              _hover={{
+                background: backgroundColorSelected,
+              }}
+            >
+              {row.cells.map((cell, index) => (
+                <TableDataCell cell={cell} key={index} />
+              ))}
+            </Tr>
+          );
+        })}
+      </Tbody>
+    </Table>
+  );
+
   return {
     tableInstance,
     component: {
-      search: (
-        <TableSearch
-          preGlobalFilteredRows={preGlobalFilteredRows}
-          // @ts-ignore
-          globalFilter={tableState.globalFilter}
-          setGlobalFilter={setGlobalFilter}
-        />
-      ),
-      pagination: (
-        <Center>
-          <Stack direction="column" spacing={3} isInline={true}>
-            <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              맨 앞으로
-            </Button>
-            <Button onClick={previousPage} isDisabled={!canPreviousPage}>
-              이전
-            </Button>
-            <Center>
-              {/* @ts-ignore */}
-              {tableState.pageIndex + 1} / {pageOptions.length}
-            </Center>
-            <Button onClick={nextPage} isDisabled={!canNextPage}>
-              다음
-            </Button>
-            <Button
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              맨 뒤로
-            </Button>
-          </Stack>
-        </Center>
-      ),
-      table: (
-        <Table {...getTableProps()} wordBreak="break-all">
-          <Thead
-            style={{
-              userSelect: "none",
-              position: "sticky",
-              top: "0px",
-            }}
-            zIndex="docked"
-            boxShadow="base"
-            bg={backgroundColor}
+      box: (
+        <Flex direction="column" width="100%" height="100%" overflow="auto">
+          <Box flex="1" overflow="auto">
+            {tableElement}
+          </Box>
+          <Flex
+            {...(isLandscape ? { direction: "row" } : { direction: "column" })}
+            p={3}
           >
-            {headerGroups.map((headerGroup) => (
-              <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, index) => (
-                  <TableHeaderCell column={column} key={index} />
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {page.map((row: Row) => {
-              prepareRow(row);
-              return (
-                <Tr
-                  {...row.getRowProps()}
-                  onClick={(event: any) => {
-                    if (props.onRowClick) {
-                      if (event.target.nodeName === "INPUT") return false;
-                      props.onRowClick({ event, row });
-                    }
-                  }}
-                  _hover={{
-                    background: backgroundColorSelected,
-                  }}
-                >
-                  {row.cells.map((cell, index) => (
-                    <TableDataCell cell={cell} key={index} />
-                  ))}
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
+            <Box flex="1" {...(isLandscape ? { pr: 3 } : { pb: 3 })}>
+              {searchElement}
+            </Box>
+            <Box>{paginationElement}</Box>
+          </Flex>
+        </Flex>
       ),
+      search: searchElement,
+      pagination: paginationElement,
+      table: tableElement,
     },
   };
 }

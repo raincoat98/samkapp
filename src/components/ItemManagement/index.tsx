@@ -20,9 +20,7 @@ import {
 } from "components/frames/Buttons";
 import {
   useDisclosure,
-  Box,
   Flex,
-  ButtonGroup,
   Wrap,
   Tabs,
   TabList,
@@ -238,11 +236,7 @@ export default function ItemManagement() {
           </TabList>
         </Tabs>
 
-        <Box p={3}>{mainTable.component.search}</Box>
-        <Box flex="1" overflow="auto">
-          {mainTable.component.table}
-        </Box>
-        <Box p={3}>{mainTable.component.pagination}</Box>
+        {mainTable.component.box}
       </Flex>
     </PageContainer>
   );

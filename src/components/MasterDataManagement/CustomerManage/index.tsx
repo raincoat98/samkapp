@@ -8,7 +8,7 @@ import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
 import { BaseButtonGroups, AddButton } from "components/frames/Buttons";
-import { useDisclosure, Box, Button, Flex } from "@chakra-ui/react";
+import { useDisclosure, Button } from "@chakra-ui/react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 export default function CustomerManage() {
@@ -124,13 +124,7 @@ export default function CustomerManage() {
         </BaseButtonGroups>
       }
     >
-      <Flex direction="column" width="100%" height="100%">
-        <Box p={3}>{mainTable.component.search}</Box>
-        <Box flex="1" overflow="auto">
-          {mainTable.component.table}
-        </Box>
-        <Box p={3}>{mainTable.component.pagination}</Box>
-      </Flex>
+      {mainTable.component.box}
 
       {/* 추가 폼 */}
       <FormModal

@@ -20,7 +20,6 @@ import {
 } from "components/frames/Buttons";
 import {
   useDisclosure,
-  Box,
   Flex,
   Tabs,
   TabList,
@@ -224,6 +223,7 @@ export default function InventoryManagement() {
         onClose={modalDisclosure.onClose}
         children={null}
       />
+
       <Flex direction="column" width="100%" height="100%">
         <Tabs onChange={onTabChange} isFitted size="sm">
           <TabList whiteSpace="nowrap">
@@ -238,11 +238,7 @@ export default function InventoryManagement() {
           </TabList>
         </Tabs>
 
-        <Box p={3}>{mainTable.component.search}</Box>
-        <Box flex="1" overflow="auto">
-          {mainTable.component.table}
-        </Box>
-        <Box p={3}>{mainTable.component.pagination}</Box>
+        {mainTable.component.box}
       </Flex>
     </PageContainer>
   );
