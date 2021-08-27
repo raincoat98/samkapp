@@ -8,13 +8,9 @@ import {
   useFilters,
   useGlobalFilter,
   useSortBy,
-  useAsyncDebounce,
   usePagination,
-  HeaderGroup,
   Column,
-  Cell,
   Row,
-  TableHeaderProps,
 } from "react-table";
 import {
   useColorModeValue,
@@ -23,20 +19,15 @@ import {
   Thead,
   Tbody,
   Tr,
-  Th,
-  Td,
   Center,
   Stack,
   Flex,
   Box,
   Button,
-  Icon,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  chakra,
-  TableCellProps,
 } from "@chakra-ui/react";
+import TableDataCell from "./TableDataCell";
+import TableHeaderCell from "./TableHeaderCell";
+import TableSearch from "./TableSearch";
 
 type TableComponentProps = {
   columns: Array<Column>;
@@ -194,7 +185,11 @@ export default function TableComponent(props: TableComponentProps) {
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, index) => (
-              <TableHeaderCell column={column} key={index} />
+              <TableHeaderCell
+                column={column}
+                excludeIds={[INDEX_COLUMN, SELECTION_COLUMN]}
+                key={index}
+              />
             ))}
           </Tr>
         ))}
@@ -251,103 +246,9 @@ export default function TableComponent(props: TableComponentProps) {
   };
 }
 
-function TableHeaderCell(props: TableHeaderProps & { column: HeaderGroup }) {
-  const { column, ...rest } = props;
-  return (
-    <Th
-      // @ts-ignore
-      {...column.getHeaderProps(column.getSortByToggleProps())}
-      textAlign="center"
-      whiteSpace="pre"
-      _notFirst={{ borderLeftWidth: "1px" }}
-      {...rest}
-    >
-      {column.render("Header")}
-      {column.id !== SELECTION_COLUMN && column.id !== INDEX_COLUMN ? (
-        <TableSortIcon
-          // @ts-ignore
-          isSorted={column.isSorted}
-          // @ts-ignore
-          isSortedDesc={column.isSortedDesc}
-        />
-      ) : null}
-    </Th>
-  );
-}
-
-function TableDataCell(props: TableCellProps & { cell: Cell }) {
-  const { cell, ...rest } = props;
-  return (
-    <Td
-      {...cell.getCellProps()}
-      textAlign="center"
-      verticalAlign="middle"
-      _notFirst={{ borderLeftWidth: "1px" }}
-      {...rest}
-    >
-      {cell.render("Cell")}
-    </Td>
-  );
-}
-
-function TableSearch(props: {
-  preGlobalFilteredRows: any;
-  globalFilter: any;
-  setGlobalFilter: any;
-}) {
-  //검색 아이콘
-  const searchIcon = useSelector((state: RootState) => state.icon.search);
-
-  const { t } = useTranslation();
-  const [value, setValue] = React.useState(props.globalFilter);
-  const onChange = useAsyncDebounce((value) => {
-    props.setGlobalFilter(value || undefined);
-  }, 200);
-
-  return (
-    <InputGroup>
-      <InputLeftElement
-        pointerEvents="none"
-        children={<Icon as={searchIcon} />}
-      />
-      <Input
-        value={value || ""}
-        onChange={(event) => {
-          setValue(event.target.value);
-          onChange(event.target.value);
-        }}
-        placeholder={t("Search")}
-      />
-    </InputGroup>
-  );
-}
-
 function TableCheckbox(props: any) {
   const { indeterminate, ...rest } = props;
   return (
     <input type="checkbox" indeterminate={indeterminate.toString()} {...rest} />
-  );
-}
-
-function TableSortIcon(props: { isSorted: boolean; isSortedDesc: boolean }) {
-  // 정렬 아이콘
-  const sortIcon = useSelector((state: RootState) => state.icon.sort);
-  const upIcon = useSelector((state: RootState) => state.icon.sortUp);
-  const downIcon = useSelector((state: RootState) => state.icon.sortDown);
-
-  return (
-    <chakra.span pl="2">
-      {/* @ts-ignore */}
-      {props.isSorted ? (
-        // @ts-ignore
-        props.isSortedDesc ? (
-          <Icon as={downIcon} />
-        ) : (
-          <Icon as={upIcon} />
-        )
-      ) : (
-        <Icon as={sortIcon} />
-      )}
-    </chakra.span>
   );
 }
