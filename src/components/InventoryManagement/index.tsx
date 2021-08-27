@@ -15,11 +15,14 @@ import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
 import {
   useDisclosure,
+  Box,
+  Flex,
   ButtonGroup,
   Button,
   Tabs,
   TabList,
   Tab,
+  Wrap,
 } from "@chakra-ui/react";
 import { ObjectId } from "bson";
 
@@ -222,17 +225,24 @@ export default function InventoryManagement() {
         onClose={modalDisclosure.onClose}
         children={null}
       />
-      <Tabs onChange={onTabChange} isFitted>
-        <TabList>
-          {productBasicFilterList.map((filter, index) => (
-            <Tab key={index}>{filter.name}</Tab>
-          ))}
-          {productNames.map((name, index) => (
-            <Tab key={index}>{name}</Tab>
-          ))}
-        </TabList>
-      </Tabs>
-      {mainTable.component}
+      <Flex direction="column" width="100%" height="100%">
+        <Tabs onChange={onTabChange} isFitted size="sm">
+          <TabList whiteSpace="nowrap">
+            <Wrap spacing={0}>
+              {productBasicFilterList.map((filter, index) => (
+                <Tab key={index}>{filter.name}</Tab>
+              ))}
+              {productNames.map((name, index) => (
+                <Tab key={index}>{name}</Tab>
+              ))}
+            </Wrap>
+          </TabList>
+        </Tabs>
+
+        <Box p={3}>{mainTable.component.search}</Box>
+        <Box overflow="auto">{mainTable.component.table}</Box>
+        <Box p={3}>{mainTable.component.pagination}</Box>
+      </Flex>
     </PageContainer>
   );
 }

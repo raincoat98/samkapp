@@ -143,93 +143,86 @@ export default function TableComponent(props: TableComponentProps) {
 
   return {
     tableInstance,
-    component: (
-      <Table {...getTableProps()} wordBreak="break-all">
-        <Thead
-          style={{
-            userSelect: "none",
-            position: "sticky",
-            top: "0px",
-          }}
-          zIndex="docked"
-          boxShadow="base"
-          bg={backgroundColor}
-        >
-          <Tr>
-            <Th colSpan={tableInstance.visibleColumns.length}>
-              <TableSearch
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                // @ts-ignore
-                globalFilter={tableState.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-              />
-            </Th>
-          </Tr>
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index) => (
-                <TableHeaderCell column={column} key={index} />
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {page.map((row: Row) => {
-            prepareRow(row);
-            return (
-              <Tr
-                {...row.getRowProps()}
-                onClick={(event: any) => {
-                  if (props.onRowClick) {
-                    if (event.target.nodeName === "INPUT") return false;
-                    props.onRowClick({ event, row });
-                  }
-                }}
-                _hover={{
-                  background: backgroundColorSelected,
-                }}
-              >
-                {row.cells.map((cell, index) => (
-                  <TableDataCell cell={cell} key={index} />
+    component: {
+      search: (
+        <TableSearch
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          // @ts-ignore
+          globalFilter={tableState.globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+      ),
+      pagination: (
+        <Center>
+          <Stack direction="column" spacing={3} isInline={true}>
+            <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              맨 앞으로
+            </Button>
+            <Button onClick={previousPage} isDisabled={!canPreviousPage}>
+              이전
+            </Button>
+            <Center>
+              {/* @ts-ignore */}
+              {tableState.pageIndex + 1} / {pageOptions.length}
+            </Center>
+            <Button onClick={nextPage} isDisabled={!canNextPage}>
+              다음
+            </Button>
+            <Button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              맨 뒤로
+            </Button>
+          </Stack>
+        </Center>
+      ),
+      table: (
+        <Table {...getTableProps()} wordBreak="break-all">
+          <Thead
+            style={{
+              userSelect: "none",
+              position: "sticky",
+              top: "0px",
+            }}
+            zIndex="docked"
+            boxShadow="base"
+            bg={backgroundColor}
+          >
+            {headerGroups.map((headerGroup) => (
+              <Tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column, index) => (
+                  <TableHeaderCell column={column} key={index} />
                 ))}
               </Tr>
-            );
-          })}
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th colSpan={tableInstance.visibleColumns.length}>
-              <Center>
-                <Stack direction="column" spacing={3} isInline={true}>
-                  <Button
-                    onClick={() => gotoPage(0)}
-                    disabled={!canPreviousPage}
-                  >
-                    맨 앞으로
-                  </Button>
-                  <Button onClick={previousPage} isDisabled={!canPreviousPage}>
-                    이전
-                  </Button>
-                  <Center>
-                    {/* @ts-ignore */}
-                    {tableState.pageIndex + 1} / {pageOptions.length}
-                  </Center>
-                  <Button onClick={nextPage} isDisabled={!canNextPage}>
-                    다음
-                  </Button>
-                  <Button
-                    onClick={() => gotoPage(pageCount - 1)}
-                    disabled={!canNextPage}
-                  >
-                    맨 뒤로
-                  </Button>
-                </Stack>
-              </Center>
-            </Th>
-          </Tr>
-        </Tfoot>
-      </Table>
-    ),
+            ))}
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            {page.map((row: Row) => {
+              prepareRow(row);
+              return (
+                <Tr
+                  {...row.getRowProps()}
+                  onClick={(event: any) => {
+                    if (props.onRowClick) {
+                      if (event.target.nodeName === "INPUT") return false;
+                      props.onRowClick({ event, row });
+                    }
+                  }}
+                  _hover={{
+                    background: backgroundColorSelected,
+                  }}
+                >
+                  {row.cells.map((cell, index) => (
+                    <TableDataCell cell={cell} key={index} />
+                  ))}
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      ),
+    },
   };
 }
 

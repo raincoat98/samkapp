@@ -15,8 +15,11 @@ import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
 import {
   useDisclosure,
+  Box,
+  Flex,
   ButtonGroup,
   Button,
+  Wrap,
   Tabs,
   TabList,
   Tab,
@@ -220,17 +223,25 @@ export default function ItemManagement() {
         onClose={modalDisclosure.onClose}
         children={null}
       />
-      <Tabs onChange={onTabChange} isFitted>
-        <TabList>
-          {itemBasicFilterList.map((filter, index) => (
-            <Tab key={index}>{filter.name}</Tab>
-          ))}
-          {itemNames.map((name, index) => (
-            <Tab key={index}>{name}</Tab>
-          ))}
-        </TabList>
-      </Tabs>
-      {mainTable.component}
+
+      <Flex direction="column" width="100%" height="100%">
+        <Tabs onChange={onTabChange} isFitted size="sm">
+          <TabList whiteSpace="nowrap">
+            <Wrap spacing={0}>
+              {itemBasicFilterList.map((filter, index) => (
+                <Tab key={index}>{filter.name}</Tab>
+              ))}
+              {itemNames.map((name, index) => (
+                <Tab key={index}>{name}</Tab>
+              ))}
+            </Wrap>
+          </TabList>
+        </Tabs>
+
+        <Box p={3}>{mainTable.component.search}</Box>
+        <Box overflow="auto">{mainTable.component.table}</Box>
+        <Box p={3}>{mainTable.component.pagination}</Box>
+      </Flex>
     </PageContainer>
   );
 }

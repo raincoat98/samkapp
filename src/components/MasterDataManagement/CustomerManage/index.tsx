@@ -7,7 +7,13 @@ import { insert, update, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
 import FormModal from "components/frames/FormModal";
-import { useDisclosure, ButtonGroup, Button } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Box,
+  ButtonGroup,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 
 export default function CustomerManage() {
@@ -24,7 +30,7 @@ export default function CustomerManage() {
   const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
   const [modalMode, setModalMode] = React.useState("insert");
 
-  const CustomerTable = TableComponent({
+  const mainTable = TableComponent({
     columns: customerColumns,
     data: customerList,
     onRowClick: editCustomer,
@@ -125,7 +131,13 @@ export default function CustomerManage() {
         </ButtonGroup>
       }
     >
-      {CustomerTable.component}
+      <Flex direction="column" width="100%" height="100%">
+        <Box p={3}>{mainTable.component.search}</Box>
+        <Box width="100%" overflow="auto">
+          {mainTable.component.table}
+        </Box>
+        <Box p={3}>{mainTable.component.pagination}</Box>
+      </Flex>
 
       {/* 추가 폼 */}
       <FormModal
