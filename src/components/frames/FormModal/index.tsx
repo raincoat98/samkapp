@@ -41,21 +41,16 @@ export default function InventoryModalComponent(
     Record<string, any>
   >({});
   const { onChange, initialValue, schmea, mode } = props;
-  const formRef = React.useRef<HTMLFormElement>(null);
 
   const formItemRecord: Record<string, formItem> = {};
-  const formItemKeyList: string[] = [];
-
   const disabledFormItemRecord: Record<string, formItem> = {};
-  const disabledFormItemKeyList: string[] = [];
+  const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   const addressPopupDisclosure = useDisclosure();
   const [addressPopupOpner, setAddressPopupOpner] = React.useState({
     formItemKey: "",
     dataKey: "",
   });
-
-  const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   // 외부 링크 아이콘
   const ExternalLinkIcon = useSelector(
@@ -168,7 +163,6 @@ export default function InventoryModalComponent(
         }
       }
 
-      formItemKeyList.push(key);
       formItemRecord[key] = { element, isRequired, isInline };
     } else {
       // 데이터 기본 키와 같을 경우 넣지 않음, 새로 작성할 때도 넣지 않음
@@ -190,7 +184,6 @@ export default function InventoryModalComponent(
         }
       }
 
-      disabledFormItemKeyList.push(key);
       disabledFormItemRecord[key] = {
         element,
         // 수정 불가
@@ -262,34 +255,29 @@ export default function InventoryModalComponent(
           </ButtonGroup>
         }
       >
-        <form action="" ref={formRef}>
-          <Stack>
-            {formItemKeyList.map((formItemKey, index) => (
-              <FormControl
-                id={formItemKey}
-                isRequired={formItemRecord[formItemKey].isRequired}
-                key={index}
-                display={formItemRecord[formItemKey].isInline ? "flex" : ""}
-                alignItems="center"
-              >
-                <FormLabel>{formItemKey}</FormLabel>
-                {formItemRecord[formItemKey].element}
-              </FormControl>
-            ))}
+        <Stack>
+          {Object.keys(formItemRecord).map((key) => (
+            <FormControl
+              id={key}
+              isRequired={formItemRecord[key].isRequired}
+              display={formItemRecord[key].isInline ? "flex" : ""}
+              alignItems="center"
+              key={key}
+            >
+              <FormLabel>{key}</FormLabel>
+              {formItemRecord[key].element}
+            </FormControl>
+          ))}
 
-            {mode === "insert" ? "" : <Divider />}
+          {mode === "insert" ? "" : <Divider />}
 
-            {disabledFormItemKeyList.map((formItemKey, index) =>
-              disabledFormItemRecord[formItemKey].element ? (
-                <Box key={index}>
-                  {disabledFormItemRecord[formItemKey].element}
-                </Box>
-              ) : (
-                ""
+          {Object.keys(disabledFormItemRecord).map(
+            (key) =>
+              disabledFormItemRecord[key].element ?? (
+                <Box key={key}>{disabledFormItemRecord[key].element}</Box>
               )
-            )}
-          </Stack>
-        </form>
+          )}
+        </Stack>
       </ModalComponent>
     </>
   );
