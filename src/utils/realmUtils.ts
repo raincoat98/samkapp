@@ -3,18 +3,18 @@ import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 import Moment from "moment";
 
-type Document = Record<string, any>;
+export type Document = Record<string, any>;
 
-type schemaType = {
+export type schemaType = {
   name: string;
   properties: Record<string, string>;
   primaryKey: string;
 };
 
-type useProgress = { useProgress?: boolean; dispatch?: Dispatch<any> };
-type user = { user: RealmWeb.User };
-type collectionName = { collectionName: string };
-type basicProps = useProgress & user & collectionName;
+export type useProgress = { useProgress?: boolean; dispatch?: Dispatch<any> };
+export type user = { user: RealmWeb.User };
+export type collectionName = { collectionName: string };
+export type basicProps = useProgress & user & collectionName;
 
 export function isReadOnly(key: string) {
   return key.startsWith("_");
