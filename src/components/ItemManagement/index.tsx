@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { item, itemSchema } from "realmObjectModes";
 import { Row } from "react-table";
+import { useTranslation } from "react-i18next";
 import {
   insert,
   update,
@@ -31,11 +32,19 @@ import { ObjectId } from "bson";
 export default function ItemManagement() {
   const dispatch = useDispatch();
   const modalDisclosure = useDisclosure();
+  const { t: translate } = useTranslation();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
   const itemCollection = mongodb?.db("database")?.collection<item>("item");
   const itemColumns = schemaToColums(itemSchema);
+  Object.keys(itemColumns).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(itemColumns, key)) {
+      let headerName = itemColumns[Number(key)].Header;
+      const header = translate(`table_field.${headerName as string}`);
+      itemColumns[Number(key)].Header = header;
+    }
+  });
   const [itemList, setItemList] = React.useState<item[]>([]);
   const itemBasicFilterList = [
     { name: "전체" },

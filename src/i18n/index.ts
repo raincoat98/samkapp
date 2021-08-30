@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import table_field from "./table_field.json";
 
 // the translations
 // (tip move them in a JSON file and import them,
@@ -7,6 +8,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   ko: {
     translation: {
+      table_field,
+
       // 기준정보 관리
       "Master Data Management": "기준정보 관리",
       "Customer Management": "고객 관리",

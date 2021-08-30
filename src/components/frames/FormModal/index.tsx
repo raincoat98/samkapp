@@ -1,6 +1,7 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import Moment from "moment";
 import validator from "validator";
 import ModalComponent from "components/frames/ModalComponent";
@@ -41,6 +42,9 @@ export default function InventoryModalComponent(
     Record<string, any>
   >({});
   const { onChange, initialValue, schmea, mode } = props;
+
+  // 번역
+  const { t } = useTranslation();
 
   const formItemRecord: Record<string, formItem> = {};
   const disabledFormItemRecord: Record<string, formItem> = {};
@@ -168,14 +172,14 @@ export default function InventoryModalComponent(
       // 데이터 기본 키와 같을 경우 넣지 않음, 새로 작성할 때도 넣지 않음
       if (key === schmea.primaryKey || mode === "insert") continue;
 
-      const name = key.replace("_", "");
+      // const name = key.replace("_", "");
 
       switch (type) {
         case "date": {
           // 수정 불가능한 date 값
           element = (
             <Tag>
-              {`${name}: `}
+              {`${t("table_field." + key)}: `}
               {Moment(defaultValue)
                 .local()
                 .format("YYYY년 MM월 DD일 a h시 m분")}
@@ -264,18 +268,21 @@ export default function InventoryModalComponent(
               alignItems="center"
               key={key}
             >
-              <FormLabel>{key}</FormLabel>
+              <FormLabel>{t(`table_field.${key}`)}</FormLabel>
               {formItemRecord[key].element}
             </FormControl>
           ))}
 
           {mode === "insert" ? "" : <Divider />}
 
-          {Object.keys(disabledFormItemRecord).map(
-            (key) =>
-              disabledFormItemRecord[key].element ?? (
-                <Box key={key}>{disabledFormItemRecord[key].element}</Box>
-              )
+          {/* Warning: Each child in a list should have a unique "key" prop. */}
+          {/* 키 오류 아마 불확실하게 자식이 리턴되어서 그런 듯 */}
+          {Object.keys(disabledFormItemRecord).map((key) =>
+            disabledFormItemRecord[key].element ? (
+              <Box key={key}>{disabledFormItemRecord[key].element}</Box>
+            ) : (
+              ""
+            )
           )}
         </Stack>
       </ModalComponent>

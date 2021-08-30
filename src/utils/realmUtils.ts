@@ -44,11 +44,12 @@ export function schemaToColums(schema: schemaType) {
     }
 
     // _로 시작하는 key는 유저가 수정할 수 없는 항목
-    // if (!key.startsWith("_")) {
-    columns.push({
-      Header: key,
-      accessor,
-    });
+    if (!key.startsWith("_")) {
+      columns.push({
+        Header: key,
+        accessor,
+      });
+    }
   }
 
   return columns;

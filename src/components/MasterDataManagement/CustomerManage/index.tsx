@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { customer, customerSchema } from "realmObjectModes";
 import { Row } from "react-table";
+import { useTranslation } from "react-i18next";
 import { insert, update, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/frames/PageContainer";
 import TableComponent from "components/frames/TableComponent";
@@ -14,6 +15,7 @@ import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 export default function CustomerManage() {
   const dispatch = useDispatch();
   const modalDisclosure = useDisclosure();
+  const { t: translate } = useTranslation();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
@@ -21,6 +23,13 @@ export default function CustomerManage() {
     ?.db("database")
     ?.collection<customer>("customer");
   const customerColumns = schemaToColums(customerSchema);
+  Object.keys(customerColumns).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(customerColumns, key)) {
+      let headerName = customerColumns[Number(key)].Header;
+      const header = translate(`table_field.${headerName as string}`);
+      customerColumns[Number(key)].Header = header;
+    }
+  });
   const [customerList, setCustomerList] = React.useState<customer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = React.useState<customer>();
   const [modalMode, setModalMode] = React.useState("insert");

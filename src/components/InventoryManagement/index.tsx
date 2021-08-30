@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { product, productSchema } from "realmObjectModes";
 import { Row } from "react-table";
+import { useTranslation } from "react-i18next";
 import {
   insert,
   update,
@@ -31,6 +32,7 @@ import { ObjectId } from "bson";
 export default function InventoryManagement() {
   const dispatch = useDispatch();
   const modalDisclosure = useDisclosure();
+  const { t: translate } = useTranslation();
 
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
@@ -38,6 +40,14 @@ export default function InventoryManagement() {
     ?.db("database")
     ?.collection<product>("product");
   const productColumns = schemaToColums(productSchema);
+  Object.keys(productColumns).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(productColumns, key)) {
+      let headerName = productColumns[Number(key)].Header;
+      const header = translate(`table_field.${headerName as string}`);
+      productColumns[Number(key)].Header = header;
+    }
+  });
+
   const [productList, setProductList] = React.useState<product[]>([]);
   const productBasicFilterList = [
     { name: "전체" },
