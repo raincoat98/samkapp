@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Moment from "moment";
 import validator from "validator";
-import ModalComponent from "components/frames/ModalComponent";
-import DaumAddressPopup from "components/frames/DaumAddressPopup";
+import ModalComponent from "components/base/ModalComponent";
+import DaumAddressPopup from "components/base/DaumAddressPopup";
 import {
   useDisclosure,
   Box,

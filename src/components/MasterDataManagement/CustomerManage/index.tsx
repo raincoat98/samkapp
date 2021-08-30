@@ -5,10 +5,10 @@ import { customer, customerSchema } from "realmObjectModes";
 import { Row } from "react-table";
 import { useTranslation } from "react-i18next";
 import { insert, update, schemaToColums } from "utils/realmUtils";
-import PageContainer from "components/frames/PageContainer";
-import TableComponent from "components/frames/TableComponent";
-import FormModal from "components/frames/FormModal";
-import { BaseButtonGroups, AddButton } from "components/frames/Buttons";
+import PageContainer from "components/base/PageContainer";
+import TableComponent from "components/base/TableComponent";
+import FormModal from "components/base/FormModal";
+import { BaseButtonGroups, AddButton } from "components/base/Buttons";
 import { useDisclosure, Button } from "@chakra-ui/react";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 

@@ -1,4 +1,4 @@
-import Dialog from "components/frames/DialogComponent";
+import Dialog from "components/base/DialogComponent";
 import { HeaderAndFooterProps } from "components/props";
 import { AlertDialogProps } from "@chakra-ui/react";
 

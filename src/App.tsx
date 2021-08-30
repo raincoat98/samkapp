@@ -12,7 +12,7 @@ import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
 import Login from "./components/Login";
 import Sidebar from "./components/Sidebar";
 import NoMatch from "./components/NoMatch";
-import SpinnerComponent from "components/frames/SpinnerComponent";
+import SpinnerComponent from "components/base/SpinnerComponent";
 
 function App() {
   const dispatch = useDispatch();

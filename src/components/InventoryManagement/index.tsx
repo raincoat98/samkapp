@@ -11,14 +11,14 @@ import {
   schemaToColums,
   deleteMany,
 } from "utils/realmUtils";
-import PageContainer from "components/frames/PageContainer";
-import TableComponent from "components/frames/TableComponent";
-import FormModal from "components/frames/FormModal";
+import PageContainer from "components/base/PageContainer";
+import TableComponent from "components/base/TableComponent";
+import FormModal from "components/base/FormModal";
 import {
   BaseButtonGroups,
   AddButton,
   DeleteButton,
-} from "components/frames/Buttons";
+} from "components/base/Buttons";
 import {
   useDisclosure,
   Flex,

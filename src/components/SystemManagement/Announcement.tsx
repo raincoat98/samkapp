@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import PageContainer from "components/frames/PageContainer";
+import PageContainer from "components/base/PageContainer";
 import {
   Heading,
   Accordion,
