@@ -1,5 +1,5 @@
 {
-    "@chakra-ui/react@1.6.6": {
+    "@chakra-ui/react@1.6.7": {
         "licenses": "MIT",
         "repository": "https://github.com/chakra-ui/chakra-ui",
         "licenseUrl": "https://github.com/chakra-ui/chakra-ui",
@@ -47,13 +47,13 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/jest@27.0.0": {
+    "@types/jest@27.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/node@16.4.13": {
+    "@types/node@16.7.6": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -71,13 +71,19 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/react@17.0.17": {
+    "@types/react@17.0.19": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "bson@4.5.0": {
+    "@types/validator@13.6.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "my-app"
+    },
+    "bson@4.5.1": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/mongodb/js-bson",
         "licenseUrl": "https://github.com/mongodb/js-bson/raw/master/LICENSE.md",
@@ -101,10 +107,22 @@
         "licenseUrl": "https://github.com/i18next/i18next/raw/master/LICENSE",
         "parents": "my-app"
     },
+    "moment@2.29.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/moment/moment",
+        "licenseUrl": "https://github.com/moment/moment/raw/master/LICENSE",
+        "parents": "my-app"
+    },
     "npm-license-crawler@0.2.1": {
         "licenses": "BSD-3-Clause",
         "repository": "http://github.com/mwittig/npm-license-crawler",
         "licenseUrl": "http://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
+        "parents": "my-app"
+    },
+    "react-daum-postcode@2.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/kimminsik-bernard/react-daum-postcode",
+        "licenseUrl": "https://github.com/kimminsik-bernard/react-daum-postcode",
         "parents": "my-app"
     },
     "react-dom@17.0.2": {
@@ -131,10 +149,10 @@
         "licenseUrl": "github:reduxjs/react-redux",
         "parents": "my-app"
     },
-    "react-router-dom@5.2.0": {
+    "react-router-dom@5.2.1": {
         "licenses": "MIT",
         "repository": "https://github.com/ReactTraining/react-router",
-        "licenseUrl": "https://github.com/ReactTraining/react-router/raw/master/LICENSE",
+        "licenseUrl": "https://github.com/ReactTraining/react-router",
         "parents": "my-app"
     },
     "react-scripts@4.0.3": {
@@ -167,10 +185,16 @@
         "licenseUrl": "https://github.com/rt2zz/redux-persist/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "typescript@4.3.5": {
+    "typescript@4.4.2": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/Microsoft/TypeScript",
         "licenseUrl": "https://github.com/Microsoft/TypeScript/raw/master/LICENSE.txt",
+        "parents": "my-app"
+    },
+    "validator@13.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/validatorjs/validator.js",
+        "licenseUrl": "https://github.com/validatorjs/validator.js/raw/master/LICENSE",
         "parents": "my-app"
     },
     "web-vitals@2.1.0": {
@@ -179,7 +203,7 @@
         "licenseUrl": "https://github.com/GoogleChrome/web-vitals/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "xlsx@0.17.0": {
+    "xlsx@0.17.1": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/SheetJS/sheetjs",
         "licenseUrl": "https://github.com/SheetJS/sheetjs/raw/master/LICENSE",
