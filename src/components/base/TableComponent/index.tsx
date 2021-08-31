@@ -29,7 +29,10 @@ import TableDataCell from "./TableDataCell";
 import TableHeaderCell from "./TableHeaderCell";
 import TableSearch from "./TableSearch";
 
-type TableComponentProps = {
+const INDEX_COLUMN = "_index";
+const SELECTION_COLUMN = "_selection";
+
+export type TableComponentProps = {
   columns: Array<Column>;
   data: Array<any>;
   useIndex?: boolean;
@@ -37,10 +40,9 @@ type TableComponentProps = {
   onRowClick?: Function;
 };
 
-const INDEX_COLUMN = "_index";
-const SELECTION_COLUMN = "_selection";
-
 export default function TableComponent(props: TableComponentProps) {
+  const { columns, data, useIndex, stateReducer, onRowClick } = props;
+
   // 가로모드
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
@@ -61,13 +63,13 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   // React-Table
-  const memoColumns = React.useMemo(() => props.columns, [props.columns]);
-  const memoData = React.useMemo(() => props.data, [props.data]);
+  const memoColumns = React.useMemo(() => columns, [columns]);
+  const memoData = React.useMemo(() => data, [data]);
   const tableInstance = useTable(
     {
       columns: memoColumns,
       data: memoData,
-      stateReducer: props.stateReducer,
+      stateReducer,
       autoResetHiddenColumns: false,
       initialState: {
         // @ts-ignore
@@ -97,7 +99,7 @@ export default function TableComponent(props: TableComponentProps) {
         });
 
         // 인덱스 컬럼
-        if (props.useIndex) {
+        if (useIndex) {
           optionColumns.push({
             id: INDEX_COLUMN,
             Header: <span>{t("Index")}</span>,
@@ -201,9 +203,9 @@ export default function TableComponent(props: TableComponentProps) {
             <Tr
               {...row.getRowProps()}
               onClick={(event: any) => {
-                if (props.onRowClick) {
+                if (onRowClick) {
                   if (event.target.nodeName === "INPUT") return false;
-                  props.onRowClick({ event, row });
+                  onRowClick({ event, row });
                 }
               }}
               _hover={{
