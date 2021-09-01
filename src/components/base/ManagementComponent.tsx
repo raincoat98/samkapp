@@ -58,6 +58,7 @@ export default function ManagementComponent(props: {
   const realmApp = useSelector((state: RootState) => state.realm.app);
   const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
   const collection = mongodb?.db("database")?.collection<any>(collectionName);
+  const [changeStream, setChangeStream] = React.useState<AsyncGenerator<any>>();
   // 행
   const columns = schemaToColums(schema);
   Object.keys(columns).forEach((key) => {
@@ -128,10 +129,13 @@ export default function ManagementComponent(props: {
         await collection
           .find()
           .then((value) => {
-            setData(value);
+            if (!data.length) {
+              setData(value);
+            }
           })
           // 실패해도 반드시 실행
-          .finally(() => {
+          .finally(async () => {
+            if (!changeStream) await setChangeStream(await collection.watch());
             // 진행 표시줄 OFF
             dispatch({
               type: "system/closeProgress",
@@ -147,6 +151,66 @@ export default function ManagementComponent(props: {
   React.useCallback((listValue: any[]) => {
     setData(listValue);
   }, []);
+
+  // 스트리밍
+  React.useEffect(() => {
+    streamStart();
+
+    async function streamStart() {
+      if (!changeStream) return;
+
+      for await (const change of changeStream) {
+        switch (change.operationType) {
+          case "insert": {
+            // 삽입 작업 일 때
+            const { documentKey, fullDocument } = change;
+            console.log(`new document with _id`, documentKey, fullDocument);
+            setData([...data, fullDocument]);
+            break;
+          }
+          case "update": {
+            // 수정 작업 일 때
+            const { documentKey, fullDocument } = change;
+            for (let index = 0; index < data.length; index++) {
+              if (
+                data[index][schema.primaryKey].equals(
+                  documentKey[schema.primaryKey]
+                )
+              ) {
+                data[index] = fullDocument;
+              }
+            }
+            console.log(`updated document`, documentKey, fullDocument);
+            break;
+          }
+          // case "replace": {
+          //   const { documentKey, fullDocument } = change;
+          //   console.log(`replaced document`, documentKey, fullDocument);
+          //   break;
+          // }
+          case "delete": {
+            // 삭제 작업 일 때
+            const { documentKey } = change;
+            for (let index = 0; index < data.length; index++) {
+              setData(
+                data.filter(
+                  (document) =>
+                    !document[schema.primaryKey].equals(
+                      documentKey[schema.primaryKey]
+                    )
+                )
+              );
+            }
+            console.log(`deleted document`, documentKey);
+            break;
+          }
+          default: {
+            console.log(change);
+          }
+        }
+      }
+    }
+  }, [changeStream, collectionName, data, schema.primaryKey]);
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
