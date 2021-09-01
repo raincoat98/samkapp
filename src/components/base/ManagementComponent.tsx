@@ -69,6 +69,8 @@ export default function ManagementComponent(props: {
   });
   // 열
   const [data, setData] = React.useState<any[]>([]);
+  // 선택한 열이 존재하는지 확인
+  const [isExistSelectedRow, setIsExistSelectedRow] = React.useState(false);
 
   // 선택한 항목
   const [selected, setSelected] = React.useState<any>();
@@ -92,6 +94,14 @@ export default function ManagementComponent(props: {
     columns,
     data,
     onRowClick: prepareUpdate,
+    stateReducer: React.useCallback(
+      (newState: { selectedRowIds: Record<number, boolean> }) => {
+        setIsExistSelectedRow(
+          Object.keys(newState.selectedRowIds).length !== 0
+        );
+      },
+      []
+    ),
   });
 
   // 초기화
@@ -252,8 +262,12 @@ export default function ManagementComponent(props: {
       title={title}
       headerChildren={
         <BaseButtonGroups>
-          <DeleteButton onClick={deleteSelected}></DeleteButton>
-          <AddButton onClick={prepareInsert}></AddButton>
+          <DeleteButton
+            isDisabled={!isExistSelectedRow}
+            onClick={deleteSelected}
+            title="선택한 항목을 삭제합니다."
+          />
+          <AddButton onClick={prepareInsert} />
         </BaseButtonGroups>
       }
     >
