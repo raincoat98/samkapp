@@ -6,6 +6,8 @@ import Moment from "moment";
 import validator from "validator";
 import ModalComponent from "components/base/ModalComponent";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
+import FormModalAddressInput from "./FormModalAddressInput";
+import FormModalURLInput from "./FormModalURLInput";
 import {
   useDisclosure,
   Box,
@@ -63,11 +65,6 @@ export default function InventoryModalComponent(
     dataKey: "",
   });
 
-  // 외부 링크 아이콘
-  const ExternalLinkIcon = useSelector(
-    (state: RootState) => state.icon.externalLink
-  );
-
   for (const key in schmea.properties) {
     // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
     if (
@@ -112,35 +109,31 @@ export default function InventoryModalComponent(
           // 주소 값인지 판단
           if (key.includes("address")) {
             element = (
-              <Box display="flex">
-                <Input mr={3} {...options} />
-                <Button
-                  onClick={() => {
+              <FormModalAddressInput
+                inputProps={{ ...options }}
+                buttonProps={{
+                  onClick: () => {
                     addressPopupDisclosure.onToggle();
                     setAddressPopupOpner({
                       formItemKey: key,
                       dataKey: "fullAddress",
                     });
-                  }}
-                >
-                  주소 검색
-                </Button>
-              </Box>
+                  },
+                }}
+              />
             );
             // URL 값일 때
           } else if (key.includes("homepage") || key.includes("url")) {
             element = (
-              <Box display="flex">
-                <Input mr={3} {...options} />
-                <IconButton
-                  aria-label="페이지 열기"
-                  onClick={() => {
+              <FormModalURLInput
+                inputProps={{ ...options }}
+                buttonProps={{
+                  onClick: () => {
                     const value = formItemRefRecord.current[key].current.value;
                     if (validator.isURL(value)) window.open(value);
-                  }}
-                  icon={<ExternalLinkIcon />}
-                />
-              </Box>
+                  },
+                }}
+              />
             );
           } else {
             element = <Input {...options} />;
