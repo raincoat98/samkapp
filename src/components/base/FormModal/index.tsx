@@ -23,7 +23,6 @@ import {
   ModalProps,
 } from "@chakra-ui/react";
 
-export type modeType = string | "insert" | "update";
 export type formItem = {
   element?: JSX.Element;
   isDisabled?: boolean;
@@ -31,11 +30,11 @@ export type formItem = {
   isInline?: boolean;
 };
 
-export default function InventoryModalComponent(
+export default function FormModal(
   props: ModalProps & {
     initialValue: Record<string, any>;
     schmea: Record<string, any>;
-    mode: modeType;
+    mode: "insert" | "update" | string;
     onChange: Function;
   }
 ) {
@@ -53,8 +52,6 @@ export default function InventoryModalComponent(
   const [disabledFormItemRecord, setDisabledFormItemRecord] = React.useState<
     Record<string, formItem>
   >({});
-  // const formItemRecord: Record<string, formItem> = {};
-  // const disabledFormItemRecord: Record<string, formItem> = {};
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   const readonlySchemaKeyList = useSelector(
