@@ -55,6 +55,24 @@ export function schemaToColums(schema: schemaType) {
   return columns;
 }
 
+export function getCollection(props: {
+  app: Realm.App | null;
+  collectionName: string;
+}) {
+  const { app, collectionName } = props;
+
+  const mongodb = app?.currentUser?.mongoClient("mongodb-atlas");
+  return mongodb?.db("database")?.collection<any>(collectionName);
+}
+
+export async function find(props: {
+  collection: Realm.Services.MongoDB.MongoDBCollection<any>;
+}) {
+  const { collection } = props;
+
+  return await collection.find();
+}
+
 export async function insert(
   props: basicProps & {
     document: Document;

@@ -15,6 +15,8 @@ import {
 import {
   schemaType,
   schemaToColums,
+  getCollection,
+  find,
   distinct,
   insert,
   update,
@@ -56,9 +58,9 @@ export default function ManagementComponent(props: {
 
   // 데이터 베이스 설정
   const realmApp = useSelector((state: RootState) => state.realm.app);
-  const mongodb = realmApp?.currentUser?.mongoClient("mongodb-atlas");
-  const collection = mongodb?.db("database")?.collection<any>(collectionName);
+  const collection = getCollection({ app: realmApp, collectionName });
   const [changeStream, setChangeStream] = React.useState<AsyncGenerator<any>>();
+
   // 행
   const columns = schemaToColums(schema);
   Object.keys(columns).forEach((key) => {
@@ -126,21 +128,17 @@ export default function ManagementComponent(props: {
       }
 
       if (collection) {
-        await collection
-          .find()
-          .then((value) => {
-            if (!data.length) {
-              setData(value);
-            }
-          })
-          // 실패해도 반드시 실행
-          .finally(async () => {
-            if (!changeStream) await setChangeStream(await collection.watch());
-            // 진행 표시줄 OFF
-            dispatch({
-              type: "system/closeProgress",
-            });
-          });
+        const value = await find({ collection });
+
+        if (!data.length) {
+          setData(value);
+          if (!changeStream) await setChangeStream(await collection.watch());
+        }
+
+        // 진행 표시줄 OFF
+        dispatch({
+          type: "system/closeProgress",
+        });
       }
     }
 
