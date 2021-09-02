@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
@@ -13,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 export default function Sidebar() {
-  const { t } = useTranslation();
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const defaultPath = useSelector(
@@ -54,7 +52,7 @@ export default function Sidebar() {
           }}
           w="100%"
         >
-          {t("고객 관리")}
+          고객 관리
         </Button>
 
         <br />
@@ -65,7 +63,7 @@ export default function Sidebar() {
           }}
           w="100%"
         >
-          {t("재고 관리")}
+          재고 관리
         </Button>
 
         <br />
@@ -76,7 +74,7 @@ export default function Sidebar() {
           }}
           w="100%"
         >
-          {t("품목 관리")}
+          품목 관리
         </Button>
       </Flex>
     </Flex>
