@@ -1,7 +1,8 @@
 {
   "_id": "아이디",
+  "owner_id": "소유자 아이디",
+
   "_last_modified": "최종 수정 날짜",
-  "_user_id": "유저 아이디",
   "address": "주소",
   "bill_limit_id": "수금 기한",
   "business_info": "업태",
@@ -22,5 +23,17 @@
   "thickness": "두께",
   "valid": "사용 여부",
   "width": "폭",
-  "zip_code": "우편번호"
+  "zip_code": "우편번호",
+  "sort_seq": "정렬순서",
+
+  "part_name": "품명",
+  "part_type_id": "품목 형태",
+  "part_group2_id": "품목 분류 2",
+  "loc_id": "제품 위치",
+
+  "create_by": "생성자",
+  "save_by": "저장자",
+  "create_dttm": "생성일자",
+  "save_dttm": "저장일자",
+  "row_stamp": "ROW UNIQUE ID"
 }

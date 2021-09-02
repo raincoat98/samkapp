@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import CustomerManage from "components/MasterDataManagement/CustomerManage";
-import Setting from "components/Setting";
+import LocationManagement from "components/LocationManagement";
 import InventoryManagement from "components/InventoryManagement";
 import ItemManagement from "components/ItemManagement";
 import Announcement from "components/SystemManagement/Announcement";
+import Setting from "components/Setting";
 
 type route = {
   id: string;
@@ -21,11 +22,18 @@ export type RouterState = {
 const initialState: RouterState = {
   defaultPath: "/setting",
   routes: [
-    // 기준정보 관리
+    // 고객 관리
     {
       id: "Customer Management",
       path: "/customer_manage",
       component: CustomerManage,
+    },
+
+    // 위치 관리
+    {
+      id: "Location Management",
+      path: "/location_manage",
+      component: LocationManagement,
     },
 
     // 재고관리

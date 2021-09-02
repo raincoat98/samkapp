@@ -145,11 +145,6 @@ export default function ManagementComponent(props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 테이블 데이터 세팅
-  React.useCallback((listValue: any[]) => {
-    setData(listValue);
-  }, []);
-
   // 스트리밍
   React.useEffect(() => {
     streamStart();

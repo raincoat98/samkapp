@@ -3,7 +3,6 @@ import * as bson from "bson";
 export type customer = {
   _id: bson.ObjectId;
   _last_modified: Date;
-  _user_id: string;
   address?: string;
   bill_limit_id?: string;
   business_info?: string;
@@ -14,6 +13,7 @@ export type customer = {
   customer_name: string;
   fax?: string;
   homepage?: string;
+  owner_id: string;
   remark?: string;
   tel?: string;
   valid?: boolean;
@@ -25,7 +25,6 @@ export const customerSchema = {
   properties: {
     _id: "objectId",
     _last_modified: "date",
-    _user_id: "string",
     address: "string?",
     bill_limit_id: "string?",
     business_info: "string?",
@@ -36,6 +35,7 @@ export const customerSchema = {
     customer_name: "string",
     fax: "string?",
     homepage: "string?",
+    owner_id: "string",
     remark: "string?",
     tel: "string?",
     valid: "bool?",
@@ -47,7 +47,7 @@ export const customerSchema = {
 export type product = {
   _id: bson.ObjectId;
   _last_modified: Date;
-  _user_id: string;
+  owner_id: string;
   product_name: string;
   remark?: string;
   standard?: string;
@@ -61,7 +61,7 @@ export const productSchema = {
   properties: {
     _id: "objectId",
     _last_modified: "date",
-    _user_id: "string",
+    owner_id: "string",
     product_name: "string",
     remark: "string?",
     standard: "string?",
@@ -75,13 +75,13 @@ export const productSchema = {
 export type customer_mngr = {
   _id: bson.ObjectId;
   _last_modified: Date;
-  _user_id: string;
   cell_phone?: string;
   class_position?: string;
   customer_id?: string;
   email?: string;
   fax?: string;
   name?: string;
+  owner_id: string;
   tel?: string;
 };
 
@@ -90,36 +90,112 @@ export const customer_mngrSchema = {
   properties: {
     _id: "objectId",
     _last_modified: "date",
-    _user_id: "string",
     cell_phone: "string?",
     class_position: "string?",
     customer_id: "string?",
     email: "string?",
     fax: "string?",
     name: "string?",
+    owner_id: "string",
     tel: "string?",
   },
   primaryKey: "_id",
 };
 
-export type item = {
+export type part = {
   _id: bson.ObjectId;
-  _last_modified: Date;
-  _user_id: string;
-  product_name: string;
+  create_by?: string;
+  create_dttm?: Date;
+  loc_id?: loc;
+  owner_id: string;
+  part_group2_id?: bson.ObjectId;
+  part_name: string;
+  part_type_id?: bson.ObjectId;
   remark?: string;
-  stock: number;
+  row_stamp?: string;
+  save_by?: string;
+  save_dttm?: Date;
 };
 
-export const itemSchema = {
-  name: "item",
+export const partSchema = {
+  name: "part",
   properties: {
     _id: "objectId",
-    _last_modified: "date",
-    _user_id: "string",
-    product_name: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    loc_id: "loc",
+    owner_id: "string",
+    part_group2_id: "objectId?",
+    part_name: "string",
+    part_type_id: "objectId?",
     remark: "string?",
-    stock: "int",
+    row_stamp: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+  },
+  primaryKey: "_id",
+};
+
+export type part_type = {
+  _id: bson.ObjectId;
+  create_by?: string;
+  create_dttm?: Date;
+  is_material?: number;
+  owner_id: string;
+  part_type_name: string;
+  remark?: string;
+  row_stamp?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_typeSchema = {
+  name: "part_type",
+  properties: {
+    _id: "objectId",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_material: "int?",
+    owner_id: "string",
+    part_type_name: "string",
+    remark: "string?",
+    row_stamp: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type loc = {
+  _id: bson.ObjectId;
+  create_by?: string;
+  create_dttm?: Date;
+  loc_name: string;
+  owner_id: string;
+  remark?: string;
+  row_stamp?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+};
+
+export const locSchema = {
+  name: "loc",
+  properties: {
+    _id: "objectId",
+    create_by: "string?",
+    create_dttm: "date?",
+    loc_name: "string",
+    owner_id: "string",
+    remark: "string?",
+    row_stamp: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
   },
   primaryKey: "_id",
 };

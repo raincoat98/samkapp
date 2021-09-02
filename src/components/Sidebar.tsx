@@ -48,6 +48,17 @@ export default function Sidebar() {
       >
         <Button
           onClick={() => {
+            history.push("/location_manage");
+          }}
+          w="100%"
+        >
+          위치 관리
+        </Button>
+
+        <br />
+
+        <Button
+          onClick={() => {
             history.push("/customer_manage");
           }}
           w="100%"
