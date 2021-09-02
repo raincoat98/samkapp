@@ -5,12 +5,16 @@ export type SystemState = {
   appId: string;
   app: RealmWeb.App | null;
   user: RealmWeb.User | null;
+  readonlySchemaKeyList: string[];
+  disabledSchemaKeyList: string[];
 };
 
 const initialState: SystemState = {
   appId: "samkapp-dzval",
   app: null,
   user: null,
+  readonlySchemaKeyList: [],
+  disabledSchemaKeyList: ["_id", "owner_id"],
 };
 
 const userSlice = createSlice({

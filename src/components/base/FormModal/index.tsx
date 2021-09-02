@@ -32,7 +32,7 @@ export type formItem = {
 
 export default function InventoryModalComponent(
   props: ModalProps & {
-    initialValue?: any;
+    initialValue: Record<string, any>;
     schmea: Record<string, any>;
     mode: modeType;
     onChange: Function;
@@ -50,6 +50,13 @@ export default function InventoryModalComponent(
   const disabledFormItemRecord: Record<string, formItem> = {};
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
+  const readonlySchemaKeyList = useSelector(
+    (state: RootState) => state.realm.readonlySchemaKeyList
+  );
+  const disabledSchemaKeyList = useSelector(
+    (state: RootState) => state.realm.disabledSchemaKeyList
+  );
+
   const addressPopupDisclosure = useDisclosure();
   const [addressPopupOpner, setAddressPopupOpner] = React.useState({
     formItemKey: "",
@@ -62,6 +69,14 @@ export default function InventoryModalComponent(
   );
 
   for (const key in schmea.properties) {
+    // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
+    if (
+      key === schmea.primaryKey ||
+      !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
+        .length
+    )
+      continue;
+
     let type = schmea.properties[key];
     let defaultValue = initialValue ? initialValue[key] : undefined;
     let element;
@@ -72,8 +87,12 @@ export default function InventoryModalComponent(
       type = type.replaceAll("?", "");
     }
 
-    // key가 _로 시작하는 값은 유저가 수정할 수 없는 값
-    if (!key.startsWith("_")) {
+    // 읽기 전용 값인지 판단
+    const isReadonly = !!readonlySchemaKeyList.filter(
+      (readonlyKey) => readonlyKey === key
+    ).length;
+
+    if (!isReadonly) {
       let isInline = false;
       const options: Record<string, any> = {};
 
@@ -160,6 +179,7 @@ export default function InventoryModalComponent(
           break;
         }
         case "objectId": {
+          console.log("처리되지 않은", key, type);
           continue;
         }
         default: {
@@ -169,11 +189,6 @@ export default function InventoryModalComponent(
 
       formItemRecord[key] = { element, isRequired, isInline };
     } else {
-      // 데이터 기본 키와 같을 경우 넣지 않음, 새로 작성할 때도 넣지 않음
-      if (key === schmea.primaryKey || mode === "insert") continue;
-
-      // const name = key.replace("_", "");
-
       switch (type) {
         case "date": {
           // 수정 불가능한 date 값
@@ -275,8 +290,6 @@ export default function InventoryModalComponent(
 
           {mode === "insert" ? "" : <Divider />}
 
-          {/* Warning: Each child in a list should have a unique "key" prop. */}
-          {/* 키 오류 아마 불확실하게 자식이 리턴되어서 그런 듯 */}
           {Object.keys(disabledFormItemRecord).map((key) =>
             disabledFormItemRecord[key].element ? (
               <Box key={key}>{disabledFormItemRecord[key].element}</Box>
