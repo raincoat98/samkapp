@@ -47,8 +47,14 @@ export default function InventoryModalComponent(
   // 번역
   const { t } = useTranslation();
 
-  const formItemRecord: Record<string, formItem> = {};
-  const disabledFormItemRecord: Record<string, formItem> = {};
+  const [formItemRecord, setFormItemRecord] = React.useState<
+    Record<string, formItem>
+  >({});
+  const [disabledFormItemRecord, setDisabledFormItemRecord] = React.useState<
+    Record<string, formItem>
+  >({});
+  // const formItemRecord: Record<string, formItem> = {};
+  // const disabledFormItemRecord: Record<string, formItem> = {};
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   const readonlySchemaKeyList = useSelector(
@@ -64,149 +70,157 @@ export default function InventoryModalComponent(
     dataKey: "",
   });
 
-  for (const key in schmea.properties) {
-    // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
-    if (
-      key === schmea.primaryKey ||
-      !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
-        .length
-    )
-      continue;
+  const onEdited = React.useCallback(
+    (props: { key: string; value: any }) => {
+      setEditedDocument({ ...editedDocument, ...{ [props.key]: props.value } });
+    },
+    [editedDocument]
+  );
 
-    let type = schmea.properties[key];
-    let defaultValue = initialValue ? initialValue[key] : undefined;
-    let element;
+  // initialValue 가 바뀔 때만 기본값 수정
+  React.useEffect(() => {
+    for (const key in schmea.properties) {
+      // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
+      if (
+        key === schmea.primaryKey ||
+        !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
+          .length
+      )
+        continue;
 
-    // ? 로 끝나는 것은 필수값이 아님
-    const isRequired = type.endsWith("?") ? false : true;
-    if (type.endsWith("?")) {
-      type = type.replaceAll("?", "");
-    }
+      let type = schmea.properties[key];
+      let defaultValue = initialValue ? initialValue[key] : undefined;
+      let element: JSX.Element;
 
-    // 읽기 전용 값인지 판단
-    const isReadonly = !!readonlySchemaKeyList.filter(
-      (readonlyKey) => readonlyKey === key
-    ).length;
+      // ? 로 끝나는 것은 필수값이 아님
+      const isRequired = type.endsWith("?") ? false : true;
+      if (type.endsWith("?")) {
+        type = type.replaceAll("?", "");
+      }
 
-    if (!isReadonly) {
-      let isInline = false;
-      const options: Record<string, any> = {};
+      // 읽기 전용 값인지 판단
+      const isReadonly = !!readonlySchemaKeyList.filter(
+        (readonlyKey) => readonlyKey === key
+      ).length;
 
-      // ref 추가
-      formItemRefRecord.current[key] = React.createRef();
-      options.ref = formItemRefRecord.current[key];
+      if (!isReadonly) {
+        let isInline = false;
+        const options: Record<string, any> = {};
 
-      switch (type) {
-        case "string": {
-          defaultValue = defaultValue as string;
-          options.type = "text";
-          options.defaultValue = defaultValue;
-          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            onEdited({ key, value: event.target.value });
-          };
+        // ref 추가
+        formItemRefRecord.current[key] = React.createRef();
+        options.ref = formItemRefRecord.current[key];
 
-          // 주소 값인지 판단
-          if (key.includes("address")) {
-            element = (
-              <FormModalAddressInput
-                inputProps={{ ...options }}
-                buttonProps={{
-                  onClick: () => {
-                    addressPopupDisclosure.onToggle();
-                    setAddressPopupOpner({
-                      formItemKey: key,
-                      dataKey: "fullAddress",
-                    });
-                  },
-                }}
-              />
-            );
-            // URL 값일 때
-          } else if (key.includes("homepage") || key.includes("url")) {
-            element = (
-              <FormModalURLInput
-                inputProps={{ ...options }}
-                buttonProps={{
-                  onClick: () => {
-                    const value = formItemRefRecord.current[key].current.value;
-                    if (validator.isURL(value)) window.open(value);
-                  },
-                }}
-              />
-            );
-          } else {
-            element = <Input {...options} />;
+        switch (type) {
+          case "string": {
+            defaultValue = defaultValue as string;
+            options.type = "text";
+            options.defaultValue = defaultValue;
+            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+              onEdited({ key, value: event.target.value });
+            };
+
+            // 주소 값인지 판단
+            if (key.includes("address")) {
+              element = (
+                <FormModalAddressInput
+                  inputProps={{ ...options }}
+                  buttonProps={{
+                    onClick: () => {
+                      addressPopupDisclosure.onToggle();
+                      setAddressPopupOpner({
+                        formItemKey: key,
+                        dataKey: "fullAddress",
+                      });
+                    },
+                  }}
+                />
+              );
+              // URL 값일 때
+            } else if (key.includes("homepage") || key.includes("url")) {
+              element = (
+                <FormModalURLInput
+                  inputProps={{ ...options }}
+                  buttonProps={{
+                    onClick: () => {
+                      const value =
+                        formItemRefRecord.current[key].current.value;
+                      if (validator.isURL(value)) window.open(value);
+                    },
+                  }}
+                />
+              );
+            } else {
+              element = <Input {...options} />;
+            }
+
+            break;
           }
+          case "int": {
+            options.type = "number";
+            options.defaultValue = defaultValue;
+            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+              onEdited({ key, value: event.target.value });
+            };
 
-          break;
-        }
-        case "int": {
-          options.type = "number";
-          options.defaultValue = defaultValue;
-          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            onEdited({ key, value: event.target.value });
-          };
+            element = <Input {...options} />;
+            break;
+          }
+          case "date": {
+            options.type = "date";
+            options.defaultValue = defaultValue;
+            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+              onEdited({ key, value: event.target.value });
+            };
 
-          element = <Input {...options} />;
-          break;
-        }
-        case "date": {
-          options.type = "date";
-          options.defaultValue = defaultValue;
-          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            onEdited({ key, value: event.target.value });
-          };
+            element = <Input {...options} />;
+            break;
+          }
+          case "bool": {
+            options.defaultChecked = defaultValue ? true : false;
+            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+              onEdited({ key, value: event.target.checked });
+            };
 
-          element = <Input {...options} />;
-          break;
+            element = <Switch {...options} />;
+            isInline = true;
+            break;
+          }
+          case "objectId": {
+            console.log("처리되지 않은", key, type);
+            continue;
+          }
+          default: {
+            console.log("알 수 없는 타입: ", type);
+          }
         }
-        case "bool": {
-          options.defaultChecked = defaultValue ? true : false;
-          options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            onEdited({ key, value: event.target.checked });
-          };
 
-          element = <Switch {...options} />;
-          isInline = true;
-          break;
+        setFormItemRecord((state) => ({
+          ...state,
+          [key]: { element, isRequired, isInline },
+        }));
+      } else {
+        switch (type) {
+          case "date": {
+            // 수정 불가능한 date 값
+            element = (
+              <Tag>
+                {`${t("table_field." + key)}: `}
+                {Moment(defaultValue)
+                  .local()
+                  .format("YYYY년 MM월 DD일 a h시 m분")}
+              </Tag>
+            );
+          }
         }
-        case "objectId": {
-          console.log("처리되지 않은", key, type);
-          continue;
-        }
-        default: {
-          console.log("알 수 없는 타입: ", type);
-        }
+
+        setDisabledFormItemRecord((state) => ({
+          ...state,
+          [key]: { element, isRequired },
+        }));
       }
-
-      formItemRecord[key] = { element, isRequired, isInline };
-    } else {
-      switch (type) {
-        case "date": {
-          // 수정 불가능한 date 값
-          element = (
-            <Tag>
-              {`${t("table_field." + key)}: `}
-              {Moment(defaultValue)
-                .local()
-                .format("YYYY년 MM월 DD일 a h시 m분")}
-            </Tag>
-          );
-        }
-      }
-
-      disabledFormItemRecord[key] = {
-        element,
-        // 수정 불가
-        isDisabled: true,
-        isInline: true,
-      };
     }
-  }
-
-  function onEdited(props: { key: string; value: any }) {
-    setEditedDocument({ ...editedDocument, ...{ [props.key]: props.value } });
-  }
+  }, [initialValue]);
 
   function onClose() {
     setEditedDocument({});
