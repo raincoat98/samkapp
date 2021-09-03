@@ -13,7 +13,7 @@ const initialState: SystemState = {
   appId: "samkapp-dzval",
   app: null,
   user: null,
-  readonlySchemaKeyList: [],
+  readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["_id", "owner_id"],
 };
 

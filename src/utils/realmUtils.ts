@@ -86,7 +86,7 @@ export async function insert(
   const result = await user.functions.actionFunc({
     type: "insert",
     collectionName,
-    document,
+    doc: document,
   });
 
   if (useProgress) setProgress(dispatch, false);
