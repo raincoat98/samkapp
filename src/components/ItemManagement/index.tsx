@@ -111,8 +111,6 @@ export default function ItemManagement() {
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
     if (realmApp?.currentUser) {
-      console.log(checkedRows);
-
       const filter = {
         _id: { $in: checkedRows },
       };
