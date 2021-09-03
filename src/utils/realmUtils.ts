@@ -2,6 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 import Moment from "moment";
+import { ObjectId } from "bson";
 
 export type Document = Record<string, any>;
 
@@ -28,28 +29,41 @@ export function schemaToColums(schema: schemaType) {
   const columns: Column[] = [];
 
   for (const key in schema.properties) {
+    // 고유 키 값일 때 다음 항목으로
     if (key === schema.primaryKey) continue;
 
     let type = schema.properties[key];
-    let accessor: any = key;
+    let accessor: any;
 
+    // ? 제거
     if (type.endsWith("?")) {
       type = type.replaceAll("?", "");
     }
 
-    if (type === "date") {
-      accessor = (d: Document) => {
-        return Moment(d[key]).local().format("YYYY년 MM월 DD일 a h시 m분");
-      };
+    switch (type) {
+      case "string":
+      case "int": {
+        accessor = key;
+        break;
+      }
+      case "date": {
+        accessor = (d: Document) => {
+          return Moment(d[key]).local().format("YYYY년 MM월 DD일 a h시 m분");
+        };
+        break;
+      }
+      case "objectId": {
+        continue;
+      }
+      default: {
+        continue;
+      }
     }
 
-    // _로 시작하는 key는 유저가 수정할 수 없는 항목
-    if (!key.startsWith("_")) {
-      columns.push({
-        Header: key,
-        accessor,
-      });
-    }
+    columns.push({
+      Header: key,
+      accessor,
+    });
   }
 
   return columns;
