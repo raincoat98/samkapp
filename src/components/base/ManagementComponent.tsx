@@ -1,4 +1,6 @@
 import React from "react";
+import { RootState } from "store";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Flex } from "@chakra-ui/react";
 import { schemaType, schemaToColums } from "utils/realmUtils";
@@ -12,11 +14,22 @@ export default function ManagementComponent(props: {
 }) {
   const { tableData, schema, onChange, onRowClick } = props;
 
+  // 테이블 헤더에서 제외할 것들
+  const disabledSchemaKeyList = useSelector(
+    (state: RootState) => state.realm.disabledSchemaKeyList
+  );
+  const readonlySchemaKeyList = useSelector(
+    (state: RootState) => state.realm.readonlySchemaKeyList
+  );
+
   // 번역
   const { t: translate } = useTranslation();
 
   // 행
-  const columns = schemaToColums({ schema });
+  const columns = schemaToColums({
+    schema,
+    exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
+  });
   Object.keys(columns).forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(columns, key)) {
       let headerName = columns[Number(key)].Header;
