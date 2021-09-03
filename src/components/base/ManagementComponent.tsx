@@ -16,7 +16,7 @@ export default function ManagementComponent(props: {
   const { t: translate } = useTranslation();
 
   // 행
-  const columns = schemaToColums(schema);
+  const columns = schemaToColums({ schema });
   Object.keys(columns).forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(columns, key)) {
       let headerName = columns[Number(key)].Header;

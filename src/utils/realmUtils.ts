@@ -24,7 +24,14 @@ export function isRequired(type: string) {
   return !type.endsWith("?");
 }
 
-export function schemaToColums(schema: schemaType) {
+export function schemaToColums(props: {
+  schema: schemaType;
+  filter?: string[];
+}) {
+  const { schema, filter } = props;
+
+  console.log(filter);
+
   const columns: Column[] = [];
 
   for (const key in schema.properties) {
