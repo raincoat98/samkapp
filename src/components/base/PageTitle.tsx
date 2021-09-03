@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
 import {
   useStyleConfig,
@@ -8,16 +8,23 @@ import {
   Flex,
   Heading,
   Spacer,
+  IconButton,
+  Icon,
 } from "@chakra-ui/react";
 
 export default function PageTitle(props: HeadingProps) {
   const { children, title, ...rest } = props;
   const styles = useStyleConfig("PageTitle");
 
+  const dispatch = useDispatch();
+
   // 색상 가져오기
   const background = useSelector(
     (state: RootState) => state.system.color.background
   );
+
+  // 아이콘 가져오기
+  const menuIcon = useSelector((state: RootState) => state.icon.menu);
 
   return (
     <chakra.header
@@ -34,6 +41,17 @@ export default function PageTitle(props: HeadingProps) {
       zIndex="sticky"
     >
       <Flex align="center">
+        <IconButton
+          icon={<Icon as={menuIcon} />}
+          onClick={() =>
+            dispatch({
+              type: "system/toggleSidebar",
+            })
+          }
+          mr={3}
+          variant="ghost"
+          aria-label="사이드바 전환"
+        />
         <Heading>{title}</Heading>
         <Spacer />
         {children}

@@ -5,6 +5,7 @@ type colorType = { light: string; dark: string };
 
 export type SystemState = {
   isProgress: boolean;
+  isSidebarOpen: boolean;
   appName: string;
   logo: string;
   color: {
@@ -15,6 +16,7 @@ export type SystemState = {
 
 const initialState: SystemState = {
   isProgress: false,
+  isSidebarOpen: true,
   appName: "SamKapp",
   logo: logo,
   color: {
@@ -32,6 +34,9 @@ const userSlice = createSlice({
     },
     closeProgress(state, action: PayloadAction<boolean>) {
       state.isProgress = false;
+    },
+    toggleSidebar(state, action: PayloadAction<boolean>) {
+      state.isSidebarOpen = !state.isSidebarOpen;
     },
   },
 });

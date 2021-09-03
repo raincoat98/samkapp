@@ -29,6 +29,11 @@ function App() {
   const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
 
+  // 사이드바 열림 여부
+  const isSidebarOpen = useSelector(
+    (state: RootState) => state.system.isSidebarOpen
+  );
+
   React.useEffect(() => {
     init();
 
@@ -58,7 +63,7 @@ function App() {
       ) : (
         <Router>
           <Flex h={"100%"} w={"100%"}>
-            {isLandscape ? <Sidebar /> : ""}
+            <Sidebar isOpen={isSidebarOpen} isLandscape={isLandscape} />
 
             <Box flex={1} overflow="auto">
               <Switch>

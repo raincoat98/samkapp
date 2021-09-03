@@ -11,7 +11,12 @@ import {
   Center,
 } from "@chakra-ui/react";
 
-export default function Sidebar() {
+export default function Sidebar(props: {
+  isOpen: boolean;
+  isLandscape: boolean;
+}) {
+  const { isOpen, isLandscape } = props;
+
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const defaultPath = useSelector(
@@ -20,7 +25,12 @@ export default function Sidebar() {
   const history = useHistory();
 
   return (
-    <Flex direction={"column"} w={250} borderRightWidth="1px">
+    <Flex
+      display={isOpen ? "flex" : "none"}
+      direction={"column"}
+      w={isLandscape ? 250 : "100%"}
+      borderRightWidth="1px"
+    >
       <Link to={defaultPath}>
         <Center w={"100%"} h={100}>
           <Image
