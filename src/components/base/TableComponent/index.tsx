@@ -5,6 +5,7 @@ import { RootState } from "store";
 import {
   useTable,
   useRowSelect,
+  useFlexLayout,
   useFilters,
   useGlobalFilter,
   useSortBy,
@@ -24,6 +25,7 @@ import {
   Flex,
   Box,
   Button,
+  Checkbox,
 } from "@chakra-ui/react";
 import TableDataCell from "./TableDataCell";
 import TableHeaderCell from "./TableHeaderCell";
@@ -76,6 +78,7 @@ export default function TableComponent(props: TableComponentProps) {
         pageSize: 30,
       },
     },
+    useFlexLayout,
     useFilters,
     useGlobalFilter,
     useSortBy,
@@ -88,6 +91,7 @@ export default function TableComponent(props: TableComponentProps) {
         // 선택 컬럼
         optionColumns.push({
           id: SELECTION_COLUMN,
+          width: "80px",
           // @ts-ignore
           Header: ({ getToggleAllPageRowsSelectedProps }) => (
             <TableCheckbox {...getToggleAllPageRowsSelectedProps()} />
@@ -202,18 +206,21 @@ export default function TableComponent(props: TableComponentProps) {
           return (
             <Tr
               {...row.getRowProps()}
-              onClick={(event: any) => {
-                if (onRowClick) {
-                  if (event.target.nodeName === "INPUT") return false;
-                  onRowClick({ event, row });
-                }
-              }}
               _hover={{
                 background: backgroundColorSelected,
               }}
             >
               {row.cells.map((cell, index) => (
-                <TableDataCell cell={cell} key={index} />
+                <TableDataCell
+                  cell={cell}
+                  onClick={(event: any) => {
+                    if (cell.column.id === SELECTION_COLUMN) return;
+                    if (onRowClick) {
+                      onRowClick({ event, row });
+                    }
+                  }}
+                  key={index}
+                />
               ))}
             </Tr>
           );
@@ -248,9 +255,18 @@ export default function TableComponent(props: TableComponentProps) {
   };
 }
 
-function TableCheckbox(props: any) {
-  const { indeterminate, ...rest } = props;
+function TableCheckbox(props: {
+  checked: boolean;
+  indeterminate: boolean;
+  onChange: Function;
+}) {
+  const { checked, indeterminate, onChange } = props;
+
   return (
-    <input type="checkbox" indeterminate={indeterminate.toString()} {...rest} />
+    <Checkbox
+      isChecked={checked}
+      isIndeterminate={indeterminate}
+      onChange={(e) => onChange(e)}
+    ></Checkbox>
   );
 }
