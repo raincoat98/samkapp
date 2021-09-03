@@ -22,10 +22,11 @@ import {
 import { ObjectId } from "bson";
 
 export default function Management(props: {
+  title: string;
   collectionName: string;
   schema: schemaType;
 }) {
-  const { collectionName, schema } = props;
+  const { title, collectionName, schema } = props;
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -166,7 +167,7 @@ export default function Management(props: {
       />
 
       <PageContainer
-        title={"고객 관리"}
+        title={title}
         headerChildren={
           <BaseButtonGroups>
             <DeleteButton
