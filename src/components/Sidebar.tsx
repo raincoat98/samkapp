@@ -22,6 +22,7 @@ export default function Sidebar(props: {
   const { isOpen, onClose, isLandscape } = props;
 
   const { colorMode } = useColorMode();
+  const routes = useSelector((state: RootState) => state.router.routes);
   const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
 
@@ -73,51 +74,25 @@ export default function Sidebar(props: {
         variant="outline"
         justify="center"
       >
-        <Button
-          onClick={() => {
-            history.push("/location_manage");
-            if (!isLandscape) onClose();
-          }}
-          w="100%"
-        >
-          위치 관리
-        </Button>
-
-        <br />
-
-        <Button
-          onClick={() => {
-            history.push("/customer_manage");
-            if (!isLandscape) onClose();
-          }}
-          w="100%"
-        >
-          고객 관리
-        </Button>
-
-        <br />
-
-        <Button
-          onClick={() => {
-            history.push("/inventory_manage");
-            if (!isLandscape) onClose();
-          }}
-          w="100%"
-        >
-          재고 관리
-        </Button>
-
-        <br />
-
-        <Button
-          onClick={() => {
-            history.push("/item_manage");
-            if (!isLandscape) onClose();
-          }}
-          w="100%"
-        >
-          품목 관리
-        </Button>
+        {routes.map((route, index) => {
+          if (route.sidebar) {
+            return (
+              <Button
+                onClick={() => {
+                  history.push(route.path);
+                  if (!isLandscape) onClose();
+                }}
+                w="100%"
+                _notLast={{ mb: 5 }}
+                key={index}
+              >
+                {route.name}
+              </Button>
+            );
+          } else {
+            return "";
+          }
+        })}
       </Flex>
 
       <IconButton

@@ -8,10 +8,11 @@ import Announcement from "components/SystemManagement/Announcement";
 import Setting from "components/Setting";
 
 type route = {
-  id: string;
+  name: string;
   path: string;
   component: () => JSX.Element;
   params?: string[];
+  sidebar?: boolean;
 };
 
 export type RouterState = {
@@ -24,42 +25,46 @@ const initialState: RouterState = {
   routes: [
     // 고객 관리
     {
-      id: "Customer Management",
+      name: "고객 관리",
       path: "/customer_manage",
       component: CustomerManage,
+      sidebar: true,
     },
 
     // 위치 관리
     {
-      id: "Location Management",
+      name: "위치 관리",
       path: "/location_manage",
       component: LocationManagement,
+      sidebar: true,
     },
 
-    // 재고관리
+    // 재고 관리
     {
-      id: "Inventory Management",
+      name: "재고 관리",
       path: "/inventory_manage",
       component: InventoryManagement,
+      sidebar: true,
     },
 
-    // 품목관리
+    // 품목 관리
     {
-      id: "Item Management",
+      name: "품목 관리",
       path: "/item_manage",
       component: ItemManagement,
+      sidebar: true,
     },
 
     // 시스템 관리
     {
-      id: "Announcement",
+      name: "시스템 관리",
       path: "/announcement",
       component: Announcement,
     },
 
     // 설정
     {
-      id: "Setting",
+      name: "설정",
       path: "/setting",
       component: Setting,
     },

@@ -85,10 +85,10 @@ function App() {
                 </Route>
 
                 {/* 주소 매핑 */}
-                {routes.map((route) => (
+                {routes.map((route, index) => (
                   <Route
                     path={route.path + (route.params || "")}
-                    key={route.id}
+                    key={index}
                     children={<route.component />}
                   ></Route>
                 ))}
