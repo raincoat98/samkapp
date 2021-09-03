@@ -22,26 +22,26 @@ export type RouterState = {
 const initialState: RouterState = {
   defaultPath: "/setting",
   routes: [
-    // 고객 관리
-    {
-      id: "Customer Management",
-      path: "/customer_manage",
-      component: CustomerManage,
-    },
+    // // 고객 관리
+    // {
+    //   id: "Customer Management",
+    //   path: "/customer_manage",
+    //   component: CustomerManage,
+    // },
 
-    // 위치 관리
-    {
-      id: "Location Management",
-      path: "/location_manage",
-      component: LocationManagement,
-    },
+    // // 위치 관리
+    // {
+    //   id: "Location Management",
+    //   path: "/location_manage",
+    //   component: LocationManagement,
+    // },
 
-    // 재고관리
-    {
-      id: "Inventory Management",
-      path: "/inventory_manage",
-      component: InventoryManagement,
-    },
+    // // 재고관리
+    // {
+    //   id: "Inventory Management",
+    //   path: "/inventory_manage",
+    //   component: InventoryManagement,
+    // },
 
     // 품목관리
     {

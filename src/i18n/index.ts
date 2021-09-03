@@ -59,7 +59,7 @@ const resources = {
 };
 
 i18n.use(initReactI18next).init({
-  debug: true,
+  // debug: true,
   resources,
   lng: "ko",
   interpolation: {
