@@ -63,7 +63,15 @@ function App() {
       ) : (
         <Router>
           <Flex h={"100%"} w={"100%"}>
-            <Sidebar isOpen={isSidebarOpen} isLandscape={isLandscape} />
+            <Sidebar
+              isOpen={isSidebarOpen}
+              onClose={() => {
+                dispatch({
+                  type: "system/toggleSidebar",
+                });
+              }}
+              isLandscape={isLandscape}
+            />
 
             <Box flex={1} overflow="auto">
               <Switch>
