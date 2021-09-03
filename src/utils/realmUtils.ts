@@ -24,12 +24,18 @@ export function isRequired(type: string) {
   return !type.endsWith("?");
 }
 
-export function schemaToColums(schema: schemaType) {
+// 스키마에서 react-table 헤더로 변환
+export function schemaToColums(props: {
+  schema: schemaType;
+  exclude?: string[];
+}) {
+  const { schema, exclude } = props;
+
   const columns: Column[] = [];
 
   for (const key in schema.properties) {
     // 고유 키 값일 때 다음 항목으로
-    if (key === schema.primaryKey) continue;
+    if (key === schema.primaryKey || exclude?.includes(key)) continue;
 
     let type = schema.properties[key];
     let accessor: any;
