@@ -1,19 +1,16 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-
 import { useTranslation } from "react-i18next";
 import { Flex } from "@chakra-ui/react";
 import { schemaType, schemaToColums } from "utils/realmUtils";
 import TableComponent from "components/base/TableComponent";
-// import FormModal from "components/base/FormModal";
 
 export default function ManagementComponent(props: {
   tableData: any[];
   schema: schemaType;
+  onChange: Function;
+  onRowClick: Function;
 }) {
-  const { tableData, schema } = props;
-
-  const dispatch = useDispatch();
+  const { tableData, schema, onChange, onRowClick } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -29,29 +26,19 @@ export default function ManagementComponent(props: {
   });
 
   // 테이블 초기화
-  const mainTable = TableComponent({
+  let mainTable: any;
+  mainTable = TableComponent({
     columns,
     data: tableData,
+    onRowClick,
+    stateReducer: React.useCallback(
+      (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
+        onChange({ table: mainTable?.tableInstance, state: newState, action });
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    ),
   });
-
-  // 초기화
-  React.useEffect(() => {
-    init();
-
-    async function init() {
-      // 진행 표시줄 ON
-      dispatch({
-        type: "system/openProgress",
-      });
-
-      // 진행 표시줄 OFF
-      dispatch({
-        type: "system/closeProgress",
-      });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Flex direction="column" width="100%" height="100%">

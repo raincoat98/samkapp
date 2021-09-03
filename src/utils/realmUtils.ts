@@ -2,7 +2,6 @@ import { Dispatch } from "@reduxjs/toolkit";
 import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 import Moment from "moment";
-import { ObjectId } from "bson";
 
 export type Document = Record<string, any>;
 
