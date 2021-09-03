@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import CustomerManage from "components/CustomerManage";
-import LocationManagement from "components/LocationManagement";
-import InventoryManagement from "components/InventoryManagement";
-import ItemManagement from "components/ItemManagement";
+import CustomerManage from "components/Management/CustomerManage";
+import LocationManagement from "components/Management/LocationManagement";
+import InventoryManagement from "components/Management/InventoryManagement";
+import ItemManagement from "components/Management/ItemManagement";
 import Announcement from "components/SystemManagement/Announcement";
 import Setting from "components/Setting";
 

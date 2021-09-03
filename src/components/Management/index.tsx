@@ -2,13 +2,13 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import {
+  schemaType,
   getCollection,
   find,
   insert,
   update,
   deleteMany,
 } from "utils/realmUtils";
-import { productSchema } from "realmObjectModes";
 import PageContainer from "components/base/PageContainer";
 import ManagementComponent from "components/base/ManagementComponent";
 import FormModal from "components/base/FormModal";
@@ -21,10 +21,14 @@ import {
 } from "components/base/Buttons";
 import { ObjectId } from "bson";
 
-export default function InventoryManagement() {
+export default function Management(props: {
+  collectionName: string;
+  schema: schemaType;
+}) {
+  const { collectionName, schema } = props;
+
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
-  const collectionName = "product";
   const dispatch = useDispatch();
   const database = useSelector((state: RootState) => state.database);
   const realmApp = useSelector((state: RootState) => state.realm.app);
@@ -152,7 +156,7 @@ export default function InventoryManagement() {
   return (
     <>
       <FormModal
-        schmea={productSchema}
+        schmea={schema}
         mode={modalMode}
         initialValue={selected}
         isOpen={modalDisclosure.isOpen}
@@ -162,7 +166,7 @@ export default function InventoryManagement() {
       />
 
       <PageContainer
-        title={"재고 관리"}
+        title={"고객 관리"}
         headerChildren={
           <BaseButtonGroups>
             <DeleteButton
@@ -176,7 +180,7 @@ export default function InventoryManagement() {
       >
         <ManagementComponent
           tableData={tableData}
-          schema={productSchema}
+          schema={schema}
           onRowClick={onTableRowClick}
           onChange={onTableChange}
         />
