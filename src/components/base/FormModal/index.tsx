@@ -4,10 +4,12 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Moment from "moment";
 import validator from "validator";
+import { ObjectId } from "bson";
 import ModalComponent from "components/base/ModalComponent";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
 import FormModalURLInput from "./FormModalURLInput";
+import { getCollection, find } from "utils/realmUtils";
 import {
   useDisclosure,
   Box,
@@ -16,6 +18,7 @@ import {
   Button,
   Input,
   Switch,
+  Select,
   ButtonGroup,
   FormControl,
   FormLabel,
@@ -46,6 +49,8 @@ export default function FormModal(
   // 번역
   const { t } = useTranslation();
 
+  const realmApp = useSelector((state: RootState) => state.realm.app);
+
   const [formItemRecord, setFormItemRecord] = React.useState<
     Record<string, formItem>
   >({});
@@ -66,13 +71,6 @@ export default function FormModal(
     formItemKey: "",
     dataKey: "",
   });
-
-  const onEdited = React.useCallback(
-    (props: { key: string; value: any }) => {
-      setEditedDocument({ ...editedDocument, ...{ [props.key]: props.value } });
-    },
-    [editedDocument]
-  );
 
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
@@ -114,7 +112,7 @@ export default function FormModal(
             options.type = "text";
             options.defaultValue = defaultValue;
             options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              onEdited({ key, value: event.target.value });
+              editData({ key, value: event.target.value });
             };
 
             // 주소 값인지 판단
@@ -157,7 +155,7 @@ export default function FormModal(
             options.type = "number";
             options.defaultValue = defaultValue;
             options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              onEdited({ key, value: event.target.value });
+              editData({ key, value: event.target.value });
             };
 
             element = <Input {...options} />;
@@ -167,7 +165,7 @@ export default function FormModal(
             options.type = "date";
             options.defaultValue = defaultValue;
             options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              onEdited({ key, value: event.target.value });
+              editData({ key, value: event.target.value });
             };
 
             element = <Input {...options} />;
@@ -176,7 +174,7 @@ export default function FormModal(
           case "bool": {
             options.defaultChecked = defaultValue ? true : false;
             options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              onEdited({ key, value: event.target.checked });
+              editData({ key, value: event.target.checked });
             };
 
             element = <Switch {...options} />;
@@ -188,7 +186,54 @@ export default function FormModal(
             continue;
           }
           default: {
-            console.log("알 수 없는 타입: ", type);
+            // 외부 컬렉션 참조
+            const collection = getCollection({
+              app: realmApp,
+              collectionName: type,
+            });
+
+            // 없으면 다음 항목으로
+            if (!collection) {
+              console.log("알 수 없는 타입: ", type);
+              continue;
+            }
+
+            switch (type) {
+              case "loc": {
+                find({ collection }).then((result) => {
+                  element = (
+                    <Select
+                      placeholder={t(`table_field.${key}`)}
+                      defaultValue={defaultValue}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLSelectElement>
+                      ) => {
+                        const value = event.target.value
+                          ? new ObjectId(event.target.value)
+                          : null;
+                        editData({
+                          key,
+                          value,
+                        });
+                      }}
+                      {...options}
+                    >
+                      {result.map((item: any, index) => (
+                        <option value={item._id} key={index}>
+                          {item.loc_name}
+                        </option>
+                      ))}
+                    </Select>
+                  );
+
+                  setFormItemRecord((state) => ({
+                    ...state,
+                    [key]: { element, isRequired, isInline },
+                  }));
+                });
+                break;
+              }
+            }
           }
         }
 
@@ -219,6 +264,14 @@ export default function FormModal(
     }
   }, [initialValue]);
 
+  // 데이터 수정시
+  function editData(props: { key: string; value: any }) {
+    setEditedDocument((state) => ({
+      ...state,
+      [props.key]: props.value,
+    }));
+  }
+
   function onClose() {
     setEditedDocument({});
     props.onClose();
@@ -232,7 +285,7 @@ export default function FormModal(
 
     if (element) element.value = value;
 
-    onEdited({
+    editData({
       key: addressPopupOpner.formItemKey,
       value,
     });
