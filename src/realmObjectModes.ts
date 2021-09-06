@@ -90,7 +90,7 @@ export type part = {
   create_dttm?: Date;
   loc_id?: loc;
   owner_id: string;
-  part_group2_id?: part_group2;
+  part_group2_id?: part_group_2;
   part_name: string;
   part_type_id?: bson.ObjectId;
   remark?: string;
@@ -106,7 +106,7 @@ export const partSchema = {
     create_dttm: "date?",
     loc_id: "loc",
     owner_id: "string",
-    part_group2_id: "part_group2",
+    part_group2_id: "part_group_2",
     part_name: "string",
     part_type_id: "objectId?",
     remark: "string?",
@@ -176,13 +176,13 @@ export const locSchema = {
   primaryKey: "_id",
 };
 
-export type part_group1 = {
+export type part_group_1 = {
   _id: bson.ObjectId;
   create_by?: string;
   create_dttm?: Date;
   is_material?: number;
   owner_id: string;
-  part_group1_name: string;
+  part_group_1_name: string;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
@@ -190,15 +190,15 @@ export type part_group1 = {
   valid?: boolean;
 };
 
-export const part_group1Schema = {
-  name: "part_group1",
+export const part_group_1Schema = {
+  name: "part_group_1",
   properties: {
     _id: "objectId",
     create_by: "string?",
     create_dttm: "date?",
     is_material: "int?",
     owner_id: "string",
-    part_group1_name: "string",
+    part_group_1_name: "string",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
@@ -208,13 +208,13 @@ export const part_group1Schema = {
   primaryKey: "_id",
 };
 
-export type part_group2 = {
+export type part_group_2 = {
   _id: bson.ObjectId;
   create_by?: string;
   create_dttm?: Date;
   owner_id: string;
-  part_group1_id?: string;
-  part_group2_name: string;
+  part_group1_id?: part_group_1;
+  part_group_2_name: string;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
@@ -223,15 +223,15 @@ export type part_group2 = {
   valid?: boolean;
 };
 
-export const part_group2Schema = {
-  name: "part_group2",
+export const part_group_2Schema = {
+  name: "part_group_2",
   properties: {
     _id: "objectId",
     create_by: "string?",
     create_dttm: "date?",
     owner_id: "string",
-    part_group1_id: "string?",
-    part_group2_name: "string",
+    part_group1_id: "part_group_1",
+    part_group_2_name: "string",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",

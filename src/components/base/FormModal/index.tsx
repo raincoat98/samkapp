@@ -198,42 +198,38 @@ export default function FormModal(
               continue;
             }
 
-            switch (type) {
-              case "loc": {
-                find({ collection }).then((result) => {
-                  element = (
-                    <Select
-                      placeholder={t(`table_field.${key}`)}
-                      defaultValue={defaultValue}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLSelectElement>
-                      ) => {
-                        const value = event.target.value
-                          ? new ObjectId(event.target.value)
-                          : null;
-                        editData({
-                          key,
-                          value,
-                        });
-                      }}
-                      {...options}
-                    >
-                      {result.map((item: any, index) => (
-                        <option value={item._id} key={index}>
-                          {item.loc_name}
-                        </option>
-                      ))}
-                    </Select>
-                  );
+            console.log(collection);
 
-                  setFormItemRecord((state) => ({
-                    ...state,
-                    [key]: { element, isRequired, isInline },
-                  }));
-                });
-                break;
-              }
-            }
+            find({ collection }).then((result) => {
+              element = (
+                <Select
+                  placeholder={t(`table_field.${key}`)}
+                  defaultValue={defaultValue}
+                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                    const value = event.target.value
+                      ? new ObjectId(event.target.value)
+                      : null;
+                    editData({
+                      key,
+                      value,
+                    });
+                  }}
+                  {...options}
+                >
+                  {result.map((item: any, index) => (
+                    <option value={item._id} key={index}>
+                      {item[`${type}_name`]}
+                    </option>
+                  ))}
+                </Select>
+              );
+
+              setFormItemRecord((state) => ({
+                ...state,
+                [key]: { element, isRequired, isInline },
+              }));
+            });
+            break;
           }
         }
 
@@ -262,6 +258,7 @@ export default function FormModal(
         }));
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValue]);
 
   // 데이터 수정시
