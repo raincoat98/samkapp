@@ -1,8 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
+import { useTranslation } from "react-i18next";
 import {
   schemaType,
+  schemaToColums,
   getCollection,
   find,
   insert,
@@ -10,10 +12,10 @@ import {
   deleteMany,
 } from "utils/realmUtils";
 import PageContainer from "components/base/PageContainer";
-import ManagementComponent from "components/base/ManagementComponent";
 import FormModal from "components/base/FormModal";
+import TableComponent from "components/base/TableComponent";
 import { Row } from "react-table";
-import { useDisclosure } from "@chakra-ui/react";
+import { useDisclosure, Flex, Select } from "@chakra-ui/react";
 import {
   BaseButtonGroups,
   DeleteButton,
@@ -27,6 +29,9 @@ export default function Management(props: {
   schema: schemaType;
 }) {
   const { title, collectionName, schema } = props;
+
+  // 번역
+  const { t: translate } = useTranslation();
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -43,7 +48,70 @@ export default function Management(props: {
   // 폼모달 모드
   const [modalMode, setModalMode] = React.useState("");
 
+  const onTableChange = React.useCallback(
+    (props: { table: any; state: any; action: { type: string } }) => {
+      const { table, state } = props;
+
+      if (table) {
+        const selectedRowIds = state.selectedRowIds;
+
+        // 체크되어있는 열이 있는지 판단
+        setIsExistCheckedRow(Object.keys(selectedRowIds).length !== 0);
+
+        const selectedItemIdList: ObjectId[] = [];
+        const rowsById = table.rowsById;
+
+        for (const key in selectedRowIds) {
+          const doc = rowsById[key].original as any;
+          selectedItemIdList.push(doc._id);
+        }
+
+        setCheckedRows(selectedItemIdList);
+      }
+    },
+    []
+  );
+
+  // 테이블 헤더에서 제외할 것들
+  const disabledSchemaKeyList = useSelector(
+    (state: RootState) => state.realm.disabledSchemaKeyList
+  );
+  const readonlySchemaKeyList = useSelector(
+    (state: RootState) => state.realm.readonlySchemaKeyList
+  );
+
+  // 테이블 데이터
   const tableData: any[] = database[collectionName] ?? [];
+  const columns = schemaToColums({
+    schema,
+    exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
+  });
+  Object.keys(columns).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(columns, key)) {
+      let headerName = columns[Number(key)].Header;
+      const header = translate(`table_field.${headerName as string}`);
+      columns[Number(key)].Header = header;
+    }
+  });
+
+  // 테이블 초기화
+  let mainTable: any;
+  mainTable = TableComponent({
+    columns,
+    data: tableData,
+    onRowClick: onTableRowClick,
+    stateReducer: React.useCallback(
+      (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
+        onTableChange({
+          table: mainTable?.tableInstance,
+          state: newState,
+          action,
+        });
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    ),
+  });
 
   React.useEffect(() => {
     init();
@@ -130,30 +198,6 @@ export default function Management(props: {
     }
   }
 
-  const onTableChange = React.useCallback(
-    (props: { table: any; state: any; action: { type: string } }) => {
-      const { table, state } = props;
-
-      if (table) {
-        const selectedRowIds = state.selectedRowIds;
-
-        // 체크되어있는 열이 있는지 판단
-        setIsExistCheckedRow(Object.keys(selectedRowIds).length !== 0);
-
-        const selectedItemIdList: ObjectId[] = [];
-        const rowsById = table.rowsById;
-
-        for (const key in selectedRowIds) {
-          const doc = rowsById[key].original as any;
-          selectedItemIdList.push(doc._id);
-        }
-
-        setCheckedRows(selectedItemIdList);
-      }
-    },
-    []
-  );
-
   return (
     <>
       <FormModal
@@ -179,12 +223,9 @@ export default function Management(props: {
           </BaseButtonGroups>
         }
       >
-        <ManagementComponent
-          tableData={tableData}
-          schema={schema}
-          onRowClick={onTableRowClick}
-          onChange={onTableChange}
-        />
+        <Flex direction="column" width="100%" height="100%">
+          {mainTable.component.box}
+        </Flex>
       </PageContainer>
     </>
   );
