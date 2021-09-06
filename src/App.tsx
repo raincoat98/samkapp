@@ -2,37 +2,19 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
 import * as RealmWeb from "realm-web";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
-import Login from "./components/Login";
-import Sidebar from "./components/Sidebar";
-import NoMatch from "./components/NoMatch";
+import Login from "components/Login";
+import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/base/SpinnerComponent";
 
-function App() {
+export default function App() {
   const dispatch = useDispatch();
 
   dispatch({
     type: "system/closeProgress",
   });
 
-  const defaultPath = useSelector(
-    (state: RootState) => state.router.defaultPath
-  );
-  const routes = useSelector((state: RootState) => state.router.routes);
-
   const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
-
-  // 사이드바 열림 여부
-  const isSidebarOpen = useSelector(
-    (state: RootState) => state.system.isSidebarOpen
-  );
 
   React.useEffect(() => {
     init();
@@ -46,8 +28,6 @@ function App() {
     }
   }, [dispatch, realmAppId]);
 
-  const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
   return (
     <div
       style={{
@@ -58,52 +38,7 @@ function App() {
     >
       <SpinnerComponent />
 
-      {!realmAppUser ? (
-        <Login />
-      ) : (
-        <Router>
-          <Flex h={"100%"} w={"100%"}>
-            <Sidebar
-              isOpen={isSidebarOpen}
-              onClose={() => {
-                dispatch({
-                  type: "system/toggleSidebar",
-                });
-              }}
-              isLandscape={isLandscape}
-            />
-
-            <Box flex={1} overflow="auto">
-              <Switch>
-                {/* 리다이렉트 */}
-                <Route path="/" exact={true}>
-                  <Redirect
-                    to={{
-                      pathname: defaultPath,
-                    }}
-                  />
-                </Route>
-
-                {/* 주소 매핑 */}
-                {routes.map((route, index) => (
-                  <Route
-                    path={route.path + (route.params || "")}
-                    key={index}
-                    children={<route.component />}
-                  ></Route>
-                ))}
-
-                {/* 404 매핑 */}
-                <Route path="*">
-                  <NoMatch />
-                </Route>
-              </Switch>
-            </Box>
-          </Flex>
-        </Router>
-      )}
+      {!realmAppUser ? <Login /> : <AppRouter />}
     </div>
   );
 }
-
-export default App;
