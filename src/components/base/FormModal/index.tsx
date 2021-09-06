@@ -198,8 +198,6 @@ export default function FormModal(
               continue;
             }
 
-            console.log(collection);
-
             find({ collection }).then((result) => {
               element = (
                 <Select

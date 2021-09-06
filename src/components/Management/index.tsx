@@ -15,7 +15,7 @@ import PageContainer from "components/base/PageContainer";
 import FormModal from "components/base/FormModal";
 import TableComponent from "components/base/TableComponent";
 import { Row } from "react-table";
-import { useDisclosure, Flex, Select } from "@chakra-ui/react";
+import { useDisclosure, Flex, Select, Button } from "@chakra-ui/react";
 import {
   BaseButtonGroups,
   DeleteButton,
@@ -27,8 +27,9 @@ export default function Management(props: {
   title: string;
   collectionName: string;
   schema: schemaType;
+  filterList?: schemaType[];
 }) {
-  const { title, collectionName, schema } = props;
+  const { title, collectionName, schema, filterList } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -38,7 +39,6 @@ export default function Management(props: {
   const dispatch = useDispatch();
   const database = useSelector((state: RootState) => state.database);
   const realmApp = useSelector((state: RootState) => state.realm.app);
-  const collection = getCollection({ app: realmApp, collectionName });
 
   // 체크한 테이블 열이 존재하는지 확인
   const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
@@ -81,7 +81,6 @@ export default function Management(props: {
   );
 
   // 테이블 데이터
-  const tableData: any[] = database[collectionName] ?? [];
   const columns = schemaToColums({
     schema,
     exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
@@ -98,7 +97,7 @@ export default function Management(props: {
   let mainTable: any;
   mainTable = TableComponent({
     columns,
-    data: tableData,
+    data: database[collectionName] ?? [],
     onRowClick: onTableRowClick,
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
@@ -113,23 +112,37 @@ export default function Management(props: {
     ),
   });
 
-  React.useEffect(() => {
-    init();
+  const refreshData = React.useCallback(async () => {
+    const collection = getCollection({ app: realmApp, collectionName });
+    if (collection) {
+      dispatch({
+        type: "database/setData",
+        payload: {
+          key: collectionName,
+          data: await find({ collection }),
+        },
+      });
+    }
 
-    async function init() {
-      if (collection) {
-        const result = await find({ collection });
-        dispatch({
-          type: "database/setData",
-          payload: {
-            key: collectionName,
-            data: result,
-          },
+    // 대분류, 중분류 등의 필터 가져오기
+    if (Array.isArray(filterList)) {
+      for (let index = 0; index < filterList.length; index++) {
+        const filterCollection = getCollection({
+          app: realmApp,
+          collectionName: filterList[index].name,
         });
+        if (filterCollection) {
+          dispatch({
+            type: "database/setData",
+            payload: {
+              key: filterList[index].name,
+              data: await find({ collection: filterCollection }),
+            },
+          });
+        }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [collectionName, dispatch, filterList, realmApp]);
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
@@ -220,10 +233,36 @@ export default function Management(props: {
               title="선택한 항목을 삭제합니다."
             />
             <AddButton onClick={prepareInsert} />
+            <Button
+              onClick={() => {
+                refreshData();
+              }}
+            >
+              새로고침
+            </Button>
           </BaseButtonGroups>
         }
       >
         <Flex direction="column" width="100%" height="100%">
+          {Array.isArray(filterList) ? (
+            <Flex>
+              {filterList?.map((filter, index) => (
+                <Select
+                  placeholder={translate(filter.name)}
+                  key={index}
+                  size="sm"
+                >
+                  {database[filter.name]?.map((filterItem, index) => (
+                    <option value="option1" key={index}>
+                      {filterItem[`${filter.name}_name`]}
+                    </option>
+                  ))}
+                </Select>
+              ))}
+            </Flex>
+          ) : (
+            ""
+          )}
           {mainTable.component.box}
         </Flex>
       </PageContainer>
