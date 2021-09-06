@@ -90,7 +90,7 @@ export type part = {
   create_dttm?: Date;
   loc_id?: loc;
   owner_id: string;
-  part_group2_id?: part_group_2;
+  part_group_2_id?: part_group_2;
   part_name: string;
   part_type_id?: bson.ObjectId;
   remark?: string;
@@ -106,7 +106,7 @@ export const partSchema = {
     create_dttm: "date?",
     loc_id: "loc",
     owner_id: "string",
-    part_group2_id: "part_group_2",
+    part_group_2_id: "part_group_2",
     part_name: "string",
     part_type_id: "objectId?",
     remark: "string?",
@@ -213,7 +213,7 @@ export type part_group_2 = {
   create_by?: string;
   create_dttm?: Date;
   owner_id: string;
-  part_group1_id?: part_group_1;
+  part_group_1_id?: part_group_1;
   part_group_2_name: string;
   remark?: string;
   save_by?: string;
@@ -230,7 +230,7 @@ export const part_group_2Schema = {
     create_by: "string?",
     create_dttm: "date?",
     owner_id: "string",
-    part_group1_id: "part_group_1",
+    part_group_1_id: "part_group_1",
     part_group_2_name: "string",
     remark: "string?",
     save_by: "string?",
