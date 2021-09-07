@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const APP_ID = "samkapp-dzval";
 
 export type SystemState = {
-  appId: string;
   app: RealmWeb.App;
   user: RealmWeb.User | null;
   readonlySchemaKeyList: string[];
@@ -12,7 +11,6 @@ export type SystemState = {
 };
 
 const initialState: SystemState = {
-  appId: "samkapp-dzval",
   app: new RealmWeb.App({ id: APP_ID }),
   user: null,
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
