@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { all } from "redux-saga/effects";
 
 import database from "./database";
 import realm from "./realm";
@@ -16,10 +15,6 @@ const rootReducer = combineReducers({
   router,
   system,
 });
-
-export function* rootSaga() {
-  yield all([]);
-}
 
 const persistConfig = {
   key: "root",
