@@ -4,7 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { all } from "redux-saga/effects";
 
 import database from "./database";
-import realm from "./realm";
+import realm, { realmSaga } from "./realm";
 import icon from "./icon";
 import router from "./router";
 import system from "./system";
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-  yield all([]);
+  yield all([realmSaga()]);
 }
 
 const persistConfig = {
