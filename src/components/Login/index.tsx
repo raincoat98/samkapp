@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
+import * as RealmWeb from "realm-web";
 import {
   useColorMode,
   Center,
@@ -24,6 +25,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const realmApp = useSelector((state: RootState) => state.realm.app);
   const icon = useSelector((state: RootState) => state.icon);
   const appName = useSelector((state: RootState) => state.system.appName);
 
@@ -40,11 +42,28 @@ export default function Home() {
   async function login(event: FormEvent) {
     event.preventDefault();
     setLogInError(false);
+    const credentials = RealmWeb.Credentials.emailPassword(email, password);
 
-    dispatch({
-      type: "GET_REALM_LOGIN",
-      payload: { email, password },
-    });
+    try {
+      if (!realmApp) throw new Error("realmApp 생성되지 않음");
+
+      dispatch({
+        type: "system/openProgress",
+      });
+
+      await realmApp.logIn(credentials);
+
+      dispatch({
+        type: "system/closeProgress",
+      });
+
+      dispatch({
+        type: "realm/logIn",
+        payload: realmApp.currentUser,
+      });
+    } catch (error) {
+      return error;
+    }
   }
 
   return (
