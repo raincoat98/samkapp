@@ -77,6 +77,12 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
+    "@types/redux-logger@3.0.9": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "my-app"
+    },
     "@types/validator@13.6.3": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
@@ -177,6 +183,12 @@
         "licenses": "SEE LICENSE IN LICENSE",
         "repository": "https://github.com/realm/realm-js",
         "licenseUrl": "https://github.com/realm/realm-js",
+        "parents": "my-app"
+    },
+    "redux-logger@3.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/theaqua/redux-logger",
+        "licenseUrl": "https://github.com/theaqua/redux-logger/raw/master/LICENSE",
         "parents": "my-app"
     },
     "redux-persist@6.0.0": {
