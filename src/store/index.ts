@@ -3,14 +3,12 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { all } from "redux-saga/effects";
 
-import database from "./database";
 import realm, { realmSaga } from "./realm";
 import icon from "./icon";
 import router from "./router";
 import system from "./system";
 
 const rootReducer = combineReducers({
-  database,
   realm,
   icon,
   router,

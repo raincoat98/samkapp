@@ -37,7 +37,7 @@ export default function Management(props: {
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
   const dispatch = useDispatch();
-  const database = useSelector((state: RootState) => state.database);
+  const database = useSelector((state: RootState) => state.realm.database);
   const realmApp = useSelector((state: RootState) => state.realm.app);
 
   // 체크한 테이블 열이 존재하는지 확인
@@ -114,11 +114,12 @@ export default function Management(props: {
 
   const refreshData = React.useCallback(async () => {
     const collection = getCollection({ app: realmApp, collectionName });
+
     if (collection) {
       dispatch({
-        type: "database/setData",
+        type: "realm/setData",
         payload: {
-          key: collectionName,
+          collectionName,
           data: await find({ collection }),
         },
       });
@@ -133,9 +134,9 @@ export default function Management(props: {
         });
         if (filterCollection) {
           dispatch({
-            type: "database/setData",
+            type: "realm/setData",
             payload: {
-              key: filterList[index].name,
+              collectionName: filterList[index].name,
               data: await find({ collection: filterCollection }),
             },
           });
