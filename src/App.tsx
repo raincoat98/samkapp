@@ -13,20 +13,7 @@ export default function App() {
     type: "system/closeProgress",
   });
 
-  const realmAppId = useSelector((state: RootState) => state.realm.appId);
   const realmAppUser = useSelector((state: RootState) => state.realm.user);
-
-  React.useEffect(() => {
-    init();
-
-    async function init() {
-      const realmApp = new RealmWeb.App({ id: realmAppId });
-      dispatch({
-        type: "realm/init",
-        payload: realmApp,
-      });
-    }
-  }, [dispatch, realmAppId]);
 
   return (
     <div

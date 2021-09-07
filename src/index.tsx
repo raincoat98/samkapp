@@ -15,16 +15,31 @@ import theme from "./theme";
 
 // redux - 상태 저장소
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import rootReducer from "store";
-import logger from "redux-logger";
 
 // Moment (시간 관리 라이브러리) - 한국어 지원
 import "moment/locale/ko";
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+// redux 미들웨어 적용
+const middlewares = [];
+
+if (process.env.NODE_ENV === "development") {
+  const { createLogger } = require("redux-logger");
+
+  const logger = createLogger({
+    collapsed: true,
+  });
+
+  middlewares.push(logger);
+}
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [...middlewares],
+});
 const persistor = persistStore(store);
 
 ReactDOM.render(
