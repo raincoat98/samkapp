@@ -1,11 +1,9 @@
 import * as RealmWeb from "realm-web";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const APP_ID = "samkapp-dzval";
-
 export type SystemState = {
   appId: string;
-  app: RealmWeb.App;
+  app: RealmWeb.App | null;
   user: RealmWeb.User | null;
   readonlySchemaKeyList: string[];
   disabledSchemaKeyList: string[];
@@ -13,7 +11,7 @@ export type SystemState = {
 
 const initialState: SystemState = {
   appId: "samkapp-dzval",
-  app: new RealmWeb.App({ id: APP_ID }),
+  app: null,
   user: null,
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["_id", "owner_id"],
@@ -23,6 +21,9 @@ const userSlice = createSlice({
   name: "realm",
   initialState,
   reducers: {
+    init(state, action: PayloadAction<RealmWeb.App>) {
+      state.app = action.payload;
+    },
     logIn(state, action: PayloadAction<RealmWeb.User>) {
       state.user = action.payload;
     },
@@ -33,5 +34,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { logIn, logOut } = actions;
+export const { init, logIn, logOut } = actions;
 export default reducer;
