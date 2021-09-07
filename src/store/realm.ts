@@ -10,7 +10,6 @@ export type SystemState = {
   credentials: RealmWeb.Credentials<Realm.Credentials.EmailPasswordPayload> | null;
   readonlySchemaKeyList: string[];
   disabledSchemaKeyList: string[];
-  database: Record<string, any[]>;
 };
 
 const initialState: SystemState = {
@@ -19,7 +18,6 @@ const initialState: SystemState = {
   user: null,
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["_id", "owner_id"],
-  database: {},
 };
 
 /* 액션 타입 */
@@ -71,13 +69,6 @@ const userSlice = createSlice({
     },
     logOut(state) {
       state.user = null;
-    },
-    setData(
-      state,
-      action: PayloadAction<{ collectionName: string; data: any[] }>
-    ) {
-      const { collectionName, data } = action.payload;
-      state.database[collectionName] = data;
     },
   },
 });
