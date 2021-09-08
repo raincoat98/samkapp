@@ -25,7 +25,7 @@ export default function Management(props: {
   title: string;
   collectionName: string;
   schema: schemaType;
-  filterList?: schemaType[];
+  filterList?: { schema: schemaType; data: any[] }[];
   tableData: any[];
 }) {
   const { title, collectionName, schema, filterList, tableData } = props;
@@ -105,10 +105,16 @@ export default function Management(props: {
   });
 
   const refreshData = React.useCallback(async () => {
-    console.log(collectionName);
-
     dispatch(setCollectionData(collectionName));
-  }, [collectionName, dispatch]);
+
+    if (filterList) {
+      for (let index = 0; index < filterList.length; index++) {
+        console.log(filterList[index].schema.name);
+
+        dispatch(setCollectionData(filterList[index].schema.name));
+      }
+    }
+  }, [collectionName, dispatch, filterList]);
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
@@ -198,15 +204,18 @@ export default function Management(props: {
             <Flex>
               {filterList?.map((filter, index) => (
                 <Select
-                  placeholder={translate(filter.name)}
+                  placeholder={translate(`table_field.${filter.schema.name}`)}
                   key={index}
                   size="sm"
                 >
-                  {/* {database[filter.name]?.map((filterItem, index) => (
-                    <option value="option1" key={index}>
-                      {filterItem[`${filter.name}_name`]}
+                  {filter.data.map((filterItem, index) => (
+                    <option
+                      value={filterItem[filter.schema.primaryKey].toString()}
+                      key={index}
+                    >
+                      {filterItem[`${filter.schema.name}_name`]}
                     </option>
-                  ))} */}
+                  ))}
                 </Select>
               ))}
             </Flex>
