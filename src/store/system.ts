@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import logo from "images/logo.png";
 
 type colorType = { light: string; dark: string };
@@ -27,7 +27,7 @@ const userSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    toggleSidebar(state, action: PayloadAction<boolean>) {
+    toggleSidebar(state) {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
   },

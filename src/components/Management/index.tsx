@@ -26,8 +26,9 @@ export default function Management(props: {
   collectionName: string;
   schema: schemaType;
   filterList?: schemaType[];
+  tableData: any[];
 }) {
-  const { title, collectionName, schema, filterList } = props;
+  const { title, collectionName, schema, filterList, tableData } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -35,7 +36,6 @@ export default function Management(props: {
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
   const dispatch = useDispatch();
-  const database = useSelector((state: RootState) => state.realm.database);
 
   // 체크한 테이블 열이 존재하는지 확인
   const [checkedRows, setCheckedRows] = React.useState<ObjectId[]>([]);
@@ -89,7 +89,7 @@ export default function Management(props: {
   let mainTable: any;
   mainTable = TableComponent({
     columns,
-    data: database[collectionName] ?? [],
+    data: tableData,
     onRowClick: onTableRowClick,
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
@@ -105,6 +105,8 @@ export default function Management(props: {
   });
 
   const refreshData = React.useCallback(async () => {
+    console.log(collectionName);
+
     dispatch(setCollectionData(collectionName));
   }, [collectionName, dispatch]);
 
@@ -200,11 +202,11 @@ export default function Management(props: {
                   key={index}
                   size="sm"
                 >
-                  {database[filter.name]?.map((filterItem, index) => (
+                  {/* {database[filter.name]?.map((filterItem, index) => (
                     <option value="option1" key={index}>
                       {filterItem[`${filter.name}_name`]}
                     </option>
-                  ))}
+                  ))} */}
                 </Select>
               ))}
             </Flex>
