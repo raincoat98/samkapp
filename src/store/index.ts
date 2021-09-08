@@ -3,12 +3,10 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import realm from "./realm";
-import router from "./router";
 import system from "./system";
 
 const rootReducer = combineReducers({
   realm,
-  router,
   system,
 });
 

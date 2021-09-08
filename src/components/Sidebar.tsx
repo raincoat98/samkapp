@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+import routerConfig from "utils/routerConfig";
 import { setting } from "utils/icons";
 import {
   useColorMode,
@@ -23,7 +24,6 @@ export default function Sidebar(props: {
   const { isOpen, onClose, isLandscape } = props;
 
   const { colorMode } = useColorMode();
-  const routes = useSelector((state: RootState) => state.router.routes);
   const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
 
@@ -72,7 +72,7 @@ export default function Sidebar(props: {
         variant="outline"
         justify="center"
       >
-        {routes.map((route, index) => {
+        {routerConfig.routes.map((route, index) => {
           if (route.sidebar) {
             return (
               <Button

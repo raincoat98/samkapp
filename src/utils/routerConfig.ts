@@ -1,5 +1,3 @@
-import { createSlice } from "@reduxjs/toolkit";
-
 import CustomerManage from "components/Management/CustomerManage";
 import LocationManagement from "components/Management/LocationManagement";
 import InventoryManagement from "components/Management/InventoryManagement";
@@ -20,7 +18,7 @@ export type RouterState = {
   routes: route[];
 };
 
-const initialState: RouterState = {
+const routerConfig = {
   defaultPath: "/setting",
   routes: [
     // 고객 관리
@@ -71,11 +69,4 @@ const initialState: RouterState = {
   ],
 };
 
-const userSlice = createSlice({
-  name: "router",
-  initialState,
-  reducers: {},
-});
-
-const { reducer } = userSlice;
-export default reducer;
+export default routerConfig;

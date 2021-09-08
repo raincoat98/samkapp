@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { RootState } from "store";
-import { useSelector } from "react-redux";
+import routerConfig from "utils/routerConfig";
 import {
   Alert,
   AlertIcon,
@@ -10,10 +9,6 @@ import {
 } from "@chakra-ui/react";
 
 export default function NoMatch() {
-  const defaultPath = useSelector(
-    (state: RootState) => state.router.defaultPath
-  );
-
   return (
     <Alert
       height="100%"
@@ -29,7 +24,7 @@ export default function NoMatch() {
         잘못된 접근입니다!
       </AlertTitle>
       <AlertDescription>
-        <Link to={defaultPath}>
+        <Link to={routerConfig.defaultPath}>
           <Button colorScheme="blue">메인 페이지로 돌아가기</Button>
         </Link>
       </AlertDescription>

@@ -6,17 +6,13 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import routerConfig from "utils/routerConfig";
 import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
 import Sidebar from "components/Sidebar";
 import NoMatch from "components/NoMatch";
 
 export default function AppRouter() {
   const dispatch = useDispatch();
-
-  const defaultPath = useSelector(
-    (state: RootState) => state.router.defaultPath
-  );
-  const routes = useSelector((state: RootState) => state.router.routes);
 
   // 사이드바 열림 여부
   const isSidebarOpen = useSelector(
@@ -44,18 +40,16 @@ export default function AppRouter() {
             <Route path="/" exact={true}>
               <Redirect
                 to={{
-                  pathname: defaultPath,
+                  pathname: routerConfig.defaultPath,
                 }}
               />
             </Route>
 
             {/* 주소 매핑 */}
-            {routes.map((route, index) => (
-              <Route
-                path={route.path + (route.params || "")}
-                key={index}
-                children={<route.component />}
-              ></Route>
+            {routerConfig.routes.map((route, index) => (
+              <Route path={route.path} key={index}>
+                {<route.component />}
+              </Route>
             ))}
 
             {/* 404 매핑 */}
