@@ -61,7 +61,6 @@ export function schemaToColums(props: {
     columns.push({
       Header: key,
       accessor,
-      width: "1",
     });
   }
 
