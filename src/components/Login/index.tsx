@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import * as RealmWeb from "realm-web";
+import { login } from "store/realm";
 import {
   useColorMode,
   Center,
@@ -25,7 +25,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const realmApp = useSelector((state: RootState) => state.realm.app);
   const icon = useSelector((state: RootState) => state.icon);
   const appName = useSelector((state: RootState) => state.system.appName);
 
@@ -39,31 +38,10 @@ export default function Home() {
     setPasswordShow(!passwordShow);
   }
 
-  async function login(event: FormEvent) {
+  async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setLogInError(false);
-    const credentials = RealmWeb.Credentials.emailPassword(email, password);
-
-    try {
-      if (!realmApp) throw new Error("realmApp 생성되지 않음");
-
-      dispatch({
-        type: "system/openProgress",
-      });
-
-      await realmApp.logIn(credentials);
-
-      dispatch({
-        type: "system/closeProgress",
-      });
-
-      dispatch({
-        type: "realm/logIn",
-        payload: realmApp.currentUser,
-      });
-    } catch (error) {
-      return error;
-    }
+    dispatch(login({ email, password }));
   }
 
   return (
@@ -76,7 +54,7 @@ export default function Home() {
         </Alert>
       ) : null}
 
-      <form action="" onSubmit={login}>
+      <form action="" onSubmit={onSubmit}>
         <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
           <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
 

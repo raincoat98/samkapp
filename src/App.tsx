@@ -11,7 +11,7 @@ export default function App() {
     type: "system/closeProgress",
   });
 
-  const realmAppUser = useSelector((state: RootState) => state.realm.user);
+  const isLoggedIn = useSelector((state: RootState) => state.realm.loggedIn);
 
   return (
     <div
@@ -23,7 +23,7 @@ export default function App() {
     >
       <SpinnerComponent />
 
-      {!realmAppUser ? <Login /> : <AppRouter />}
+      {!isLoggedIn ? <Login /> : <AppRouter />}
     </div>
   );
 }

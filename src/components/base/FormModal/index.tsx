@@ -1,7 +1,8 @@
 import React from "react";
 import { RootState } from "store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { setCollectionData } from "store/realm";
 import Moment from "moment";
 import validator from "validator";
 import { ObjectId } from "bson";
@@ -9,7 +10,6 @@ import ModalComponent from "components/base/ModalComponent";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
 import FormModalURLInput from "./FormModalURLInput";
-import { getCollection, find } from "utils/realmUtils";
 import {
   useDisclosure,
   Box,
@@ -46,10 +46,9 @@ export default function FormModal(
   >({});
   const { onChange, initialValue, schmea, mode } = props;
 
+  const dispatch = useDispatch();
   // 번역
   const { t } = useTranslation();
-
-  const realmApp = useSelector((state: RootState) => state.realm.app);
 
   const [formItemRecord, setFormItemRecord] = React.useState<
     Record<string, formItem>
@@ -59,6 +58,7 @@ export default function FormModal(
   >({});
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
+  const database = useSelector((state: RootState) => state.realm.database);
   const readonlySchemaKeyList = useSelector(
     (state: RootState) => state.realm.readonlySchemaKeyList
   );
@@ -186,47 +186,36 @@ export default function FormModal(
             continue;
           }
           default: {
-            // 외부 컬렉션 참조
-            const collection = getCollection({
-              app: realmApp,
-              collectionName: type,
-            });
+            console.log(defaultValue);
+            element = (
+              <Select
+                placeholder={t(`table_field.${key}`)}
+                defaultValue={defaultValue?.toString()}
+                onFocus={() => dispatch(setCollectionData(type))}
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                  const value = event.target.value
+                    ? new ObjectId(event.target.value)
+                    : null;
+                  editData({
+                    key,
+                    value,
+                  });
+                }}
+                {...options}
+              >
+                {database[type]?.map((item: any, index) => (
+                  <option value={item._id.toString()} key={index}>
+                    {item[`${type}_name`]}
+                  </option>
+                ))}
+              </Select>
+            );
 
-            // 없으면 다음 항목으로
-            if (!collection) {
-              console.log("알 수 없는 타입: ", type);
-              continue;
-            }
+            setFormItemRecord((state) => ({
+              ...state,
+              [key]: { element, isRequired, isInline },
+            }));
 
-            find({ collection }).then((result) => {
-              element = (
-                <Select
-                  placeholder={t(`table_field.${key}`)}
-                  defaultValue={defaultValue}
-                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                    const value = event.target.value
-                      ? new ObjectId(event.target.value)
-                      : null;
-                    editData({
-                      key,
-                      value,
-                    });
-                  }}
-                  {...options}
-                >
-                  {result.map((item: any, index) => (
-                    <option value={item._id} key={index}>
-                      {item[`${type}_name`]}
-                    </option>
-                  ))}
-                </Select>
-              );
-
-              setFormItemRecord((state) => ({
-                ...state,
-                [key]: { element, isRequired, isInline },
-              }));
-            });
             break;
           }
         }
@@ -257,7 +246,7 @@ export default function FormModal(
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValue]);
+  }, [initialValue, database]);
 
   // 데이터 수정시
   function editData(props: { key: string; value: any }) {

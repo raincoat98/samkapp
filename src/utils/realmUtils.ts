@@ -1,5 +1,3 @@
-import { Dispatch } from "@reduxjs/toolkit";
-import * as RealmWeb from "realm-web";
 import { Column } from "react-table";
 import Moment from "moment";
 
@@ -10,11 +8,6 @@ export type schemaType = {
   properties: Record<string, string>;
   primaryKey: string;
 };
-
-export type useProgress = { useProgress?: boolean; dispatch?: Dispatch<any> };
-export type user = { user: RealmWeb.User };
-export type collectionName = { collectionName: string };
-export type basicProps = useProgress & user & collectionName;
 
 export function isReadOnly(key: string) {
   return key.startsWith("_");
@@ -72,132 +65,4 @@ export function schemaToColums(props: {
   }
 
   return columns;
-}
-
-export function getCollection(props: {
-  app: Realm.App | null;
-  collectionName: string;
-}) {
-  const { app, collectionName } = props;
-
-  const mongodb = app?.currentUser?.mongoClient("mongodb-atlas");
-  return mongodb?.db("database")?.collection<any>(collectionName);
-}
-
-export async function find(props: {
-  collection: Realm.Services.MongoDB.MongoDBCollection<any>;
-}) {
-  const { collection } = props;
-
-  return await collection.find();
-}
-
-export async function insert(
-  props: basicProps & {
-    document: Document;
-  }
-) {
-  const { useProgress, dispatch, user, collectionName, ...params } = props;
-  const { document } = params;
-
-  if (useProgress) setProgress(dispatch, true);
-
-  const result = await user.functions.actionFunc({
-    type: "insert",
-    collectionName,
-    doc: document,
-  });
-
-  if (useProgress) setProgress(dispatch, false);
-
-  console.log("insert", result);
-  return result;
-}
-
-export async function update(
-  props: basicProps & {
-    filter: Document;
-    update: Document;
-    options?: object;
-  }
-) {
-  const { useProgress, dispatch, user, collectionName, ...params } = props;
-  const { filter, update, options } = params;
-
-  if (useProgress) setProgress(dispatch, true);
-
-  const result = await user.functions.actionFunc({
-    type: "update",
-    collectionName,
-    filter,
-    update,
-    options: options ? options : {},
-  });
-
-  if (useProgress) setProgress(dispatch, false);
-
-  console.log("update", result);
-  return result;
-}
-
-export async function deleteMany(
-  props: basicProps & {
-    filter: Document;
-  }
-) {
-  const { useProgress, dispatch, user, collectionName, ...params } = props;
-  const { filter } = params;
-
-  if (useProgress) setProgress(dispatch, true);
-
-  const result = await user.functions.actionFunc({
-    type: "deleteMany",
-    collectionName,
-    filter,
-  });
-
-  if (useProgress) setProgress(dispatch, false);
-
-  console.log("deleteMany", result);
-  return result;
-}
-
-export async function distinct(
-  props: basicProps & {
-    field: string;
-    query?: Document;
-    options?: object;
-  }
-) {
-  const { useProgress, dispatch, user, collectionName, ...params } = props;
-  const { field, query, options } = params;
-
-  if (useProgress) setProgress(dispatch, true);
-
-  const result = await user.functions.actionFunc({
-    type: "distinct",
-    collectionName,
-    field,
-    query,
-    options: options ? options : {},
-  });
-
-  if (useProgress) setProgress(dispatch, false);
-
-  console.log("distinct", result);
-  return result;
-}
-
-function setProgress(dispatch?: Dispatch, active?: boolean) {
-  if (!dispatch || active === undefined) return;
-
-  if (active) {
-    dispatch({
-      type: "system/openProgress",
-    });
-  } else {
-    dispatch({
-      type: "system/closeProgress",
-    });
-  }
 }

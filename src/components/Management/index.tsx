@@ -1,16 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { useTranslation } from "react-i18next";
 import {
-  schemaType,
-  schemaToColums,
-  getCollection,
-  find,
-  insert,
-  update,
+  setCollectionData,
+  insertData,
+  updateData,
   deleteMany,
-} from "utils/realmUtils";
+} from "store/realm";
+import { useTranslation } from "react-i18next";
+import { schemaType, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/base/PageContainer";
 import FormModal from "components/base/FormModal";
 import TableComponent from "components/base/TableComponent";
@@ -37,12 +35,10 @@ export default function Management(props: {
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
   const dispatch = useDispatch();
-  const database = useSelector((state: RootState) => state.database);
-  const realmApp = useSelector((state: RootState) => state.realm.app);
+  const database = useSelector((state: RootState) => state.realm.database);
 
   // 체크한 테이블 열이 존재하는지 확인
-  const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
-  const [isExistCheckedRow, setIsExistCheckedRow] = React.useState(false);
+  const [checkedRows, setCheckedRows] = React.useState<ObjectId[]>([]);
   // 현재 수정중인 데이터
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
@@ -52,22 +48,18 @@ export default function Management(props: {
     (props: { table: any; state: any; action: { type: string } }) => {
       const { table, state } = props;
 
-      if (table) {
+      if (table && Object.entries(state.selectedRowIds).length !== 0) {
         const selectedRowIds = state.selectedRowIds;
-
-        // 체크되어있는 열이 있는지 판단
-        setIsExistCheckedRow(Object.keys(selectedRowIds).length !== 0);
 
         const selectedItemIdList: ObjectId[] = [];
         const rowsById = table.rowsById;
 
         for (const key in selectedRowIds) {
-          const doc = rowsById[key].original as any;
-          selectedItemIdList.push(doc._id);
+          selectedItemIdList.push(rowsById[key]?.original._id);
         }
 
         setCheckedRows(selectedItemIdList);
-      }
+      } else setCheckedRows([]);
     },
     []
   );
@@ -113,36 +105,8 @@ export default function Management(props: {
   });
 
   const refreshData = React.useCallback(async () => {
-    const collection = getCollection({ app: realmApp, collectionName });
-    if (collection) {
-      dispatch({
-        type: "database/setData",
-        payload: {
-          key: collectionName,
-          data: await find({ collection }),
-        },
-      });
-    }
-
-    // 대분류, 중분류 등의 필터 가져오기
-    if (Array.isArray(filterList)) {
-      for (let index = 0; index < filterList.length; index++) {
-        const filterCollection = getCollection({
-          app: realmApp,
-          collectionName: filterList[index].name,
-        });
-        if (filterCollection) {
-          dispatch({
-            type: "database/setData",
-            payload: {
-              key: filterList[index].name,
-              data: await find({ collection: filterCollection }),
-            },
-          });
-        }
-      }
-    }
-  }, [collectionName, dispatch, filterList, realmApp]);
+    dispatch(setCollectionData(collectionName));
+  }, [collectionName, dispatch]);
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
@@ -163,52 +127,36 @@ export default function Management(props: {
     document: Record<string, any>;
     initialValue: Record<string, any>;
   }) {
-    if (realmApp?.currentUser) {
-      const { type, document, initialValue } = props;
+    const { type, document, initialValue } = props;
 
-      switch (type) {
-        case "insert": {
-          await insert({
-            useProgress: true,
-            dispatch: dispatch,
-            user: realmApp.currentUser,
-            collectionName,
-            document,
-          });
-          break;
-        }
-        case "update": {
-          await update({
-            useProgress: true,
-            dispatch: dispatch,
-            user: realmApp.currentUser,
+    switch (type) {
+      case "insert": {
+        dispatch(insertData({ collectionName, document }));
+        break;
+      }
+      case "update": {
+        dispatch(
+          updateData({
             collectionName,
             filter: { _id: initialValue._id },
             update: { $set: document },
-          });
-          break;
-        }
+          })
+        );
+        break;
       }
-
-      modalDisclosure.onClose();
     }
+
+    modalDisclosure.onClose();
   }
 
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
-    if (realmApp?.currentUser) {
-      const filter = {
-        _id: { $in: checkedRows },
-      };
-
-      await deleteMany({
-        useProgress: true,
-        dispatch: dispatch,
-        user: realmApp.currentUser,
+    dispatch(
+      deleteMany({
         collectionName,
-        filter,
-      });
-    }
+        ids: checkedRows,
+      })
+    );
   }
 
   return (
@@ -228,7 +176,7 @@ export default function Management(props: {
         headerChildren={
           <BaseButtonGroups>
             <DeleteButton
-              isDisabled={!isExistCheckedRow}
+              isDisabled={Object.keys(checkedRows).length === 0}
               onClick={deleteSelected}
               title="선택한 항목을 삭제합니다."
             />
