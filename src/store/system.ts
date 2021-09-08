@@ -4,7 +4,6 @@ import logo from "images/logo.png";
 type colorType = { light: string; dark: string };
 
 export type SystemState = {
-  isProgress: boolean;
   isSidebarOpen: boolean;
   appName: string;
   logo: string;
@@ -15,7 +14,6 @@ export type SystemState = {
 };
 
 const initialState: SystemState = {
-  isProgress: false,
   isSidebarOpen: true,
   appName: "SamKapp",
   logo: logo,
@@ -29,12 +27,6 @@ const userSlice = createSlice({
   name: "system",
   initialState,
   reducers: {
-    openProgress(state, action: PayloadAction<boolean>) {
-      state.isProgress = true;
-    },
-    closeProgress(state, action: PayloadAction<boolean>) {
-      state.isProgress = false;
-    },
     toggleSidebar(state, action: PayloadAction<boolean>) {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
@@ -42,5 +34,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { openProgress, closeProgress } = actions;
+export const { toggleSidebar } = actions;
 export default reducer;

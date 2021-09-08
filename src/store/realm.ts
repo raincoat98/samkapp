@@ -42,6 +42,8 @@ export const login = createAsyncThunk(
     dispatch({
       type: `${name}/setUser`,
     });
+
+    return;
   }
 );
 
@@ -137,11 +139,13 @@ export const deleteMany = createAsyncThunk(
       });
     }
 
-    await app.currentUser?.functions.actionFunc({
+    const result = await app.currentUser?.functions.actionFunc({
       type: "deleteMany",
       collectionName,
       filter,
     });
+
+    return result;
   }
 );
 
@@ -203,6 +207,17 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
+    // 로그인
+    [login.pending.type]: (state) => {
+      state.loading = true;
+    },
+    [login.fulfilled.type]: (state) => {
+      state.loading = false;
+    },
+    [login.rejected.type]: (state) => {
+      console.log(state);
+    },
+
     // 컬렉션 데이터 가져오기
     [setCollectionData.pending.type]: (state) => {
       state.loading = true;
@@ -213,6 +228,8 @@ const userSlice = createSlice({
     ) => {
       const { collectionName, data } = action.payload;
       state.database[collectionName] = data;
+
+      state.loading = false;
     },
     [setCollectionData.rejected.type]: (state) => {
       console.log(state);
@@ -233,6 +250,8 @@ const userSlice = createSlice({
       console.log(action.payload);
       state.database[collectionName] =
         state.database[collectionName].concat(document);
+
+      state.loading = false;
     },
     [insertData.rejected.type]: (state) => {
       console.log(state);
@@ -264,6 +283,8 @@ const userSlice = createSlice({
           }
         }
       }
+
+      state.loading = false;
     },
     [updateData.rejected.type]: (state) => {
       console.log(state);
@@ -273,6 +294,9 @@ const userSlice = createSlice({
     [deleteMany.pending.type]: (state) => {
       state.loading = true;
     },
+    [deleteMany.fulfilled.type]: (state) => {
+      state.loading = false;
+    },
     [deleteMany.rejected.type]: (state) => {
       console.log(state);
     },
@@ -281,9 +305,8 @@ const userSlice = createSlice({
     [distinct.pending.type]: (state) => {
       state.loading = true;
     },
-    [distinct.fulfilled.type]: (state, action: PayloadAction<any>) => {
-      // const { collectionName, data } = action.payload;
-      console.log(action.payload);
+    [distinct.fulfilled.type]: (state) => {
+      state.loading = false;
     },
     [distinct.rejected.type]: (state) => {
       console.log(state);

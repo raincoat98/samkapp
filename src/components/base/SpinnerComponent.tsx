@@ -12,7 +12,7 @@ import {
 export default function SpinnerComponent(props: SpinnerProps) {
   const { children, ...rest } = props;
 
-  const isProgress = useSelector((state: RootState) => state.system.isProgress);
+  const isProgress = useSelector((state: RootState) => state.realm.loading);
 
   return (
     <Modal isOpen={isProgress} onClose={() => {}} isCentered={true}>
