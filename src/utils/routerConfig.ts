@@ -1,7 +1,6 @@
 import CustomerManage from "components/Management/CustomerManage";
-import LocationManagement from "components/Management/LocationManagement";
-import InventoryManagement from "components/Management/InventoryManagement";
-import ItemManagement from "components/Management/ItemManagement";
+import WarehouseManagement from "components/Management/WarehouseManagement";
+import PartManagement from "components/Management/PartManagement";
 import Announcement from "components/SystemManagement/Announcement";
 import Setting from "components/Setting";
 
@@ -31,25 +30,17 @@ const routerConfig = {
 
     // 위치 관리
     {
-      name: "위치 관리",
-      path: "/location_manage",
-      component: LocationManagement,
-      sidebar: true,
-    },
-
-    // 재고 관리
-    {
-      name: "재고 관리",
-      path: "/inventory_manage",
-      component: InventoryManagement,
+      name: "창고 관리",
+      path: "/warehouse_manage",
+      component: WarehouseManagement,
       sidebar: true,
     },
 
     // 품목 관리
     {
       name: "품목 관리",
-      path: "/item_manage",
-      component: ItemManagement,
+      path: "/part_manage",
+      component: PartManagement,
       sidebar: true,
     },
 

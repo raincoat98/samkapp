@@ -7,7 +7,7 @@ import {
   part_group_1Schema,
 } from "realmObjectModes";
 
-export default function ItemManagement() {
+export default function PartManagement() {
   const collectionName = "part";
   const partData = useSelector(
     (state: RootState) => state.realm.database[collectionName]

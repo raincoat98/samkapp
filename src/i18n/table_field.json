@@ -28,12 +28,17 @@
 
   "part_name": "품명",
   "part_type_id": "품목 형태",
-  "part_group_2_id": "품목 분류 2",
-  "part_group_2_name": "품목 분류 2 이름",
-  "loc_id": "제품 위치",
+  "part_group_2_id": "대분류",
+  "part_group_2_name": "대분류명",
 
-  "part_group_1_id": "품목 분류 1",
-  "part_group1_name": "품목 분류 1 이름",
+  "warehouse_id": "제품 위치",
+  "warehouse_name": "창고명",
+
+  "part_group_2": "대분류",
+  "part_group_1": "중분류",
+
+  "part_group_1_id": "중분류",
+  "part_group1_name": "중분류명",
   "search_group": "검색 그룹",
 
   "create_by": "생성자",
