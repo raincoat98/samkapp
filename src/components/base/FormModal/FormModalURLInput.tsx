@@ -1,5 +1,4 @@
-import { RootState } from "store";
-import { useSelector } from "react-redux";
+import { externalLink } from "utils/icons";
 import {
   Box,
   Input,
@@ -14,17 +13,12 @@ export default function FormModalURLInput(props: {
 }) {
   const { inputProps, buttonProps } = props;
 
-  // 외부 링크 아이콘
-  const ExternalLinkIcon = useSelector(
-    (state: RootState) => state.icon.externalLink
-  );
-
   return (
     <Box display="flex">
       <Input mr={3} {...inputProps} />
       <IconButton
         aria-label="페이지 열기"
-        icon={<ExternalLinkIcon />}
+        icon={externalLink}
         {...buttonProps}
       />
     </Box>

@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store";
+import { menu } from "utils/icons";
 import {
   useStyleConfig,
   chakra,
@@ -23,9 +24,6 @@ export default function PageTitle(props: HeadingProps) {
     (state: RootState) => state.system.color.background
   );
 
-  // 아이콘 가져오기
-  const menuIcon = useSelector((state: RootState) => state.icon.menu);
-
   return (
     <chakra.header
       __css={styles}
@@ -42,7 +40,7 @@ export default function PageTitle(props: HeadingProps) {
     >
       <Flex align="center">
         <IconButton
-          icon={<Icon as={menuIcon} />}
+          icon={<Icon as={menu} />}
           onClick={() =>
             dispatch({
               type: "system/toggleSidebar",

@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+import { setting } from "utils/icons";
 import {
   useColorMode,
   Image,
@@ -25,9 +26,6 @@ export default function Sidebar(props: {
   const routes = useSelector((state: RootState) => state.router.routes);
   const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
-
-  // 아이콘 가져오기
-  const settingIcon = useSelector((state: RootState) => state.icon.setting);
 
   return (
     <Flex
@@ -96,7 +94,7 @@ export default function Sidebar(props: {
       </Flex>
 
       <IconButton
-        icon={<Icon as={settingIcon} />}
+        icon={<Icon as={setting} />}
         onClick={() => {
           history.push("/setting");
           if (!isLandscape) onClose();

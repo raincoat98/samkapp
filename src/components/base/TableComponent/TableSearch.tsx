@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
 import { useAsyncDebounce } from "react-table";
+import { search } from "utils/icons";
 import { Icon, InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 
 export default function TableSearch(props: {
@@ -10,9 +9,6 @@ export default function TableSearch(props: {
   globalFilter: any;
   setGlobalFilter: any;
 }) {
-  //검색 아이콘
-  const searchIcon = useSelector((state: RootState) => state.icon.search);
-
   const { t } = useTranslation();
   const [value, setValue] = React.useState(props.globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -21,10 +17,7 @@ export default function TableSearch(props: {
 
   return (
     <InputGroup>
-      <InputLeftElement
-        pointerEvents="none"
-        children={<Icon as={searchIcon} />}
-      />
+      <InputLeftElement pointerEvents="none" children={<Icon as={search} />} />
       <Input
         value={value || ""}
         onChange={(event) => {

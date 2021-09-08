@@ -9,8 +9,7 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { RootState } from "store";
-import { useSelector } from "react-redux";
+import { externalLink } from "utils/icons";
 import licenses from "data/licenses.json";
 
 type licenseType = {
@@ -22,9 +21,6 @@ type licenseType = {
 };
 
 export default function LicensesList() {
-  const ExternalLinkIcon = useSelector(
-    (state: RootState) => state.icon.externalLink
-  );
   const licensesString = JSON.stringify(licenses);
   const licenseObject = JSON.parse(licensesString);
   const licenseList: licenseType[] = [];
@@ -51,10 +47,10 @@ export default function LicensesList() {
           <AccordionPanel pb={4}>
             <Stack direction="row">
               <Link href={license.repository} isExternal>
-                Repository <Icon as={ExternalLinkIcon} />
+                Repository <Icon as={externalLink} />
               </Link>
               <Link href={license.licenseUrl} isExternal>
-                License <Icon as={ExternalLinkIcon} />
+                License <Icon as={externalLink} />
               </Link>
             </Stack>
           </AccordionPanel>

@@ -2,6 +2,7 @@ import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { login } from "store/realm";
+import * as icons from "utils/icons";
 import {
   useColorMode,
   Center,
@@ -25,7 +26,6 @@ export default function Home() {
   const dispatch = useDispatch();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const icon = useSelector((state: RootState) => state.icon);
   const appName = useSelector((state: RootState) => state.system.appName);
 
   const [email, setEmail] = React.useState("");
@@ -61,7 +61,7 @@ export default function Home() {
           <InputGroup>
             <InputLeftElement
               pointerEvents="none"
-              children={<Icon as={icon.id} />}
+              children={<Icon as={icons.id} />}
             />
             <Input
               placeholder="이메일"
@@ -76,7 +76,7 @@ export default function Home() {
           <InputGroup>
             <InputLeftElement
               pointerEvents="none"
-              children={<Icon as={icon.password} />}
+              children={<Icon as={icons.password} />}
             />
             <Input
               type={passwordShow ? "text" : "password"}
@@ -108,7 +108,9 @@ export default function Home() {
       >
         <IconButton
           icon={
-            <Icon as={colorMode === "dark" ? icon.lightMode : icon.darkMode} />
+            <Icon
+              as={colorMode === "dark" ? icons.lightMode : icons.darkMode}
+            />
           }
           onClick={toggleColorMode}
           position="absolute"
