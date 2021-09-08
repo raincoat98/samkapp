@@ -186,7 +186,6 @@ export default function FormModal(
             continue;
           }
           default: {
-            console.log(defaultValue);
             element = (
               <Select
                 placeholder={t(`table_field.${key}`)}
