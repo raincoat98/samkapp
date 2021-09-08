@@ -1,7 +1,5 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
-import * as RealmWeb from "realm-web";
 import Login from "components/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/base/SpinnerComponent";

@@ -24,21 +24,22 @@ import rootReducer from "store";
 import "moment/locale/ko";
 
 // redux 미들웨어 적용
-const middlewares = [];
+let logger: any;
 
 if (process.env.NODE_ENV === "development") {
   const { createLogger } = require("redux-logger");
 
-  const logger = createLogger({
+  logger = createLogger({
     collapsed: true,
   });
-
-  middlewares.push(logger);
 }
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [...middlewares],
+  middleware: (getDefaultMiddleware) => {
+    if (logger) return getDefaultMiddleware().concat(logger);
+    else return getDefaultMiddleware();
+  },
 });
 const persistor = persistStore(store);
 
