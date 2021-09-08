@@ -16,8 +16,16 @@ import theme from "./theme";
 // redux - 상태 저장소
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistStore } from "redux-persist";
 import rootReducer from "store";
 
 // Moment (시간 관리 라이브러리) - 한국어 지원
@@ -37,8 +45,13 @@ if (process.env.NODE_ENV === "development") {
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
-    if (logger) return getDefaultMiddleware().concat(logger);
-    else return getDefaultMiddleware();
+    const serializableCheck = {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    };
+
+    if (logger)
+      return getDefaultMiddleware({ serializableCheck }).concat(logger);
+    else return getDefaultMiddleware({ serializableCheck });
   },
 });
 const persistor = persistStore(store);
