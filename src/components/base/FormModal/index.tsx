@@ -6,6 +6,7 @@ import { setCollectionData } from "store/realm";
 import Moment from "moment";
 import validator from "validator";
 import { ObjectId } from "bson";
+import { schemaType } from "utils/realmUtils";
 import ModalComponent from "components/base/ModalComponent";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
@@ -36,7 +37,7 @@ export type formItem = {
 export default function FormModal(
   props: ModalProps & {
     initialValue: Record<string, any>;
-    schmea: Record<string, any>;
+    schema: schemaType;
     mode: "insert" | "update" | string;
     onChange: Function;
   }
@@ -44,11 +45,11 @@ export default function FormModal(
   const [editedDocument, setEditedDocument] = React.useState<
     Record<string, any>
   >({});
-  const { onChange, initialValue, schmea, mode } = props;
+  const { onChange, initialValue, schema, mode } = props;
 
   const dispatch = useDispatch();
   // 번역
-  const { t } = useTranslation();
+  const { t: translate } = useTranslation();
 
   const [formItemRecord, setFormItemRecord] = React.useState<
     Record<string, formItem>
@@ -74,16 +75,16 @@ export default function FormModal(
 
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
-    for (const key in schmea.properties) {
+    for (const key in schema.properties) {
       // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
       if (
-        key === schmea.primaryKey ||
+        key === schema.primaryKey ||
         !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
           .length
       )
         continue;
 
-      let type = schmea.properties[key];
+      let type = schema.properties[key];
       let defaultValue = initialValue ? initialValue[key] : undefined;
       let element: JSX.Element;
 
@@ -188,7 +189,7 @@ export default function FormModal(
           default: {
             element = (
               <Select
-                placeholder={t(`table_field.${key}`)}
+                placeholder={translate(`${schema.name}.properties.${key}`)}
                 defaultValue={defaultValue?.toString()}
                 onFocus={() => dispatch(setCollectionData(type))}
                 onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -229,7 +230,7 @@ export default function FormModal(
             // 수정 불가능한 date 값
             element = (
               <Tag>
-                {`${t("table_field." + key)}: `}
+                {translate(`${schema.name}.properties.${key}`) + ": "}
                 {Moment(defaultValue)
                   .local()
                   .format("YYYY년 MM월 DD일 a h시 m분")}
@@ -322,7 +323,9 @@ export default function FormModal(
               alignItems="center"
               key={key}
             >
-              <FormLabel>{t(`table_field.${key}`)}</FormLabel>
+              <FormLabel>
+                {translate(`${schema.name}.properties.${key}`)}
+              </FormLabel>
               {formItemRecord[key].element}
             </FormControl>
           ))}

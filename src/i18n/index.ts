@@ -1,46 +1,23 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import table_field from "./table_field.json";
 
-// the translations
-// (tip move them in a JSON file and import them,
-// or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
+import customer from "./customer.json";
+import part_group_1 from "./part_group_1.json";
+import part_group_2 from "./part_group_2.json";
+import part_type from "./part_type.json";
+import part from "./part.json";
+import warehouse from "./warehouse.json";
+
 const resources = {
   ko: {
     translation: {
-      table_field,
+      customer,
+      part_group_1,
+      part_group_2,
+      part_type,
+      part,
+      warehouse,
 
-      // 기준정보 관리
-      "Master Data Management": "기준정보 관리",
-      "Customer Management": "고객 관리",
-
-      // 도구 관리
-      "Tool Management": "도구 관리",
-      "Wooden Management": "목형 관리",
-      "Stash Management": "적치대 관리",
-      "Typesetting Paper Management": "조판지 관리",
-      "Typesetting Paper Hanger Management": "조판지걸이 관리",
-
-      // 모니터링
-      Monitoring: "모니터링",
-      "Process Management": "공정 관리",
-
-      // 시스템 관리
-      "System Management": "시스템 관리",
-      Announcement: "공지사항",
-
-      // 기타
-      Customer: "거래처",
-      Vendor: "판매처",
-      "Customer name": "거래처명",
-      "Vendor name": "판매처명",
-      "Manager name": "담당자명",
-      Contact: "연락처",
-      Fax: "팩스",
-      Address: "주소",
-      Description: "설명",
-
-      "Compnany Name": "회사명",
       Index: "인덱스",
       Search: "검색",
       Select: "선택",
@@ -53,13 +30,10 @@ const resources = {
       Setting: "설정",
     },
   },
-  en: {
-    translation: {},
-  },
 };
 
 i18n.use(initReactI18next).init({
-  // debug: true,
+  debug: true,
   resources,
   lng: "ko",
   interpolation: {

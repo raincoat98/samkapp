@@ -1,0 +1,19 @@
+{
+  "name": "창고",
+  "properties": {
+    "_id": "아이디",
+    "cell_number": "칸번호",
+    "create_by": "저장자",
+    "create_dttm": "저장일자",
+    "is_dev": "출하 여부",
+    "is_sub": "하위 여부",
+    "owner_id": "소유자 아이디",
+    "rack_qty": "선반번호",
+    "remark": "비고",
+    "row_qty": "층번호",
+    "save_by": "저장자",
+    "save_dttm": "저장일자",
+    "sort_seq": "정렬순서",
+    "warehouse_name": "창고명"
+  }
+}

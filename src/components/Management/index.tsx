@@ -79,8 +79,9 @@ export default function Management(props: {
   });
   Object.keys(columns).forEach((key) => {
     if (Object.prototype.hasOwnProperty.call(columns, key)) {
-      let headerName = columns[Number(key)].Header;
-      const header = translate(`table_field.${headerName as string}`);
+      const header = translate(
+        `${schema.name}.properties.${columns[Number(key)].accessor}`
+      );
       columns[Number(key)].Header = header;
     }
   });
@@ -170,7 +171,7 @@ export default function Management(props: {
   return (
     <>
       <FormModal
-        schmea={schema}
+        schema={schema}
         mode={modalMode}
         initialValue={selected}
         isOpen={modalDisclosure.isOpen}
@@ -204,7 +205,7 @@ export default function Management(props: {
             <Flex>
               {filterList?.map((filter, index) => (
                 <Select
-                  placeholder={translate(`table_field.${filter.schema.name}`)}
+                  placeholder={translate(`${filter.schema.name}.name`)}
                   key={index}
                   size="sm"
                 >
