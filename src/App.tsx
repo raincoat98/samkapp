@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import Login from "components/Login";
+import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/base/SpinnerComponent";
 
