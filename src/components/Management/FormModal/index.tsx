@@ -7,20 +7,18 @@ import Moment from "moment";
 import validator from "validator";
 import { ObjectId } from "bson";
 import { schemaType } from "utils/realmUtils";
-import ModalComponent from "components/base/ModalComponent";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
 import FormModalURLInput from "./FormModalURLInput";
+import FormModalPopup from "./FormModalPopup";
 import {
   useDisclosure,
   Box,
   Tag,
   Stack,
-  Button,
   Input,
   Switch,
   Select,
-  ButtonGroup,
   FormControl,
   FormLabel,
   Divider,
@@ -287,32 +285,18 @@ export default function FormModal(
         children={null}
       />
 
-      <ModalComponent
+      <FormModalPopup
+        title={mode === "insert" ? "추가" : "수정"}
         isOpen={props.isOpen}
+        isSaveDisabled={Object.keys(editedDocument).length === 0}
+        onSubmit={() => {
+          onChange({
+            type: mode,
+            document: editedDocument,
+            initialValue,
+          });
+        }}
         onClose={onClose}
-        isCentered={true}
-        size="2xl"
-        scrollBehavior="inside"
-        headerChildren={mode === "insert" ? "추가" : "수정"}
-        footerChildren={
-          <ButtonGroup>
-            <Button
-              type="submit"
-              onClick={() => {
-                onChange({
-                  type: mode,
-                  document: editedDocument,
-                  initialValue,
-                });
-              }}
-              isDisabled={Object.keys(editedDocument).length === 0}
-              colorScheme="blue"
-            >
-              저장
-            </Button>
-            <Button onClick={onClose}>닫기</Button>
-          </ButtonGroup>
-        }
       >
         <Stack>
           {Object.keys(formItemRecord).map((key) => (
@@ -340,7 +324,7 @@ export default function FormModal(
             )
           )}
         </Stack>
-      </ModalComponent>
+      </FormModalPopup>
     </>
   );
 }
