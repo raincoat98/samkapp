@@ -1,7 +1,7 @@
 {
   "name": "창고",
   "properties": {
-    "_id": "아이디",
+    "_id": "위치 코드",
     "cell_number": "칸번호",
     "create_by": "저장자",
     "create_dttm": "저장일자",
@@ -14,6 +14,6 @@
     "save_by": "저장자",
     "save_dttm": "저장일자",
     "sort_seq": "정렬순서",
-    "warehouse_name": "창고명"
+    "warehouse_name": "위치명"
   }
 }

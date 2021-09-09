@@ -1,7 +1,7 @@
 {
-  "name": "품목 가격",
+  "name": "품목 단가",
   "properties": {
-    "_id": "아이디",
+    "_id": "품목 단가 코드",
     "apply_end": "적용시작일",
     "apply_start": "적용종료일",
     "create_by": "생성자",

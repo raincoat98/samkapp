@@ -1,5 +1,4 @@
 import { Column } from "react-table";
-import Moment from "moment";
 
 export type Document = Record<string, any>;
 
@@ -27,8 +26,8 @@ export function schemaToColums(props: {
   const columns: Column[] = [];
 
   for (const key in schema.properties) {
-    // 고유 키 값일 때 다음 항목으로
-    if (key === schema.primaryKey || exclude?.includes(key)) continue;
+    // 제외해야 할 키일 때 다음 항목으로
+    if (exclude?.includes(key)) continue;
 
     let type = schema.properties[key];
     let accessor: any;

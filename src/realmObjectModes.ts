@@ -1,7 +1,5 @@
-import * as bson from "bson";
-
 export type customer = {
-  _id: bson.ObjectId;
+  _id: string;
   address?: string;
   bill_limit_id?: string;
   business_info?: string;
@@ -26,7 +24,7 @@ export type customer = {
 export const customerSchema = {
   name: "customer",
   properties: {
-    _id: "objectId",
+    _id: "string",
     address: "string?",
     bill_limit_id: "string?",
     business_info: "string?",
@@ -51,7 +49,7 @@ export const customerSchema = {
 };
 
 export type part = {
-  _id: bson.ObjectId;
+  _id: string;
   create_by?: string;
   create_dttm?: Date;
   owner_id: string;
@@ -68,7 +66,7 @@ export type part = {
 export const partSchema = {
   name: "part",
   properties: {
-    _id: "objectId",
+    _id: "string",
     create_by: "string?",
     create_dttm: "date?",
     owner_id: "string",
@@ -84,40 +82,8 @@ export const partSchema = {
   primaryKey: "_id",
 };
 
-export type part_type = {
-  _id: bson.ObjectId;
-  create_by?: string;
-  create_dttm?: Date;
-  is_material?: number;
-  owner_id: string;
-  part_type_name: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  valid?: boolean;
-};
-
-export const part_typeSchema = {
-  name: "part_type",
-  properties: {
-    _id: "objectId",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_material: "int?",
-    owner_id: "string",
-    part_type_name: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
 export type part_group_1 = {
-  _id: bson.ObjectId;
+  _id: string;
   create_by?: string;
   create_dttm?: Date;
   is_material?: number;
@@ -133,7 +99,7 @@ export type part_group_1 = {
 export const part_group_1Schema = {
   name: "part_group_1",
   properties: {
-    _id: "objectId",
+    _id: "string",
     create_by: "string?",
     create_dttm: "date?",
     is_material: "int?",
@@ -149,7 +115,7 @@ export const part_group_1Schema = {
 };
 
 export type part_group_2 = {
-  _id: bson.ObjectId;
+  _id: string;
   create_by?: string;
   create_dttm?: Date;
   owner_id: string;
@@ -166,7 +132,7 @@ export type part_group_2 = {
 export const part_group_2Schema = {
   name: "part_group_2",
   properties: {
-    _id: "objectId",
+    _id: "string",
     create_by: "string?",
     create_dttm: "date?",
     owner_id: "string",
@@ -182,53 +148,15 @@ export const part_group_2Schema = {
   primaryKey: "_id",
 };
 
-export type warehouse = {
-  _id: bson.ObjectId;
-  cell_number?: number;
-  create_by?: string;
-  create_dttm?: Date;
-  is_dev?: boolean;
-  is_sub?: boolean;
-  owner_id: string;
-  rack_qty?: number;
-  remark?: string;
-  row_qty?: number;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  warehouse_name?: string;
-};
-
-export const warehouseSchema = {
-  name: "warehouse",
-  properties: {
-    _id: "objectId",
-    cell_number: "int?",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_dev: "bool?",
-    is_sub: "bool?",
-    owner_id: "string",
-    rack_qty: "int?",
-    remark: "string?",
-    row_qty: "int?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    warehouse_name: "string?",
-  },
-  primaryKey: "_id",
-};
-
 export type part_price = {
-  _id: bson.ObjectId;
+  _id: string;
   apply_end?: Date;
   apply_start?: Date;
   create_by?: string;
   create_dttm?: Date;
   os_price?: string;
   owner_id: string;
-  part_id?: part;
+  part_id: string;
   purchase_price?: string;
   remark?: string;
   save_by?: string;
@@ -239,19 +167,89 @@ export type part_price = {
 export const part_priceSchema = {
   name: "part_price",
   properties: {
-    _id: "objectId",
+    _id: "string",
     apply_end: "date?",
     apply_start: "date?",
     create_by: "string?",
     create_dttm: "date?",
     os_price: "string?",
     owner_id: "string",
-    part_id: "part",
+    part_id: "string",
     purchase_price: "string?",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
     selling_price: "string?",
+  },
+  primaryKey: "_id",
+};
+
+export type part_type = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_material?: number;
+  owner_id: string;
+  part_type_name: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_typeSchema = {
+  name: "part_type",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_material: "int?",
+    owner_id: "string",
+    part_type_name: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type warehouse = {
+  _id: string;
+  cell_number?: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_dev?: boolean;
+  is_sub?: boolean;
+  owner_id: string;
+  rack_qty?: string;
+  remark?: string;
+  row_qty?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  warehouse_name: string;
+};
+
+export const warehouseSchema = {
+  name: "warehouse",
+  properties: {
+    _id: "string",
+    cell_number: "string?",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_dev: "bool?",
+    is_sub: "bool?",
+    owner_id: "string",
+    rack_qty: "string?",
+    remark: "string?",
+    row_qty: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    warehouse_name: "string",
   },
   primaryKey: "_id",
 };

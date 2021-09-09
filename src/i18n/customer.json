@@ -1,7 +1,7 @@
 {
   "name": "고객",
   "properties": {
-    "_id": "아이디",
+    "_id": "고객 코드",
     "address": "주소",
     "bill_limit_id": "수금 기한",
     "business_info": "업태",

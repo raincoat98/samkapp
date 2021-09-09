@@ -1,7 +1,7 @@
 {
   "name": "품목 형태",
   "properties": {
-    "_id": "아이디",
+    "_id": "품목 형태 코드",
     "create_by": "저장자",
     "create_dttm": "저장일자",
     "is_material": "품목 구분",

@@ -1,6 +1,5 @@
 import * as RealmWeb from "realm-web";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ObjectId } from "bson";
 
 const name = "realm";
 const APP_ID = "samkapp-dzval";
@@ -27,7 +26,7 @@ const initialState: RealmState = {
   loggedIn: false,
   database: {},
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
-  disabledSchemaKeyList: ["_id", "owner_id"],
+  disabledSchemaKeyList: ["owner_id"],
 };
 
 // 데이터베이스 로그인
@@ -125,7 +124,7 @@ export const updateData = createAsyncThunk(
 // 컬렉션 데이터 삭제
 export const deleteMany = createAsyncThunk(
   `${name}/deleteMany`,
-  async (props: { collectionName: string; ids: ObjectId[] }, { dispatch }) => {
+  async (props: { collectionName: string; ids: any[] }, { dispatch }) => {
     const { collectionName, ids } = props;
 
     const filter = {
@@ -188,7 +187,7 @@ const userSlice = createSlice({
       state,
       action: PayloadAction<{
         collectionName: string;
-        id: ObjectId;
+        id: any;
       }>
     ) {
       const { collectionName, id } = action.payload;
@@ -198,7 +197,7 @@ const userSlice = createSlice({
         index < state.database[collectionName].length;
         index++
       ) {
-        const documentId: ObjectId = state.database[collectionName][index]._id;
+        const documentId = state.database[collectionName][index]._id;
         if (documentId.equals(id)) {
           state.database[collectionName].splice(index, 1);
           break;
@@ -274,13 +273,13 @@ const userSlice = createSlice({
         index < state.database[collectionName].length;
         index++
       ) {
-        const id1: ObjectId = state.database[collectionName][index]._id;
+        const id1 = state.database[collectionName][index]._id;
 
         for (let index2 = 0; index2 < data.length; index2++) {
           const updatedData = data[index2];
-          const id2: ObjectId = updatedData._id;
+          const id2 = updatedData._id;
 
-          if (id1.equals(id2)) {
+          if (typeof id1 === typeof id2 && id1 === id2) {
             state.database[collectionName][index] = updatedData;
           }
         }
