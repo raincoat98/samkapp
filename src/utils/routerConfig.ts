@@ -1,4 +1,4 @@
-import CustomerManage from "components/Management/CustomerManage";
+import CustomerManage from "components/Management/CustomerManagement";
 import WarehouseManagement from "components/Management/WarehouseManagement";
 import PartManagement from "components/Management/PartManagement";
 import Announcement from "components/SystemManagement/Announcement";

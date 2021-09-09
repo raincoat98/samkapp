@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../index";
+import Management from "./index";
 import { customerSchema } from "realmObjectModes";
 
 export default function CustomerManagement() {
