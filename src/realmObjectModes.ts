@@ -57,7 +57,7 @@ export type part = {
   owner_id: string;
   part_group_2_id?: part_group_2;
   part_name: string;
-  part_type_id?: bson.ObjectId;
+  part_type_id?: part_type;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
@@ -74,7 +74,7 @@ export const partSchema = {
     owner_id: "string",
     part_group_2_id: "part_group_2",
     part_name: "string",
-    part_type_id: "objectId?",
+    part_type_id: "part_type",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
@@ -216,6 +216,42 @@ export const warehouseSchema = {
     save_dttm: "date?",
     sort_seq: "int?",
     warehouse_name: "string?",
+  },
+  primaryKey: "_id",
+};
+
+export type part_price = {
+  _id: bson.ObjectId;
+  apply_end?: Date;
+  apply_start?: Date;
+  create_by?: string;
+  create_dttm?: Date;
+  os_price?: string;
+  owner_id: string;
+  part_id?: part;
+  purchase_price?: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  selling_price?: string;
+};
+
+export const part_priceSchema = {
+  name: "part_price",
+  properties: {
+    _id: "objectId",
+    apply_end: "date?",
+    apply_start: "date?",
+    create_by: "string?",
+    create_dttm: "date?",
+    os_price: "string?",
+    owner_id: "string",
+    part_id: "part",
+    purchase_price: "string?",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    selling_price: "string?",
   },
   primaryKey: "_id",
 };
