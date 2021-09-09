@@ -1,0 +1,18 @@
+{
+  "name": "품목 가격",
+  "properties": {
+    "_id": "아이디",
+    "apply_end": "적용시작일",
+    "apply_start": "적용종료일",
+    "create_by": "생성자",
+    "create_dttm": "생성일자",
+    "os_price": "외주단가",
+    "owner_id": "소유자 아이디",
+    "part_id": "품번",
+    "purchase_price": "구매단가",
+    "remark": "비고",
+    "save_by": "저장자",
+    "save_dttm": "저장일자",
+    "selling_price": "판매단가"
+  }
+}
