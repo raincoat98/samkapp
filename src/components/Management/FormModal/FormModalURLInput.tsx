@@ -1,6 +1,7 @@
 import { externalLink } from "utils/icons";
 import {
   Box,
+  Icon,
   Input,
   InputProps,
   IconButton,
@@ -18,7 +19,7 @@ export default function FormModalURLInput(props: {
       <Input mr={3} {...inputProps} />
       <IconButton
         aria-label="페이지 열기"
-        icon={externalLink}
+        icon={<Icon as={externalLink} />}
         {...buttonProps}
       />
     </Box>
