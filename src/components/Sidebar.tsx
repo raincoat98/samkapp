@@ -67,10 +67,11 @@ export default function Sidebar(props: {
         flex="1"
         direction="column"
         py={8}
+        px={1}
         size="lg"
         spacing="0"
         variant="outline"
-        justify="center"
+        overflow="auto"
       >
         {routerConfig.routes.map((route, index) => {
           if (route.sidebar) {
