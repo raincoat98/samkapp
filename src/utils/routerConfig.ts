@@ -1,13 +1,13 @@
-import CustomerManagement from "components/Management/CustomerManagement";
-import PartManagement from "components/Management/PartManagement";
-import PartGroup1Management from "components/Management/PartGroup1Management";
-import PartGroup2Management from "components/Management/PartGroup2Management";
-import PartTypeManagement from "components/Management/PartTypeManagement";
-import PartPriceManagement from "components/Management/PartPriceManagement";
-import WarehouseManagement from "components/Management/WarehouseManagement";
+import CustomerManagement from "pages/CustomerManagement";
+import PartManagement from "pages/PartManagement";
+import PartGroup1Management from "pages/PartGroup1Management";
+import PartGroup2Management from "pages/PartGroup2Management";
+import PartTypeManagement from "pages/PartTypeManagement";
+import PartPriceManagement from "pages/PartPriceManagement";
+import WarehouseManagement from "pages/WarehouseManagement";
 
-import Announcement from "components/SystemManagement/Announcement";
-import Setting from "components/Setting";
+import Announcement from "pages/SystemManagement/Announcement";
+import Setting from "pages/Setting";
 
 type route = {
   name: string;

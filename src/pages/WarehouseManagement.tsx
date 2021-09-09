@@ -1,18 +1,18 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "./index";
-import { part_group_1Schema } from "realmObjectModes";
+import Management from "../components/Management/index";
+import { warehouseSchema } from "realmObjectModes";
 
-export default function PartGrou1Management() {
-  const collectionName = "part_group_1";
+export default function WarehouseManagement() {
+  const collectionName = "warehouse";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
 
   return (
     <Management
-      title="중분류 관리"
-      schema={part_group_1Schema}
+      title="창고 관리"
+      schema={warehouseSchema}
       collectionName={collectionName}
       tableData={data ?? []}
     />

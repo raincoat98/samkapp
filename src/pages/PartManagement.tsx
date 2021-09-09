@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "./index";
+import Management from "../components/Management/index";
 import {
   partSchema,
   part_group_2Schema,

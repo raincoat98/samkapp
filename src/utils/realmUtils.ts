@@ -25,17 +25,34 @@ export function schemaToColums(props: {
 
   const columns: Column[] = [];
 
+  const reqProperties: any[] = [];
+  const properties: any[] = [];
   for (const key in schema.properties) {
-    // 제외해야 할 키일 때 다음 항목으로
-    if (exclude?.includes(key)) continue;
+    if (Object.prototype.hasOwnProperty.call(schema.properties, key)) {
+      // 제외해야 할 키일 때 다음 항목으로
+      if (exclude?.includes(key)) continue;
 
-    let type = schema.properties[key];
-    let accessor: any;
+      const type = schema.properties[key];
+      if (type.endsWith("?")) {
+        properties.push(key);
+      } else {
+        reqProperties.push(key);
+      }
+    }
+  }
 
+  const allProperties = reqProperties.concat(properties);
+
+  for (let index = 0; index < allProperties.length; index++) {
+    const key = allProperties[index];
+
+    let type = schema.properties[allProperties[index]];
     // ? 제거
     if (type.endsWith("?")) {
       type = type.replaceAll("?", "");
     }
+
+    let accessor: any;
 
     switch (type) {
       case "string":

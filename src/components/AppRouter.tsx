@@ -9,7 +9,7 @@ import {
 import routerConfig from "utils/routerConfig";
 import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
 import Sidebar from "components/Sidebar";
-import NoMatch from "components/NoMatch";
+import NoMatch from "pages/NoMatch";
 
 export default function AppRouter() {
   const dispatch = useDispatch();
