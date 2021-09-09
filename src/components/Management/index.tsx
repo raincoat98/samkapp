@@ -10,7 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { schemaType, schemaToColums } from "utils/realmUtils";
 import PageContainer from "components/base/PageContainer";
-import FormModal from "components/base/FormModal";
+import FormModal from "components/Management/FormModal";
 import TableComponent from "components/base/TableComponent";
 import { Row } from "react-table";
 import { useDisclosure, Flex, Select, Button } from "@chakra-ui/react";
