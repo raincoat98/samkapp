@@ -30,9 +30,15 @@
   "part_type_id": "품목 형태",
   "part_group_2_id": "대분류",
   "part_group_2_name": "대분류명",
+  "unit": "품목 단위",
 
   "warehouse_id": "제품 위치",
   "warehouse_name": "창고명",
+  "cell_number": "칸번호",
+  "is_dev": "출하여부",
+  "is_sub": "하위여부",
+  "rack_qty": "선반번호",
+  "row_qty": "층번호",
 
   "part_group_2": "대분류",
   "part_group_1": "중분류",

@@ -61,6 +61,7 @@ export type part = {
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
+  unit?: string;
   warehouse_id?: warehouse;
 };
 
@@ -77,6 +78,7 @@ export const partSchema = {
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
+    unit: "string?",
     warehouse_id: "warehouse",
   },
   primaryKey: "_id",
@@ -182,10 +184,15 @@ export const part_group_2Schema = {
 
 export type warehouse = {
   _id: bson.ObjectId;
+  cell_number?: number;
   create_by?: string;
   create_dttm?: Date;
+  is_dev?: boolean;
+  is_sub?: boolean;
   owner_id: string;
+  rack_qty?: number;
   remark?: string;
+  row_qty?: number;
   save_by?: string;
   save_dttm?: Date;
   sort_seq?: number;
@@ -196,10 +203,15 @@ export const warehouseSchema = {
   name: "warehouse",
   properties: {
     _id: "objectId",
+    cell_number: "int?",
     create_by: "string?",
     create_dttm: "date?",
+    is_dev: "bool?",
+    is_sub: "bool?",
     owner_id: "string",
+    rack_qty: "int?",
     remark: "string?",
+    row_qty: "int?",
     save_by: "string?",
     save_dttm: "date?",
     sort_seq: "int?",
