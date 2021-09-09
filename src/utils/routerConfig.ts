@@ -1,6 +1,9 @@
-import CustomerManage from "components/Management/CustomerManagement";
-import WarehouseManagement from "components/Management/WarehouseManagement";
+import CustomerManagement from "components/Management/CustomerManagement";
 import PartManagement from "components/Management/PartManagement";
+import PartTypeManagement from "components/Management/PartTypeManagement";
+import PartPriceManagement from "components/Management/PartPriceManagement";
+import WarehouseManagement from "components/Management/WarehouseManagement";
+
 import Announcement from "components/SystemManagement/Announcement";
 import Setting from "components/Setting";
 
@@ -24,7 +27,7 @@ const routerConfig = {
     {
       name: "고객 관리",
       path: "/customer_manage",
-      component: CustomerManage,
+      component: CustomerManagement,
       sidebar: true,
     },
 
@@ -41,6 +44,18 @@ const routerConfig = {
       name: "품목 관리",
       path: "/part_manage",
       component: PartManagement,
+      sidebar: true,
+    },
+    {
+      name: "품목 형태 관리",
+      path: "/part_type_manage",
+      component: PartTypeManagement,
+      sidebar: true,
+    },
+    {
+      name: "품목 가격 관리",
+      path: "/part_price_manage",
+      component: PartPriceManagement,
       sidebar: true,
     },
 

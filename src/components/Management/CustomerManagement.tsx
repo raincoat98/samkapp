@@ -5,7 +5,7 @@ import { customerSchema } from "realmObjectModes";
 
 export default function CustomerManagement() {
   const collectionName = "customer";
-  const customerData = useSelector(
+  const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
 
@@ -14,7 +14,7 @@ export default function CustomerManagement() {
       title="고객 관리"
       schema={customerSchema}
       collectionName={collectionName}
-      tableData={customerData ?? []}
+      tableData={data ?? []}
     />
   );
 }
