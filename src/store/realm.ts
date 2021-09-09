@@ -247,7 +247,9 @@ const userSlice = createSlice({
       }>
     ) => {
       const { collectionName, document } = action.payload;
-      console.log(action.payload);
+      if (!state.database[collectionName]) {
+        state.database[collectionName] = [];
+      }
       state.database[collectionName] =
         state.database[collectionName].concat(document);
 
