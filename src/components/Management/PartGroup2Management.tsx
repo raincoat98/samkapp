@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "./index";
 import { part_group_2Schema } from "realmObjectModes";
 
 export default function PartGrou2Management() {

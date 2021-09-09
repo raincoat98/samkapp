@@ -48,15 +48,9 @@ export default function FormModal(
   // 번역
   const { t: translate } = useTranslation();
 
-  // 필수 값
-  const [requiredItemRecord, setRequiredItemRecord] = React.useState<
-    Record<string, formItem>
-  >({});
-  // 일반 값
   const [formItemRecord, setFormItemRecord] = React.useState<
     Record<string, formItem>
   >({});
-  // 수정 불가능 값
   const [disabledFormItemRecord, setDisabledFormItemRecord] = React.useState<
     Record<string, formItem>
   >({});
@@ -214,21 +208,19 @@ export default function FormModal(
               </Select>
             );
 
+            setFormItemRecord((state) => ({
+              ...state,
+              [key]: { element, isRequired, isInline },
+            }));
+
             break;
           }
         }
 
-        if (isRequired) {
-          setRequiredItemRecord((state) => ({
-            ...state,
-            [key]: { element, isRequired, isInline },
-          }));
-        } else {
-          setFormItemRecord((state) => ({
-            ...state,
-            [key]: { element, isRequired, isInline },
-          }));
-        }
+        setFormItemRecord((state) => ({
+          ...state,
+          [key]: { element, isRequired, isInline },
+        }));
       } else {
         switch (type) {
           case "date": {
@@ -306,25 +298,10 @@ export default function FormModal(
         onClose={onClose}
       >
         <Stack>
-          {Object.keys(requiredItemRecord).map((key) => (
-            <FormControl
-              id={key}
-              isRequired={true}
-              display={requiredItemRecord[key].isInline ? "flex" : ""}
-              alignItems="center"
-              key={key}
-            >
-              <FormLabel>
-                {translate(`${schema.name}.properties.${key}`)}
-              </FormLabel>
-              {requiredItemRecord[key].element}
-            </FormControl>
-          ))}
-
           {Object.keys(formItemRecord).map((key) => (
             <FormControl
               id={key}
-              isRequired={false}
+              isRequired={formItemRecord[key].isRequired}
               display={formItemRecord[key].isInline ? "flex" : ""}
               alignItems="center"
               key={key}
