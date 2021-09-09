@@ -1,5 +1,7 @@
 import CustomerManagement from "components/Management/CustomerManagement";
 import PartManagement from "components/Management/PartManagement";
+import PartGroup1Management from "components/Management/PartGroup1Management";
+import PartGroup2Management from "components/Management/PartGroup2Management";
 import PartTypeManagement from "components/Management/PartTypeManagement";
 import PartPriceManagement from "components/Management/PartPriceManagement";
 import WarehouseManagement from "components/Management/WarehouseManagement";
@@ -44,6 +46,18 @@ const routerConfig = {
       name: "품목 관리",
       path: "/part_manage",
       component: PartManagement,
+      sidebar: true,
+    },
+    {
+      name: "중분류 관리",
+      path: "/part_gorup_1_manage",
+      component: PartGroup1Management,
+      sidebar: true,
+    },
+    {
+      name: "대분류 관리",
+      path: "/part_gorup_2_manage",
+      component: PartGroup2Management,
       sidebar: true,
     },
     {

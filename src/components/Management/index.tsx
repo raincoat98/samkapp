@@ -19,7 +19,6 @@ import {
   DeleteButton,
   AddButton,
 } from "components/base/Buttons";
-import { ObjectId } from "bson";
 
 export default function Management(props: {
   title: string;
@@ -38,7 +37,7 @@ export default function Management(props: {
   const dispatch = useDispatch();
 
   // 체크한 테이블 열이 존재하는지 확인
-  const [checkedRows, setCheckedRows] = React.useState<ObjectId[]>([]);
+  const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
   // 현재 수정중인 데이터
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
@@ -51,7 +50,7 @@ export default function Management(props: {
       if (table && Object.entries(state.selectedRowIds).length !== 0) {
         const selectedRowIds = state.selectedRowIds;
 
-        const selectedItemIdList: ObjectId[] = [];
+        const selectedItemIdList: any[] = [];
         const rowsById = table.rowsById;
 
         for (const key in selectedRowIds) {

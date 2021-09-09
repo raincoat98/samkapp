@@ -1,7 +1,7 @@
 {
   "name": "중분류",
   "properties": {
-    "_id": "아이디",
+    "_id": "중분류 코드",
     "create_by": "저장자",
     "create_dttm": "저장일자",
     "is_material": "품목 구분",

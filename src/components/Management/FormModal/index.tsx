@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { setCollectionData } from "store/realm";
 import Moment from "moment";
 import validator from "validator";
-import { ObjectId } from "bson";
 import { schemaType } from "utils/realmUtils";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
@@ -74,9 +73,8 @@ export default function FormModal(
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
     for (const key in schema.properties) {
-      // 데이터 기본 키와 같을 경우 || 유저가 수정 못하는 값일 경우 다음으로
+      // 유저가 수정 못하는 값일 경우 다음으로
       if (
-        key === schema.primaryKey ||
         !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
           .length
       )
@@ -87,7 +85,7 @@ export default function FormModal(
       let element: JSX.Element;
 
       // ? 로 끝나는 것은 필수값이 아님
-      const isRequired = type.endsWith("?") ? false : true;
+      let isRequired = type.endsWith("?") ? false : true;
       if (type.endsWith("?")) {
         type = type.replaceAll("?", "");
       }
@@ -185,15 +183,16 @@ export default function FormModal(
             continue;
           }
           default: {
+            // 외부 테이블 처리
+            isRequired = false;
+
             element = (
               <Select
                 placeholder={translate(`${schema.name}.properties.${key}`)}
                 defaultValue={defaultValue?.toString()}
                 onFocus={() => dispatch(setCollectionData(type))}
                 onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                  const value = event.target.value
-                    ? new ObjectId(event.target.value)
-                    : null;
+                  const value = event.target.value;
                   editData({
                     key,
                     value,
