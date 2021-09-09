@@ -45,10 +45,7 @@ export function schemaToColums(props: {
         break;
       }
       case "date": {
-        accessor = (d: Document) => {
-          return Moment(d[key]).local().format("YYYY년 MM월 DD일 a h시 m분");
-        };
-        break;
+        continue;
       }
       case "objectId": {
         continue;
