@@ -20,7 +20,6 @@ import {
   Select,
   FormControl,
   FormLabel,
-  Divider,
   ModalProps,
 } from "@chakra-ui/react";
 
@@ -28,7 +27,6 @@ export type formItem = {
   element?: JSX.Element;
   isDisabled?: boolean;
   isRequired?: boolean;
-  isInline?: boolean;
 };
 
 export default function FormModal(
@@ -102,7 +100,6 @@ export default function FormModal(
       ).length;
 
       if (!isReadonly) {
-        let isInline = false;
         const options: Record<string, any> = {};
 
         // ref 추가
@@ -181,7 +178,6 @@ export default function FormModal(
             };
 
             element = <Switch {...options} />;
-            isInline = true;
             break;
           }
           case "objectId": {
@@ -194,9 +190,11 @@ export default function FormModal(
 
             element = (
               <Select
-                placeholder={translate(`${schema.name}.properties.${key}`)}
+                placeholder={"없음"}
                 defaultValue={defaultValue?.toString()}
-                onFocus={() => dispatch(setCollectionData(type))}
+                onFocus={() => {
+                  if (!database[type]) dispatch(setCollectionData(type));
+                }}
                 onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                   const value = event.target.value;
                   editData({
@@ -221,12 +219,12 @@ export default function FormModal(
         if (isRequired) {
           setRequiredItemRecord((state) => ({
             ...state,
-            [key]: { element, isRequired, isInline },
+            [key]: { element, isRequired },
           }));
         } else {
           setFormItemRecord((state) => ({
             ...state,
-            [key]: { element, isRequired, isInline },
+            [key]: { element, isRequired },
           }));
         }
       } else {
@@ -236,9 +234,7 @@ export default function FormModal(
             element = (
               <Tag>
                 {translate(`${schema.name}.properties.${key}`) + ": "}
-                {Moment(defaultValue)
-                  .local()
-                  .format("YYYY년 MM월 DD일 a h시 m분")}
+                {Moment(defaultValue).local().format("YYYY-MM-DD H시 m분")}
               </Tag>
             );
           }
@@ -255,6 +251,8 @@ export default function FormModal(
 
   // 데이터 수정시
   function editData(props: { key: string; value: any }) {
+    console.log(props);
+
     setEditedDocument((state) => ({
       ...state,
       [props.key]: props.value,
@@ -306,44 +304,44 @@ export default function FormModal(
         onClose={onClose}
       >
         <Stack>
+          {/* 필수 필드 */}
           {Object.keys(requiredItemRecord).map((key) => (
             <FormControl
-              id={key}
               isRequired={true}
-              display={requiredItemRecord[key].isInline ? "flex" : ""}
+              display="flex"
               alignItems="center"
               key={key}
             >
-              <FormLabel>
+              <FormLabel minWidth="100px" marginBottom={0}>
                 {translate(`${schema.name}.properties.${key}`)}
               </FormLabel>
-              {requiredItemRecord[key].element}
+              <Box flex="1">{requiredItemRecord[key].element}</Box>
             </FormControl>
           ))}
 
+          {/* 선택 필드 */}
           {Object.keys(formItemRecord).map((key) => (
-            <FormControl
-              id={key}
-              isRequired={false}
-              display={formItemRecord[key].isInline ? "flex" : ""}
-              alignItems="center"
-              key={key}
-            >
-              <FormLabel>
+            <FormControl display="flex" alignItems="center" key={key}>
+              <FormLabel minWidth="100px" marginBottom={0}>
                 {translate(`${schema.name}.properties.${key}`)}
               </FormLabel>
-              {formItemRecord[key].element}
+              <Box flex="1">{formItemRecord[key].element}</Box>
             </FormControl>
           ))}
 
-          {mode === "insert" ? "" : <Divider />}
-
-          {Object.keys(disabledFormItemRecord).map((key) =>
-            disabledFormItemRecord[key].element ? (
-              <Box key={key}>{disabledFormItemRecord[key].element}</Box>
-            ) : (
-              ""
-            )
+          {/* 수정 모드일 때만 추가 */}
+          {mode === "update" ? (
+            <Stack textAlign="right">
+              {Object.keys(disabledFormItemRecord).map((key) =>
+                disabledFormItemRecord[key].element ? (
+                  <Box key={key}>{disabledFormItemRecord[key].element}</Box>
+                ) : (
+                  ""
+                )
+              )}
+            </Stack>
+          ) : (
+            ""
           )}
         </Stack>
       </FormModalPopup>
