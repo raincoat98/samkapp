@@ -10,6 +10,7 @@ import DaumAddressPopup from "components/base/DaumAddressPopup";
 import FormModalAddressInput from "./FormModalAddressInput";
 import FormModalURLInput from "./FormModalURLInput";
 import FormModalPopup from "./FormModalPopup";
+import sortData from "data/sortData";
 import {
   useDisclosure,
   Box,
@@ -24,9 +25,9 @@ import {
 } from "@chakra-ui/react";
 
 export type formItem = {
+  name: string;
   element?: JSX.Element;
   isDisabled?: boolean;
-  isRequired?: boolean;
 };
 
 export default function FormModal(
@@ -47,17 +48,16 @@ export default function FormModal(
   const { t: translate } = useTranslation();
 
   // 필수 값
-  const [requiredItemRecord, setRequiredItemRecord] = React.useState<
-    Record<string, formItem>
-  >({});
+  const [requiredInputList, setRequiredInputList] = React.useState<formItem[]>(
+    []
+  );
   // 일반 값
-  const [formItemRecord, setFormItemRecord] = React.useState<
-    Record<string, formItem>
-  >({});
+  const [inputList, setInputList] = React.useState<formItem[]>([]);
   // 수정 불가능 값
-  const [disabledFormItemRecord, setDisabledFormItemRecord] = React.useState<
-    Record<string, formItem>
-  >({});
+  const [disabledInputList, setDisabledInputList] = React.useState<formItem[]>(
+    []
+  );
+  // ref
   const formItemRefRecord = React.useRef<Record<string, any>>({});
 
   const database = useSelector((state: RootState) => state.realm.database);
@@ -76,6 +76,11 @@ export default function FormModal(
 
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
+    // 초기화
+    setRequiredInputList([]);
+    setInputList([]);
+    setDisabledInputList([]);
+
     for (const key in schema.properties) {
       // 유저가 수정 못하는 값일 경우 다음으로
       if (
@@ -217,15 +222,21 @@ export default function FormModal(
         }
 
         if (isRequired) {
-          setRequiredItemRecord((state) => ({
+          setRequiredInputList((state) => [
             ...state,
-            [key]: { element, isRequired },
-          }));
+            {
+              name: key,
+              element,
+            },
+          ]);
         } else {
-          setFormItemRecord((state) => ({
+          setInputList((state) => [
             ...state,
-            [key]: { element, isRequired },
-          }));
+            {
+              name: key,
+              element,
+            },
+          ]);
         }
       } else {
         switch (type) {
@@ -240,19 +251,38 @@ export default function FormModal(
           }
         }
 
-        setDisabledFormItemRecord((state) => ({
+        setDisabledInputList((state) => [
           ...state,
-          [key]: { element, isRequired },
-        }));
+          {
+            name: key,
+            element,
+          },
+        ]);
       }
     }
+
+    // 정렬
+    if (sortData[schema.name]) {
+      setInputList((state) =>
+        state.sort((formItem1, formItem2) => {
+          try {
+            return (
+              sortData[schema.name][formItem1.name] -
+              sortData[schema.name][formItem2.name]
+            );
+          } catch (error) {
+            console.error(error);
+            return 0;
+          }
+        })
+      );
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValue, database]);
 
   // 데이터 수정시
   function editData(props: { key: string; value: any }) {
-    console.log(props);
-
     setEditedDocument((state) => ({
       ...state,
       [props.key]: props.value,
@@ -305,36 +335,36 @@ export default function FormModal(
       >
         <Stack>
           {/* 필수 필드 */}
-          {Object.keys(requiredItemRecord).map((key) => (
+          {requiredInputList.map((formItem, index) => (
             <FormControl
               isRequired={true}
               display="flex"
               alignItems="center"
-              key={key}
+              key={index}
             >
               <FormLabel minWidth="100px" marginBottom={0}>
-                {translate(`${schema.name}.properties.${key}`)}
+                {translate(`${schema.name}.properties.${formItem.name}`)}
               </FormLabel>
-              <Box flex="1">{requiredItemRecord[key].element}</Box>
+              <Box flex="1">{formItem.element}</Box>
             </FormControl>
           ))}
 
           {/* 선택 필드 */}
-          {Object.keys(formItemRecord).map((key) => (
-            <FormControl display="flex" alignItems="center" key={key}>
+          {inputList.map((formItem, index) => (
+            <FormControl display="flex" alignItems="center" key={index}>
               <FormLabel minWidth="100px" marginBottom={0}>
-                {translate(`${schema.name}.properties.${key}`)}
+                {translate(`${schema.name}.properties.${formItem.name}`)}
               </FormLabel>
-              <Box flex="1">{formItemRecord[key].element}</Box>
+              <Box flex="1">{formItem.element}</Box>
             </FormControl>
           ))}
 
           {/* 수정 모드일 때만 추가 */}
           {mode === "update" ? (
             <Stack textAlign="right">
-              {Object.keys(disabledFormItemRecord).map((key) =>
-                disabledFormItemRecord[key].element ? (
-                  <Box key={key}>{disabledFormItemRecord[key].element}</Box>
+              {disabledInputList.map((formItem, index) =>
+                formItem.element ? (
+                  <Box key={index}>{formItem.element}</Box>
                 ) : (
                   ""
                 )
