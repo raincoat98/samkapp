@@ -14,6 +14,7 @@ export type schemaType = {
 };
 
 export type RealmState = {
+  userName: string;
   loading: boolean;
   loggedIn: boolean;
   database: Record<string, any[]>;
@@ -22,6 +23,7 @@ export type RealmState = {
 };
 
 const initialState: RealmState = {
+  userName: "",
   loading: false,
   loggedIn: false,
   database: {},
@@ -38,8 +40,18 @@ export const login = createAsyncThunk(
     const credentials = RealmWeb.Credentials.emailPassword(email, password);
     await app.logIn(credentials);
 
+    return app.currentUser?.profile.email;
+  }
+);
+
+// 데이터베이스 로그아웃
+export const logout = createAsyncThunk(
+  `${name}/logout`,
+  async (undefinded, { dispatch }) => {
+    await app.currentUser?.logOut();
+
     dispatch({
-      type: `${name}/setUser`,
+      type: `${name}/removeUser`,
     });
 
     return;
@@ -177,12 +189,6 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
-    setUser(state) {
-      state.loggedIn = true;
-    },
-    removeUser(state) {
-      state.loggedIn = false;
-    },
     removeCollectionData(
       state,
       action: PayloadAction<{
@@ -210,10 +216,25 @@ const userSlice = createSlice({
     [login.pending.type]: (state) => {
       state.loading = true;
     },
-    [login.fulfilled.type]: (state) => {
+    [login.fulfilled.type]: (state, action: PayloadAction<string>) => {
       state.loading = false;
+      state.loggedIn = true;
+      state.userName = action.payload;
     },
     [login.rejected.type]: (state) => {
+      console.log(state);
+    },
+
+    // 로그아웃
+    [logout.pending.type]: (state) => {
+      state.loading = true;
+    },
+    [logout.fulfilled.type]: (state) => {
+      state.loading = false;
+      state.loggedIn = false;
+      state.userName = "";
+    },
+    [logout.rejected.type]: (state) => {
       console.log(state);
     },
 
@@ -316,5 +337,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { setUser, removeUser, removeCollectionData } = actions;
+export const { removeCollectionData } = actions;
 export default reducer;

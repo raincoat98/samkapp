@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import PageContainer from "../../components/base/PageContainer";
 import ModalComponent from "../../components/base/ModalComponent";
+import Profile from "./Profile";
 import LicensesList from "./LicensesList";
 import {
   useDisclosure,
@@ -40,6 +41,9 @@ export default function Setting() {
         </Heading>
         <br />
         <form>
+          <Profile />
+          <br />
+
           <FormControl>
             <FormLabel>비밀번호 변경</FormLabel>
             <InputGroup>
