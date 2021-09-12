@@ -1,24 +1,20 @@
 import React from "react";
 import { RootState } from "store";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { setCollectionData } from "store/realm";
 import Moment from "moment";
-import validator from "validator";
 import { schemaType } from "utils/realmUtils";
-import DaumAddressPopup from "components/base/DaumAddressPopup";
-import FormModalAddressInput from "./FormModalAddressInput";
+import FormModalInput from "./FormModalInput";
+import FormModalAddress from "./FormModalAddress";
 import FormModalURLInput from "./FormModalURLInput";
 import FormModalPopup from "./FormModalPopup";
+import FormModalRefExternal from "./FormModalRefExternal";
 import sortData from "data/sortData";
 import {
-  useDisclosure,
   Box,
   Tag,
   Stack,
   Input,
-  Switch,
-  Select,
   FormControl,
   FormLabel,
   ModalProps,
@@ -43,7 +39,6 @@ export default function FormModal(
   >({});
   const { onChange, initialValue, schema, mode } = props;
 
-  const dispatch = useDispatch();
   // 번역
   const { t: translate } = useTranslation();
 
@@ -57,9 +52,8 @@ export default function FormModal(
   const [disabledInputList, setDisabledInputList] = React.useState<formItem[]>(
     []
   );
-  // ref
-  const formItemRefRecord = React.useRef<Record<string, any>>({});
 
+  // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
   const readonlySchemaKeyList = useSelector(
     (state: RootState) => state.realm.readonlySchemaKeyList
@@ -67,12 +61,6 @@ export default function FormModal(
   const disabledSchemaKeyList = useSelector(
     (state: RootState) => state.realm.disabledSchemaKeyList
   );
-
-  const addressPopupDisclosure = useDisclosure();
-  const [addressPopupOpner, setAddressPopupOpner] = React.useState({
-    formItemKey: "",
-    dataKey: "",
-  });
 
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
@@ -105,84 +93,48 @@ export default function FormModal(
       ).length;
 
       if (!isReadonly) {
-        const options: Record<string, any> = {};
-
-        // ref 추가
-        formItemRefRecord.current[key] = React.createRef();
-        options.ref = formItemRefRecord.current[key];
-
         switch (type) {
           case "string": {
             defaultValue = defaultValue as string;
-            options.type = "text";
-            options.defaultValue = defaultValue;
-            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+            const inputProps: Record<string, any> = {};
+            inputProps.type = "text";
+            inputProps.defaultValue = defaultValue;
+            inputProps.onChange = (
+              event: React.ChangeEvent<HTMLInputElement>
+            ) => {
               editData({ key, value: event.target.value });
             };
 
             // 주소 값인지 판단
             if (key.includes("address")) {
               element = (
-                <FormModalAddressInput
-                  inputProps={{ ...options }}
-                  buttonProps={{
-                    onClick: () => {
-                      addressPopupDisclosure.onToggle();
-                      setAddressPopupOpner({
-                        formItemKey: key,
-                        dataKey: "fullAddress",
-                      });
-                    },
-                  }}
+                <FormModalAddress
+                  defaultValue={defaultValue}
+                  onChange={(fullAddress: string) =>
+                    editData({ key, value: fullAddress })
+                  }
                 />
               );
               // URL 값일 때
             } else if (key.includes("homepage") || key.includes("url")) {
-              element = (
-                <FormModalURLInput
-                  inputProps={{ ...options }}
-                  buttonProps={{
-                    onClick: () => {
-                      const value =
-                        formItemRefRecord.current[key].current.value;
-                      if (validator.isURL(value)) window.open(value);
-                    },
-                  }}
-                />
-              );
+              element = <FormModalURLInput inputProps={{ ...inputProps }} />;
             } else {
-              element = <Input {...options} />;
+              element = <Input {...inputProps} />;
             }
 
             break;
           }
-          case "int": {
-            options.type = "number";
-            options.defaultValue = defaultValue;
-            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              editData({ key, value: event.target.value });
-            };
-
-            element = <Input {...options} />;
-            break;
-          }
-          case "date": {
-            options.type = "date";
-            options.defaultValue = defaultValue;
-            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              editData({ key, value: event.target.value });
-            };
-
-            element = <Input {...options} />;
-            break;
-          }
+          case "int":
+          case "date":
           case "bool": {
-            options.defaultChecked = defaultValue ? true : false;
-            options.onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-              editData({ key, value: event.target.checked });
-            };
-
-            element = <Switch {...options} />;
+            element = (
+              <FormModalInput
+                type={type}
+                defaultValue={defaultValue}
+                onChange={(value: any) => editData({ key, value })}
+              />
+            );
             break;
           }
           case "objectId": {
@@ -194,27 +146,16 @@ export default function FormModal(
             isRequired = false;
 
             element = (
-              <Select
-                placeholder={"없음"}
+              <FormModalRefExternal
+                collectionName={type}
                 defaultValue={defaultValue?.toString()}
-                onFocus={() => {
-                  if (!database[type]) dispatch(setCollectionData(type));
-                }}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                  const value = event.target.value;
+                onChange={(value: string) => {
                   editData({
                     key,
                     value,
                   });
                 }}
-                {...options}
-              >
-                {database[type]?.map((item: any, index) => (
-                  <option value={item._id.toString()} key={index}>
-                    {item[`${type}_name`]}
-                  </option>
-                ))}
-              </Select>
+              />
             );
 
             break;
@@ -294,87 +235,57 @@ export default function FormModal(
     props.onClose();
   }
 
-  function onAddressComplete(data: Record<string, any>) {
-    const value = data[addressPopupOpner.dataKey];
-
-    const element =
-      formItemRefRecord.current[addressPopupOpner.formItemKey].current;
-
-    if (element) element.value = value;
-
-    editData({
-      key: addressPopupOpner.formItemKey,
-      value,
-    });
-
-    addressPopupDisclosure.onClose();
-  }
-
   return (
-    <>
-      <DaumAddressPopup
-        isOpen={addressPopupDisclosure.isOpen}
-        onClose={addressPopupDisclosure.onClose}
-        isCentered={true}
-        onComplete={onAddressComplete}
-        children={null}
-      />
+    <FormModalPopup
+      title={mode === "insert" ? "추가" : "수정"}
+      isOpen={props.isOpen}
+      isSaveDisabled={Object.keys(editedDocument).length === 0}
+      onSubmit={() => {
+        onChange({
+          type: mode,
+          document: editedDocument,
+          initialValue,
+        });
+      }}
+      onClose={onClose}
+    >
+      <Stack>
+        {/* 필수 필드 */}
+        {requiredInputList.map((formItem, index) => (
+          <FormControl
+            isRequired={true}
+            display="flex"
+            alignItems="center"
+            key={index}
+          >
+            <FormLabel minWidth="100px" marginBottom={0}>
+              {translate(`${schema.name}.properties.${formItem.name}`)}
+            </FormLabel>
+            <Box flex="1">{formItem.element}</Box>
+          </FormControl>
+        ))}
 
-      <FormModalPopup
-        title={mode === "insert" ? "추가" : "수정"}
-        isOpen={props.isOpen}
-        isSaveDisabled={Object.keys(editedDocument).length === 0}
-        onSubmit={() => {
-          onChange({
-            type: mode,
-            document: editedDocument,
-            initialValue,
-          });
-        }}
-        onClose={onClose}
-      >
-        <Stack>
-          {/* 필수 필드 */}
-          {requiredInputList.map((formItem, index) => (
-            <FormControl
-              isRequired={true}
-              display="flex"
-              alignItems="center"
-              key={index}
-            >
-              <FormLabel minWidth="100px" marginBottom={0}>
-                {translate(`${schema.name}.properties.${formItem.name}`)}
-              </FormLabel>
-              <Box flex="1">{formItem.element}</Box>
-            </FormControl>
-          ))}
+        {/* 선택 필드 */}
+        {inputList.map((formItem, index) => (
+          <FormControl display="flex" alignItems="center" key={index}>
+            <FormLabel minWidth="100px" marginBottom={0}>
+              {translate(`${schema.name}.properties.${formItem.name}`)}
+            </FormLabel>
+            <Box flex="1">{formItem.element}</Box>
+          </FormControl>
+        ))}
 
-          {/* 선택 필드 */}
-          {inputList.map((formItem, index) => (
-            <FormControl display="flex" alignItems="center" key={index}>
-              <FormLabel minWidth="100px" marginBottom={0}>
-                {translate(`${schema.name}.properties.${formItem.name}`)}
-              </FormLabel>
-              <Box flex="1">{formItem.element}</Box>
-            </FormControl>
-          ))}
-
-          {/* 수정 모드일 때만 추가 */}
-          {mode === "update" ? (
-            <Stack textAlign="right">
-              {disabledInputList.map((formItem, index) =>
-                formItem.element ? (
-                  <Box key={index}>{formItem.element}</Box>
-                ) : (
-                  ""
-                )
-              )}
-            </Stack>
-          ) : (
-            ""
-          )}
-        </Stack>
-      </FormModalPopup>
-    </>
+        {/* 수정 모드일 때만 추가 */}
+        {mode === "update" ? (
+          <Stack textAlign="right">
+            {disabledInputList.map((formItem, index) =>
+              formItem.element ? <Box key={index}>{formItem.element}</Box> : ""
+            )}
+          </Stack>
+        ) : (
+          ""
+        )}
+      </Stack>
+    </FormModalPopup>
   );
 }
