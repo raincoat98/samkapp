@@ -15,6 +15,7 @@ import {
   Tag,
   Stack,
   Input,
+  InputProps,
   FormControl,
   FormLabel,
   ModalProps,
@@ -97,7 +98,7 @@ export default function FormModal(
           case "string": {
             defaultValue = defaultValue as string;
 
-            const inputProps: Record<string, any> = {};
+            const inputProps: InputProps = {};
             inputProps.type = "text";
             inputProps.defaultValue = defaultValue;
             inputProps.onChange = (
@@ -120,6 +121,12 @@ export default function FormModal(
             } else if (key.includes("homepage") || key.includes("url")) {
               element = <FormModalURLInput inputProps={{ ...inputProps }} />;
             } else {
+              // 수정 모드에서 고유 키 값을 변경하지 못하게
+              if (mode === "update" && key === schema.primaryKey) {
+                inputProps.isReadOnly = true;
+                inputProps.variant = "filled";
+                inputProps.title = "고유 코드 값은 수정할 수 없습니다.";
+              }
               element = <Input {...inputProps} />;
             }
 
