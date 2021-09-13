@@ -211,7 +211,7 @@ const userSlice = createSlice({
         index++
       ) {
         const documentId = state.database[collectionName][index]._id;
-        if (documentId.equals(id)) {
+        if (documentId === id) {
           state.database[collectionName].splice(index, 1);
           break;
         }
