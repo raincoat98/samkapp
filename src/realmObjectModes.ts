@@ -253,3 +253,39 @@ export const warehouseSchema = {
   },
   primaryKey: "_id",
 };
+
+export type work_order = {
+  _id: string;
+  cofirm_dttm?: Date;
+  create_by?: string;
+  create_dttm?: Date;
+  customer_id?: customer;
+  owner_id: string;
+  part_id?: part;
+  plan_date?: Date;
+  plan_qty?: number;
+  priorities?: number;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+};
+
+export const work_orderSchema = {
+  name: "work_order",
+  properties: {
+    _id: "string",
+    cofirm_dttm: "date?",
+    create_by: "string?",
+    create_dttm: "date?",
+    customer_id: "customer",
+    owner_id: "string",
+    part_id: "part",
+    plan_date: "date?",
+    plan_qty: "int?",
+    priorities: "int?",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+  },
+  primaryKey: "_id",
+};

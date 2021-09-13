@@ -46,7 +46,18 @@ const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
     const serializableCheck = {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      ignoredActions: [
+        FLUSH,
+        REHYDRATE,
+        PAUSE,
+        PERSIST,
+        PURGE,
+        REGISTER,
+        "realm/insertData/fulfilled",
+        "realm/updateData/fulfilled",
+        "realm/setCollectionData/fulfilled",
+      ],
+      ignoredPaths: ["realm"],
     };
 
     if (logger)

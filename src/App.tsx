@@ -1,11 +1,22 @@
-import { useSelector } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
-import Login from "components/Login";
+import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/base/SpinnerComponent";
+import ErrorAlert from "components/ErrorAlert";
+import { autoLogin } from "store/realm";
 
 export default function App() {
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.realm.loggedIn);
+
+  // 에러 객체
+  const error = useSelector((state: RootState) => state.realm.error);
+
+  React.useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch]);
 
   return (
     <div
@@ -16,6 +27,8 @@ export default function App() {
       }}
     >
       <SpinnerComponent />
+
+      {error ? <ErrorAlert error={error} /> : ""}
 
       {!isLoggedIn ? <Login /> : <AppRouter />}
     </div>

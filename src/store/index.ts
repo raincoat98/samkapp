@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: [],
+  whitelist: ["realm", "system"],
 };
 
 export default persistReducer(persistConfig, rootReducer);

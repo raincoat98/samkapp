@@ -39,10 +39,10 @@ export default function FormModalPopup(props: {
           }}
         >
           <ModalContent>
-            <ModalHeader>{title}</ModalHeader>
+            <ModalHeader borderBottomWidth="1px">{title}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>{children}</ModalBody>
-            <ModalFooter>
+            <ModalFooter borderTopWidth="1px">
               <ButtonGroup>
                 <Button
                   isDisabled={isSaveDisabled}
@@ -51,7 +51,7 @@ export default function FormModalPopup(props: {
                 >
                   저장
                 </Button>
-                <Button onClick={() => onClose}>닫기</Button>
+                <Button onClick={() => onClose()}>닫기</Button>
               </ButtonGroup>
             </ModalFooter>
           </ModalContent>

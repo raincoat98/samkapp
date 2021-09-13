@@ -3,34 +3,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { login } from "store/realm";
 import * as icons from "utils/icons";
+import SwitchColorMode from "./SwitchColorMode";
 import {
-  useColorMode,
   Center,
   Stack,
   Heading,
   Button,
   Icon,
-  IconButton,
-  Tooltip,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Input,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
 } from "@chakra-ui/react";
 
-export default function Home() {
+export default function Login() {
   const dispatch = useDispatch();
-  const { colorMode, toggleColorMode } = useColorMode();
 
   const appName = useSelector((state: RootState) => state.system.appName);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [logInError, setLogInError] = React.useState(false);
   const [passwordShow, setPasswordShow] = React.useState(false);
 
   function togglePasswordShow(event: FormEvent) {
@@ -40,20 +32,11 @@ export default function Home() {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    setLogInError(false);
     dispatch(login({ email, password }));
   }
 
   return (
     <Center w={"100%"} h={"100%"}>
-      {logInError ? (
-        <Alert status="error" position="absolute" top="0px" left="0px">
-          <AlertIcon />
-          <AlertTitle mr={2}>이메일 및 비밀번호가 잘못되었습니다!</AlertTitle>
-          <AlertDescription>다시 로그인 해주세요.</AlertDescription>
-        </Alert>
-      ) : null}
-
       <form action="" onSubmit={onSubmit}>
         <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
           <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
@@ -101,24 +84,7 @@ export default function Home() {
         </Stack>
       </form>
 
-      <Tooltip
-        hasArrow
-        placement="left"
-        label={colorMode === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
-      >
-        <IconButton
-          icon={
-            <Icon
-              as={colorMode === "dark" ? icons.lightMode : icons.darkMode}
-            />
-          }
-          onClick={toggleColorMode}
-          position="absolute"
-          right={5}
-          bottom={5}
-          aria-label="라이트 모드 & 다크모드 전환"
-        />
-      </Tooltip>
+      <SwitchColorMode />
     </Center>
   );
 }
