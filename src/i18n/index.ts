@@ -24,6 +24,7 @@ const resources = {
       part_type,
       part,
       warehouse,
+      work_order,
     },
   },
 };
