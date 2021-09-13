@@ -10,6 +10,7 @@ import part_price from "./database/part_price.json";
 import part_type from "./database/part_type.json";
 import part from "./database/part.json";
 import warehouse from "./database/warehouse.json";
+import work_order from "./database/work_order.json";
 
 const resources = {
   ko: {

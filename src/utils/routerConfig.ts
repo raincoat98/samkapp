@@ -5,6 +5,7 @@ import PartGroup2Management from "pages/PartGroup2Management";
 import PartTypeManagement from "pages/PartTypeManagement";
 import PartPriceManagement from "pages/PartPriceManagement";
 import WarehouseManagement from "pages/WarehouseManagement";
+import WorkOrderManagement from "pages/WorkOrderManagement";
 
 import Announcement from "pages/SystemManagement/Announcement";
 import Setting from "pages/Setting";
@@ -30,6 +31,14 @@ const routerConfig = {
       name: "고객 관리",
       path: "/customer_manage",
       component: CustomerManagement,
+      sidebar: true,
+    },
+
+    // 작업 지시 관리
+    {
+      name: "작업 지시 관리",
+      path: "/work_order_manage",
+      component: WorkOrderManagement,
       sidebar: true,
     },
 

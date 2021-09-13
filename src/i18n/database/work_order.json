@@ -1,0 +1,18 @@
+{
+  "name": "작업 지시",
+  "properties": {
+    "_id": "작업 지시 코드",
+    "cofirm_dttm": "확정일시",
+    "create_by": "생성자",
+    "create_dttm": "생성일시",
+    "customer_id": "거래처 코드",
+    "owner_id": "소유자 아이디",
+    "part_id": "품목 코드",
+    "plan_date": "계획일자",
+    "plan_qty": "계획수량",
+    "priorities": "우선순위",
+    "remark": "특이사항",
+    "save_by": "저장자",
+    "save_dttm": "저장일시"
+  }
+}
