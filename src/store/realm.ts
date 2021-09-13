@@ -1,5 +1,6 @@
 import * as RealmWeb from "realm-web";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { MongoDBRealmError } from "realm-web";
 
 const name = "realm";
 const APP_ID = "samkapp-dzval";
@@ -7,30 +8,34 @@ const MONGO_CLIENT = "mongodb-atlas";
 const DATABASE_NAME = "database";
 const app = new RealmWeb.App({ id: APP_ID });
 
+function realmErrorToObject(realmError: MongoDBRealmError | any) {
+  const errorObject: RealmError = {
+    error: realmError.error,
+    errorCode: realmError.errorCode,
+    statusCode: realmError.statusCode,
+    message: realmError.message,
+  };
+  return errorObject;
+}
+
+export type RealmError = {
+  error: string;
+  errorCode: string;
+  statusCode: number;
+  message: string;
+};
+
 export type schemaType = {
   name: string;
   properties: Record<string, string>;
   primaryKey: string;
 };
 
-export type realmErrorType = {
-  error: string;
-  errorCode: string;
-  link?: string;
-  method: string;
-  statusCode: number;
-  statusText: string;
-  url: string;
-  message: string;
-  stack: string;
-};
-
 export type RealmState = {
   userName: string;
   loading: boolean;
   loggedIn: boolean;
-  error: realmErrorType | null;
-  errorCode: string;
+  error: RealmError | null;
   database: Record<string, any[]>;
   readonlySchemaKeyList: string[];
   disabledSchemaKeyList: string[];
@@ -41,7 +46,6 @@ const initialState: RealmState = {
   loading: false,
   loggedIn: false,
   error: null,
-  errorCode: "",
   database: {},
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["owner_id"],
@@ -67,7 +71,7 @@ export const login = createAsyncThunk(
     try {
       await app.logIn(credentials);
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
 
     return app.currentUser?.profile.email;
@@ -86,7 +90,7 @@ export const logout = createAsyncThunk(
       });
       return;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -109,7 +113,7 @@ export const setCollectionData = createAsyncThunk(
         data,
       };
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -137,7 +141,7 @@ export const insertData = createAsyncThunk(
         document: document,
       };
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -179,7 +183,7 @@ export const updateData = createAsyncThunk(
         data,
       };
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -213,7 +217,7 @@ export const deleteMany = createAsyncThunk(
 
       return result;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -245,7 +249,7 @@ export const distinct = createAsyncThunk(
       console.log("distinct", result);
       return result;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(realmErrorToObject(error));
     }
   }
 );
@@ -375,16 +379,13 @@ const userSlice = createSlice({
         (state) => {
           state.loading = true;
           state.error = null;
-          state.errorCode = "";
         }
       )
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
-        (state, action: PayloadAction<realmErrorType>) => {
+        (state, action: PayloadAction<any>) => {
           state.loading = false;
           state.error = action.payload;
-          state.errorCode = action.payload.errorCode;
-          console.error(action.payload);
         }
       );
   },

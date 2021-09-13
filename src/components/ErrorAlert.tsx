@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { realmErrorType } from "store/realm";
+import { RealmError } from "store/realm";
 import {
   useDisclosure,
   Alert,
@@ -10,7 +10,7 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 
-export default function ErrorAlert(props: { error: realmErrorType }) {
+export default function ErrorAlert(props: { error: RealmError }) {
   const { error } = props;
 
   const { t: translate } = useTranslation();
