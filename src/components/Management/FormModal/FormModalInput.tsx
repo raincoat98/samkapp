@@ -1,8 +1,9 @@
+import moment from "moment";
 import { Input, Switch } from "@chakra-ui/react";
 
 export default function FormModalInput(props: {
   type: "int" | "date" | "bool";
-  defaultValue: string | number;
+  defaultValue: any;
   onChange: Function;
 }) {
   const { type, defaultValue, onChange } = props;
@@ -20,13 +21,15 @@ export default function FormModalInput(props: {
       );
     }
     case "date": {
+      const value = moment(defaultValue).format("YYYY-MM-DD");
+
       return (
         <Input
           onChange={(event) => {
             onChange(event.target.value);
           }}
           type="date"
-          defaultValue={defaultValue}
+          defaultValue={value}
         />
       );
     }
