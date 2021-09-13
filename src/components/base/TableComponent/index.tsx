@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import {
@@ -47,9 +46,6 @@ export default function TableComponent(props: TableComponentProps) {
 
   // 가로모드
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
-  // 번역
-  const { t } = useTranslation();
 
   // 색상 가져오기
   const background = useSelector(
@@ -106,7 +102,7 @@ export default function TableComponent(props: TableComponentProps) {
         if (useIndex) {
           optionColumns.push({
             id: INDEX_COLUMN,
-            Header: <span>{t("Index")}</span>,
+            Header: <span>인덱스</span>,
             // @ts-ignore
             Cell: ({ row }) => <span>{row.index}</span>,
           });

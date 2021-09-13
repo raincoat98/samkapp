@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import PageContainer from "../../components/base/PageContainer";
 import ModalComponent from "../../components/base/ModalComponent";
 import Profile from "./Profile";
@@ -21,17 +20,16 @@ import {
 } from "@chakra-ui/react";
 
 export default function Setting() {
-  const { t } = useTranslation();
   const { colorMode, toggleColorMode } = useColorMode();
   const licenseModalDisclosure = useDisclosure();
 
   return (
     <PageContainer
-      title={t("Setting")}
+      title="설정"
       headerChildren={
         <ButtonGroup spacing="3">
-          <Button colorScheme="red">{t("Reset")}</Button>
-          <Button colorScheme="blue">{t("Save")}</Button>
+          <Button colorScheme="red">초기화</Button>
+          <Button colorScheme="blue">저장</Button>
         </ButtonGroup>
       }
     >
