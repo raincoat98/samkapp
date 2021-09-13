@@ -21,7 +21,8 @@ export default function FormModalInput(props: {
       );
     }
     case "date": {
-      const value = moment(defaultValue).format("YYYY-MM-DD");
+      let value: string = "";
+      if (defaultValue) value = moment(defaultValue).format("YYYY-MM-DD");
 
       return (
         <Input
