@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { login } from "store/realm";
 import * as icons from "utils/icons";
-import LoginErrorAlert from "./LoginErrorAlert";
 import SwitchColorMode from "./SwitchColorMode";
 import {
   Center,
@@ -21,7 +20,6 @@ export default function Login() {
   const dispatch = useDispatch();
 
   const appName = useSelector((state: RootState) => state.system.appName);
-  const errorCode = useSelector((state: RootState) => state.realm.errorCode);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -39,8 +37,6 @@ export default function Login() {
 
   return (
     <Center w={"100%"} h={"100%"}>
-      {errorCode ? <LoginErrorAlert errorCode={errorCode} /> : null}
-
       <form action="" onSubmit={onSubmit}>
         <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
           <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
