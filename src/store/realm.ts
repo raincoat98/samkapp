@@ -33,6 +33,15 @@ const initialState: RealmState = {
   disabledSchemaKeyList: ["owner_id"],
 };
 
+// 데이터베이스 자동 로그인
+export const autoLogin = createAsyncThunk(`${name}/autoLogin`, async () => {
+  if (app.currentUser) {
+    return app.currentUser.profile.email;
+  } else {
+    return;
+  }
+});
+
 // 데이터베이스 로그인
 export const login = createAsyncThunk(
   `${name}/login`,
@@ -219,6 +228,23 @@ const userSlice = createSlice({
     },
   },
   extraReducers: {
+    // 자동 로그인
+    [autoLogin.pending.type]: (state) => {
+      state.loading = true;
+      state.errorCode = "";
+    },
+    [autoLogin.fulfilled.type]: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      if (action.payload) {
+        state.loggedIn = true;
+        state.userName = action.payload;
+      }
+    },
+    [autoLogin.rejected.type]: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.errorCode = action.payload.errorCode;
+    },
+
     // 로그인
     [login.pending.type]: (state) => {
       state.loading = true;
