@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+import error_code from "./error_code.json";
 import customer from "./customer.json";
 import part_group_1 from "./part_group_1.json";
 import part_group_2 from "./part_group_2.json";
@@ -12,6 +13,8 @@ import warehouse from "./warehouse.json";
 const resources = {
   ko: {
     translation: {
+      error_code,
+
       customer,
       part_group_1,
       part_group_2,

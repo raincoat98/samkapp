@@ -1,4 +1,5 @@
 import React, { FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { login } from "store/realm";
@@ -24,13 +25,14 @@ import {
 
 export default function Home() {
   const dispatch = useDispatch();
+  const { t: translate } = useTranslation();
   const { colorMode, toggleColorMode } = useColorMode();
 
   const appName = useSelector((state: RootState) => state.system.appName);
+  const errorCode = useSelector((state: RootState) => state.realm.errorCode);
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [logInError, setLogInError] = React.useState(false);
   const [passwordShow, setPasswordShow] = React.useState(false);
 
   function togglePasswordShow(event: FormEvent) {
@@ -40,16 +42,15 @@ export default function Home() {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    setLogInError(false);
     dispatch(login({ email, password }));
   }
 
   return (
     <Center w={"100%"} h={"100%"}>
-      {logInError ? (
+      {errorCode ? (
         <Alert status="error" position="absolute" top="0px" left="0px">
           <AlertIcon />
-          <AlertTitle mr={2}>이메일 및 비밀번호가 잘못되었습니다!</AlertTitle>
+          <AlertTitle mr={2}>{translate(`error_code.${errorCode}`)}</AlertTitle>
           <AlertDescription>다시 로그인 해주세요.</AlertDescription>
         </Alert>
       ) : null}

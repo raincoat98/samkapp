@@ -17,6 +17,7 @@ export type RealmState = {
   userName: string;
   loading: boolean;
   loggedIn: boolean;
+  errorCode: string;
   database: Record<string, any[]>;
   readonlySchemaKeyList: string[];
   disabledSchemaKeyList: string[];
@@ -27,6 +28,7 @@ const initialState: RealmState = {
   loading: false,
   loggedIn: false,
   database: {},
+  errorCode: "",
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["owner_id"],
 };
@@ -34,11 +36,16 @@ const initialState: RealmState = {
 // 데이터베이스 로그인
 export const login = createAsyncThunk(
   `${name}/login`,
-  async (props: { email: string; password: string }, { dispatch }) => {
+  async (props: { email: string; password: string }, { rejectWithValue }) => {
     const { email, password } = props;
 
     const credentials = RealmWeb.Credentials.emailPassword(email, password);
-    await app.logIn(credentials);
+
+    try {
+      await app.logIn(credentials);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
 
     return app.currentUser?.profile.email;
   }
@@ -215,14 +222,16 @@ const userSlice = createSlice({
     // 로그인
     [login.pending.type]: (state) => {
       state.loading = true;
+      state.errorCode = "";
     },
     [login.fulfilled.type]: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.loggedIn = true;
       state.userName = action.payload;
     },
-    [login.rejected.type]: (state) => {
-      console.log(state);
+    [login.rejected.type]: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.errorCode = action.payload.errorCode;
     },
 
     // 로그아웃
