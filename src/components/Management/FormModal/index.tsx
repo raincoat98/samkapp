@@ -3,6 +3,7 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { schemaType } from "utils/realmUtils";
+import placeholders from "utils/placeholders";
 import FormModalInput from "./FormModalInput";
 import FormModalAddress from "./FormModalAddress";
 import FormModalURLInput from "./FormModalURLInput";
@@ -110,6 +111,9 @@ export default function FormModal(
             ) => {
               editData({ key, value: event.target.value });
             };
+
+            // placeholder 추가
+            if (placeholders[key]) inputProps.placeholder = placeholders[key];
 
             // 주소 값인지 판단
             if (key.includes("address")) {

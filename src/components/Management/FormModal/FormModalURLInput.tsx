@@ -1,6 +1,7 @@
 import React from "react";
 import validator from "validator";
 import { externalLink } from "utils/icons";
+import { url as placeholderURL } from "utils/placeholders";
 import { Box, Icon, Input, InputProps, IconButton } from "@chakra-ui/react";
 
 export default function FormModalURLInput(props: {
@@ -12,7 +13,13 @@ export default function FormModalURLInput(props: {
 
   return (
     <Box display="flex">
-      <Input ref={inputEl} type="text" {...inputProps} mr={3} />
+      <Input
+        ref={inputEl}
+        {...inputProps}
+        mr={3}
+        type="url"
+        placeholder={placeholderURL}
+      />
       <IconButton
         aria-label="페이지 열기"
         icon={<Icon as={externalLink} />}
