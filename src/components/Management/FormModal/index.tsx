@@ -115,18 +115,8 @@ export default function FormModal(
             // placeholder 추가
             if (placeholders[key]) inputProps.placeholder = placeholders[key];
 
-            // 주소 값인지 판단
-            if (key.includes("address")) {
-              element = (
-                <FormModalAddress
-                  defaultValue={defaultValue}
-                  onChange={(fullAddress: string) =>
-                    editData({ key, value: fullAddress })
-                  }
-                />
-              );
-              // URL 값일 때
-            } else if (key.includes("homepage") || key.includes("url")) {
+            // URL 값일 때
+            if (key.includes("homepage") || key.includes("url")) {
               element = <FormModalURLInput inputProps={{ ...inputProps }} />;
             } else {
               // 수정 모드에서 고유 키 값을 변경하지 못하게
@@ -155,6 +145,15 @@ export default function FormModal(
                 type={type}
                 defaultValue={defaultValue}
                 onChange={(value: any) => editData({ key, value })}
+              />
+            );
+            break;
+          }
+          case "address": {
+            element = (
+              <FormModalAddress
+                defaultValue={defaultValue ?? {}}
+                onChange={(result: any) => editData({ key, value: result })}
               />
             );
             break;
@@ -217,11 +216,11 @@ export default function FormModal(
     if (sortData[schema.name]) {
       setInputList((state) =>
         state.sort((formItem1, formItem2) => {
+          const a = sortData[schema.name][formItem1.name] ?? 99;
+          const b = sortData[schema.name][formItem2.name] ?? 99;
+
           try {
-            return (
-              sortData[schema.name][formItem1.name] -
-              sortData[schema.name][formItem2.name]
-            );
+            return a - b;
           } catch (error) {
             console.error(error);
             return 0;

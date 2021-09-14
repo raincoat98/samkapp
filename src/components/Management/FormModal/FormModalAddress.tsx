@@ -1,26 +1,36 @@
 import React from "react";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
-import { useDisclosure, Input, Button, Flex } from "@chakra-ui/react";
-
-export type formItem = {
-  name: string;
-  element?: JSX.Element;
-  isDisabled?: boolean;
-};
+import {
+  useDisclosure,
+  Stack,
+  Textarea,
+  Input,
+  Button,
+  Flex,
+} from "@chakra-ui/react";
+import { address } from "realmObjectModes";
 
 export default function FormModalAddress(props: {
-  defaultValue: string;
+  defaultValue: address;
   onChange: Function;
 }) {
   const { defaultValue, onChange } = props;
 
-  const inputEl = React.useRef<HTMLInputElement>(null);
+  const addressRef = React.useRef<HTMLTextAreaElement>(null);
+  const zipCodeRef = React.useRef<HTMLInputElement>(null);
 
   const addressPopupDisclosure = useDisclosure();
 
-  function onAddressComplete(data: Record<string, any>) {
-    if (inputEl.current) inputEl.current.value = data.fullAddress;
-    onChange(data.fullAddress);
+  function onAddressComplete(result: Record<string, any>) {
+    const address = result.fullAddress;
+    const zip_code = result.data.zonecode;
+
+    if (addressRef.current) addressRef.current.value = address;
+    if (zipCodeRef.current) zipCodeRef.current.value = zip_code;
+    onChange({
+      address,
+      zip_code,
+    });
     addressPopupDisclosure.onClose();
   }
 
@@ -35,12 +45,22 @@ export default function FormModalAddress(props: {
       />
 
       <Flex>
-        <Input ref={inputEl} defaultValue={defaultValue} type="text" mr={3} />
-        <Button
-          onClick={() => {
-            addressPopupDisclosure.onToggle();
-          }}
-        >
+        <Stack flex="1" mr={3}>
+          <Input
+            ref={zipCodeRef}
+            defaultValue={defaultValue.zip_code}
+            type="text"
+            placeholder="우편번호"
+          />
+          <Textarea
+            ref={addressRef}
+            defaultValue={defaultValue.address}
+            placeholder="주소"
+            rows={2}
+          ></Textarea>
+        </Stack>
+
+        <Button onClick={() => addressPopupDisclosure.onToggle()}>
           주소 검색
         </Button>
       </Flex>
