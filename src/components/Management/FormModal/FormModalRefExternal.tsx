@@ -12,6 +12,9 @@ export default function FormModalRefExternal(props: {
 
   const dispatch = useDispatch();
   const database = useSelector((state: RootState) => state.realm.database);
+  const withCodeCollectionList = useSelector(
+    (state: RootState) => state.realm.withCodeCollectionList
+  );
 
   return (
     <Select
@@ -25,6 +28,9 @@ export default function FormModalRefExternal(props: {
     >
       {database[collectionName]?.map((data: any, index) => (
         <option value={data._id.toString()} key={index}>
+          {withCodeCollectionList.includes(collectionName)
+            ? `[${data._id.toString()}]: `
+            : ""}
           {data[`${collectionName}_name`]}
         </option>
       ))}
