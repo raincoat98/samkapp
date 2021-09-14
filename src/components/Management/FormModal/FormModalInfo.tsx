@@ -66,7 +66,7 @@ export default function FormModalInfo(props: {
 
                   label = Moment(dateValue)
                     .local()
-                    .format("YYYY년 MM월 DD일 HH시 MM분");
+                    .format("YYYY년 MM월 DD일 HH시 mm분");
 
                   value =
                     duration > 1
