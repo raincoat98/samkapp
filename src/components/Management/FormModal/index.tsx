@@ -2,17 +2,16 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import Moment from "moment";
 import { schemaType } from "utils/realmUtils";
 import FormModalInput from "./FormModalInput";
 import FormModalAddress from "./FormModalAddress";
 import FormModalURLInput from "./FormModalURLInput";
+import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
 import FormModalRefExternal from "./FormModalRefExternal";
 import sortData from "data/sortData";
 import {
   Box,
-  Tag,
   Stack,
   Input,
   InputProps,
@@ -50,9 +49,9 @@ export default function FormModal(
   // 일반 값
   const [inputList, setInputList] = React.useState<formItem[]>([]);
   // 수정 불가능 값
-  const [disabledInputList, setDisabledInputList] = React.useState<formItem[]>(
-    []
-  );
+  const [disabledDataList, setDisabledDataList] = React.useState<
+    FormModalInfoData[]
+  >([]);
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
@@ -68,7 +67,7 @@ export default function FormModal(
     // 초기화
     setRequiredInputList([]);
     setInputList([]);
-    setDisabledInputList([]);
+    setDisabledDataList([]);
 
     for (const key in schema.properties) {
       // 유저가 수정 못하는 값일 경우 다음으로
@@ -187,23 +186,12 @@ export default function FormModal(
           ]);
         }
       } else {
-        switch (type) {
-          case "date": {
-            // 수정 불가능한 date 값
-            element = (
-              <Tag>
-                {translate(`${schema.name}.properties.${key}`) + ": "}
-                {Moment(defaultValue).local().format("YYYY-MM-DD H시 m분")}
-              </Tag>
-            );
-          }
-        }
-
-        setDisabledInputList((state) => [
+        setDisabledDataList((state) => [
           ...state,
           {
-            name: key,
-            element,
+            key: `${schema.name}.properties.${key}`,
+            type,
+            value: defaultValue,
           },
         ]);
       }
@@ -255,6 +243,10 @@ export default function FormModal(
         });
       }}
       onClose={onClose}
+      info={
+        // 수정 모드일 때만 추가
+        mode === "update" ? <FormModalInfo dataList={disabledDataList} /> : ""
+      }
     >
       <Stack>
         {/* 필수 필드 */}
@@ -281,17 +273,6 @@ export default function FormModal(
             <Box flex="1">{formItem.element}</Box>
           </FormControl>
         ))}
-
-        {/* 수정 모드일 때만 추가 */}
-        {mode === "update" ? (
-          <Stack textAlign="right">
-            {disabledInputList.map((formItem, index) =>
-              formItem.element ? <Box key={index}>{formItem.element}</Box> : ""
-            )}
-          </Stack>
-        ) : (
-          ""
-        )}
       </Stack>
     </FormModalPopup>
   );

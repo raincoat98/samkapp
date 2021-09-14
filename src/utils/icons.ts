@@ -8,6 +8,7 @@ import {
   AiOutlineDesktop,
   AiFillPrinter,
   AiOutlineSearch,
+  AiOutlineInfoCircle,
 } from "react-icons/ai";
 import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
@@ -29,6 +30,7 @@ export const password = HiKey;
 
 export const search = AiOutlineSearch;
 
+export const info = AiOutlineInfoCircle;
 export const circle = BsCircleFill;
 export const menu = AiOutlineMenu;
 export const profile = AiOutlineProfile;

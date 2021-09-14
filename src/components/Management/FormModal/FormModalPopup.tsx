@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Portal,
+  Box,
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
@@ -18,8 +19,10 @@ export default function FormModalPopup(props: {
   onClose: Function;
   onSubmit: Function;
   children: React.ReactNode;
+  info?: React.ReactNode;
 }) {
-  const { title, isOpen, isSaveDisabled, onSubmit, onClose, children } = props;
+  const { title, isOpen, isSaveDisabled, onSubmit, onClose, children, info } =
+    props;
 
   return (
     <Portal>
@@ -43,6 +46,7 @@ export default function FormModalPopup(props: {
             <ModalCloseButton />
             <ModalBody>{children}</ModalBody>
             <ModalFooter borderTopWidth="1px">
+              <Box flex="1">{info}</Box>
               <ButtonGroup>
                 <Button
                   isDisabled={isSaveDisabled}
