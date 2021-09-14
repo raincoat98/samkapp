@@ -18,6 +18,8 @@ import {
   FormControl,
   FormLabel,
   ModalProps,
+  Textarea,
+  TextareaProps,
 } from "@chakra-ui/react";
 
 export type formItem = {
@@ -60,6 +62,9 @@ export default function FormModal(
   );
   const disabledSchemaKeyList = useSelector(
     (state: RootState) => state.realm.disabledSchemaKeyList
+  );
+  const textAreaSchemaKeyList = useSelector(
+    (state: RootState) => state.realm.textAreaSchemaKeyList
   );
 
   // initialValue 가 바뀔 때만 기본값 수정
@@ -126,7 +131,14 @@ export default function FormModal(
                 inputProps.variant = "filled";
                 inputProps.title = "고유 코드 값은 수정할 수 없습니다.";
               }
-              element = <Input {...inputProps} />;
+
+              // input 혹은 textarea 구분
+              if (textAreaSchemaKeyList.includes(key)) {
+                const textareaProps = inputProps as TextareaProps;
+                element = <Textarea {...textareaProps} />;
+              } else {
+                element = <Input {...inputProps} />;
+              }
             }
 
             break;

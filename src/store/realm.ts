@@ -37,6 +37,7 @@ export type RealmState = {
   loggedIn: boolean;
   error: RealmError | null;
   database: Record<string, any[]>;
+  textAreaSchemaKeyList: string[];
   readonlySchemaKeyList: string[];
   disabledSchemaKeyList: string[];
 };
@@ -47,6 +48,7 @@ const initialState: RealmState = {
   loggedIn: false,
   error: null,
   database: {},
+  textAreaSchemaKeyList: ["remark"],
   readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
   disabledSchemaKeyList: ["owner_id"],
 };
