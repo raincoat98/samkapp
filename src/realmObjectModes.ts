@@ -1,3 +1,143 @@
+export type part_price = {
+  _id: string;
+  apply_end?: Date;
+  apply_start?: Date;
+  create_by?: string;
+  create_dttm?: Date;
+  os_price?: string;
+  owner_id: string;
+  part_id: string;
+  purchase_price?: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  selling_price?: string;
+};
+
+export const part_priceSchema = {
+  name: "part_price",
+  properties: {
+    _id: "string",
+    apply_end: "date?",
+    apply_start: "date?",
+    create_by: "string?",
+    create_dttm: "date?",
+    os_price: "string?",
+    owner_id: "string",
+    part_id: "string",
+    purchase_price: "string?",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    selling_price: "string?",
+  },
+  primaryKey: "_id",
+};
+
+export type part_type = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_material?: number;
+  owner_id: string;
+  part_type_name: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_typeSchema = {
+  name: "part_type",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_material: "int?",
+    owner_id: "string",
+    part_type_name: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type warehouse = {
+  _id: string;
+  cell_number?: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_dev?: boolean;
+  is_sub?: boolean;
+  owner_id: string;
+  rack_qty?: string;
+  remark?: string;
+  row_qty?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  warehouse_name: string;
+};
+
+export const warehouseSchema = {
+  name: "warehouse",
+  properties: {
+    _id: "string",
+    cell_number: "string?",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_dev: "bool?",
+    is_sub: "bool?",
+    owner_id: "string",
+    rack_qty: "string?",
+    remark: "string?",
+    row_qty: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    warehouse_name: "string",
+  },
+  primaryKey: "_id",
+};
+
+export type work_order = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  customer_id?: customer;
+  owner_id: string;
+  part_id?: part;
+  plan_date?: Date;
+  plan_qty?: number;
+  priorities?: number;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+};
+
+export const work_orderSchema = {
+  name: "work_order",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    customer_id: "customer",
+    owner_id: "string",
+    part_id: "part",
+    plan_date: "date?",
+    plan_qty: "int?",
+    priorities: "int?",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+  },
+  primaryKey: "_id",
+};
+
 export type customer = {
   _id: string;
   address?: string;
@@ -144,148 +284,6 @@ export const part_group_2Schema = {
     search_group: "string?",
     sort_seq: "int?",
     valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
-export type part_price = {
-  _id: string;
-  apply_end?: Date;
-  apply_start?: Date;
-  create_by?: string;
-  create_dttm?: Date;
-  os_price?: string;
-  owner_id: string;
-  part_id: string;
-  purchase_price?: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  selling_price?: string;
-};
-
-export const part_priceSchema = {
-  name: "part_price",
-  properties: {
-    _id: "string",
-    apply_end: "date?",
-    apply_start: "date?",
-    create_by: "string?",
-    create_dttm: "date?",
-    os_price: "string?",
-    owner_id: "string",
-    part_id: "string",
-    purchase_price: "string?",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    selling_price: "string?",
-  },
-  primaryKey: "_id",
-};
-
-export type part_type = {
-  _id: string;
-  create_by?: string;
-  create_dttm?: Date;
-  is_material?: number;
-  owner_id: string;
-  part_type_name: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  valid?: boolean;
-};
-
-export const part_typeSchema = {
-  name: "part_type",
-  properties: {
-    _id: "string",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_material: "int?",
-    owner_id: "string",
-    part_type_name: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
-export type warehouse = {
-  _id: string;
-  cell_number?: string;
-  create_by?: string;
-  create_dttm?: Date;
-  is_dev?: boolean;
-  is_sub?: boolean;
-  owner_id: string;
-  rack_qty?: string;
-  remark?: string;
-  row_qty?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  warehouse_name: string;
-};
-
-export const warehouseSchema = {
-  name: "warehouse",
-  properties: {
-    _id: "string",
-    cell_number: "string?",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_dev: "bool?",
-    is_sub: "bool?",
-    owner_id: "string",
-    rack_qty: "string?",
-    remark: "string?",
-    row_qty: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    warehouse_name: "string",
-  },
-  primaryKey: "_id",
-};
-
-export type work_order = {
-  _id: string;
-  cofirm_dttm?: Date;
-  create_by?: string;
-  create_dttm?: Date;
-  customer_id?: customer;
-  owner_id: string;
-  part_id?: part;
-  plan_date?: Date;
-  plan_qty?: number;
-  priorities?: number;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-};
-
-export const work_orderSchema = {
-  name: "work_order",
-  properties: {
-    _id: "string",
-    cofirm_dttm: "date?",
-    create_by: "string?",
-    create_dttm: "date?",
-    customer_id: "customer",
-    owner_id: "string",
-    part_id: "part",
-    plan_date: "date?",
-    plan_qty: "int?",
-    priorities: "int?",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
   },
   primaryKey: "_id",
 };
