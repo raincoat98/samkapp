@@ -1,4 +1,5 @@
 import CustomerManagement from "pages/CustomerManagement";
+import InvManagement from "pages/InvManagement";
 import PartManagement from "pages/PartManagement";
 import PartGroup1Management from "pages/PartGroup1Management";
 import PartGroup2Management from "pages/PartGroup2Management";
@@ -31,6 +32,14 @@ const routerConfig = {
       name: "고객 관리",
       path: "/customer_manage",
       component: CustomerManagement,
+      sidebar: true,
+    },
+
+    // 재고 관리
+    {
+      name: "재고 관리",
+      path: "/inv_management",
+      component: InvManagement,
       sidebar: true,
     },
 
