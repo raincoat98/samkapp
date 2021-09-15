@@ -12,6 +12,13 @@ const sortData: Record<string, Record<string, number>> = {
     unit: 4,
     warehouse_id: 5,
   },
+  part_price: {
+    purchase_price: 1,
+    os_price: 2,
+    selling_price: 3,
+    apply_start: 4,
+    apply_end: 5,
+  },
 };
 
 export default sortData;
