@@ -1,7 +1,7 @@
 {
-  "name": "고객",
+  "name": "거래처",
   "properties": {
-    "_id": "고객 코드",
+    "_id": "거래처 코드",
     "address": "주소",
     "bill_limit_id": "수금 기한",
     "business_info": "업태",
@@ -9,8 +9,8 @@
     "ceo_name": "대표자",
     "create_by": "생성자",
     "create_dttm": "생성일자",
-    "credit_limit": "직급",
-    "customer_group_id": "여신 한도",
+    "credit_limit": "여신 한도",
+    "customer_group_id": "업체 분류 1",
     "customer_name": "거래처명",
     "fax": "팩스 번호",
     "homepage": "홈페이지",

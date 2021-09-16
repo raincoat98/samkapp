@@ -1,3 +1,4 @@
+import CustomerMngrManagement from "pages/CustomerMngrManagement";
 import CustomerManagement from "pages/CustomerManagement";
 import InvManagement from "pages/InvManagement";
 import PartManagement from "pages/PartManagement";
@@ -27,11 +28,19 @@ export type RouterState = {
 const routerConfig = {
   defaultPath: "/setting",
   routes: [
-    // 고객 관리
+    // 거래처 관리
     {
-      name: "고객 관리",
+      name: "거래처 관리",
       path: "/customer_manage",
       component: CustomerManagement,
+      sidebar: true,
+    },
+
+    // 거래처 담당자 관리
+    {
+      name: "거래처 담당자 관리",
+      path: "/customer_mngr_manage",
+      component: CustomerMngrManagement,
       sidebar: true,
     },
 

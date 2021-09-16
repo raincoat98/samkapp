@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 
 import error_code from "./error_code.json";
 
+import customer_mngr from "./database/customer_mngr.json";
 import customer from "./database/customer.json";
 import inv from "./database/inv.json";
 import part_group_1 from "./database/part_group_1.json";
@@ -19,6 +20,7 @@ const resources = {
     translation: {
       error_code,
 
+      customer_mngr,
       customer,
       inv,
       part_group_1,

@@ -1,18 +1,18 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { customerSchema } from "realmObjectModes";
+import { customer_mngrSchema } from "realmObjectModes";
 
-export default function CustomerManagement() {
-  const collectionName = "customer";
+export default function CustomerMngrManagement() {
+  const collectionName = "customer_mngr";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
 
   return (
     <Management
-      title="거래처 관리"
-      schema={customerSchema}
+      title="거래처 담당자 관리"
+      schema={customer_mngrSchema}
       collectionName={collectionName}
       tableData={data ?? []}
     />
