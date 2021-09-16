@@ -87,18 +87,32 @@ export default function FormModal(
           case "int":
           case "date":
           case "bool": {
-            element = (
-              <FormModalInput
-                name={`${schema.name}.properties.${key}`}
-                type={type}
-                defaultValue={defaultValue}
-                onChange={(value: any) => editData({ key, value })}
-                isTextarea={textAreaSchemaKeyList.includes(key)}
-                isRequired={isRequired}
-                isReadOnly={mode === "update" && key === schema.primaryKey}
-                isURL={key.includes("homepage") || key.includes("url")}
-              />
-            );
+            switch (key) {
+              // 작업 지시 우선순위
+              case "priorities": {
+                element = (
+                  <FormModalWorkOrderPriorities
+                    defaultValue={defaultValue}
+                    onChange={(value: any) => editData({ key, value })}
+                  />
+                );
+                break;
+              }
+              default: {
+                element = (
+                  <FormModalInput
+                    name={`${schema.name}.properties.${key}`}
+                    type={type}
+                    defaultValue={defaultValue}
+                    onChange={(value: any) => editData({ key, value })}
+                    isTextarea={textAreaSchemaKeyList.includes(key)}
+                    isRequired={isRequired}
+                    isReadOnly={mode === "update" && key === schema.primaryKey}
+                    isURL={key.includes("homepage") || key.includes("url")}
+                  />
+                );
+              }
+            }
             break;
           }
           case "array":
@@ -115,22 +129,6 @@ export default function FormModal(
                 name={`${schema.name}.properties.${key}`}
                 defaultValue={defaultValue ?? {}}
                 onChange={(result: any) => editData({ key, value: result })}
-              />
-            );
-            break;
-          }
-          // 작업 지시 우선순위
-          case "work_order_priorities": {
-            isRequired = false;
-            element = (
-              <FormModalWorkOrderPriorities
-                defaultValue={defaultValue}
-                onChange={(selected: string) =>
-                  editData({
-                    key,
-                    value: { [selected]: true },
-                  })
-                }
               />
             );
             break;

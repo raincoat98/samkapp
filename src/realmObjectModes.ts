@@ -175,7 +175,7 @@ export type work_order = {
   part_id?: part;
   plan_date?: Date;
   plan_qty?: number;
-  priorities?: work_order_priorities;
+  priorities: string;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
@@ -192,28 +192,12 @@ export const work_orderSchema = {
     part_id: "part",
     plan_date: "date?",
     plan_qty: "int?",
-    priorities: "work_order_priorities",
+    priorities: "string",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
   },
   primaryKey: "_id",
-};
-
-export type work_order_priorities = {
-  emergency?: boolean;
-  normal?: boolean;
-  other?: boolean;
-};
-
-export const work_order_prioritiesSchema = {
-  name: "work_order_priorities",
-  embedded: true,
-  properties: {
-    emergency: "bool?",
-    normal: "bool?",
-    other: "bool?",
-  },
 };
 
 export type inv = {

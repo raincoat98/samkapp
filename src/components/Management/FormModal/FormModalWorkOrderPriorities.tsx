@@ -1,5 +1,3 @@
-import { useTranslation } from "react-i18next";
-import { work_order_prioritiesSchema } from "realmObjectModes";
 import {
   FormControl,
   FormLabel,
@@ -8,39 +6,27 @@ import {
   Radio,
 } from "@chakra-ui/react";
 
+export type prioritiesEnum = "emergency" | "normal" | "other";
+
 export default function FormModalWorkOrderPriorities(props: {
   defaultValue: any;
   onChange: Function;
 }) {
   const { defaultValue, onChange } = props;
-  const { t: translate } = useTranslation();
-
-  let radioDefaultValue = "";
-  if (defaultValue && Object.keys(defaultValue)) {
-    radioDefaultValue = Object.keys(defaultValue)[0];
-  } else {
-    radioDefaultValue = "normal";
-  }
 
   return (
     <FormControl display="flex" alignItems="center">
       <FormLabel minWidth="100px" marginBottom={0}>
-        {translate(`${work_order_prioritiesSchema.name}.name`)}
+        우선 순위
       </FormLabel>
       <RadioGroup
-        defaultValue={radioDefaultValue}
+        defaultValue={defaultValue}
         onChange={(value) => onChange(value)}
       >
         <Stack direction="row">
-          {Object.keys(work_order_prioritiesSchema.properties).map(
-            (key, index) => (
-              <Radio value={key} key={index}>
-                {translate(
-                  `${work_order_prioritiesSchema.name}.properties.${key}`
-                )}
-              </Radio>
-            )
-          )}
+          <Radio value="emergency">긴급</Radio>
+          <Radio value="normal">보통</Radio>
+          <Radio value="other">기타</Radio>
         </Stack>
       </RadioGroup>
     </FormControl>
