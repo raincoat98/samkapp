@@ -1,58 +1,129 @@
 import moment from "moment";
-import { Input, Switch } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import placeholders from "utils/placeholders";
+import FormModalURLInput from "./FormModalURLInput";
+import {
+  Input,
+  InputProps,
+  Textarea,
+  TextareaProps,
+  Switch,
+  SwitchProps,
+  Tooltip,
+  Box,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
+import FormModalRefExternal from "./FormModalRefExternal";
 
 export default function FormModalInput(props: {
-  type: "int" | "date" | "bool";
+  name: string;
+  type: "string" | "int" | "date" | "bool" | string;
   defaultValue: any;
   onChange: Function;
+  isExternal?: boolean;
+  isRequired?: boolean;
+  isReadOnly?: boolean;
+  isTextarea?: boolean;
+  isURL?: boolean; // only string
 }) {
-  const { type, defaultValue, onChange } = props;
+  const {
+    name,
+    type,
+    defaultValue,
+    onChange,
+    isExternal,
+    isRequired,
+    isReadOnly,
+    isTextarea,
+    isURL,
+  } = props;
+
+  const inputProps: InputProps = {
+    defaultValue,
+    onChange: (event) => onChange(event.target.value),
+    isReadOnly,
+    variant: isReadOnly ? "filled" : "outline",
+    placeholder: placeholders[name] ?? "",
+  };
+
+  let element: JSX.Element = <></>;
+
+  const { t: translate } = useTranslation();
 
   switch (type) {
+    case "string": {
+      // 문자열
+      if (!isTextarea) {
+        if (isURL) {
+          element = <FormModalURLInput inputProps={{ ...inputProps }} />;
+        } else {
+          element = <Input type="text" {...inputProps} />;
+        }
+      } else {
+        const textareaProps: TextareaProps = inputProps as TextareaProps;
+
+        element = <Textarea type="text" {...textareaProps} />;
+      }
+      break;
+    }
     case "int": {
-      return (
-        <Input
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          type="number"
-          defaultValue={defaultValue}
-        />
-      );
+      // 숫자
+      element = <Input type="number" {...inputProps} />;
+      break;
     }
     case "date": {
-      let value: string = "";
-      if (defaultValue) value = moment(defaultValue).format("YYYY-MM-DD");
+      // 날짜
+      if (defaultValue) {
+        inputProps.defaultValue = moment(defaultValue).format("YYYY-MM-DD");
+      }
 
-      return (
-        <Input
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          type="date"
-          defaultValue={value}
-        />
-      );
+      element = <Input type="date" {...inputProps} />;
+      break;
     }
+    // 불리언
     case "bool": {
-      return (
-        <Switch
-          onChange={(event) => {
-            onChange(event.target.checked);
-          }}
-          defaultChecked={defaultValue ? true : false}
-        />
-      );
+      const switchProps: SwitchProps = inputProps as SwitchProps;
+
+      delete switchProps.defaultValue;
+      delete switchProps.variant;
+
+      switchProps.defaultChecked = defaultValue ? true : false;
+      switchProps.onChange = (event) => onChange(event.target.checked);
+
+      element = <Switch {...switchProps} />;
+      break;
     }
+    // 기본값
     default: {
-      return (
-        <Input
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-          defaultValue={defaultValue}
-        />
-      );
+      if (isExternal) {
+        element = (
+          <FormModalRefExternal
+            collectionName={type}
+            defaultValue={defaultValue?.toString()}
+            onChange={(value: string) => onChange(value)}
+          />
+        );
+      } else {
+        element = <Input {...inputProps} />;
+      }
     }
   }
+
+  const formControl = (
+    <FormControl isRequired={isRequired} display="flex" alignItems="center">
+      <FormLabel minWidth="100px" marginBottom={0}>
+        {translate(`${name}`)}
+      </FormLabel>
+      <Box flex="1">{element}</Box>
+    </FormControl>
+  );
+
+  return isReadOnly ? (
+    <Tooltip label="이 값은 수정할 수 없습니다" placement="top">
+      {formControl}
+    </Tooltip>
+  ) : (
+    formControl
+  );
 }

@@ -1,5 +1,7 @@
 import React from "react";
 import DaumAddressPopup from "components/base/DaumAddressPopup";
+import { useTranslation } from "react-i18next";
+import { address } from "realmObjectModes";
 import {
   useDisclosure,
   Stack,
@@ -7,19 +9,22 @@ import {
   Input,
   Button,
   Flex,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
-import { address } from "realmObjectModes";
 
 export default function FormModalAddress(props: {
+  name: string;
   defaultValue: address;
   onChange: Function;
 }) {
-  const { defaultValue, onChange } = props;
+  const { name, defaultValue, onChange } = props;
 
   const addressRef = React.useRef<HTMLTextAreaElement>(null);
   const zipCodeRef = React.useRef<HTMLInputElement>(null);
 
   const addressPopupDisclosure = useDisclosure();
+  const { t: translate } = useTranslation();
 
   function onAddressComplete(result: Record<string, any>) {
     const address = result.fullAddress;
@@ -44,26 +49,32 @@ export default function FormModalAddress(props: {
         children={null}
       />
 
-      <Flex>
-        <Stack flex="1" mr={3}>
-          <Input
-            ref={zipCodeRef}
-            defaultValue={defaultValue.zip_code}
-            type="text"
-            placeholder="우편번호"
-          />
-          <Textarea
-            ref={addressRef}
-            defaultValue={defaultValue.address}
-            placeholder="주소"
-            rows={2}
-          ></Textarea>
-        </Stack>
+      <FormControl display="flex" alignItems="center">
+        <FormLabel minWidth="100px" marginBottom={0}>
+          {translate(name)}
+        </FormLabel>
 
-        <Button onClick={() => addressPopupDisclosure.onToggle()}>
-          주소 검색
-        </Button>
-      </Flex>
+        <Flex flex="1">
+          <Stack flex="1" mr={3}>
+            <Input
+              ref={zipCodeRef}
+              defaultValue={defaultValue.zip_code}
+              type="text"
+              placeholder="우편번호"
+            />
+            <Textarea
+              ref={addressRef}
+              defaultValue={defaultValue.address}
+              placeholder="주소"
+              rows={2}
+            ></Textarea>
+          </Stack>
+
+          <Button onClick={() => addressPopupDisclosure.onToggle()}>
+            주소 검색
+          </Button>
+        </Flex>
+      </FormControl>
     </>
   );
 }

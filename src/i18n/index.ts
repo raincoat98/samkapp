@@ -12,6 +12,7 @@ import part_type from "./database/part_type.json";
 import part from "./database/part.json";
 import warehouse from "./database/warehouse.json";
 import work_order from "./database/work_order.json";
+import work_order_priorities from "./database/work_order_priorities.json";
 
 const resources = {
   ko: {
@@ -27,6 +28,7 @@ const resources = {
       part,
       warehouse,
       work_order,
+      work_order_priorities,
     },
   },
 };

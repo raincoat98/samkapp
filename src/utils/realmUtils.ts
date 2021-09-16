@@ -4,6 +4,7 @@ export type Document = Record<string, any>;
 
 export type schemaType = {
   name: string;
+  embedded?: boolean;
   properties: Record<string, string>;
   primaryKey: string;
 };

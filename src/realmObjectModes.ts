@@ -1,3 +1,67 @@
+export type part_group_1 = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_material?: number;
+  owner_id: string;
+  part_group_1_name: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_group_1Schema = {
+  name: "part_group_1",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_material: "int?",
+    owner_id: "string",
+    part_group_1_name: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type part_type = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_material?: number;
+  owner_id: string;
+  part_type_name: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_typeSchema = {
+  name: "part_type",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_material: "int?",
+    owner_id: "string",
+    part_type_name: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
 export type work_order = {
   _id: string;
   create_by?: string;
@@ -7,7 +71,7 @@ export type work_order = {
   part_id?: part;
   plan_date?: Date;
   plan_qty?: number;
-  priorities?: number;
+  priorities?: work_order_priorities;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
@@ -24,12 +88,28 @@ export const work_orderSchema = {
     part_id: "part",
     plan_date: "date?",
     plan_qty: "int?",
-    priorities: "int?",
+    priorities: "work_order_priorities",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
   },
   primaryKey: "_id",
+};
+
+export type work_order_priorities = {
+  emergency?: boolean;
+  normal?: boolean;
+  other?: boolean;
+};
+
+export const work_order_prioritiesSchema = {
+  name: "work_order_priorities",
+  embedded: true,
+  properties: {
+    emergency: "bool?",
+    normal: "bool?",
+    other: "bool?",
+  },
 };
 
 export type inv = {
@@ -140,72 +220,6 @@ export const part_priceSchema = {
   primaryKey: "_id",
 };
 
-export type part_group_2 = {
-  _id: string;
-  create_by?: string;
-  create_dttm?: Date;
-  owner_id: string;
-  part_group_1_id?: part_group_1;
-  part_group_2_name: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  search_group?: string;
-  sort_seq?: number;
-  valid?: boolean;
-};
-
-export const part_group_2Schema = {
-  name: "part_group_2",
-  properties: {
-    _id: "string",
-    create_by: "string?",
-    create_dttm: "date?",
-    owner_id: "string",
-    part_group_1_id: "part_group_1",
-    part_group_2_name: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    search_group: "string?",
-    sort_seq: "int?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
-export type part_group_1 = {
-  _id: string;
-  create_by?: string;
-  create_dttm?: Date;
-  is_material?: number;
-  owner_id: string;
-  part_group_1_name: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  valid?: boolean;
-};
-
-export const part_group_1Schema = {
-  name: "part_group_1",
-  properties: {
-    _id: "string",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_material: "int?",
-    owner_id: "string",
-    part_group_1_name: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
 export type part = {
   _id: string;
   create_by?: string;
@@ -240,32 +254,34 @@ export const partSchema = {
   primaryKey: "_id",
 };
 
-export type part_type = {
+export type part_group_2 = {
   _id: string;
   create_by?: string;
   create_dttm?: Date;
-  is_material?: number;
   owner_id: string;
-  part_type_name: string;
+  part_group_1_id?: part_group_1;
+  part_group_2_name: string;
   remark?: string;
   save_by?: string;
   save_dttm?: Date;
+  search_group?: string;
   sort_seq?: number;
   valid?: boolean;
 };
 
-export const part_typeSchema = {
-  name: "part_type",
+export const part_group_2Schema = {
+  name: "part_group_2",
   properties: {
     _id: "string",
     create_by: "string?",
     create_dttm: "date?",
-    is_material: "int?",
     owner_id: "string",
-    part_type_name: "string",
+    part_group_1_id: "part_group_1",
+    part_group_2_name: "string",
     remark: "string?",
     save_by: "string?",
     save_dttm: "date?",
+    search_group: "string?",
     sort_seq: "int?",
     valid: "bool?",
   },
