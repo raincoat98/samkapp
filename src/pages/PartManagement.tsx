@@ -24,7 +24,7 @@ export default function PartManagement() {
       title="품목 관리"
       schema={partSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
       filterList={[
         { schema: part_group_2Schema, data: part_group_2Data ?? [] },
         { schema: part_group_1Schema, data: part_group_1Data ?? [] },

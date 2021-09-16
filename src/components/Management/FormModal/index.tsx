@@ -1,7 +1,12 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { schemaType } from "utils/realmUtils";
+import {
+  schemaType,
+  readonlySchemaKeyList,
+  disabledSchemaKeyList,
+  textAreaSchemaKeyList,
+} from "utils/realmUtils";
 import FormModalInput from "./FormModalInput";
 import FormModalWorkOrderPriorities from "./FormModalWorkOrderPriorities";
 import FormModalAddress from "./FormModalAddress";
@@ -13,6 +18,7 @@ import { Box, Stack, ModalProps } from "@chakra-ui/react";
 export type formItem = {
   name: string;
   element?: JSX.Element;
+  isRequired?: boolean;
 };
 
 export default function FormModal(
@@ -28,11 +34,7 @@ export default function FormModal(
   >({});
   const { onChange, initialValue, schema, mode } = props;
 
-  // 필수 값
-  const [requiredInputList, setRequiredInputList] = React.useState<formItem[]>(
-    []
-  );
-  // 일반 값
+  // 필드 값
   const [inputList, setInputList] = React.useState<formItem[]>([]);
   // 수정 불가능 값
   const [disabledDataList, setDisabledDataList] = React.useState<
@@ -41,20 +43,11 @@ export default function FormModal(
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
-  const readonlySchemaKeyList = useSelector(
-    (state: RootState) => state.realm.readonlySchemaKeyList
-  );
-  const disabledSchemaKeyList = useSelector(
-    (state: RootState) => state.realm.disabledSchemaKeyList
-  );
-  const textAreaSchemaKeyList = useSelector(
-    (state: RootState) => state.realm.textAreaSchemaKeyList
-  );
 
   // initialValue 가 바뀔 때만 기본값 수정
   React.useEffect(() => {
     // 초기화
-    setRequiredInputList([]);
+    setEditedDocument({});
     setInputList([]);
     setDisabledDataList([]);
 
@@ -150,23 +143,14 @@ export default function FormModal(
           }
         }
 
-        if (isRequired) {
-          setRequiredInputList((state) => [
-            ...state,
-            {
-              name: key,
-              element,
-            },
-          ]);
-        } else {
-          setInputList((state) => [
-            ...state,
-            {
-              name: key,
-              element,
-            },
-          ]);
-        }
+        setInputList((state) => [
+          ...state,
+          {
+            name: key,
+            element,
+            isRequired,
+          },
+        ]);
       } else {
         setDisabledDataList((state) => [
           ...state,
@@ -180,21 +164,28 @@ export default function FormModal(
     }
 
     // 정렬
-    if (sortData[schema.name]) {
-      setInputList((state) =>
-        state.sort((formItem1, formItem2) => {
-          const a = sortData[schema.name][formItem1.name] ?? 99;
-          const b = sortData[schema.name][formItem2.name] ?? 99;
+    setInputList((state) =>
+      state.sort((formItem1, formItem2) => {
+        let a = 0,
+          b = 0;
 
-          try {
-            return a - b;
-          } catch (error) {
-            console.error(error);
-            return 0;
-          }
-        })
-      );
-    }
+        if (sortData[schema.name]) {
+          a = sortData[schema.name][formItem1.name] ?? 99;
+          b = sortData[schema.name][formItem2.name] ?? 99;
+        }
+
+        // 필수 필드라면 반드시 맨 앞으로
+        if (formItem1.isRequired) a = -1;
+        if (formItem2.isRequired) b = -1;
+
+        try {
+          return a - b;
+        } catch (error) {
+          console.error(error);
+          return 0;
+        }
+      })
+    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValue, database]);
@@ -231,12 +222,6 @@ export default function FormModal(
       }
     >
       <Stack>
-        {/* 필수 필드 */}
-        {requiredInputList.map((formItem, index) => (
-          <Box key={index}>{formItem.element}</Box>
-        ))}
-
-        {/* 선택 필드 */}
         {inputList.map((formItem, index) => (
           <Box key={index}>{formItem.element}</Box>
         ))}

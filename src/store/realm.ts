@@ -37,10 +37,6 @@ export type RealmState = {
   loggedIn: boolean;
   error: RealmError | null;
   database: Record<string, any[]>;
-  withCodeCollectionList: string[];
-  textAreaSchemaKeyList: string[];
-  readonlySchemaKeyList: string[];
-  disabledSchemaKeyList: string[];
 };
 
 const initialState: RealmState = {
@@ -49,10 +45,6 @@ const initialState: RealmState = {
   loggedIn: false,
   error: null,
   database: {},
-  withCodeCollectionList: ["warehouse"],
-  textAreaSchemaKeyList: ["remark"],
-  readonlySchemaKeyList: ["create_by", "create_dttm", "save_by", "save_dttm"],
-  disabledSchemaKeyList: ["owner_id"],
 };
 
 // 데이터베이스 자동 로그인

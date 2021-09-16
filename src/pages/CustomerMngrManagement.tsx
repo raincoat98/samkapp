@@ -14,7 +14,7 @@ export default function CustomerMngrManagement() {
       title="거래처 담당자 관리"
       schema={customer_mngrSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

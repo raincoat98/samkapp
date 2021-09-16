@@ -9,6 +9,17 @@ export type schemaType = {
   primaryKey: string;
 };
 
+// 예외처리
+export const withCodeCollectionList = ["warehouse"];
+export const textAreaSchemaKeyList = ["remark"];
+export const readonlySchemaKeyList = [
+  "create_by",
+  "create_dttm",
+  "save_by",
+  "save_dttm",
+];
+export const disabledSchemaKeyList = ["owner_id"];
+
 export function isReadOnly(key: string) {
   return key.startsWith("_");
 }

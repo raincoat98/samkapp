@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../store";
 import { menu } from "utils/icons";
 import {
   useStyleConfig,

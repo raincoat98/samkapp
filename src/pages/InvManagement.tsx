@@ -14,7 +14,7 @@ export default function InvManagement() {
       title="재고 관리"
       schema={invSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

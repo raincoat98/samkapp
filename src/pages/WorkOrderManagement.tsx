@@ -14,7 +14,7 @@ export default function WorkOrderManagement() {
       title="작업 지시 관리"
       schema={work_orderSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

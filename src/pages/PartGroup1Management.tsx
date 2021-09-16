@@ -14,7 +14,7 @@ export default function PartGrou1Management() {
       title="중분류 관리"
       schema={part_group_1Schema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

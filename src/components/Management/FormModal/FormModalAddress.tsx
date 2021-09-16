@@ -1,5 +1,5 @@
 import React from "react";
-import DaumAddressPopup from "components/base/DaumAddressPopup";
+import DaumAddressPopup from "components/DaumAddressPopup";
 import { useTranslation } from "react-i18next";
 import { address } from "realmObjectModes";
 import {

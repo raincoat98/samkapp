@@ -14,7 +14,7 @@ export default function WarehouseManagement() {
       title="창고 관리"
       schema={warehouseSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

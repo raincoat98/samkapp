@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
+import { useDispatch } from "react-redux";
 import {
   setCollectionData,
   insertData,
@@ -8,26 +7,27 @@ import {
   deleteMany,
 } from "store/realm";
 import { useTranslation } from "react-i18next";
-import { schemaType, schemaToColums } from "utils/realmUtils";
-import PageContainer from "components/base/PageContainer";
+import {
+  schemaType,
+  schemaToColums,
+  readonlySchemaKeyList,
+  disabledSchemaKeyList,
+} from "utils/realmUtils";
+import PageContainer from "components/PageContainer";
 import FormModal from "components/Management/FormModal";
-import TableComponent from "components/base/TableComponent";
+import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { Row } from "react-table";
 import { useDisclosure, Flex, Select, Button } from "@chakra-ui/react";
-import {
-  BaseButtonGroups,
-  DeleteButton,
-  AddButton,
-} from "components/base/Buttons";
+import { BaseButtonGroups, DeleteButton, AddButton } from "components/Buttons";
 
 export default function Management(props: {
   title: string;
   collectionName: string;
   schema: schemaType;
   filterList?: { schema: schemaType; data: any[] }[];
-  tableData: any[];
+  tableProps: TableComponentProps;
 }) {
-  const { title, collectionName, schema, filterList, tableData } = props;
+  const { title, collectionName, schema, filterList, tableProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -63,14 +63,6 @@ export default function Management(props: {
     []
   );
 
-  // 테이블 헤더에서 제외할 것들
-  const disabledSchemaKeyList = useSelector(
-    (state: RootState) => state.realm.disabledSchemaKeyList
-  );
-  const readonlySchemaKeyList = useSelector(
-    (state: RootState) => state.realm.readonlySchemaKeyList
-  );
-
   // 테이블 데이터
   const columns = schemaToColums({
     schema,
@@ -89,7 +81,7 @@ export default function Management(props: {
   let mainTable: any;
   mainTable = TableComponent({
     columns,
-    data: tableData,
+    data: tableProps.data,
     onRowClick: onTableRowClick,
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {

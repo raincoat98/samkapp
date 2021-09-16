@@ -2,6 +2,7 @@ import { RootState } from "store";
 import { useSelector, useDispatch } from "react-redux";
 import { setCollectionData } from "store/realm";
 import { Select } from "@chakra-ui/react";
+import { withCodeCollectionList } from "utils/realmUtils";
 
 export default function FormModalRefExternal(props: {
   collectionName: string;
@@ -12,9 +13,6 @@ export default function FormModalRefExternal(props: {
 
   const dispatch = useDispatch();
   const database = useSelector((state: RootState) => state.realm.database);
-  const withCodeCollectionList = useSelector(
-    (state: RootState) => state.realm.withCodeCollectionList
-  );
 
   return (
     <Select

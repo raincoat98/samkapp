@@ -1,5 +1,5 @@
-import PageContainer from "../../components/base/PageContainer";
-import ModalComponent from "../../components/base/ModalComponent";
+import PageContainer from "../../components/PageContainer";
+import ModalComponent from "../../components/ModalComponent";
 import Profile from "./Profile";
 import LicensesList from "./LicensesList";
 import {

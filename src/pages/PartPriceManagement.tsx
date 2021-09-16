@@ -14,7 +14,7 @@ export default function PartTypeManagement() {
       title="품목 가격 관리"
       schema={part_priceSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

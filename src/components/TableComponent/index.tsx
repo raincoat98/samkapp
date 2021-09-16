@@ -34,8 +34,8 @@ const INDEX_COLUMN = "_index";
 const SELECTION_COLUMN = "_selection";
 
 export type TableComponentProps = {
-  columns: Array<Column>;
-  data: Array<any>;
+  columns?: Array<Column>;
+  data?: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
   onRowClick?: Function;
@@ -61,8 +61,8 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   // React-Table
-  const memoColumns = React.useMemo(() => columns, [columns]);
-  const memoData = React.useMemo(() => data, [data]);
+  const memoColumns = React.useMemo(() => columns ?? [], [columns]);
+  const memoData = React.useMemo(() => data ?? [], [data]);
   const tableInstance = useTable(
     {
       columns: memoColumns,

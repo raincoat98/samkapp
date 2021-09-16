@@ -14,7 +14,7 @@ export default function PartTypeManagement() {
       title="품목형태"
       schema={part_typeSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }

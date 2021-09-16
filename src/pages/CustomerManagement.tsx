@@ -14,7 +14,7 @@ export default function CustomerManagement() {
       title="거래처 관리"
       schema={customerSchema}
       collectionName={collectionName}
-      tableData={data ?? []}
+      tableProps={{ data }}
     />
   );
 }
