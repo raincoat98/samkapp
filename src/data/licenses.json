@@ -29,7 +29,7 @@
         "licenseUrl": "https://github.com/testing-library/jest-dom/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@testing-library/react@12.0.0": {
+    "@testing-library/react@12.1.0": {
         "licenses": "MIT",
         "repository": "https://github.com/testing-library/react-testing-library",
         "licenseUrl": "https://github.com/testing-library/react-testing-library/raw/master/LICENSE",
@@ -53,7 +53,7 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/node@16.7.6": {
+    "@types/node@16.9.2": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -65,13 +65,13 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/react-table@7.7.2": {
+    "@types/react-table@7.7.3": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "@types/react@17.0.19": {
+    "@types/react@17.0.21": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -89,7 +89,7 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "bson@4.5.1": {
+    "bson@4.5.2": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/mongodb/js-bson",
         "licenseUrl": "https://github.com/mongodb/js-bson/raw/master/LICENSE.md",
@@ -103,11 +103,11 @@
     },
     "framer-motion@4.1.17": {
         "licenses": "MIT",
-        "repository": "https://github.com/framer/motion/",
-        "licenseUrl": "https://github.com/framer/motion//raw/master/LICENSE.md",
+        "repository": "https://github.com/framer/motion",
+        "licenseUrl": "https://github.com/framer/motion/raw/master/LICENSE.md",
         "parents": "my-app"
     },
-    "i18next@20.4.0": {
+    "i18next@20.6.1": {
         "licenses": "MIT",
         "repository": "https://github.com/i18next/i18next",
         "licenseUrl": "https://github.com/i18next/i18next/raw/master/LICENSE",
@@ -121,8 +121,8 @@
     },
     "npm-license-crawler@0.2.1": {
         "licenses": "BSD-3-Clause",
-        "repository": "http://github.com/mwittig/npm-license-crawler",
-        "licenseUrl": "http://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
+        "repository": "https://github.com/mwittig/npm-license-crawler",
+        "licenseUrl": "https://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
         "parents": "my-app"
     },
     "react-daum-postcode@2.0.6": {
@@ -137,7 +137,7 @@
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "react-i18next@11.11.4": {
+    "react-i18next@11.12.0": {
         "licenses": "MIT",
         "repository": "https://github.com/i18next/react-i18next",
         "licenseUrl": "https://github.com/i18next/react-i18next/raw/master/LICENSE",
@@ -145,17 +145,17 @@
     },
     "react-icons@4.2.0": {
         "licenses": "MIT",
-        "repository": "https://github.com:react-icons/react-icons",
-        "licenseUrl": "https://github.com:react-icons/react-icons/raw/master/LICENSE",
+        "repository": "https://github.com/react-icons/react-icons",
+        "licenseUrl": "https://github.com/react-icons/react-icons/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "react-redux@7.2.4": {
+    "react-redux@7.2.5": {
         "licenses": "MIT",
-        "repository": "github:reduxjs/react-redux",
-        "licenseUrl": "github:reduxjs/react-redux",
+        "repository": "https://github.com/reduxjs/react-redux",
+        "licenseUrl": "https://github.com/reduxjs/react-redux/raw/master/LICENSE.md",
         "parents": "my-app"
     },
-    "react-router-dom@5.2.1": {
+    "react-router-dom@5.3.0": {
         "licenses": "MIT",
         "repository": "https://github.com/ReactTraining/react-router",
         "licenseUrl": "https://github.com/ReactTraining/react-router",
@@ -197,7 +197,7 @@
         "licenseUrl": "https://github.com/rt2zz/redux-persist/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "typescript@4.4.2": {
+    "typescript@4.4.3": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/Microsoft/TypeScript",
         "licenseUrl": "https://github.com/Microsoft/TypeScript/raw/master/LICENSE.txt",
@@ -215,7 +215,7 @@
         "licenseUrl": "https://github.com/GoogleChrome/web-vitals/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "xlsx@0.17.1": {
+    "xlsx@0.17.2": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/SheetJS/sheetjs",
         "licenseUrl": "https://github.com/SheetJS/sheetjs/raw/master/LICENSE",
