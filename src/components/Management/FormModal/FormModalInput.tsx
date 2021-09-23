@@ -75,7 +75,10 @@ export default function FormModalInput(props: {
     case "date": {
       // 날짜
       if (defaultValue) {
+        // 기존값이 있을 경우
         inputProps.defaultValue = moment(defaultValue).format("YYYY-MM-DD");
+      } else {
+        inputProps.min = moment().format("YYYY-MM-DD");
       }
 
       element = <Input type="date" {...inputProps} />;
