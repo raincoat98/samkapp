@@ -94,6 +94,16 @@ export default function Management(props: {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     ),
+    color: {
+      priorities: {
+        emergency: "white",
+      },
+    },
+    bgColor: {
+      priorities: {
+        emergency: "red.500",
+      },
+    },
   });
 
   const refreshData = React.useCallback(async () => {

@@ -39,11 +39,11 @@ export type TableComponentProps = {
   useIndex?: boolean;
   stateReducer?: any;
   onRowClick?: Function;
+  color?: Record<string, Record<string, string>>;
+  bgColor?: Record<string, Record<string, string>>;
 };
 
 export default function TableComponent(props: TableComponentProps) {
-  const { columns, data, useIndex, stateReducer, onRowClick } = props;
-
   // 가로모드
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
@@ -61,13 +61,13 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   // React-Table
-  const memoColumns = React.useMemo(() => columns ?? [], [columns]);
-  const memoData = React.useMemo(() => data ?? [], [data]);
+  const memoColumns = React.useMemo(() => props.columns ?? [], [props.columns]);
+  const memoData = React.useMemo(() => props.data ?? [], [props.data]);
   const tableInstance = useTable(
     {
       columns: memoColumns,
       data: memoData,
-      stateReducer,
+      stateReducer: props.stateReducer,
       autoResetHiddenColumns: false,
       initialState: {
         // @ts-ignore
@@ -99,7 +99,7 @@ export default function TableComponent(props: TableComponentProps) {
         });
 
         // 인덱스 컬럼
-        if (useIndex) {
+        if (props.useIndex) {
           optionColumns.push({
             id: INDEX_COLUMN,
             Header: <span>인덱스</span>,
@@ -199,11 +199,42 @@ export default function TableComponent(props: TableComponentProps) {
       <Tbody {...getTableBodyProps()}>
         {page.map((row: Row) => {
           prepareRow(row);
+
+          // 글자 색
+          let color = "";
+          if (props.color) {
+            const origData: Record<string, any> = row.original;
+            for (const key in origData) {
+              if (props.color[key]) {
+                const item = props.color[key];
+                for (const key2 in item) {
+                  if (origData[key] === key2) color = item[key2];
+                }
+              }
+            }
+          }
+
+          // 배경색
+          let bgColor = "";
+          if (props.bgColor) {
+            const origData: Record<string, any> = row.original;
+            for (const key in origData) {
+              if (props.bgColor[key]) {
+                const item = props.bgColor[key];
+                for (const key2 in item) {
+                  if (origData[key] === key2) bgColor = item[key2];
+                }
+              }
+            }
+          }
+
           return (
             <Tr
               {...row.getRowProps()}
+              color={color}
+              bgColor={bgColor}
               _hover={{
-                background: backgroundColorSelected,
+                background: bgColor ? "" : backgroundColorSelected,
               }}
             >
               {row.cells.map((cell, index) => (
@@ -211,9 +242,7 @@ export default function TableComponent(props: TableComponentProps) {
                   cell={cell}
                   onClick={(event: any) => {
                     if (cell.column.id === SELECTION_COLUMN) return;
-                    if (onRowClick) {
-                      onRowClick({ event, row });
-                    }
+                    if (props.onRowClick) props.onRowClick({ event, row });
                   }}
                   key={index}
                 />
