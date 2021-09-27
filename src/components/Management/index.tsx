@@ -17,17 +17,35 @@ import PageContainer from "components/PageContainer";
 import FormModal from "components/Management/FormModal";
 import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { Row } from "react-table";
-import { useDisclosure, Flex, Select, Button } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Flex,
+  Select,
+  Button,
+  Tabs,
+  TabList,
+  Tab,
+} from "@chakra-ui/react";
 import { BaseButtonGroups, DeleteButton, AddButton } from "components/Buttons";
 
 export default function Management(props: {
   title: string;
   collectionName: string;
   schema: schemaType;
+  tabList?: string[];
+  onTabChange?: Function;
   filterList?: { schema: schemaType; data: any[] }[];
   tableProps: TableComponentProps;
 }) {
-  const { title, collectionName, schema, filterList, tableProps } = props;
+  const {
+    title,
+    collectionName,
+    schema,
+    tabList,
+    onTabChange,
+    filterList,
+    tableProps,
+  } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -202,6 +220,23 @@ export default function Management(props: {
         }
       >
         <Flex direction="column" width="100%" height="100%">
+          {/* 탭 추가 */}
+          {Array.isArray(tabList) ? (
+            <Tabs
+              onChange={(tabIndex) => {
+                if (onTabChange) onTabChange(tabIndex);
+              }}
+            >
+              <TabList>
+                {tabList?.map((tab, index) => (
+                  <Tab key={index}>{tab}</Tab>
+                ))}
+              </TabList>
+            </Tabs>
+          ) : (
+            ""
+          )}
+          {/* 필터 추가 */}
           {Array.isArray(filterList) ? (
             <Flex>
               {filterList?.map((filter, index) => (
