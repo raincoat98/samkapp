@@ -9,9 +9,9 @@ export default function WorkOrderManagement() {
   const collectionName = "work_order";
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  const data = useSelector(
-    (state: RootState) => state.realm.database[collectionName]
-  );
+  const data =
+    useSelector((state: RootState) => state.realm.database[collectionName]) ||
+    [];
 
   // 현재 작업지시 목록
   const latestDataList = data.filter((item) => {
