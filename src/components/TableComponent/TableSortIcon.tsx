@@ -6,7 +6,7 @@ export default function TableSortIcon(props: {
   isSortedDesc: boolean;
 }) {
   return (
-    <chakra.span pl="2">
+    <chakra.span pl="2" display="inline-flex">
       {/* @ts-ignore */}
       {props.isSorted ? (
         // @ts-ignore

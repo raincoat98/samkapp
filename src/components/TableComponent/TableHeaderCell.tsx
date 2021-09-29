@@ -1,5 +1,5 @@
 import { HeaderGroup, TableHeaderProps } from "react-table";
-import { Th } from "@chakra-ui/react";
+import { Th, Heading } from "@chakra-ui/react";
 import TableSortIcon from "./TableSortIcon";
 
 export default function TableHeaderCell(
@@ -15,7 +15,10 @@ export default function TableHeaderCell(
       _notFirst={{ borderLeftWidth: "1px" }}
       {...rest}
     >
-      {column.render("Header")}
+      <Heading as="h6" size="xs" display="inline-block">
+        {column.render("Header")}
+      </Heading>
+
       {!excludeIds?.includes(column.id) ? (
         <TableSortIcon
           // @ts-ignore
