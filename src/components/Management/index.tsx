@@ -90,12 +90,10 @@ export default function Management(props: {
     exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
   });
   Object.keys(columns).forEach((key) => {
-    if (Object.prototype.hasOwnProperty.call(columns, key)) {
-      const header = translate(
-        `${schema.name}.properties.${columns[Number(key)].accessor}`
-      );
-      columns[Number(key)].Header = header;
-    }
+    const header = translate(
+      `${schema.name}.properties.${columns[Number(key)].Header}`
+    );
+    columns[Number(key)].Header = header;
   });
 
   // 테이블 초기화
