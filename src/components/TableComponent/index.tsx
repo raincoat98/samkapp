@@ -1,6 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "store";
+import colors from "utils/colors";
 import {
   useTable,
   useRowSelect,
@@ -51,16 +50,13 @@ export default function TableComponent(props: TableComponentProps) {
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
   // 색상 가져오기
-  const background = useSelector(
-    (state: RootState) => state.system.color.background
+  const defaultBgColor = useColorModeValue(
+    colors.background.light,
+    colors.background.dark
   );
-  const backgroundSelected = useSelector(
-    (state: RootState) => state.system.color.backgroundSelected
-  );
-  const defaultBgColor = useColorModeValue(background.light, background.dark);
   const defaultBgColorSelected = useColorModeValue(
-    backgroundSelected.light,
-    backgroundSelected.dark
+    colors.backgroundSelected.light,
+    colors.backgroundSelected.dark
   );
 
   // React-Table

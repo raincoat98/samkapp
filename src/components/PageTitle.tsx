@@ -1,6 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store";
+import { useDispatch } from "react-redux";
 import { menu } from "utils/icons";
+import colors from "utils/colors";
 import {
   useStyleConfig,
   chakra,
@@ -20,8 +20,9 @@ export default function PageTitle(props: HeadingProps) {
   const dispatch = useDispatch();
 
   // 색상 가져오기
-  const background = useSelector(
-    (state: RootState) => state.system.color.background
+  const bgColor = useColorModeValue(
+    colors.background.light,
+    colors.background.dark
   );
 
   return (
@@ -33,7 +34,7 @@ export default function PageTitle(props: HeadingProps) {
       variant="page-title"
       padding="3"
       borderBottomWidth="1px"
-      bg={useColorModeValue(background.light, background.dark)}
+      bgColor={bgColor}
       transition={"var(--chakra-transition-duration-normal)"}
       userSelect="none"
       zIndex="sticky"
