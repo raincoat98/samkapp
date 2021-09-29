@@ -14,7 +14,7 @@ import {
   disabledSchemaKeyList,
 } from "utils/realmUtils";
 import PageContainer from "components/PageContainer";
-import FormModal from "components/Management/FormModal";
+import FormModal, { autofillType } from "components/Management/FormModal";
 import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { Row } from "react-table";
 import {
@@ -33,6 +33,7 @@ export default function Management(props: {
   collectionName: string;
   schema: schemaType;
   tabList?: string[];
+  autofill?: autofillType;
   onTabChange?: Function;
   filterList?: { schema: schemaType; data: any[] }[];
   tableProps: TableComponentProps;
@@ -42,6 +43,7 @@ export default function Management(props: {
     collectionName,
     schema,
     tabList,
+    autofill,
     onTabChange,
     filterList,
     tableProps,
@@ -59,7 +61,7 @@ export default function Management(props: {
   // 현재 수정중인 데이터
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
-  const [modalMode, setModalMode] = React.useState("");
+  const [modalMode, setModalMode] = React.useState("insert");
 
   const onTableChange = React.useCallback(
     (props: { table: any; state: any; action: { type: string } }) => {
@@ -193,6 +195,7 @@ export default function Management(props: {
         schema={schema}
         mode={modalMode}
         initialValue={selected}
+        autofill={autofill}
         isOpen={modalDisclosure.isOpen}
         onChange={onFormModalChange}
         onClose={modalDisclosure.onClose}

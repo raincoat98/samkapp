@@ -21,18 +21,21 @@ export type formItem = {
   isRequired?: boolean;
 };
 
+export type autofillType = Record<string, { value: any; disabled?: boolean }>;
+
 export default function FormModal(
   props: ModalProps & {
     initialValue: Record<string, any>;
     schema: schemaType;
     mode: "insert" | "update" | string;
+    autofill?: autofillType;
     onChange: Function;
   }
 ) {
   const [editedDocument, setEditedDocument] = React.useState<
     Record<string, any>
   >({});
-  const { onChange, initialValue, schema, mode } = props;
+  const { onChange, initialValue, autofill, schema, mode } = props;
 
   // 필드 값
   const [inputList, setInputList] = React.useState<formItem[]>([]);
@@ -60,8 +63,6 @@ export default function FormModal(
         continue;
 
       let type = schema.properties[key];
-      let defaultValue = initialValue ? initialValue[key] : undefined;
-      let element: JSX.Element;
 
       // ? 로 끝나는 것은 필수값이 아님
       let isRequired = type.endsWith("?") ? false : true;
@@ -70,9 +71,29 @@ export default function FormModal(
       }
 
       // 읽기 전용 값인지 판단
-      const isReadonly = !!readonlySchemaKeyList.filter(
+      let isReadonly = !!readonlySchemaKeyList.filter(
         (readonlyKey) => readonlyKey === key
       ).length;
+
+      // 비활성화된 값인지 여부
+      let disabled = false;
+
+      // 기본값 설정
+      let defaultValue = initialValue ? initialValue[key] : undefined;
+      if (mode === "insert") {
+        for (const autofillKey in autofill) {
+          if (key === autofillKey) {
+            defaultValue = autofill[autofillKey].value;
+            disabled = autofill[autofillKey].disabled ?? false;
+            setEditedDocument((state) => ({
+              ...state,
+              [autofillKey]: autofill[autofillKey].value,
+            }));
+          }
+        }
+      }
+
+      let element: JSX.Element;
 
       if (!isReadonly) {
         switch (type) {
@@ -101,6 +122,7 @@ export default function FormModal(
                     isTextarea={textAreaSchemaKeyList.includes(key)}
                     isRequired={isRequired}
                     isReadOnly={mode === "update" && key === schema.primaryKey}
+                    isDisabled={disabled}
                     isURL={key.includes("homepage") || key.includes("url")}
                   />
                 );

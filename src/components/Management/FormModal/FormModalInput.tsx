@@ -23,6 +23,7 @@ export default function FormModalInput(props: {
   onChange: Function;
   isExternal?: boolean;
   isRequired?: boolean;
+  isDisabled?: boolean;
   isReadOnly?: boolean;
   isTextarea?: boolean;
   isURL?: boolean; // only string
@@ -34,6 +35,7 @@ export default function FormModalInput(props: {
     onChange,
     isExternal,
     isRequired,
+    isDisabled,
     isReadOnly,
     isTextarea,
     isURL,
@@ -42,6 +44,7 @@ export default function FormModalInput(props: {
   const inputProps: InputProps = {
     defaultValue,
     onChange: (event) => onChange(event.target.value),
+    isDisabled,
     isReadOnly,
     variant: isReadOnly ? "filled" : "outline",
     placeholder: placeholders[name] ?? "",
@@ -122,7 +125,7 @@ export default function FormModalInput(props: {
     </FormControl>
   );
 
-  return isReadOnly ? (
+  return isReadOnly || isDisabled ? (
     <Tooltip label="이 값은 수정할 수 없습니다" placement="top">
       {formControl}
     </Tooltip>
