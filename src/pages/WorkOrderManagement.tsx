@@ -25,7 +25,7 @@ export default function WorkOrderManagement() {
   const oldDataList = data.filter((item) => {
     if (item?.plan_date) {
       return moment(item.plan_date).isBefore(Date.now());
-    } else return false;
+    } else return true;
   });
 
   // 오늘 작업지시 인덱스
