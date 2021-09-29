@@ -1,4 +1,5 @@
 import { Column } from "react-table";
+import moment from "moment";
 
 export type Document = Record<string, any>;
 
@@ -40,16 +41,14 @@ export function schemaToColums(props: {
   const reqProperties: any[] = [];
   const properties: any[] = [];
   for (const key in schema.properties) {
-    if (Object.prototype.hasOwnProperty.call(schema.properties, key)) {
-      // 제외해야 할 키일 때 다음 항목으로
-      if (exclude?.includes(key)) continue;
+    // 제외해야 할 키일 때 다음 항목으로
+    if (exclude?.includes(key)) continue;
 
-      const type = schema.properties[key];
-      if (type.endsWith("?")) {
-        properties.push(key);
-      } else {
-        reqProperties.push(key);
-      }
+    const type = schema.properties[key];
+    if (type.endsWith("?")) {
+      properties.push(key);
+    } else {
+      reqProperties.push(key);
     }
   }
 
@@ -73,7 +72,13 @@ export function schemaToColums(props: {
         break;
       }
       case "date": {
-        continue;
+        accessor = function (originalRow: any, rowIndex: number) {
+          return originalRow[key]
+            ? moment(originalRow[key]).format("YYYY-MM-DD")
+            : "";
+        };
+        break;
+        // continue;
       }
       case "objectId": {
         continue;

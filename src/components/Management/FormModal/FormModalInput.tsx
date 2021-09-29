@@ -84,6 +84,8 @@ export default function FormModalInput(props: {
         inputProps.min = moment().format("YYYY-MM-DD");
       }
 
+      inputProps.onChange = (event) => onChange(event.target.valueAsDate);
+
       element = <Input type="date" {...inputProps} />;
       break;
     }
