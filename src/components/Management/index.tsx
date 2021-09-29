@@ -19,6 +19,7 @@ import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { Row } from "react-table";
 import {
   useDisclosure,
+  useColorModeValue,
   Flex,
   Select,
   Button,
@@ -114,14 +115,21 @@ export default function Management(props: {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     ),
-    color: {
-      priorities: {
-        emergency: "white",
+    rowStyle: {
+      color: {
+        priorities: {
+          emergency: useColorModeValue("white", "white"),
+        },
       },
-    },
-    bgColor: {
-      priorities: {
-        emergency: "red.500",
+      bgColor: {
+        priorities: {
+          emergency: useColorModeValue("red.300", "red.800"),
+        },
+      },
+      bgColorHover: {
+        priorities: {
+          emergency: useColorModeValue("red.400", "red.700"),
+        },
       },
     },
   });

@@ -39,8 +39,11 @@ export type TableComponentProps = {
   useIndex?: boolean;
   stateReducer?: any;
   onRowClick?: Function;
-  color?: Record<string, Record<string, string>>;
-  bgColor?: Record<string, Record<string, string>>;
+  rowStyle?: {
+    color?: Record<string, Record<string, any>>;
+    bgColor?: Record<string, Record<string, any>>;
+    bgColorHover?: Record<string, Record<string, any>>;
+  };
 };
 
 export default function TableComponent(props: TableComponentProps) {
@@ -54,8 +57,8 @@ export default function TableComponent(props: TableComponentProps) {
   const backgroundSelected = useSelector(
     (state: RootState) => state.system.color.backgroundSelected
   );
-  const backgroundColor = useColorModeValue(background.light, background.dark);
-  const backgroundColorSelected = useColorModeValue(
+  const defaultBgColor = useColorModeValue(background.light, background.dark);
+  const defaultBgColorSelected = useColorModeValue(
     backgroundSelected.light,
     backgroundSelected.dark
   );
@@ -182,7 +185,7 @@ export default function TableComponent(props: TableComponentProps) {
         }}
         zIndex="docked"
         boxShadow="base"
-        bg={backgroundColor}
+        bg={defaultBgColor}
       >
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()}>
@@ -200,29 +203,37 @@ export default function TableComponent(props: TableComponentProps) {
         {page.map((row: Row) => {
           prepareRow(row);
 
-          // 글자 색
-          let color = "";
-          if (props.color) {
-            const origData: Record<string, any> = row.original;
+          // rowStyle 적용
+          const rowStyle = props.rowStyle;
+          const origData: Record<string, any> = row.original;
+          let color: any;
+          let bgColor: any;
+          let bgColorHover: any;
+
+          if (rowStyle) {
             for (const key in origData) {
-              if (props.color[key]) {
-                const item = props.color[key];
-                for (const key2 in item) {
-                  if (origData[key] === key2) color = item[key2];
+              // 글자 색상
+              if (rowStyle.color) {
+                const item = rowStyle.color[key];
+                for (const colorKey in item) {
+                  if (origData[key] === colorKey) color = item[colorKey];
                 }
               }
-            }
-          }
 
-          // 배경색
-          let bgColor = "";
-          if (props.bgColor) {
-            const origData: Record<string, any> = row.original;
-            for (const key in origData) {
-              if (props.bgColor[key]) {
-                const item = props.bgColor[key];
-                for (const key2 in item) {
-                  if (origData[key] === key2) bgColor = item[key2];
+              // 배경 색상
+              if (rowStyle.bgColor) {
+                const item = rowStyle.bgColor[key];
+                for (const bgColorkey in item) {
+                  if (origData[key] === bgColorkey) bgColor = item[bgColorkey];
+                }
+              }
+
+              // 배경 색상 hover
+              if (rowStyle.bgColorHover) {
+                const item = rowStyle.bgColorHover[key];
+                for (const bgColorHoverKey in item) {
+                  if (origData[key] === bgColorHoverKey)
+                    bgColorHover = item[bgColorHoverKey];
                 }
               }
             }
@@ -234,7 +245,9 @@ export default function TableComponent(props: TableComponentProps) {
               color={color}
               bgColor={bgColor}
               _hover={{
-                background: bgColor ? "" : backgroundColorSelected,
+                background: bgColorHover
+                  ? bgColorHover
+                  : defaultBgColorSelected,
               }}
             >
               {row.cells.map((cell, index) => (
