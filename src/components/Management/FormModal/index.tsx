@@ -10,6 +10,7 @@ import {
 import FormModalInput from "./FormModalInput";
 import FormModalWorkOrderPriorities from "./FormModalWorkOrderPriorities";
 import FormModalAddress from "./FormModalAddress";
+import FormModalBillsOfMaterial from "./FormModalBillsOfMaterial";
 import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
 import sortData from "data/sortData";
@@ -21,13 +22,15 @@ export type formItem = {
   isRequired?: boolean;
 };
 
+export type formModalModeType = "insert" | "update";
+
 export type autofillType = Record<string, { value: any; disabled?: boolean }>;
 
 export default function FormModal(
   props: ModalProps & {
     initialValue: Record<string, any>;
     schema: schemaType;
-    mode: "insert" | "update" | string;
+    mode: formModalModeType;
     autofill?: autofillType;
     onChange: Function;
   }
@@ -63,6 +66,10 @@ export default function FormModal(
         continue;
 
       let type = schema.properties[key];
+
+      // ? 로 끝나는 것은 필수값이 아님
+      let isArray = type.endsWith("[]");
+      if (isArray) type = type.replaceAll("[]", "");
 
       // ? 로 끝나는 것은 필수값이 아님
       let isRequired = type.endsWith("?") ? false : true;
@@ -135,6 +142,18 @@ export default function FormModal(
           case "objectId": {
             console.log("처리되지 않은", key, type);
             continue;
+          }
+          // BOM (필요자재)
+          case "part_bills_of_material": {
+            isRequired = false;
+            element = (
+              <FormModalBillsOfMaterial
+                defaultValue={defaultValue ?? []}
+                onChange={(value: any) => editData({ key, value })}
+              />
+            );
+
+            break;
           }
           // 주소
           case "address": {

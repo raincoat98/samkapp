@@ -20,6 +20,7 @@ export default function FormModalInput(props: {
   name: string;
   type: "string" | "int" | "date" | "bool" | string;
   defaultValue: any;
+  labelWidth?: string | number;
   onChange: Function;
   isExternal?: boolean;
   isRequired?: boolean;
@@ -28,10 +29,11 @@ export default function FormModalInput(props: {
   isTextarea?: boolean;
   isURL?: boolean; // only string
 }) {
-  const {
+  let {
     name,
     type,
     defaultValue,
+    labelWidth,
     onChange,
     isExternal,
     isRequired,
@@ -40,6 +42,8 @@ export default function FormModalInput(props: {
     isTextarea,
     isURL,
   } = props;
+
+  if (labelWidth === undefined) labelWidth = "100px";
 
   const inputProps: InputProps = {
     defaultValue,
@@ -54,65 +58,65 @@ export default function FormModalInput(props: {
 
   const { t: translate } = useTranslation();
 
-  switch (type) {
-    case "string": {
-      // 문자열
-      if (!isTextarea) {
-        if (isURL) {
-          element = <FormModalURLInput inputProps={{ ...inputProps }} />;
+  if (isExternal) {
+    element = (
+      <FormModalRefExternal
+        collectionName={type}
+        defaultValue={defaultValue?.toString()}
+        onChange={(value: string) => onChange(value)}
+      />
+    );
+  } else {
+    switch (type) {
+      case "string": {
+        // 문자열
+        if (!isTextarea) {
+          if (isURL) {
+            element = <FormModalURLInput inputProps={{ ...inputProps }} />;
+          } else {
+            element = <Input type="text" {...inputProps} />;
+          }
         } else {
-          element = <Input type="text" {...inputProps} />;
+          const textareaProps: TextareaProps = inputProps as TextareaProps;
+
+          element = <Textarea type="text" {...textareaProps} />;
         }
-      } else {
-        const textareaProps: TextareaProps = inputProps as TextareaProps;
-
-        element = <Textarea type="text" {...textareaProps} />;
+        break;
       }
-      break;
-    }
-    case "int": {
-      // 숫자
-      element = <Input type="number" {...inputProps} />;
-      break;
-    }
-    case "date": {
-      // 날짜
-      if (defaultValue) {
-        // 기존값이 있을 경우
-        inputProps.defaultValue = moment(defaultValue).format("YYYY-MM-DD");
-      } else {
-        inputProps.min = moment().format("YYYY-MM-DD");
+      case "int": {
+        // 숫자
+        element = <Input type="number" {...inputProps} />;
+        break;
       }
+      case "date": {
+        // 날짜
+        if (defaultValue) {
+          // 기존값이 있을 경우
+          inputProps.defaultValue = moment(defaultValue).format("YYYY-MM-DD");
+        } else {
+          inputProps.min = moment().format("YYYY-MM-DD");
+        }
 
-      inputProps.onChange = (event) => onChange(event.target.valueAsDate);
+        inputProps.onChange = (event) => onChange(event.target.valueAsDate);
 
-      element = <Input type="date" {...inputProps} />;
-      break;
-    }
-    // 불리언
-    case "bool": {
-      const switchProps: SwitchProps = inputProps as SwitchProps;
+        element = <Input type="date" {...inputProps} />;
+        break;
+      }
+      // 불리언
+      case "bool": {
+        const switchProps: SwitchProps = inputProps as SwitchProps;
 
-      delete switchProps.defaultValue;
-      delete switchProps.variant;
+        delete switchProps.defaultValue;
+        delete switchProps.variant;
 
-      switchProps.defaultChecked = defaultValue ? true : false;
-      switchProps.onChange = (event) => onChange(event.target.checked);
+        switchProps.defaultChecked = defaultValue ? true : false;
+        switchProps.onChange = (event) => onChange(event.target.checked);
 
-      element = <Switch {...switchProps} />;
-      break;
-    }
-    // 기본값
-    default: {
-      if (isExternal) {
-        element = (
-          <FormModalRefExternal
-            collectionName={type}
-            defaultValue={defaultValue?.toString()}
-            onChange={(value: string) => onChange(value)}
-          />
-        );
-      } else {
+        element = <Switch {...switchProps} />;
+        break;
+      }
+      // 기본값
+      default: {
         element = <Input {...inputProps} />;
       }
     }
@@ -120,7 +124,7 @@ export default function FormModalInput(props: {
 
   const formControl = (
     <FormControl isRequired={isRequired} display="flex" alignItems="center">
-      <FormLabel minWidth="100px" marginBottom={0}>
+      <FormLabel minWidth={labelWidth} marginBottom={0}>
         {translate(`${name}`)}
       </FormLabel>
       <Box flex="1">{element}</Box>

@@ -6,9 +6,14 @@ import {
   AiOutlineUser,
   AiOutlinePieChart,
   AiOutlineDesktop,
-  AiFillPrinter,
   AiOutlineSearch,
   AiOutlineInfoCircle,
+  AiOutlinePlusCircle,
+  AiFillPlusCircle,
+  AiOutlineMinusCircle,
+  AiFillMinusCircle,
+  AiFillPrinter,
+  AiFillDelete,
 } from "react-icons/ai";
 import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
@@ -42,3 +47,11 @@ export const desktop = AiOutlineDesktop;
 export const bussiness = IoBusinessOutline;
 export const fax = AiFillPrinter;
 export const phone = FaPhoneAlt;
+
+export const plus = AiOutlinePlusCircle;
+export const plusFill = AiFillPlusCircle;
+
+export const minus = AiOutlineMinusCircle;
+export const minusFill = AiFillMinusCircle;
+
+export const deleteFill = AiFillDelete;
