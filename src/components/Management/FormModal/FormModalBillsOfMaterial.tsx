@@ -84,7 +84,7 @@ export default function FormModalBillsOfMaterial(props: {
           {bomList.map((bom, index) => (
             <Stack direction="row" key={index}>
               <FormModalInput
-                name="품목"
+                name="part.properties.part_bills_of_material.part_id"
                 type="part"
                 isExternal={true}
                 defaultValue={bom.part_id}
@@ -94,7 +94,7 @@ export default function FormModalBillsOfMaterial(props: {
                 labelWidth="auto"
               />
               <FormModalInput
-                name="개수"
+                name="part.properties.part_bills_of_material.number"
                 type="int"
                 defaultValue={bom.number}
                 onChange={(value: number) =>

@@ -7,6 +7,10 @@
     "owner_id": "소유자 아이디",
     "part_group_2_id": "대분류",
     "part_name": "품명",
+    "part_bills_of_material": {
+      "part_id": "품목",
+      "number": "개수"
+    },
     "part_type_id": "품목 형태",
     "remark": "비고",
     "save_by": "저장자",
