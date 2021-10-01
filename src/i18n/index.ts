@@ -18,8 +18,10 @@ import work_order_priorities from "./database/work_order_priorities.json";
 const resources = {
   ko: {
     translation: {
+      // 에러 코드
       error_code,
 
+      // 데이터베이스 테이블 번역
       customer_mngr,
       customer,
       inv,
@@ -31,6 +33,11 @@ const resources = {
       warehouse,
       work_order,
       work_order_priorities,
+
+      // 우선순위 등급
+      emergency: "긴급",
+      normal: "보통",
+      other: "기타",
     },
   },
 };

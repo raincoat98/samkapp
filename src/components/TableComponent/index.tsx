@@ -1,5 +1,8 @@
 import React from "react";
 import colors from "utils/colors";
+import TableDataCell from "./TableDataCell";
+import TableHeaderCell from "./TableHeaderCell";
+import TableSearch from "./TableSearch";
 import {
   useTable,
   useRowSelect,
@@ -25,10 +28,8 @@ import {
   Button,
   Checkbox,
 } from "@chakra-ui/react";
-import TableDataCell from "./TableDataCell";
-import TableHeaderCell from "./TableHeaderCell";
-import TableSearch from "./TableSearch";
 
+// 테이블 특수 컬럼 아이디 (인덱스, 체크박스)
 const INDEX_COLUMN = "_index";
 const SELECTION_COLUMN = "_selection";
 
@@ -148,6 +149,7 @@ export default function TableComponent(props: TableComponentProps) {
     />
   );
 
+  // 페이지 이동 요소
   const paginationElement = (
     <Center>
       <Stack direction="column" spacing={3} isInline={true}>
@@ -206,6 +208,7 @@ export default function TableComponent(props: TableComponentProps) {
           let bgColor: any;
           let bgColorHover: any;
 
+          // 열 스타일 지정
           if (rowStyle) {
             for (const key in origData) {
               // 글자 색상
@@ -241,15 +244,14 @@ export default function TableComponent(props: TableComponentProps) {
               color={color}
               bgColor={bgColor}
               _hover={{
-                background: bgColorHover
-                  ? bgColorHover
-                  : defaultBgColorSelected,
+                background: bgColorHover ?? defaultBgColorSelected,
               }}
             >
               {row.cells.map((cell, index) => (
                 <TableDataCell
                   cell={cell}
                   onClick={(event: any) => {
+                    // 체크박스 관리 행일 때는 이벤트 취소
                     if (cell.column.id === SELECTION_COLUMN) return;
                     if (props.onRowClick) props.onRowClick({ event, row });
                   }}

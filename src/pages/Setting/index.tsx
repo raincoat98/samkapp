@@ -58,7 +58,7 @@ export default function Setting() {
             기타
           </Heading>
           <br />
-          <Button onClick={licenseModalDisclosure.onOpen}>
+          <Button onClick={() => licenseModalDisclosure.onOpen()}>
             오픈소스 라이센스
           </Button>
         </Box>

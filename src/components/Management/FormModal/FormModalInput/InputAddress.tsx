@@ -13,7 +13,7 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
-export default function FormModalAddress(props: {
+export default function FormModalInputAddress(props: {
   name: string;
   defaultValue: address;
   onChange: Function;

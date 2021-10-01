@@ -11,11 +11,10 @@ import {
 } from "@chakra-ui/react";
 
 export default function ErrorAlert(props: { error: RealmError }) {
-  const { error } = props;
-
   const { t: translate } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // 오류 감지
   React.useEffect(() => {
     if (props.error) onOpen();
     else onClose();
@@ -30,10 +29,10 @@ export default function ErrorAlert(props: { error: RealmError }) {
     >
       <AlertIcon />
       <AlertTitle mr={2}>
-        {translate(`error_code.${error.errorCode}.message`)}
+        {translate(`error_code.${props.error.errorCode}.message`)}
       </AlertTitle>
       <AlertDescription>
-        {translate(`error_code.${error.errorCode}.guide`)}
+        {translate(`error_code.${props.error.errorCode}.guide`)}
       </AlertDescription>
       <CloseButton
         onClick={() => onClose()}

@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { logout } from "store/realm";
-import { Icon, Heading, Button, Wrap, WrapItem } from "@chakra-ui/react";
 import { user } from "utils/icons";
+import { Icon, Heading, Button, Wrap, WrapItem } from "@chakra-ui/react";
 
 export default function Profile() {
-  const dispatch = useDispatch();
   const userName = useSelector((state: RootState) => state.realm.userName);
+  const dispatch = useDispatch();
 
   return (
     <Wrap align="center" spacing={3}>

@@ -21,30 +21,25 @@ export default function Sidebar(props: {
   onClose: Function;
   isLandscape: boolean;
 }) {
-  const { isOpen, onClose, isLandscape } = props;
-
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
 
   return (
     <Flex
-      display={isOpen ? "flex" : "none"}
+      display={props.isOpen ? "flex" : "none"}
       direction={"column"}
-      w={isLandscape ? 250 : "100%"}
+      w={props.isLandscape ? 250 : "100%"}
       p={5}
+      // 우측 외곽선
       borderRightWidth="1px"
     >
       <Flex>
         <Center>
-          {isLandscape ? (
+          {props.isLandscape ? (
             ""
           ) : (
-            <CloseButton
-              onClick={() => {
-                onClose();
-              }}
-            />
+            <CloseButton onClick={() => props.onClose()} />
           )}
         </Center>
 
@@ -55,7 +50,6 @@ export default function Sidebar(props: {
             pb={5}
             filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
             userSelect="none"
-            alt=""
           />
         </Center>
       </Flex>
@@ -79,7 +73,7 @@ export default function Sidebar(props: {
               <Button
                 onClick={() => {
                   history.push(route.path);
-                  if (!isLandscape) onClose();
+                  if (!props.isLandscape) props.onClose();
                 }}
                 w="100%"
                 _notLast={{ mb: 5 }}
@@ -98,7 +92,7 @@ export default function Sidebar(props: {
         icon={<Icon as={setting} />}
         onClick={() => {
           history.push("/setting");
-          if (!isLandscape) onClose();
+          if (!props.isLandscape) props.onClose();
         }}
         width="fit-content"
         aria-label="설정"

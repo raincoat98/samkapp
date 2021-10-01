@@ -7,11 +7,11 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import FormModalInput from "./FormModalInput";
+import FormModalInput from ".";
 import { part_bills_of_material } from "realmObjectModes";
 import { plusFill, minusFill } from "utils/icons";
 
-export default function FormModalBillsOfMaterial(props: {
+export default function FormModalInputBOM(props: {
   defaultValue: part_bills_of_material[];
   onChange: Function;
 }) {

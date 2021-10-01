@@ -13,24 +13,30 @@ import {
   readonlySchemaKeyList,
   disabledSchemaKeyList,
 } from "utils/realmUtils";
-import PageContainer from "components/PageContainer";
-import FormModal, {
-  autofillType,
-  formModalModeType,
-} from "components/Management/FormModal";
+
+// 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { Row } from "react-table";
+
+// chakra-ui
 import {
   useDisclosure,
   useColorModeValue,
   Flex,
   Select,
+  ButtonGroup,
   Button,
   Tabs,
   TabList,
   Tab,
 } from "@chakra-ui/react";
-import { BaseButtonGroups, DeleteButton, AddButton } from "components/Buttons";
+
+// 관련 컴포넌트
+import PageContainer from "components/PageContainer";
+import FormModal, {
+  autofillType,
+  formModalModeType,
+} from "components/Management/FormModal";
 
 export default function Management(props: {
   title: string;
@@ -92,6 +98,8 @@ export default function Management(props: {
     schema,
     exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
   });
+
+  // 테이블 헤더 번역
   Object.keys(columns).forEach((key) => {
     const header = translate(
       `${schema.name}.properties.${columns[Number(key)].Header}`
@@ -161,7 +169,7 @@ export default function Management(props: {
     modalDisclosure.onOpen();
   }
 
-  async function onFormModalChange(props: {
+  async function onFormModalSave(props: {
     type: string;
     document: Record<string, any>;
     initialValue: Record<string, any>;
@@ -200,13 +208,14 @@ export default function Management(props: {
 
   return (
     <>
+      {/* 입력 다이얼로그 */}
       <FormModal
         schema={schema}
         mode={modalMode}
         initialValue={selected}
         autofill={autofill}
         isOpen={modalDisclosure.isOpen}
-        onChange={onFormModalChange}
+        onSave={onFormModalSave}
         onClose={modalDisclosure.onClose}
         children={null}
       />
@@ -214,21 +223,19 @@ export default function Management(props: {
       <PageContainer
         title={title}
         headerChildren={
-          <BaseButtonGroups>
-            <DeleteButton
-              isDisabled={Object.keys(checkedRows).length === 0}
-              onClick={deleteSelected}
-              title="선택한 항목을 삭제합니다."
-            />
-            <AddButton onClick={prepareInsert} />
+          <ButtonGroup>
             <Button
-              onClick={() => {
-                refreshData();
-              }}
+              onClick={() => deleteSelected()}
+              isDisabled={Object.keys(checkedRows).length === 0}
+              colorScheme="red"
             >
-              새로고침
+              삭제
             </Button>
-          </BaseButtonGroups>
+            <Button onClick={() => prepareInsert()} colorScheme="blue">
+              추가
+            </Button>
+            <Button onClick={() => refreshData()}>새로고침</Button>
+          </ButtonGroup>
         }
       >
         <Flex direction="column" width="100%" height="100%">

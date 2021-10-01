@@ -4,7 +4,7 @@ import { externalLink } from "utils/icons";
 import { url as placeholderURL } from "utils/placeholders";
 import { Box, Icon, Input, InputProps, IconButton } from "@chakra-ui/react";
 
-export default function FormModalURLInput(props: {
+export default function FormModalInputURL(props: {
   inputProps: InputProps | any;
 }) {
   const { inputProps } = props;

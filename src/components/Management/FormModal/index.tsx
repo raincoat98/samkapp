@@ -7,23 +7,23 @@ import {
   disabledSchemaKeyList,
   textAreaSchemaKeyList,
 } from "utils/realmUtils";
-import FormModalInput from "./FormModalInput";
-import FormModalWorkOrderPriorities from "./FormModalWorkOrderPriorities";
-import FormModalAddress from "./FormModalAddress";
-import FormModalBillsOfMaterial from "./FormModalBillsOfMaterial";
-import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
-import FormModalPopup from "./FormModalPopup";
-import sortData from "data/sortData";
+import sortData from "utils/sortData";
 import { Box, Stack, ModalProps } from "@chakra-ui/react";
 
+// FormModal 관련 컴포넌트 가져오기
+import FormModalInput from "./FormModalInput";
+import FormModalAddress from "./FormModalInput/InputAddress";
+import FormModalBillsOfMaterial from "./FormModalInput/InputBOM";
+import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
+import FormModalPopup from "./FormModalPopup";
+
+// 타입 선언
 export type formItem = {
   name: string;
   element?: JSX.Element;
   isRequired?: boolean;
 };
-
 export type formModalModeType = "insert" | "update";
-
 export type autofillType = Record<string, { value: any; disabled?: boolean }>;
 
 export default function FormModal(
@@ -32,13 +32,13 @@ export default function FormModal(
     schema: schemaType;
     mode: formModalModeType;
     autofill?: autofillType;
-    onChange: Function;
+    onSave: Function;
   }
 ) {
+  // 수정한 데이터가 저장되는 객체
   const [editedDocument, setEditedDocument] = React.useState<
     Record<string, any>
   >({});
-  const { onChange, initialValue, autofill, schema, mode } = props;
 
   // 필드 값
   const [inputList, setInputList] = React.useState<formItem[]>([]);
@@ -57,7 +57,7 @@ export default function FormModal(
     setInputList([]);
     setDisabledDataList([]);
 
-    for (const key in schema.properties) {
+    for (const key in props.schema.properties) {
       // 유저가 수정 못하는 값일 경우 다음으로
       if (
         !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
@@ -65,17 +65,16 @@ export default function FormModal(
       )
         continue;
 
-      let type = schema.properties[key];
+      // 프로퍼티 타입
+      let type = props.schema.properties[key];
 
-      // ? 로 끝나는 것은 필수값이 아님
+      // 배열 여부
       let isArray = type.endsWith("[]");
       if (isArray) type = type.replaceAll("[]", "");
 
-      // ? 로 끝나는 것은 필수값이 아님
+      // 필수값 여부
       let isRequired = type.endsWith("?") ? false : true;
-      if (type.endsWith("?")) {
-        type = type.replaceAll("?", "");
-      }
+      if (!isRequired) type = type.replaceAll("?", "");
 
       // 읽기 전용 값인지 판단
       let isReadonly = !!readonlySchemaKeyList.filter(
@@ -86,15 +85,22 @@ export default function FormModal(
       let disabled = false;
 
       // 기본값 설정
-      let defaultValue = initialValue ? initialValue[key] : undefined;
-      if (mode === "insert") {
-        for (const autofillKey in autofill) {
+      let defaultValue = props.initialValue
+        ? props.initialValue[key]
+        : undefined;
+
+      // 새 데이터를 삽일할 때 autofill에 있는 값을 자동으로 채움
+      if (props.mode === "insert") {
+        for (const autofillKey in props.autofill) {
           if (key === autofillKey) {
-            defaultValue = autofill[autofillKey].value;
-            disabled = autofill[autofillKey].disabled ?? false;
+            const autofillData = props.autofill[autofillKey];
+            // 값 지정
+            defaultValue = autofillData.value;
+            // disabled가 true 일 경우 수정불가능하게 함
+            disabled = autofillData.disabled ?? false;
             setEditedDocument((state) => ({
               ...state,
-              [autofillKey]: autofill[autofillKey].value,
+              [autofillKey]: autofillData.value,
             }));
           }
         }
@@ -104,39 +110,40 @@ export default function FormModal(
 
       if (!isReadonly) {
         switch (type) {
+          // 문자열, 숫자, 날짜, 불리언
           case "string":
           case "int":
           case "date":
           case "bool": {
+            // enum 설정
+            let enumData: any[] | undefined = undefined;
             switch (key) {
               // 작업 지시 우선순위
-              case "priorities": {
-                element = (
-                  <FormModalWorkOrderPriorities
-                    defaultValue={defaultValue}
-                    onChange={(value: any) => editData({ key, value })}
-                  />
-                );
+              case "priorities":
+                enumData = ["emergency", "normal", "other"];
                 break;
-              }
-              default: {
-                element = (
-                  <FormModalInput
-                    name={`${schema.name}.properties.${key}`}
-                    type={type}
-                    defaultValue={defaultValue}
-                    onChange={(value: any) => editData({ key, value })}
-                    isTextarea={textAreaSchemaKeyList.includes(key)}
-                    isRequired={isRequired}
-                    isReadOnly={mode === "update" && key === schema.primaryKey}
-                    isDisabled={disabled}
-                    isURL={key.includes("homepage") || key.includes("url")}
-                  />
-                );
-              }
             }
+
+            element = (
+              <FormModalInput
+                name={`${props.schema.name}.properties.${key}`}
+                type={type}
+                defaultValue={defaultValue}
+                onChange={(value: any) => editData({ key, value })}
+                isTextarea={textAreaSchemaKeyList.includes(key)}
+                isRequired={isRequired}
+                isReadOnly={
+                  props.mode === "update" && key === props.schema.primaryKey
+                }
+                isDisabled={disabled}
+                isURL={key.includes("homepage") || key.includes("url")}
+                enumData={enumData}
+              />
+            );
+
             break;
           }
+          // 배열, 객체, objectId (유니크한 아이디 값, UUID 비슷한 객체)
           case "array":
           case "object":
           case "objectId": {
@@ -152,7 +159,6 @@ export default function FormModal(
                 onChange={(value: any) => editData({ key, value })}
               />
             );
-
             break;
           }
           // 주소
@@ -160,19 +166,19 @@ export default function FormModal(
             isRequired = false;
             element = (
               <FormModalAddress
-                name={`${schema.name}.properties.${key}`}
+                name={`${props.schema.name}.properties.${key}`}
                 defaultValue={defaultValue ?? {}}
                 onChange={(result: any) => editData({ key, value: result })}
               />
             );
             break;
           }
+          // 외부 테이블 및 스키마 처리
           default: {
-            // 외부 테이블 및 스키마 처리
             isRequired = false;
             element = (
               <FormModalInput
-                name={`${schema.name}.properties.${key}`}
+                name={`${props.schema.name}.properties.${key}`}
                 type={type}
                 defaultValue={defaultValue}
                 onChange={(value: any) => editData({ key, value })}
@@ -184,6 +190,7 @@ export default function FormModal(
           }
         }
 
+        // 사용자가 직접 수정해야 하거나 봐야하는 값들
         setInputList((state) => [
           ...state,
           {
@@ -193,10 +200,11 @@ export default function FormModal(
           },
         ]);
       } else {
+        // 사용자가 수정할 때 보여질 필요 없는 값들
         setDisabledDataList((state) => [
           ...state,
           {
-            key: `${schema.name}.properties.${key}`,
+            key: `${props.schema.name}.properties.${key}`,
             type,
             value: defaultValue,
           },
@@ -210,9 +218,9 @@ export default function FormModal(
         let a = 0,
           b = 0;
 
-        if (sortData[schema.name]) {
-          a = sortData[schema.name][formItem1.name] ?? 99;
-          b = sortData[schema.name][formItem2.name] ?? 99;
+        if (sortData[props.schema.name]) {
+          a = sortData[props.schema.name][formItem1.name] ?? 99;
+          b = sortData[props.schema.name][formItem2.name] ?? 99;
         }
 
         // 필수 필드라면 반드시 맨 앞으로
@@ -229,7 +237,7 @@ export default function FormModal(
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValue, database]);
+  }, [props.initialValue, database]);
 
   // 데이터 수정시
   function editData(props: { key: string; value: any }) {
@@ -239,27 +247,35 @@ export default function FormModal(
     }));
   }
 
-  function onClose() {
-    setEditedDocument({});
-    props.onClose();
-  }
-
   return (
+    // 전체화면 다이얼로그
     <FormModalPopup
-      title={mode === "insert" ? "추가" : "수정"}
+      // 다이얼로그 제목
+      title={props.mode === "insert" ? "추가" : "수정"}
+      // 다이얼로그 열림 상태 여부
       isOpen={props.isOpen}
+      // 아무것도 수정되지 않았을 때 저장 버튼 비활성화
       isSaveDisabled={Object.keys(editedDocument).length === 0}
+      // 다이얼로그가 저장 실행시
       onSubmit={() => {
-        onChange({
-          type: mode,
+        props.onSave({
+          type: props.mode,
           document: editedDocument,
-          initialValue,
+          initialValue: props.initialValue,
         });
       }}
-      onClose={onClose}
+      // 다이얼로그가 닫힐 때
+      onClose={() => {
+        setEditedDocument({});
+        props.onClose();
+      }}
+      // 정보 값(생성날짜, 수정자 등)은 수정 모드일 때만 추가
       info={
-        // 수정 모드일 때만 추가
-        mode === "update" ? <FormModalInfo dataList={disabledDataList} /> : ""
+        props.mode === "update" ? (
+          <FormModalInfo dataList={disabledDataList} />
+        ) : (
+          ""
+        )
       }
     >
       <Stack>

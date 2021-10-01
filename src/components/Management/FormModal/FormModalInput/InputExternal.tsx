@@ -4,7 +4,7 @@ import { setCollectionData } from "store/realm";
 import { Select } from "@chakra-ui/react";
 import { withCodeCollectionList } from "utils/realmUtils";
 
-export default function FormModalRefExternal(props: {
+export default function FormModalInputExternal(props: {
   collectionName: string;
   defaultValue: string;
   onChange: Function;
