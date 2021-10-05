@@ -13,6 +13,7 @@ const sortData: Record<string, Record<string, number>> = {
     warehouse_id: 5,
   },
   part_price: {
+    part_id: 0,
     purchase_price: 1,
     os_price: 2,
     selling_price: 3,
