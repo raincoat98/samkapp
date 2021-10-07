@@ -1,5 +1,6 @@
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
 import placeholders from "utils/placeholders";
 import FormModalURLInput from "./InputURL";
 import FormModalRefExternal from "./InputExternal";
@@ -56,7 +57,7 @@ export default function FormModalInput(props: {
   if (props.isExternal) {
     element = (
       <FormModalRefExternal
-        collectionName={props.type}
+        collectionName={props.type as COLLECTION_NAME_TYPE}
         defaultValue={props.defaultValue?.toString()}
         onChange={(value: string) => props.onChange(value)}
       />

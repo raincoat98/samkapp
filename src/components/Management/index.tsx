@@ -8,6 +8,8 @@ import {
 } from "store/realm";
 import { useTranslation } from "react-i18next";
 import {
+  COLLECTION_NAME,
+  COLLECTION_NAME_TYPE,
   schemaType,
   schemaToColums,
   readonlySchemaKeyList,
@@ -34,18 +36,19 @@ import {
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
 import FormModal, {
-  autofillType,
+  FormModalProps,
   formModalModeType,
 } from "components/Management/FormModal";
 
+// 관리 페이지
 export default function Management(props: {
   title: string;
-  collectionName: string;
+  collectionName: COLLECTION_NAME_TYPE;
   schema: schemaType;
   tabList?: string[];
-  autofill?: autofillType;
   onTabChange?: Function;
   filterList?: { schema: schemaType; data: any[] }[];
+  formModalOptions?: FormModalProps["options"];
   tableProps: TableComponentProps;
 }) {
   const {
@@ -53,7 +56,6 @@ export default function Management(props: {
     collectionName,
     schema,
     tabList,
-    autofill,
     onTabChange,
     filterList,
     tableProps,
@@ -72,6 +74,16 @@ export default function Management(props: {
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
   const [modalMode, setModalMode] = React.useState<formModalModeType>("insert");
+
+  const formModalProps: FormModalProps = {
+    schema,
+    mode: modalMode,
+    initialValue: selected,
+    isOpen: modalDisclosure.isOpen,
+    onSave: onFormModalSave,
+    onClose: modalDisclosure.onClose,
+    options: props.formModalOptions,
+  };
 
   const onTableChange = React.useCallback(
     (props: { table: any; state: any; action: { type: string } }) => {
@@ -148,9 +160,10 @@ export default function Management(props: {
 
     if (filterList) {
       for (let index = 0; index < filterList.length; index++) {
-        console.log(filterList[index].schema.name);
-
-        dispatch(setCollectionData(filterList[index].schema.name));
+        const name = filterList[index].schema.name as COLLECTION_NAME_TYPE;
+        if (Object.values(COLLECTION_NAME).includes(name)) {
+          dispatch(setCollectionData(name));
+        }
       }
     }
   }, [collectionName, dispatch, filterList]);
@@ -209,16 +222,7 @@ export default function Management(props: {
   return (
     <>
       {/* 입력 다이얼로그 */}
-      <FormModal
-        schema={schema}
-        mode={modalMode}
-        initialValue={selected}
-        autofill={autofill}
-        isOpen={modalDisclosure.isOpen}
-        onSave={onFormModalSave}
-        onClose={modalDisclosure.onClose}
-        children={null}
-      />
+      <FormModal {...formModalProps} />
 
       <PageContainer
         title={title}

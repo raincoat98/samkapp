@@ -1,6 +1,8 @@
 import * as RealmWeb from "realm-web";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MongoDBRealmError } from "realm-web";
+import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "utils/realmUtils";
+import * as realmObjectModes from "realmObjectModes";
 
 const name = "realm";
 const APP_ID = "samkapp-dzval";
@@ -36,7 +38,21 @@ export type RealmState = {
   loading: boolean;
   loggedIn: boolean;
   error: RealmError | null;
-  database: Record<string, any[]>;
+  // 데이터베이스 컬렉션들
+  database: {
+    [COLLECTION_NAME.customer]: realmObjectModes.customer[];
+    [COLLECTION_NAME.customer_mngr]: realmObjectModes.customer_mngr[];
+    [COLLECTION_NAME.inv]: realmObjectModes.inv[];
+    [COLLECTION_NAME.part]: realmObjectModes.part[];
+    [COLLECTION_NAME.part_group_1]: realmObjectModes.part_group_1[];
+    [COLLECTION_NAME.part_group_2]: realmObjectModes.part_group_2[];
+    [COLLECTION_NAME.part_price]: realmObjectModes.part_price[];
+    [COLLECTION_NAME.part_type]: realmObjectModes.part_type[];
+    [COLLECTION_NAME.warehouse]: realmObjectModes.warehouse[];
+    [COLLECTION_NAME.work_order]: realmObjectModes.work_order[];
+  };
+  // 제작 가능 재고
+  maxMadeQty: Record<string, number>;
 };
 
 const initialState: RealmState = {
@@ -44,7 +60,19 @@ const initialState: RealmState = {
   loading: false,
   loggedIn: false,
   error: null,
-  database: {},
+  database: {
+    customer: [],
+    customer_mngr: [],
+    inv: [],
+    part: [],
+    part_group_1: [],
+    part_group_2: [],
+    part_price: [],
+    part_type: [],
+    warehouse: [],
+    work_order: [],
+  },
+  maxMadeQty: {},
 };
 
 // 데이터베이스 자동 로그인
@@ -94,7 +122,10 @@ export const logout = createAsyncThunk(
 // 컬렉션 데이터 가져오기
 export const setCollectionData = createAsyncThunk(
   `${name}/setCollectionData`,
-  async (collectionName: string, { rejectWithValue }) => {
+  async (
+    collectionName: COLLECTION_NAME_TYPE,
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       const mongodb = app.currentUser?.mongoClient(MONGO_CLIENT);
       const collection = mongodb
@@ -102,7 +133,9 @@ export const setCollectionData = createAsyncThunk(
         ?.collection<any>(collectionName);
       const data = await collection?.find();
 
-      console.log("find", data);
+      dispatch({
+        type: `${name}/computeQty`,
+      });
 
       return {
         collectionName,
@@ -118,19 +151,24 @@ export const setCollectionData = createAsyncThunk(
 export const insertData = createAsyncThunk(
   `${name}/insertData`,
   async (
-    props: { collectionName: string; document: Record<string, any> },
-    { rejectWithValue }
+    props: {
+      collectionName: COLLECTION_NAME_TYPE;
+      document: Record<string, any>;
+    },
+    { dispatch, rejectWithValue }
   ) => {
     const { collectionName, document } = props;
 
     try {
-      const result = await app.currentUser?.functions.actionFunc({
+      await app.currentUser?.functions.actionFunc({
         type: "insert",
         collectionName,
         doc: document,
       });
 
-      console.log("insert", result);
+      dispatch({
+        type: `${name}/computeQty`,
+      });
 
       return {
         collectionName,
@@ -147,18 +185,18 @@ export const updateData = createAsyncThunk(
   `${name}/updateData`,
   async (
     props: {
-      collectionName: string;
+      collectionName: COLLECTION_NAME_TYPE;
       filter: Record<string, any>;
       update: Record<string, any>;
       options?: object;
     },
-    { rejectWithValue }
+    { dispatch, rejectWithValue }
   ) => {
     const { collectionName, ...params } = props;
     const { filter, update, options } = params;
 
     try {
-      const result = await app.currentUser?.functions.actionFunc({
+      await app.currentUser?.functions.actionFunc({
         type: "update",
         collectionName,
         filter,
@@ -172,7 +210,9 @@ export const updateData = createAsyncThunk(
         ?.collection<any>(collectionName);
       const data = await collection?.find(filter);
 
-      console.log("update", result);
+      dispatch({
+        type: `${name}/computeQty`,
+      });
 
       return {
         collectionName,
@@ -188,7 +228,7 @@ export const updateData = createAsyncThunk(
 export const deleteMany = createAsyncThunk(
   `${name}/deleteMany`,
   async (
-    props: { collectionName: string; ids: any[] },
+    props: { collectionName: COLLECTION_NAME_TYPE; ids: any[] },
     { dispatch, rejectWithValue }
   ) => {
     const { collectionName, ids } = props;
@@ -211,6 +251,10 @@ export const deleteMany = createAsyncThunk(
         filter,
       });
 
+      dispatch({
+        type: `${name}/computeQty`,
+      });
+
       return result;
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
@@ -223,7 +267,7 @@ export const distinct = createAsyncThunk(
   `${name}/distinct`,
   async (
     props: {
-      collectionName: string;
+      collectionName: COLLECTION_NAME_TYPE;
       field: string;
       query?: Document;
       options?: object;
@@ -242,7 +286,6 @@ export const distinct = createAsyncThunk(
         options: options ? options : {},
       });
 
-      console.log("distinct", result);
       return result;
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
@@ -257,7 +300,7 @@ const userSlice = createSlice({
     removeCollectionData(
       state,
       action: PayloadAction<{
-        collectionName: string;
+        collectionName: COLLECTION_NAME_TYPE;
         id: any;
       }>
     ) {
@@ -272,6 +315,38 @@ const userSlice = createSlice({
         if (documentId === id) {
           state.database[collectionName].splice(index, 1);
           break;
+        }
+      }
+    },
+    // 현재 재고로 만들 수 있는 품목 계산
+    computeQty(state) {
+      const partDB = state.database.part;
+      const invDB = state.database.inv;
+
+      for (let index = 0; index < partDB.length; index++) {
+        const part = partDB[index];
+        const bomList = part.bills_of_material;
+        let maxQuantity = 0;
+        let quantityList: number[] = [];
+
+        if (Array.isArray(bomList)) {
+          for (let index = 0; index < bomList.length; index++) {
+            const bom = bomList[index];
+            const bomNum = bom.number;
+            const stock = invDB.filter((inv) => {
+              if (inv.part_id) {
+                const partId = inv.part_id as unknown as string;
+                return partId === bom.part_id;
+              } else return false;
+            })[0]?.inv_qty;
+
+            if (stock) quantityList.push(stock / bomNum);
+          }
+        }
+
+        if (quantityList.length) {
+          maxQuantity = Math.min(...quantityList);
+          if (part._id) state.maxMadeQty[part._id] = maxQuantity;
         }
       }
     },
@@ -306,7 +381,10 @@ const userSlice = createSlice({
         setCollectionData.fulfilled.type,
         (
           state,
-          action: PayloadAction<{ collectionName: string; data: any[] }>
+          action: PayloadAction<{
+            collectionName: COLLECTION_NAME_TYPE;
+            data: any[];
+          }>
         ) => {
           const { collectionName, data } = action.payload;
           state.database[collectionName] = data;
@@ -319,16 +397,17 @@ const userSlice = createSlice({
         (
           state,
           action: PayloadAction<{
-            collectionName: string;
-            document: Record<string, any>;
+            collectionName: COLLECTION_NAME_TYPE;
+            document: any;
           }>
         ) => {
           const { collectionName, document } = action.payload;
-          if (!state.database[collectionName]) {
-            state.database[collectionName] = [];
-          }
-          state.database[collectionName] =
-            state.database[collectionName].concat(document);
+          console.log(state.database[collectionName], document);
+
+          state.database[collectionName].push(document);
+
+          // state.database[collectionName] =
+          //   state.database[collectionName].concat(document);
 
           state.loading = false;
         }
@@ -338,7 +417,10 @@ const userSlice = createSlice({
         updateData.fulfilled.type,
         (
           state,
-          action: PayloadAction<{ collectionName: string; data: any[] }>
+          action: PayloadAction<{
+            collectionName: COLLECTION_NAME_TYPE;
+            data: any[];
+          }>
         ) => {
           const { collectionName, data } = action.payload;
 
@@ -370,6 +452,8 @@ const userSlice = createSlice({
       .addCase(distinct.fulfilled.type, (state) => {
         state.loading = false;
       })
+
+      // 작업 시작시 실행
       .addMatcher(
         (action) => action.type.endsWith("/pending"),
         (state) => {
@@ -377,9 +461,11 @@ const userSlice = createSlice({
           state.error = null;
         }
       )
+      // 작업 종료시 실행
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
         (state, action: PayloadAction<any>) => {
+          console.error(action.payload);
           state.loading = false;
           state.error = action.payload;
         }

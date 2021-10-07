@@ -1,6 +1,22 @@
 import { Column } from "react-table";
 import moment from "moment";
 
+// 데이터베이스 컬렉션 이름
+export const COLLECTION_NAME = {
+  customer: "customer",
+  customer_mngr: "customer_mngr",
+  inv: "inv",
+  part: "part",
+  part_group_1: "part_group_1",
+  part_group_2: "part_group_2",
+  part_price: "part_price",
+  part_type: "part_type",
+  warehouse: "warehouse",
+  work_order: "work_order",
+} as const;
+export type COLLECTION_NAME_TYPE =
+  typeof COLLECTION_NAME[keyof typeof COLLECTION_NAME];
+
 export type Document = Record<string, any>;
 
 export type schemaType = {
@@ -11,7 +27,6 @@ export type schemaType = {
 };
 
 // 예외처리
-export const withCodeCollectionList = ["warehouse"];
 export const textAreaSchemaKeyList = ["remark"];
 export const readonlySchemaKeyList = [
   "create_by",

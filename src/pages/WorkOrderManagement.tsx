@@ -10,9 +10,9 @@ export default function WorkOrderManagement() {
   const [tabIndex, setTabIndex] = React.useState(0);
   const today = moment(Date.now()).format("YYYYMMDD");
 
-  const data =
-    useSelector((state: RootState) => state.realm.database[collectionName]) ||
-    [];
+  const data = useSelector(
+    (state: RootState) => state.realm.database[collectionName]
+  );
 
   // 현재 작업지시 목록
   const latestDataList = data.filter((item) => {
@@ -46,20 +46,26 @@ export default function WorkOrderManagement() {
     prefix += "0";
   }
 
+  const formModalOptions = {
+    _id: {
+      autofill: {
+        value: `${today}_${prefix}${workOrderTodayIndex}`,
+        disabled: true,
+      },
+    },
+    priorities: {
+      autofill: {
+        value: "normal",
+      },
+    },
+  };
+
   return (
     <Management
       title="작업 지시 관리"
       schema={work_orderSchema}
       collectionName={collectionName}
-      autofill={{
-        _id: {
-          value: `${today}_${prefix}${workOrderTodayIndex}`,
-          disabled: true,
-        },
-        priorities: {
-          value: "normal",
-        },
-      }}
+      formModalOptions={formModalOptions}
       tabList={["현재", "이전"]}
       onTabChange={(index: number) => setTabIndex(index)}
       tableProps={{ data: tabIndex === 0 ? latestDataList : oldDataList }}

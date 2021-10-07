@@ -8,7 +8,7 @@ import {
   textAreaSchemaKeyList,
 } from "utils/realmUtils";
 import sortData from "utils/sortData";
-import { Box, Stack, ModalProps } from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
 import FormModalInput from "./FormModalInput";
@@ -24,17 +24,32 @@ export type formItem = {
   isRequired?: boolean;
 };
 export type formModalModeType = "insert" | "update";
-export type autofillType = Record<string, { value: any; disabled?: boolean }>;
+export type autofillType = { value: any; disabled?: boolean };
 
-export default function FormModal(
-  props: ModalProps & {
-    initialValue: Record<string, any>;
-    schema: schemaType;
-    mode: formModalModeType;
-    autofill?: autofillType;
-    onSave: Function;
-  }
-) {
+export const FormModalPropsKey = {
+  mode: "mode",
+  isOpen: "isOpen",
+  onClose: "onClose",
+  onSave: "onSave",
+  initialValue: "initialValue",
+  schema: "schema",
+  options: "options",
+} as const;
+export type FormModalProps = {
+  mode: formModalModeType;
+  isOpen: boolean;
+  onClose: Function;
+  onSave: Function;
+  initialValue: Record<string, any>;
+  schema: schemaType;
+  options?: Record<
+    string,
+    {
+      autofill?: { value: any; disabled?: boolean };
+    }
+  >;
+};
+export default function FormModal(props: FormModalProps) {
   // 수정한 데이터가 저장되는 객체
   const [editedDocument, setEditedDocument] = React.useState<
     Record<string, any>
@@ -91,17 +106,20 @@ export default function FormModal(
 
       // 새 데이터를 삽일할 때 autofill에 있는 값을 자동으로 채움
       if (props.mode === "insert") {
-        for (const autofillKey in props.autofill) {
-          if (key === autofillKey) {
-            const autofillData = props.autofill[autofillKey];
-            // 값 지정
-            defaultValue = autofillData.value;
-            // disabled가 true 일 경우 수정불가능하게 함
-            disabled = autofillData.disabled ?? false;
-            setEditedDocument((state) => ({
-              ...state,
-              [autofillKey]: autofillData.value,
-            }));
+        for (const optionKey in props.options) {
+          if (key === optionKey) {
+            const option = props.options[optionKey];
+            if (option.autofill) {
+              const autofillData = option.autofill;
+              // 값 지정
+              defaultValue = autofillData.value;
+              // disabled가 true 일 경우 수정불가능하게 함
+              disabled = autofillData.disabled ?? false;
+              setEditedDocument((state) => ({
+                ...state,
+                [optionKey]: autofillData.value,
+              }));
+            }
           }
         }
       }
