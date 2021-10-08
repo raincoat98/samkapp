@@ -87,13 +87,22 @@ export const autoLogin = createAsyncThunk(`${name}/autoLogin`, async () => {
 // 데이터베이스 로그인
 export const login = createAsyncThunk(
   `${name}/login`,
-  async (props: { email: string; password: string }, { rejectWithValue }) => {
+  async (
+    props: { email: string; password: string },
+    { dispatch, rejectWithValue }
+  ) => {
     const { email, password } = props;
 
     const credentials = RealmWeb.Credentials.emailPassword(email, password);
 
     try {
       await app.logIn(credentials);
+
+      // 로그인 때에 모든 테이블  데이터 가져오기
+      for (const key in COLLECTION_NAME) {
+        const collectionKey = key as COLLECTION_NAME_TYPE;
+        dispatch(setCollectionData(collectionKey));
+      }
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
     }
