@@ -1,73 +1,3 @@
-export type inv = {
-  _id: string;
-  create_by?: string;
-  create_dttm?: Date;
-  inv_month?: Date;
-  inv_qty: number;
-  owner_id: string;
-  part_id?: part;
-  rev_inv_qty?: number;
-  save_by?: string;
-  save_dttm?: Date;
-  warehouse_id?: warehouse;
-};
-
-export const invSchema = {
-  name: "inv",
-  properties: {
-    _id: "string",
-    create_by: "string?",
-    create_dttm: "date?",
-    inv_month: "date?",
-    inv_qty: "double",
-    owner_id: "string",
-    part_id: "part",
-    rev_inv_qty: "double?",
-    save_by: "string?",
-    save_dttm: "date?",
-    warehouse_id: "warehouse",
-  },
-  primaryKey: "_id",
-};
-
-export type warehouse = {
-  _id: string;
-  cell_number?: string;
-  create_by?: string;
-  create_dttm?: Date;
-  is_dev?: boolean;
-  is_sub?: boolean;
-  owner_id: string;
-  rack_qty?: string;
-  remark?: string;
-  row_qty?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  sort_seq?: number;
-  warehouse_name: string;
-};
-
-export const warehouseSchema = {
-  name: "warehouse",
-  properties: {
-    _id: "string",
-    cell_number: "string?",
-    create_by: "string?",
-    create_dttm: "date?",
-    is_dev: "bool?",
-    is_sub: "bool?",
-    owner_id: "string",
-    rack_qty: "string?",
-    remark: "string?",
-    row_qty: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    sort_seq: "int?",
-    warehouse_name: "string",
-  },
-  primaryKey: "_id",
-};
-
 export type part_group_1 = {
   _id: string;
   create_by?: string;
@@ -98,192 +28,6 @@ export const part_group_1Schema = {
     valid: "bool?",
   },
   primaryKey: "_id",
-};
-
-export type part_group_2 = {
-  _id: string;
-  create_by?: string;
-  create_dttm?: Date;
-  owner_id: string;
-  part_group_1_id?: part_group_1;
-  part_group_2_name: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  search_group?: string;
-  sort_seq?: number;
-  valid?: boolean;
-};
-
-export const part_group_2Schema = {
-  name: "part_group_2",
-  properties: {
-    _id: "string",
-    create_by: "string?",
-    create_dttm: "date?",
-    owner_id: "string",
-    part_group_1_id: "part_group_1",
-    part_group_2_name: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    search_group: "string?",
-    sort_seq: "int?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
-export type customer = {
-  _id: string;
-  address?: address;
-  bill_limit_id?: string;
-  business_info?: string;
-  business_number?: string;
-  ceo_name?: string;
-  create_by?: string;
-  create_dttm?: Date;
-  credit_limit?: string;
-  customer_group_id?: string;
-  customer_name: string;
-  fax?: string;
-  homepage?: string;
-  owner_id: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  tel?: string;
-  valid?: boolean;
-};
-
-export const customerSchema = {
-  name: "customer",
-  properties: {
-    _id: "string",
-    address: "address",
-    bill_limit_id: "string?",
-    business_info: "string?",
-    business_number: "string?",
-    ceo_name: "string?",
-    create_by: "string?",
-    create_dttm: "date?",
-    credit_limit: "string?",
-    customer_group_id: "string?",
-    customer_name: "string",
-    fax: "string?",
-    homepage: "string?",
-    owner_id: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    tel: "string?",
-    valid: "bool?",
-  },
-  primaryKey: "_id",
-};
-
-export type address = {
-  address?: string;
-  zip_code?: string;
-};
-
-export const addressSchema = {
-  name: "address",
-  embedded: true,
-  properties: {
-    address: "string?",
-    zip_code: "string?",
-  },
-};
-
-export type customer_mngr = {
-  _id: string;
-  cell_phone?: string;
-  class_position?: string;
-  create_by?: string;
-  create_dttm?: Date;
-  customer_id?: customer;
-  email?: string;
-  fax?: string;
-  name: string;
-  namecard?: string;
-  owner_id: string;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  tel?: string;
-};
-
-export const customer_mngrSchema = {
-  name: "customer_mngr",
-  properties: {
-    _id: "string",
-    cell_phone: "string?",
-    class_position: "string?",
-    create_by: "string?",
-    create_dttm: "date?",
-    customer_id: "customer",
-    email: "string?",
-    fax: "string?",
-    name: "string",
-    namecard: "string?",
-    owner_id: "string",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    tel: "string?",
-  },
-  primaryKey: "_id",
-};
-
-export type part = {
-  _id: string;
-  bills_of_material: Array<part_bills_of_material>;
-  create_by?: string;
-  create_dttm?: Date;
-  owner_id: string;
-  part_group_2_id?: part_group_2;
-  part_name: string;
-  part_type_id?: part_type;
-  remark?: string;
-  save_by?: string;
-  save_dttm?: Date;
-  unit?: string;
-  warehouse_id?: warehouse;
-};
-
-export const partSchema = {
-  name: "part",
-  properties: {
-    _id: "string",
-    bills_of_material: "part_bills_of_material[]",
-    create_by: "string?",
-    create_dttm: "date?",
-    owner_id: "string",
-    part_group_2_id: "part_group_2",
-    part_name: "string",
-    part_type_id: "part_type",
-    remark: "string?",
-    save_by: "string?",
-    save_dttm: "date?",
-    unit: "string?",
-    warehouse_id: "warehouse",
-  },
-  primaryKey: "_id",
-};
-
-export type part_bills_of_material = {
-  number: number;
-  part_id: string;
-};
-
-export const part_bills_of_materialSchema = {
-  name: "part_bills_of_material",
-  embedded: true,
-  properties: {
-    number: "int",
-    part_id: "string",
-  },
 };
 
 export type part_price = {
@@ -386,4 +130,262 @@ export const work_orderSchema = {
     save_dttm: "date?",
   },
   primaryKey: "_id",
+};
+
+export type part_group_2 = {
+  _id: string;
+  create_by?: string;
+  create_dttm?: Date;
+  owner_id: string;
+  part_group_1_id?: part_group_1;
+  part_group_2_name: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  search_group?: string;
+  sort_seq?: number;
+  valid?: boolean;
+};
+
+export const part_group_2Schema = {
+  name: "part_group_2",
+  properties: {
+    _id: "string",
+    create_by: "string?",
+    create_dttm: "date?",
+    owner_id: "string",
+    part_group_1_id: "part_group_1",
+    part_group_2_name: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    search_group: "string?",
+    sort_seq: "int?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type inv = {
+  _id: string;
+  adequate_stock?: number;
+  create_by?: string;
+  create_dttm?: Date;
+  inv_month?: Date;
+  inv_qty: number;
+  owner_id: string;
+  part_id?: part;
+  rev_inv_qty?: number;
+  save_by?: string;
+  save_dttm?: Date;
+  warehouse_id?: warehouse;
+};
+
+export const invSchema = {
+  name: "inv",
+  properties: {
+    _id: "string",
+    adequate_stock: "int?",
+    create_by: "string?",
+    create_dttm: "date?",
+    inv_month: "date?",
+    inv_qty: "int",
+    owner_id: "string",
+    part_id: "part",
+    rev_inv_qty: "int?",
+    save_by: "string?",
+    save_dttm: "date?",
+    warehouse_id: "warehouse",
+  },
+  primaryKey: "_id",
+};
+
+export type warehouse = {
+  _id: string;
+  cell_number?: string;
+  create_by?: string;
+  create_dttm?: Date;
+  is_dev?: boolean;
+  is_sub?: boolean;
+  owner_id: string;
+  rack_qty?: string;
+  remark?: string;
+  row_qty?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  sort_seq?: number;
+  warehouse_name: string;
+};
+
+export const warehouseSchema = {
+  name: "warehouse",
+  properties: {
+    _id: "string",
+    cell_number: "string?",
+    create_by: "string?",
+    create_dttm: "date?",
+    is_dev: "bool?",
+    is_sub: "bool?",
+    owner_id: "string",
+    rack_qty: "string?",
+    remark: "string?",
+    row_qty: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    sort_seq: "int?",
+    warehouse_name: "string",
+  },
+  primaryKey: "_id",
+};
+
+export type customer_mngr = {
+  _id: string;
+  cell_phone?: string;
+  class_position?: string;
+  create_by?: string;
+  create_dttm?: Date;
+  customer_id?: customer;
+  email?: string;
+  fax?: string;
+  name: string;
+  namecard?: string;
+  owner_id: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  tel?: string;
+};
+
+export const customer_mngrSchema = {
+  name: "customer_mngr",
+  properties: {
+    _id: "string",
+    cell_phone: "string?",
+    class_position: "string?",
+    create_by: "string?",
+    create_dttm: "date?",
+    customer_id: "customer",
+    email: "string?",
+    fax: "string?",
+    name: "string",
+    namecard: "string?",
+    owner_id: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    tel: "string?",
+  },
+  primaryKey: "_id",
+};
+
+export type part = {
+  _id: string;
+  bills_of_material: Array<part_bills_of_material>;
+  create_by?: string;
+  create_dttm?: Date;
+  owner_id: string;
+  part_group_2_id?: part_group_2;
+  part_name: string;
+  part_type_id?: part_type;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  unit?: string;
+  warehouse_id?: warehouse;
+};
+
+export const partSchema = {
+  name: "part",
+  properties: {
+    _id: "string",
+    bills_of_material: "part_bills_of_material[]",
+    create_by: "string?",
+    create_dttm: "date?",
+    owner_id: "string",
+    part_group_2_id: "part_group_2",
+    part_name: "string",
+    part_type_id: "part_type",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    unit: "string?",
+    warehouse_id: "warehouse",
+  },
+  primaryKey: "_id",
+};
+
+export type part_bills_of_material = {
+  number: number;
+  part_id: string;
+};
+
+export const part_bills_of_materialSchema = {
+  name: "part_bills_of_material",
+  embedded: true,
+  properties: {
+    number: "int",
+    part_id: "string",
+  },
+};
+
+export type customer = {
+  _id: string;
+  address?: address;
+  bill_limit_id?: string;
+  business_info?: string;
+  business_number?: string;
+  ceo_name?: string;
+  create_by?: string;
+  create_dttm?: Date;
+  credit_limit?: string;
+  customer_group_id?: string;
+  customer_name: string;
+  fax?: string;
+  homepage?: string;
+  owner_id: string;
+  remark?: string;
+  save_by?: string;
+  save_dttm?: Date;
+  tel?: string;
+  valid?: boolean;
+};
+
+export const customerSchema = {
+  name: "customer",
+  properties: {
+    _id: "string",
+    address: "address",
+    bill_limit_id: "string?",
+    business_info: "string?",
+    business_number: "string?",
+    ceo_name: "string?",
+    create_by: "string?",
+    create_dttm: "date?",
+    credit_limit: "string?",
+    customer_group_id: "string?",
+    customer_name: "string",
+    fax: "string?",
+    homepage: "string?",
+    owner_id: "string",
+    remark: "string?",
+    save_by: "string?",
+    save_dttm: "date?",
+    tel: "string?",
+    valid: "bool?",
+  },
+  primaryKey: "_id",
+};
+
+export type address = {
+  address?: string;
+  zip_code?: string;
+};
+
+export const addressSchema = {
+  name: "address",
+  embedded: true,
+  properties: {
+    address: "string?",
+    zip_code: "string?",
+  },
 };
