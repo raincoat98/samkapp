@@ -111,12 +111,20 @@ export default function Management(props: {
     exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
   });
 
-  // 테이블 헤더 번역
+  // 테이블 헤더 및 값 번역
   Object.keys(columns).forEach((key) => {
-    const header = translate(
-      `${schema.name}.properties.${columns[Number(key)].Header}`
-    );
-    columns[Number(key)].Header = header;
+    const column = columns[Number(key)];
+
+    // 값 번역
+    // 우선순위
+    if (column.Header === "priorities") {
+      column.accessor = (originalRow: any, rowIndex: number) =>
+        translate(originalRow["priorities"]);
+    }
+
+    // 헤더 번역
+    const header = translate(`${schema.name}.properties.${column.Header}`);
+    column.Header = header;
   });
 
   // 테이블 초기화
