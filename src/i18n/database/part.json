@@ -11,6 +11,7 @@
       "part_id": "품목",
       "number": "개수"
     },
+    "part_spec": "규격",
     "part_type_id": "품목 형태",
     "remark": "비고",
     "save_by": "저장자",
