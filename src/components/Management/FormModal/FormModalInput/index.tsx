@@ -116,6 +116,9 @@ export default function FormModalInput(props: {
         // 숫자
         case "int": {
           // Input type="number"
+          // valueAsNumber 값은 target.value를 number 타입으로 가져옴
+          inputProps.onChange = (event) =>
+            props.onChange(event.target.valueAsNumber);
           element = <Input type="number" {...inputProps} />;
           break;
         }
