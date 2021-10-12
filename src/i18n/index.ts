@@ -36,6 +36,11 @@ const resources = {
       work_order_priorities,
       work_order_progress,
 
+      create_by: "생성자",
+      create_dttm: "생성일자",
+      save_by: "저장자",
+      save_dttm: "저장일자",
+
       // 작업지시 우선순위 등급
       emergency: "긴급",
       normal: "보통",

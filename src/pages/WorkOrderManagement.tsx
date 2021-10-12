@@ -32,7 +32,9 @@ export default function WorkOrderManagement() {
   const workOrderTodayIndex =
     data.filter((item) => {
       if (item?._id) {
-        return item._id.startsWith(moment(Date.now()).format("YYYYMMDD"));
+        return item.work_order_code.startsWith(
+          moment(Date.now()).format("YYYYMMDD")
+        );
       } else return false;
     }).length + 1;
 
@@ -47,7 +49,7 @@ export default function WorkOrderManagement() {
   }
 
   const formModalOptions = {
-    _id: {
+    work_order_code: {
       autofill: {
         value: `${today}_${prefix}${workOrderTodayIndex}`,
         disabled: true,

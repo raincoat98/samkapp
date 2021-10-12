@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MongoDBRealmError } from "realm-web";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "utils/realmUtils";
 import * as realmObjectModes from "realmObjectModes";
+import { ObjectId } from "bson";
 
 const name = "realm";
 const APP_ID = "samkapp-dzval";
@@ -344,7 +345,7 @@ const userSlice = createSlice({
             const bomNum = bom.number;
             const stock = invDB.filter((inv) => {
               if (inv.part_id) {
-                const partId = inv.part_id as unknown as string;
+                const partId = inv.part_id as unknown as ObjectId;
                 return partId === bom.part_id;
               } else return false;
             })[0]?.inv_qty;
@@ -355,7 +356,7 @@ const userSlice = createSlice({
 
         if (quantityList.length) {
           maxQuantity = Math.min(...quantityList);
-          if (part._id) state.maxMadeQty[part._id] = maxQuantity;
+          if (part._id) state.maxMadeQty[part._id.toHexString()] = maxQuantity;
         }
       }
     },

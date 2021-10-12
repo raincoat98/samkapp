@@ -75,6 +75,7 @@ export default function FormModal(props: FormModalProps) {
     for (const key in props.schema.properties) {
       // 유저가 수정 못하는 값일 경우 다음으로
       if (
+        props.schema.primaryKey === key ||
         !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
           .length
       )
@@ -226,7 +227,7 @@ export default function FormModal(props: FormModalProps) {
         setDisabledDataList((state) => [
           ...state,
           {
-            key: `${props.schema.name}.properties.${key}`,
+            key,
             type,
             value: defaultValue,
           },

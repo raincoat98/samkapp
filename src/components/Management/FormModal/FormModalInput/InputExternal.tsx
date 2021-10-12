@@ -23,13 +23,16 @@ export default function FormModalInputExternal(props: {
       onChange={(event) => onChange(event.target.value)}
     >
       {database[collectionName].map((data: any, index) => {
-        const id = data._id.toString();
+        const id = data._id;
+        const code = data[`${collectionName}_code`];
 
         return (
           <option value={id} key={index}>
-            {`[${id}]: `}
+            {`[${code}]: `}
             {data[`${collectionName}_name`]}
-            {maxQty[id] !== undefined ? ` (생산 가능 수량: ${maxQty[id]})` : ""}
+            {maxQty[code] !== undefined
+              ? ` (생산 가능 수량: ${maxQty[id]})`
+              : ""}
           </option>
         );
       })}
