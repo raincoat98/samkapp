@@ -140,6 +140,10 @@ export default function FormModal(props: FormModalProps) {
               case "priorities":
                 enumData = ["emergency", "normal", "other"];
                 break;
+              // 작업 지시 진행상황
+              case "progress":
+                enumData = ["confirmed", "shipped", "producing", "done"];
+                break;
             }
 
             element = (

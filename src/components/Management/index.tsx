@@ -116,10 +116,15 @@ export default function Management(props: {
     const column = columns[Number(key)];
 
     // 값 번역
-    // 우선순위
+    // 작업지시 우선순위
     if (column.Header === "priorities") {
       column.accessor = (originalRow: any, rowIndex: number) =>
         translate(originalRow["priorities"]);
+    }
+    // 작업지시 진행상황
+    if (column.Header === "progress") {
+      column.accessor = (originalRow: any, rowIndex: number) =>
+        translate(originalRow["progress"]);
     }
 
     // 헤더 번역

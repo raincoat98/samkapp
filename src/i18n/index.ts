@@ -14,6 +14,7 @@ import part from "./database/part.json";
 import warehouse from "./database/warehouse.json";
 import work_order from "./database/work_order.json";
 import work_order_priorities from "./database/work_order_priorities.json";
+import work_order_progress from "./database/work_order_progress.json";
 
 const resources = {
   ko: {
@@ -33,11 +34,18 @@ const resources = {
       warehouse,
       work_order,
       work_order_priorities,
+      work_order_progress,
 
-      // 우선순위 등급
+      // 작업지시 우선순위 등급
       emergency: "긴급",
       normal: "보통",
       other: "기타",
+
+      // 작업지시 진행상황
+      confirmed: "확인됨",
+      shipped: "출고됨",
+      producing: "생산중",
+      done: "완료됨",
     },
   },
 };
