@@ -318,17 +318,21 @@ const userSlice = createSlice({
             const bomNum = bom.number;
             const stock = invDB.filter((inv) => {
               if (inv.part_id) {
-                const partId = inv.part_id as unknown as ObjectId;
+                let partId = inv.part_id as unknown as ObjectId;
+
+                // 문자열이라면 ObjectId로 캐스팅
+                if (typeof partId === "string") partId = new ObjectId(partId);
                 return partId.equals(bom.part_id);
               } else return false;
             })[0]?.inv_qty;
 
-            if (stock) quantityList.push(stock / bomNum);
+            if (stock) quantityList.push(Math.floor(stock / bomNum));
           }
         }
 
         if (quantityList.length) {
           maxQuantity = Math.min(...quantityList);
+
           if (part._id) state.maxMadeQty[part.part_code] = maxQuantity;
         }
       }

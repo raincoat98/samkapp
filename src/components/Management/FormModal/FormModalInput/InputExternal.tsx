@@ -21,7 +21,9 @@ export default function FormModalInputExternal(props: {
     <Select
       placeholder={"없음"}
       defaultValue={defaultValue}
-      onChange={(event) => onChange(new ObjectId(event.target.value))}
+      onChange={(event) => {
+        if (event.target.value) onChange(new ObjectId(event.target.value));
+      }}
     >
       {database[collectionName].map(
         (data: Record<string, any> & { _id: string | ObjectId }, index) => {
@@ -33,8 +35,10 @@ export default function FormModalInputExternal(props: {
             <option value={id.toHexString()} key={index}>
               {`[${code}]: `}
               {data[`${collectionName}_name`]}
+
+              {/* 생산 가능 수량 표시 */}
               {maxQty[code] !== undefined
-                ? ` (생산 가능 수량: ${maxQty[id.toHexString()]})`
+                ? ` (생산 가능 수량: ${maxQty[code]})`
                 : ""}
             </option>
           );
