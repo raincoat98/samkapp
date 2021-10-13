@@ -31,7 +31,7 @@ export default function WorkOrderManagement() {
   // 오늘 작업지시 인덱스
   const workOrderTodayIndex =
     data.filter((item) => {
-      if (item?._id) {
+      if (item?.work_order_code) {
         return item.work_order_code.startsWith(
           moment(Date.now()).format("YYYYMMDD")
         );

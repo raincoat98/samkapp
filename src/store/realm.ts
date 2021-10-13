@@ -176,14 +176,13 @@ export const insertData = createAsyncThunk(
         doc: document,
       });
 
+      await dispatch(setCollectionData(collectionName));
+
       dispatch({
         type: `${name}/computeQty`,
       });
 
-      return {
-        collectionName,
-        document: document,
-      };
+      return;
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
     }
@@ -196,7 +195,7 @@ export const updateData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      filter: Record<string, any>;
+      filter: { _id: ObjectId };
       update: Record<string, any>;
       options?: object;
     },
@@ -238,7 +237,7 @@ export const updateData = createAsyncThunk(
 export const deleteMany = createAsyncThunk(
   `${name}/deleteMany`,
   async (
-    props: { collectionName: COLLECTION_NAME_TYPE; ids: any[] },
+    props: { collectionName: COLLECTION_NAME_TYPE; ids: ObjectId[] },
     { dispatch, rejectWithValue }
   ) => {
     const { collectionName, ids } = props;
@@ -248,18 +247,13 @@ export const deleteMany = createAsyncThunk(
     };
 
     try {
-      for (let index = 0; index < ids.length; index++) {
-        dispatch({
-          type: `${name}/removeCollectionData`,
-          payload: { collectionName, id: ids[index] },
-        });
-      }
-
       const result = await app.currentUser?.functions.actionFunc({
         type: "deleteMany",
         collectionName,
         filter,
       });
+
+      await dispatch(setCollectionData(collectionName));
 
       dispatch({
         type: `${name}/computeQty`,
@@ -307,27 +301,6 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
-    removeCollectionData(
-      state,
-      action: PayloadAction<{
-        collectionName: COLLECTION_NAME_TYPE;
-        id: any;
-      }>
-    ) {
-      const { collectionName, id } = action.payload;
-
-      for (
-        let index = 0;
-        index < state.database[collectionName].length;
-        index++
-      ) {
-        const documentId = state.database[collectionName][index]._id;
-        if (documentId === id) {
-          state.database[collectionName].splice(index, 1);
-          break;
-        }
-      }
-    },
     // 현재 재고로 만들 수 있는 품목 계산
     computeQty(state) {
       const partDB = state.database.part;
@@ -346,7 +319,7 @@ const userSlice = createSlice({
             const stock = invDB.filter((inv) => {
               if (inv.part_id) {
                 const partId = inv.part_id as unknown as ObjectId;
-                return partId === bom.part_id;
+                return partId.equals(bom.part_id);
               } else return false;
             })[0]?.inv_qty;
 
@@ -356,7 +329,7 @@ const userSlice = createSlice({
 
         if (quantityList.length) {
           maxQuantity = Math.min(...quantityList);
-          if (part._id) state.maxMadeQty[part._id.toHexString()] = maxQuantity;
+          if (part._id) state.maxMadeQty[part.part_code] = maxQuantity;
         }
       }
     },
@@ -402,26 +375,9 @@ const userSlice = createSlice({
         }
       )
       // 컬렉션 데이터 삽입
-      .addCase(
-        insertData.fulfilled.type,
-        (
-          state,
-          action: PayloadAction<{
-            collectionName: COLLECTION_NAME_TYPE;
-            document: any;
-          }>
-        ) => {
-          const { collectionName, document } = action.payload;
-          console.log(state.database[collectionName], document);
-
-          state.database[collectionName].push(document);
-
-          // state.database[collectionName] =
-          //   state.database[collectionName].concat(document);
-
-          state.loading = false;
-        }
-      )
+      .addCase(insertData.fulfilled.type, (state) => {
+        state.loading = false;
+      })
       // 컬렉션 데이터 업데이트
       .addCase(
         updateData.fulfilled.type,
@@ -429,7 +385,7 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{
             collectionName: COLLECTION_NAME_TYPE;
-            data: any[];
+            data: (Record<string, any> & { _id: ObjectId })[];
           }>
         ) => {
           const { collectionName, data } = action.payload;
@@ -445,8 +401,8 @@ const userSlice = createSlice({
               const updatedData = data[index2];
               const id2 = updatedData._id;
 
-              if (typeof id1 === typeof id2 && id1 === id2) {
-                state.database[collectionName][index] = updatedData;
+              if (id1.equals(id2)) {
+                state.database[collectionName][index] = updatedData as any;
               }
             }
           }
@@ -484,5 +440,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const { removeCollectionData } = actions;
+export const { computeQty } = actions;
 export default reducer;

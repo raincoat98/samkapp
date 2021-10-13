@@ -2,6 +2,7 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { Select } from "@chakra-ui/react";
 import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
+import { ObjectId } from "bson";
 
 export default function FormModalInputExternal(props: {
   collectionName: COLLECTION_NAME_TYPE;
@@ -20,22 +21,25 @@ export default function FormModalInputExternal(props: {
     <Select
       placeholder={"없음"}
       defaultValue={defaultValue}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(event) => onChange(new ObjectId(event.target.value))}
     >
-      {database[collectionName].map((data: any, index) => {
-        const id = data._id;
-        const code = data[`${collectionName}_code`];
+      {database[collectionName].map(
+        (data: Record<string, any> & { _id: string | ObjectId }, index) => {
+          const id =
+            typeof data._id === "string" ? new ObjectId(data._id) : data._id;
+          const code: string = data[`${collectionName}_code`];
 
-        return (
-          <option value={id} key={index}>
-            {`[${code}]: `}
-            {data[`${collectionName}_name`]}
-            {maxQty[code] !== undefined
-              ? ` (생산 가능 수량: ${maxQty[id]})`
-              : ""}
-          </option>
-        );
-      })}
+          return (
+            <option value={id.toHexString()} key={index}>
+              {`[${code}]: `}
+              {data[`${collectionName}_name`]}
+              {maxQty[code] !== undefined
+                ? ` (생산 가능 수량: ${maxQty[id.toHexString()]})`
+                : ""}
+            </option>
+          );
+        }
+      )}
     </Select>
   );
 }

@@ -55,6 +55,7 @@ const store = configureStore({
         REGISTER,
         "realm/insertData/fulfilled",
         "realm/updateData/fulfilled",
+        "realm/deleteMany/fulfilled",
         "realm/setCollectionData/fulfilled",
       ],
       ignoredPaths: ["realm"],
