@@ -1,8 +1,10 @@
+import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { Select } from "@chakra-ui/react";
 import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
 import { ObjectId } from "bson";
+import SearchPopover from "components/SearchPopover";
+import { Flex, Select } from "@chakra-ui/react";
 
 export default function FormModalInputExternal(props: {
   collectionName: COLLECTION_NAME_TYPE;
@@ -12,38 +14,57 @@ export default function FormModalInputExternal(props: {
   const { collectionName, defaultValue, onChange } = props;
 
   // 데이터베이스
-  const database = useSelector((state: RootState) => state.realm.database);
+  const dataList = useSelector(
+    (state: RootState) => state.realm.database[collectionName]
+  );
 
   // 품목 생산 가능 개수 값
   const maxQty = useSelector((state: RootState) => state.realm.maxMadeQty);
 
+  const refSelect = React.useRef<HTMLSelectElement>(null);
+
   return (
-    <Select
-      placeholder={"없음"}
-      defaultValue={defaultValue}
-      onChange={(event) => {
-        if (event.target.value) onChange(new ObjectId(event.target.value));
-      }}
-    >
-      {database[collectionName].map(
-        (data: Record<string, any> & { _id: string | ObjectId }, index) => {
-          const id =
-            typeof data._id === "string" ? new ObjectId(data._id) : data._id;
-          const code: string = data[`${collectionName}_code`];
+    <Flex>
+      <Select
+        placeholder={"없음"}
+        defaultValue={defaultValue}
+        onChange={(event) => {
+          if (event.target.value) onChange(new ObjectId(event.target.value));
+        }}
+        ref={refSelect}
+      >
+        {dataList.map(
+          (data: Record<string, any> & { _id: string | ObjectId }, index) => {
+            const id =
+              typeof data._id === "string" ? new ObjectId(data._id) : data._id;
+            const code: string = data[`${collectionName}_code`];
 
-          return (
-            <option value={id.toHexString()} key={index}>
-              {`[${code}]: `}
-              {data[`${collectionName}_name`]}
+            return (
+              <option value={id.toHexString()} key={index}>
+                {`[${code}]: `}
+                {data[`${collectionName}_name`]}
 
-              {/* 생산 가능 수량 표시 */}
-              {maxQty[code] !== undefined
-                ? ` (생산 가능 수량: ${maxQty[code]})`
-                : ""}
-            </option>
-          );
-        }
-      )}
-    </Select>
+                {/* 생산 가능 수량 표시 */}
+                {maxQty[code] !== undefined
+                  ? ` (생산 가능 수량: ${maxQty[code]})`
+                  : ""}
+              </option>
+            );
+          }
+        )}
+      </Select>
+
+      <SearchPopover
+        data={dataList}
+        keys={[`${collectionName}_name`, `${collectionName}_code`]}
+        onSelect={(fuseResult) => {
+          if (refSelect.current) {
+            const id = fuseResult.item._id;
+            refSelect.current.value = id;
+            onChange(new ObjectId(id));
+          }
+        }}
+      />
+    </Flex>
   );
 }
