@@ -14,7 +14,7 @@ import { ObjectId } from "bson";
 
 export default function FormModalInputBOM(props: {
   defaultValue: part_bills_of_material[];
-  onChange: Function;
+  onChange: (result: part_bills_of_material[]) => void;
 }) {
   const [bomList, setBomList] = React.useState<part_bills_of_material[]>(
     props.defaultValue

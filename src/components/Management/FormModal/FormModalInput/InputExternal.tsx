@@ -9,7 +9,7 @@ import { Flex, Select } from "@chakra-ui/react";
 export default function FormModalInputExternal(props: {
   collectionName: COLLECTION_NAME_TYPE;
   defaultValue: string;
-  onChange: Function;
+  onChange: (id: ObjectId) => void;
 }) {
   const { collectionName, defaultValue, onChange } = props;
 

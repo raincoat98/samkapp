@@ -4,9 +4,9 @@ import { search } from "utils/icons";
 import { Icon, InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
 
 export default function TableSearch(props: {
-  preGlobalFilteredRows: any;
+  preGlobalFilteredRows: any[];
   globalFilter: any;
-  setGlobalFilter: any;
+  setGlobalFilter: Function;
 }) {
   const [value, setValue] = React.useState(props.globalFilter);
   const onChange = useAsyncDebounce((value) => {

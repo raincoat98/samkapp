@@ -26,7 +26,7 @@ export default function FormModalInput(props: {
   type: "string" | "int" | "date" | "bool" | string;
   defaultValue: any;
   labelWidth?: string | number;
-  onChange: Function;
+  onChange: (value: any) => void;
   isExternal?: boolean;
   isRequired?: boolean;
   isDisabled?: boolean;
@@ -59,7 +59,7 @@ export default function FormModalInput(props: {
       <FormModalRefExternal
         collectionName={props.type as COLLECTION_NAME_TYPE}
         defaultValue={props.defaultValue?.toString()}
-        onChange={(value: string) => props.onChange(value)}
+        onChange={(value) => props.onChange(value)}
       />
     );
   } else {

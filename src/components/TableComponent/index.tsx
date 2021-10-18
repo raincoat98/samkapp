@@ -38,7 +38,10 @@ export type TableComponentProps = {
   data?: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
-  onRowClick?: Function;
+  onRowClick?: (data: {
+    event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>;
+    row: Row<{}>;
+  }) => void;
   rowStyle?: {
     color?: Record<string, Record<string, any>>;
     bgColor?: Record<string, Record<string, any>>;
@@ -250,7 +253,7 @@ export default function TableComponent(props: TableComponentProps) {
               {row.cells.map((cell, index) => (
                 <TableDataCell
                   cell={cell}
-                  onClick={(event: any) => {
+                  onClick={(event) => {
                     // 체크박스 관리 행일 때는 이벤트 취소
                     if (cell.column.id === SELECTION_COLUMN) return;
                     if (props.onRowClick) props.onRowClick({ event, row });
@@ -294,7 +297,7 @@ export default function TableComponent(props: TableComponentProps) {
 function TableCheckbox(props: {
   checked: boolean;
   indeterminate: boolean;
-  onChange: Function;
+  onChange: (checkbox: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   const { checked, indeterminate, onChange } = props;
 

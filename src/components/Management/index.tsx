@@ -18,7 +18,7 @@ import {
 
 // 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
-import { Row } from "react-table";
+import { ReducerTableState, Row, TableInstance } from "react-table";
 
 // chakra-ui
 import {
@@ -46,7 +46,7 @@ export default function Management(props: {
   collectionName: COLLECTION_NAME_TYPE;
   schema: schemaType;
   tabList?: string[];
-  onTabChange?: Function;
+  onTabChange?: (tabIndex: number) => void;
   filterList?: { schema: schemaType; data: any[] }[];
   formModalOptions?: FormModalProps["options"];
   tableProps: TableComponentProps;
@@ -86,7 +86,11 @@ export default function Management(props: {
   };
 
   const onTableChange = React.useCallback(
-    (props: { table: any; state: any; action: { type: string } }) => {
+    (props: {
+      table: TableInstance;
+      state: ReducerTableState<any>;
+      action: { type: string };
+    }) => {
       const { table, state } = props;
 
       if (table && Object.entries(state.selectedRowIds).length !== 0) {
@@ -96,7 +100,10 @@ export default function Management(props: {
         const rowsById = table.rowsById;
 
         for (const key in selectedRowIds) {
-          selectedItemIdList.push(rowsById[key]?.original._id);
+          if (rowsById[key]) {
+            const origData = rowsById[key].original as Record<string, any>;
+            selectedItemIdList.push(origData._id);
+          }
         }
 
         setCheckedRows(selectedItemIdList);
@@ -133,7 +140,15 @@ export default function Management(props: {
   });
 
   // 테이블 초기화
-  let mainTable: any;
+  let mainTable: {
+    tableInstance: TableInstance<object>;
+    component: {
+      box: JSX.Element;
+      search: JSX.Element;
+      pagination: JSX.Element;
+      table: JSX.Element;
+    };
+  };
   mainTable = TableComponent({
     columns,
     data: tableProps.data,

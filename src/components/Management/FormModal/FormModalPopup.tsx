@@ -16,8 +16,8 @@ export default function FormModalPopup(props: {
   title: string;
   isOpen: boolean;
   isSaveDisabled: boolean;
-  onClose: Function;
-  onSubmit: Function;
+  onClose: () => void;
+  onSubmit: () => void;
   children: React.ReactNode;
   info?: React.ReactNode;
 }) {

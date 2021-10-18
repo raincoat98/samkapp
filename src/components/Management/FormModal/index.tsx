@@ -38,8 +38,12 @@ export const FormModalPropsKey = {
 export type FormModalProps = {
   mode: formModalModeType;
   isOpen: boolean;
-  onClose: Function;
-  onSave: Function;
+  onClose: () => void;
+  onSave: (data: {
+    type: formModalModeType;
+    document: Record<string, any>;
+    initialValue: Record<string, any>;
+  }) => void;
   initialValue: Record<string, any>;
   schema: schemaType;
   options?: Record<
@@ -191,7 +195,7 @@ export default function FormModal(props: FormModalProps) {
               <FormModalAddress
                 name={`${props.schema.name}.properties.${key}`}
                 defaultValue={defaultValue ?? {}}
-                onChange={(result: any) => editData({ key, value: result })}
+                onChange={(result) => editData({ key, value: result })}
               />
             );
             break;

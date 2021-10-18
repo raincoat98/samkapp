@@ -16,7 +16,7 @@ import {
 export default function FormModalInputAddress(props: {
   name: string;
   defaultValue: address;
-  onChange: Function;
+  onChange: (data: { address: string; zip_code: string }) => void;
 }) {
   const { name, defaultValue, onChange } = props;
 
@@ -26,26 +26,24 @@ export default function FormModalInputAddress(props: {
   const addressPopupDisclosure = useDisclosure();
   const { t: translate } = useTranslation();
 
-  function onAddressComplete(result: Record<string, any>) {
-    const address = result.fullAddress;
-    const zip_code = result.data.zonecode;
-
-    if (addressRef.current) addressRef.current.value = address;
-    if (zipCodeRef.current) zipCodeRef.current.value = zip_code;
-    onChange({
-      address,
-      zip_code,
-    });
-    addressPopupDisclosure.onClose();
-  }
-
   return (
     <>
       <DaumAddressPopup
         isOpen={addressPopupDisclosure.isOpen}
         onClose={addressPopupDisclosure.onClose}
         isCentered={true}
-        onComplete={onAddressComplete}
+        onComplete={(result) => {
+          const address = result.fullAddress;
+          const zip_code = result.data.zonecode;
+
+          if (addressRef.current) addressRef.current.value = address;
+          if (zipCodeRef.current) zipCodeRef.current.value = zip_code;
+          onChange({
+            address,
+            zip_code,
+          });
+          addressPopupDisclosure.onClose();
+        }}
         children={null}
       />
 

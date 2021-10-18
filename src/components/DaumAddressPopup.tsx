@@ -11,11 +11,19 @@ import {
 } from "@chakra-ui/react";
 
 export default function PopupPostCode(
-  props: ModalProps & { onComplete?: Function }
+  props: ModalProps & {
+    onComplete?: (result: {
+      data: Record<string, string>;
+      fullAddress: string;
+      extraAddress: string;
+    }) => void;
+  }
 ) {
   const { onComplete, isOpen, onClose, ...rest } = props;
 
-  function handleComplete(data: Record<string, any>) {
+  function handleComplete(data: Record<string, string>) {
+    console.log(data);
+
     let fullAddress = data.address;
     let extraAddress = "";
 

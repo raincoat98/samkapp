@@ -18,7 +18,7 @@ import {
 
 export default function Sidebar(props: {
   isOpen: boolean;
-  onClose: Function;
+  onClose: () => void;
   isLandscape: boolean;
 }) {
   const { colorMode } = useColorMode();
