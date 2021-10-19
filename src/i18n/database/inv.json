@@ -3,7 +3,6 @@
   "properties": {
     "adequate_stock": "적정 재고량",
     "inv_month": "재고월",
-    "inv_code": "재고 코드",
     "inv_qty": "재고량",
     "lot_no": "LOT NO",
     "part_id": "품목",

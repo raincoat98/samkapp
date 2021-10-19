@@ -273,7 +273,7 @@ export const distinct = createAsyncThunk(
     props: {
       collectionName: COLLECTION_NAME_TYPE;
       field: string;
-      query?: Document;
+      query?: Record<string, any>;
       options?: object;
     },
     { rejectWithValue }

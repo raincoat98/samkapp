@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
+import { COLLECTION_NAME_TYPE, isMonth } from "utils/realmUtils";
 import placeholders from "utils/placeholders";
 import FormModalURLInput from "./InputURL";
 import FormModalRefExternal from "./InputExternal";
@@ -124,15 +124,29 @@ export default function FormModalInput(props: {
         }
         // 날짜
         case "date": {
-          // 기존값이 있을 경우
-          if (props.defaultValue) {
-            // moment로 input date 포맷에 맞게 수정
-            inputProps.defaultValue = moment(props.defaultValue).format(
-              "YYYY-MM-DD"
-            );
+          if (isMonth(props.name)) {
+            inputProps.type = "month";
+
+            // 기존값이 있을 경우
+            if (props.defaultValue) {
+              // moment로 input date 포맷에 맞게 수정
+              inputProps.defaultValue = moment(props.defaultValue).format(
+                "YYYY-MM"
+              );
+            }
           } else {
-            // 오늘 이후 날짜로만 가능하게 설정
-            inputProps.min = moment().format("YYYY-MM-DD");
+            inputProps.type = "date";
+
+            // 기존값이 있을 경우
+            if (props.defaultValue) {
+              // moment로 input date 포맷에 맞게 수정
+              inputProps.defaultValue = moment(props.defaultValue).format(
+                "YYYY-MM-DD"
+              );
+            } else {
+              // 오늘 이후 날짜로만 가능하게 설정
+              inputProps.min = moment().format("YYYY-MM-DD");
+            }
           }
 
           // valueAsDate 값은 input date 값 포맷을 Date 객체로 가져옴
@@ -140,7 +154,7 @@ export default function FormModalInput(props: {
             props.onChange(event.target.valueAsDate);
 
           // Input type="date"
-          element = <Input type="date" {...inputProps} />;
+          element = <Input {...inputProps} />;
           break;
         }
         // 불리언 값은 switch 요소로 설정
