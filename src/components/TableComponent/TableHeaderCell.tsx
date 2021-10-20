@@ -13,6 +13,8 @@ export default function TableHeaderCell(
       textAlign="center"
       whiteSpace="pre"
       _notFirst={{ borderLeftWidth: "1px" }}
+      padding={3}
+      margin={0}
       {...rest}
     >
       <Heading as="h6" size="xs" display="inline-block">

@@ -1,4 +1,6 @@
 import React from "react";
+import { RootState } from "store";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
   setCollectionData,
@@ -39,6 +41,7 @@ import FormModal, {
   FormModalProps,
   formModalModeType,
 } from "components/Management/FormModal";
+import { ObjectId } from "bson";
 
 // 관리 페이지
 export default function Management(props: {
@@ -63,6 +66,9 @@ export default function Management(props: {
 
   // 번역
   const { t: translate } = useTranslation();
+
+  // 데이터베이스
+  const database = useSelector((state: RootState) => state.realm.database);
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -122,21 +128,52 @@ export default function Management(props: {
   Object.keys(columns).forEach((key) => {
     const column = columns[Number(key)];
 
+    if (
+      column.accessor === undefined &&
+      column.Header?.toString().endsWith("_id")
+    ) {
+      const collectionName = column.Header?.toString().replaceAll(
+        "_id",
+        ""
+      ) as COLLECTION_NAME_TYPE;
+
+      // 외부 컬렉션 참조
+      const header = column.Header as string;
+      column.accessor = (originalRow: any) => {
+        const dataList = database[collectionName] as Array<Record<string, any>>;
+        const data = dataList.find((element) => {
+          const refId = new ObjectId(originalRow[header]);
+          const dataId = new ObjectId(element._id);
+          return refId.equals(dataId);
+        });
+
+        // [%code%]: {%name%} 형식으로 표시
+        if (data !== undefined) {
+          return (
+            `[${data[`${collectionName}_code`]}]: ` +
+            data[`${collectionName}_name`]
+          );
+        }
+
+        return "";
+      };
+    }
     // 값 번역
     // 작업지시 우선순위
-    if (column.Header === "priorities") {
-      column.accessor = (originalRow: any, rowIndex: number) =>
+    else if (column.Header === "priorities") {
+      column.accessor = (originalRow: any, rowIndex) =>
         translate(originalRow["priorities"]);
     }
     // 작업지시 진행상황
-    if (column.Header === "progress") {
-      column.accessor = (originalRow: any, rowIndex: number) =>
+    else if (column.Header === "progress") {
+      column.accessor = (originalRow: any, rowIndex) =>
         translate(originalRow["progress"]);
     }
 
     // 헤더 번역
-    const header = translate(`${schema.name}.properties.${column.Header}`);
-    column.Header = header;
+    column.Header = translate(
+      `${schema.name}.properties.${column.Header}`
+    ) as string;
   });
 
   // 테이블 초기화

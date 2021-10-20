@@ -113,7 +113,7 @@ export function schemaToColums(props: {
   for (let index = 0; index < allProperties.length; index++) {
     const key = allProperties[index];
     const type = schema.properties[allProperties[index]].replaceAll("?", "");
-    let accessor: string | Accessor<{}>;
+    let accessor: string | Accessor<{}> | undefined;
 
     switch (type) {
       case "string":
@@ -131,11 +131,27 @@ export function schemaToColums(props: {
             : "";
         };
         break;
-        // continue;
       }
-      default: {
+      case "bool": {
+        accessor = (originalRow) => {
+          const origRow = originalRow as Record<string, any>;
+          const boolData = origRow[key] as boolean;
+          switch (boolData) {
+            case true:
+              return "예";
+            default:
+              return "아니오";
+          }
+        };
+        break;
+      }
+      case "objectId":
+      case "part_bills_of_material[]":
+      case "address": {
         continue;
       }
+      default:
+        accessor = undefined;
     }
 
     columns.push({

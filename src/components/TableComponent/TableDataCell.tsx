@@ -9,6 +9,8 @@ export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
       textAlign="center"
       verticalAlign="middle"
       _notFirst={{ borderLeftWidth: "1px" }}
+      padding={3}
+      margin={0}
       {...rest}
     >
       <Center width="100%" height="100%">
