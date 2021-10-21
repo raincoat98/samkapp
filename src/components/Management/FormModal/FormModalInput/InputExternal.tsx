@@ -55,6 +55,7 @@ export default function FormModalInputExternal(props: {
       </Select>
 
       <SearchPopover
+        popoverProps={{ placement: "left-start" }}
         data={dataList}
         keys={[`${collectionName}_name`, `${collectionName}_code`]}
         onSelect={(fuseResult) => {

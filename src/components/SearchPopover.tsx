@@ -8,6 +8,7 @@ import {
   IconButton,
   Input,
   Popover,
+  PopoverProps,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
@@ -19,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function FormModalInputExternal(props: {
+  popoverProps?: PopoverProps;
   data: any[];
   keys: string[];
   onSelect: (selected: Fuse.FuseResult<any>) => void;
@@ -33,7 +35,7 @@ export default function FormModalInputExternal(props: {
   });
 
   return (
-    <Popover>
+    <Popover {...props.popoverProps}>
       <PopoverTrigger>
         <IconButton
           icon={<Icon as={search} />}
