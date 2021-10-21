@@ -29,15 +29,8 @@ export default function FormModalInputBOM(props: {
     const newBom: part_bills_of_material = { ...newBomArray[index] };
 
     if (newBomArray[index]) {
-      switch (key) {
-        case "part_id":
-          newBom.part_id = value as ObjectId;
-          break;
-        case "number":
-          const num: number = value as number;
-          newBom.number = num;
-          break;
-      }
+      if (typeof value === "number") newBom.number = value;
+      else newBom.part_id = value;
 
       newBomArray[index] = newBom;
       setBomList(newBomArray);
