@@ -156,7 +156,7 @@ export default function FormModal(props: FormModalProps) {
                 name={`${props.schema.name}.properties.${key}`}
                 type={type}
                 defaultValue={defaultValue}
-                onChange={(value: any) => editData({ key, value })}
+                onChange={(value) => editData({ key, value })}
                 isTextarea={textAreaSchemaKeyList.includes(key)}
                 isRequired={isRequired}
                 isReadOnly={
@@ -183,7 +183,7 @@ export default function FormModal(props: FormModalProps) {
             element = (
               <FormModalBillsOfMaterial
                 defaultValue={defaultValue ?? []}
-                onChange={(value: any) => editData({ key, value })}
+                onChange={(value) => editData({ key, value })}
               />
             );
             break;
