@@ -263,7 +263,7 @@ export default function Management(props: {
         dispatch(
           updateData({
             collectionName,
-            filter: { _id: initialValue._id },
+            filter: { _id: new ObjectId(initialValue._id) },
             update: { $set: document },
           })
         );
