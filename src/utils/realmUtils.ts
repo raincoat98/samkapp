@@ -63,7 +63,7 @@ export const sortData: Record<string, Record<string, number>> = {
   },
   part: {
     part_group_2_id: 3,
-    part_name: 1,
+    name: 1,
     part_type_id: 2,
     remark: 6,
     unit: 4,

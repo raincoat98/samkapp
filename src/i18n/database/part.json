@@ -2,12 +2,12 @@
   "name": "품목",
   "properties": {
     "part_group_2_id": "대분류",
-    "part_name": "품명",
+    "name": "품명",
     "part_bills_of_material": {
       "part_id": "품목",
       "number": "개수"
     },
-    "part_code": "품목 코드",
+    "code": "품목 코드",
     "part_spec": "규격",
     "part_type_id": "품목 형태",
     "remark": "비고",

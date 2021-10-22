@@ -9,6 +9,6 @@
     "priorities": "우선순위",
     "progress": "진행상황",
     "remark": "특이사항",
-    "work_order_code": "작업 지시 코드"
+    "code": "작업 지시 코드"
   }
 }

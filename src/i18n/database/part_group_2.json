@@ -2,8 +2,8 @@
   "name": "대분류",
   "properties": {
     "part_group_1_id": "중분류",
-    "part_group_2_code": "대분류 코드",
-    "part_group_2_name": "대분류명",
+    "code": "대분류 코드",
+    "name": "대분류명",
     "remark": "비고",
     "search_group": "검색 그룹",
     "sort_seq": "정렬순서",

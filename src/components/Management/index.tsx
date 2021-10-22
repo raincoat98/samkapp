@@ -149,10 +149,7 @@ export default function Management(props: {
 
         // [%code%]: {%name%} 형식으로 표시
         if (data !== undefined) {
-          return (
-            `[${data[`${collectionName}_code`]}]: ` +
-            data[`${collectionName}_name`]
-          );
+          return `[${data["code"]}]: ` + data["name"];
         }
 
         return "";
@@ -338,7 +335,7 @@ export default function Management(props: {
                       value={filterItem[filter.schema.primaryKey].toString()}
                       key={index}
                     >
-                      {filterItem[`${filter.schema.name}_name`]}
+                      {filterItem["name"]}
                     </option>
                   ))}
                 </Select>

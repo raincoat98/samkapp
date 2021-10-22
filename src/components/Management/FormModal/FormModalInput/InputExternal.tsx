@@ -37,12 +37,12 @@ export default function FormModalInputExternal(props: {
           (data: Record<string, any> & { _id: string | ObjectId }, index) => {
             const id =
               typeof data._id === "string" ? new ObjectId(data._id) : data._id;
-            const code: string = data[`${collectionName}_code`];
+            const code: string = data["code"];
 
             return (
               <option value={id.toHexString()} key={index}>
                 {`[${code}]: `}
-                {data[`${collectionName}_name`]}
+                {data["name"]}
 
                 {/* 생산 가능 수량 표시 */}
                 {maxQty[code] !== undefined
@@ -57,7 +57,7 @@ export default function FormModalInputExternal(props: {
       <SearchPopover
         popoverProps={{ placement: "left-start" }}
         data={dataList}
-        keys={[`${collectionName}_name`, `${collectionName}_code`]}
+        keys={["code", "name"]}
         onSelect={(fuseResult) => {
           if (refSelect.current) {
             const id = fuseResult.item._id;

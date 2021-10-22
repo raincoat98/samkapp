@@ -2,8 +2,8 @@
   "name": "품목 형태",
   "properties": {
     "is_material": "품목 구분",
-    "part_type_code": "품목 형태 코드",
-    "part_type_name": "품목형태명",
+    "code": "품목 형태 코드",
+    "name": "품목형태명",
     "remark": "비고",
     "sort_seq": "정렬순서",
     "valid": "사용 여부"

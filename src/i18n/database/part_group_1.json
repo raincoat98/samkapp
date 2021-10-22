@@ -2,8 +2,8 @@
   "name": "중분류",
   "properties": {
     "is_material": "품목 구분",
-    "part_group_1_code": "중분류 코드",
-    "part_group_1_name": "중분류명",
+    "code": "중분류 코드",
+    "name": "중분류명",
     "remark": "비고",
     "sort_seq": "정렬순서",
     "valid": "사용 여부"

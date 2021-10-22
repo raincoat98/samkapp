@@ -9,7 +9,7 @@
     "remark": "비고",
     "row_qty": "층번호",
     "sort_seq": "정렬순서",
-    "warehouse_code": "위치 코드",
-    "warehouse_name": "위치명"
+    "code": "위치 코드",
+    "name": "위치명"
   }
 }

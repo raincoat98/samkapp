@@ -31,10 +31,8 @@ export default function WorkOrderManagement() {
   // 오늘 작업지시 인덱스
   const workOrderTodayIndex =
     data.filter((item) => {
-      if (item?.work_order_code) {
-        return item.work_order_code.startsWith(
-          moment(Date.now()).format("YYYYMMDD")
-        );
+      if (item?.code) {
+        return item.code.startsWith(moment(Date.now()).format("YYYYMMDD"));
       } else return false;
     }).length + 1;
 
@@ -49,7 +47,7 @@ export default function WorkOrderManagement() {
   }
 
   const formModalOptions = {
-    work_order_code: {
+    code: {
       autofill: {
         value: `${today}_${prefix}${workOrderTodayIndex}`,
         disabled: true,

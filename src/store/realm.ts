@@ -333,7 +333,7 @@ const userSlice = createSlice({
         if (quantityList.length) {
           maxQuantity = Math.min(...quantityList);
 
-          if (part._id) state.maxMadeQty[part.part_code] = maxQuantity;
+          if (part._id) state.maxMadeQty[part.code] = maxQuantity;
         }
       }
     },

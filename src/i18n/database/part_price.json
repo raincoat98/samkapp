@@ -4,7 +4,7 @@
     "apply_end": "적용종료일",
     "apply_start": "적용시작일",
     "os_price": "외주단가",
-    "part_price_code": "픔목 단가 코드",
+    "code": "픔목 단가 코드",
     "part_id": "품목",
     "purchase_price": "구매단가",
     "remark": "비고",
