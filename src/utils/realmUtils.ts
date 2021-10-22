@@ -49,8 +49,10 @@ export function isMonth(key: string) {
 // 정렬값
 export const sortData: Record<string, Record<string, number>> = {
   customer: {
-    address: 1,
-    zip_code: 2,
+    code: 1,
+    name: 2,
+    address: 3,
+    zip_code: 4,
   },
   inv: {
     adequate_stock: 5,
@@ -62,20 +64,26 @@ export const sortData: Record<string, Record<string, number>> = {
     warehouse_id: 6,
   },
   part: {
-    part_group_2_id: 3,
-    name: 1,
-    part_type_id: 2,
-    remark: 6,
-    unit: 4,
-    warehouse_id: 5,
+    code: 1,
+    name: 2,
+    part_spec: 3,
+    part_type_id: 4,
+    part_group_2_id: 5,
+    unit: 6,
+    warehouse_id: 7,
   },
   part_price: {
+    code: -1,
     part_id: 0,
     purchase_price: 1,
     os_price: 2,
     selling_price: 3,
     apply_start: 4,
     apply_end: 5,
+  },
+  work_order: {
+    priorities: 1,
+    code: 3,
   },
 };
 
