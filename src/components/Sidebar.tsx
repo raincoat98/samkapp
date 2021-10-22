@@ -1,12 +1,13 @@
 import { useHistory } from "react-router-dom";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
-import routerConfig from "utils/routerConfig";
-import { setting } from "utils/icons";
+import { sidebarRouteType, sidebarConfig } from "utils/routerConfig";
+import { circle, setting } from "utils/icons";
 import {
   useColorMode,
   Image,
   Flex,
+  Stack,
   Button,
   ButtonGroup,
   Divider,
@@ -14,6 +15,12 @@ import {
   CloseButton,
   IconButton,
   Icon,
+  Heading,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from "@chakra-ui/react";
 
 export default function Sidebar(props: {
@@ -24,6 +31,28 @@ export default function Sidebar(props: {
   const { colorMode } = useColorMode();
   const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
+
+  // 사이드바 버튼
+  function SidebarButton(sidebarRoute: sidebarRouteType) {
+    return (
+      <Button
+        onClick={() => {
+          if (sidebarRoute.route) {
+            history.push(sidebarRoute.route.path);
+            if (!props.isLandscape) props.onClose();
+          }
+        }}
+        borderRadius="0"
+        transitionDuration="0"
+        textAlign="left"
+        justifyContent="normal"
+        width="100%"
+      >
+        <Icon as={circle} marginRight={2} />
+        {sidebarRoute.name}
+      </Button>
+    );
+  }
 
   return (
     <Flex
@@ -56,37 +85,35 @@ export default function Sidebar(props: {
 
       <Divider />
 
-      <Flex
-        as={ButtonGroup}
-        flex="1"
-        direction="column"
-        py={8}
-        px={1}
-        size="lg"
-        spacing="0"
-        variant="outline"
-        overflow="auto"
-      >
-        {routerConfig.routes.map((route, index) => {
-          if (route.sidebar) {
-            return (
-              <Button
-                onClick={() => {
-                  history.push(route.path);
-                  if (!props.isLandscape) props.onClose();
-                }}
-                w="100%"
-                _notLast={{ mb: 5 }}
-                key={index}
-              >
-                {route.name}
-              </Button>
-            );
-          } else {
-            return "";
-          }
-        })}
-      </Flex>
+      <Center flex="1" overflow="auto">
+        <Stack as={ButtonGroup} variant="ghost" spacing="0" width="100%">
+          {sidebarConfig.map((sidebarRoute, index) => {
+            if (!sidebarRoute.children) {
+              return <SidebarButton {...sidebarRoute} key={index} />;
+            } else {
+              return (
+                <Accordion allowMultiple key={index}>
+                  <AccordionItem>
+                    <AccordionButton>
+                      <Heading as="h5" size="sm">
+                        {sidebarRoute.name}
+                      </Heading>
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel py={1}>
+                      {sidebarRoute.children.map((sidebarRoute, index) => (
+                        <SidebarButton {...sidebarRoute} key={index} />
+                      ))}
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              );
+            }
+          })}
+        </Stack>
+      </Center>
+
+      <Divider />
 
       <IconButton
         icon={<Icon as={setting} />}
@@ -96,6 +123,7 @@ export default function Sidebar(props: {
         }}
         width="fit-content"
         aria-label="설정"
+        marginTop={3}
       />
     </Flex>
   );

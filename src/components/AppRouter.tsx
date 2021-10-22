@@ -46,11 +46,14 @@ export default function AppRouter() {
             </Route>
 
             {/* 주소 매핑 */}
-            {routerConfig.routes.map((route, index) => (
-              <Route path={route.path} key={index}>
-                {<route.component />}
-              </Route>
-            ))}
+            {Object.keys(routerConfig.routes).map((key, index) => {
+              const route = routerConfig.routes[key];
+              return (
+                <Route path={route.path} key={index}>
+                  {<route.component />}
+                </Route>
+              );
+            })}
 
             {/* 404 매핑 */}
             <Route path="*">

@@ -18,6 +18,7 @@ import {
 import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
 import { IoBusinessOutline } from "react-icons/io5";
+import { BiCircle } from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
 
@@ -36,7 +37,8 @@ export const password = HiKey;
 export const search = AiOutlineSearch;
 
 export const info = AiOutlineInfoCircle;
-export const circle = BsCircleFill;
+export const circle = BiCircle;
+export const circleFill = BsCircleFill;
 export const menu = AiOutlineMenu;
 export const profile = AiOutlineProfile;
 export const container = AiOutlineContainer;
