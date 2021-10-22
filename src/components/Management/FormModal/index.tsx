@@ -16,6 +16,7 @@ import FormModalAddress from "./FormModalInput/InputAddress";
 import FormModalBillsOfMaterial from "./FormModalInput/InputBOM";
 import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
+import FormModalAlert from "./FormModalAlert";
 
 // 타입 선언
 export type formItem = {
@@ -65,6 +66,9 @@ export default function FormModal(props: FormModalProps) {
   const [disabledDataList, setDisabledDataList] = React.useState<
     FormModalInfoData[]
   >([]);
+
+  const [isFormModalAlertOpen, setIsFormModalAlertOpen] =
+    React.useState<boolean>(false);
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
@@ -294,11 +298,16 @@ export default function FormModal(props: FormModalProps) {
           document: editedDocument,
           initialValue: props.initialValue,
         });
+        setEditedDocument({});
       }}
       // 다이얼로그가 닫힐 때
       onClose={() => {
-        setEditedDocument({});
-        props.onClose();
+        if (Object.keys(editedDocument).length !== 0) {
+          setIsFormModalAlertOpen(true);
+        } else {
+          setEditedDocument({});
+          props.onClose();
+        }
       }}
       // 정보 값(생성날짜, 수정자 등)은 수정 모드일 때만 추가
       info={
@@ -309,6 +318,16 @@ export default function FormModal(props: FormModalProps) {
         )
       }
     >
+      <FormModalAlert
+        isOpen={isFormModalAlertOpen}
+        onClose={(isConfirmed) => {
+          if (isConfirmed) {
+            props.onClose();
+            setEditedDocument({});
+          }
+          setIsFormModalAlertOpen(false);
+        }}
+      />
       <Stack>
         {inputList.map((formItem, index) => (
           <Box key={index}>{formItem.element}</Box>
