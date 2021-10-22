@@ -3,9 +3,11 @@ import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import { sidebarRouteType, sidebarConfig } from "utils/routerConfig";
 import { circle, setting } from "utils/icons";
+import Moment from "react-moment";
 import {
   useColorMode,
   Image,
+  Box,
   Flex,
   Stack,
   Button,
@@ -115,16 +117,25 @@ export default function Sidebar(props: {
 
       <Divider />
 
-      <IconButton
-        icon={<Icon as={setting} />}
-        onClick={() => {
-          history.push("/setting");
-          if (!props.isLandscape) props.onClose();
-        }}
-        width="fit-content"
-        aria-label="설정"
-        marginTop={3}
-      />
+      <Flex marginTop={3} align="center">
+        <IconButton
+          icon={<Icon as={setting} />}
+          onClick={() => {
+            history.push("/setting");
+            if (!props.isLandscape) props.onClose();
+          }}
+          width="fit-content"
+          aria-label="설정"
+        />
+        <Box flex="1" textAlign="center" userSelect="all">
+          <Box>
+            <Moment format="YYYY년 MM월 DD일" interval={60} />
+          </Box>
+          <Box>
+            <Moment format="a H시 mm분" interval={10} locale="ko-kr" />
+          </Box>
+        </Box>
+      </Flex>
     </Flex>
   );
 }
