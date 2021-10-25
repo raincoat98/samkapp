@@ -57,7 +57,7 @@ export default function FormModalInputExternal(props: {
       <SearchPopover
         popoverProps={{ placement: "left-start" }}
         data={dataList}
-        keys={["code", "name"]}
+        searchKeys={["code", "name"]}
         onSelect={(fuseResult) => {
           if (refSelect.current) {
             const id = fuseResult.item._id;

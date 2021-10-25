@@ -19,20 +19,21 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 
-export default function FormModalInputExternal(props: {
+export default function SearchPopover(props: {
   popoverProps?: PopoverProps;
   data: any[];
-  keys: string[];
+  searchKeys: string[];
   onSelect: (selected: Fuse.FuseResult<any>) => void;
 }) {
   const [searchResults, setSearchResults] = React.useState<
     Fuse.FuseResult<any>[]
   >([]);
-
   const fuse = new Fuse(props.data, {
-    keys: props.keys,
+    keys: props.searchKeys,
     includeScore: true,
   });
+
+  console.log(searchResults);
 
   return (
     <Popover {...props.popoverProps}>
@@ -54,24 +55,21 @@ export default function FormModalInputExternal(props: {
             }
           />
           <Stack direction="column" marginTop={3}>
-            {searchResults.map((searchResult, index) => (
-              <ButtonGroup
-                size="sm"
-                variant="outline"
-                colorScheme="teal"
-                key={index}
-              >
+            <ButtonGroup size="sm" variant="outline" colorScheme="teal">
+              {searchResults.map((searchResult, index) => (
                 <Button
                   onClick={() => props.onSelect(searchResults[index])}
                   flex="1"
+                  key={index}
                 >
-                  {/* 헤더 */}
-                  {props.keys.map((key, index) => (
-                    <Box key={index}>{searchResult.item[key]}</Box>
-                  ))}
+                  <Box>
+                    {`[${searchResult.item["code"]}]: ` +
+                      `${searchResult.item["name"]}`}
+                  </Box>
+                  <Box>{}</Box>
                 </Button>
-              </ButtonGroup>
-            ))}
+              ))}
+            </ButtonGroup>
           </Stack>
         </PopoverBody>
       </PopoverContent>
