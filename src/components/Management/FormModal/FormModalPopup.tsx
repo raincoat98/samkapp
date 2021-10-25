@@ -34,32 +34,25 @@ export default function FormModalPopup(props: {
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <form
-          action=""
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit();
-          }}
-        >
-          <ModalContent>
-            <ModalHeader borderBottomWidth="1px">{title}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>{children}</ModalBody>
-            <ModalFooter borderTopWidth="1px">
-              <Box flex="1">{info}</Box>
-              <ButtonGroup>
-                <Button
-                  isDisabled={isSaveDisabled}
-                  type="submit"
-                  colorScheme="blue"
-                >
-                  저장
-                </Button>
-                <Button onClick={() => onClose()}>닫기</Button>
-              </ButtonGroup>
-            </ModalFooter>
-          </ModalContent>
-        </form>
+
+        <ModalContent>
+          <ModalHeader borderBottomWidth="1px">{title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>{children}</ModalBody>
+          <ModalFooter borderTopWidth="1px">
+            <Box flex="1">{info}</Box>
+            <ButtonGroup>
+              <Button
+                onClick={() => onSubmit()}
+                isDisabled={isSaveDisabled}
+                colorScheme="blue"
+              >
+                저장
+              </Button>
+              <Button onClick={() => onClose()}>닫기</Button>
+            </ButtonGroup>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
     </Portal>
   );
