@@ -132,7 +132,7 @@ export default function Sidebar(props: {
             <Moment format="YYYY년 MM월 DD일" interval={60} />
           </Box>
           <Box>
-            <Moment format="a H시 mm분" interval={10} locale="ko-kr" />
+            <Moment format="a h시 m분" interval={10} locale="ko-kr" />
           </Box>
         </Box>
       </Flex>
