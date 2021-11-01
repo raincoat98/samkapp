@@ -129,6 +129,24 @@ export const logout = createAsyncThunk(
   }
 );
 
+// 데이터베이스 회원가입
+export const register = createAsyncThunk(
+  `${name}/register`,
+  async (
+    props: { email: string; password: string },
+    { dispatch, rejectWithValue }
+  ) => {
+    const { email, password } = props;
+
+    try {
+      await app.emailPasswordAuth.registerUser(email, password);
+      dispatch(login({ email, password }));
+    } catch (error) {
+      return rejectWithValue(realmErrorToObject(error));
+    }
+  }
+);
+
 // 컬렉션 데이터 가져오기
 export const setCollectionData = createAsyncThunk(
   `${name}/setCollectionData`,
