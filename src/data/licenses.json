@@ -89,10 +89,10 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "my-app"
     },
-    "bson@4.5.1": {
-        "licenses": "Apache-2.0",
-        "repository": "https://github.com/mongodb/js-bson",
-        "licenseUrl": "https://github.com/mongodb/js-bson/raw/master/LICENSE.md",
+    "axios@0.24.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/axios/axios",
+        "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
         "parents": "my-app"
     },
     "file-saver@2.0.5": {
@@ -105,6 +105,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/framer/motion/",
         "licenseUrl": "https://github.com/framer/motion//raw/master/LICENSE.md",
+        "parents": "my-app"
+    },
+    "fuse.js@6.4.6": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/krisk/Fuse",
+        "licenseUrl": "https://github.com/krisk/Fuse/raw/master/LICENSE",
         "parents": "my-app"
     },
     "i18next@20.4.0": {
@@ -149,6 +155,12 @@
         "licenseUrl": "https://github.com:react-icons/react-icons/raw/master/LICENSE",
         "parents": "my-app"
     },
+    "react-moment@1.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/headzoo/react-moment",
+        "licenseUrl": "https://github.com/headzoo/react-moment/raw/master/LICENSE",
+        "parents": "my-app"
+    },
     "react-redux@7.2.4": {
         "licenses": "MIT",
         "repository": "github:reduxjs/react-redux",
@@ -177,12 +189,6 @@
         "licenses": "MIT",
         "repository": "https://github.com/facebook/react",
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
-        "parents": "my-app"
-    },
-    "realm-web@1.3.0": {
-        "licenses": "SEE LICENSE IN LICENSE",
-        "repository": "https://github.com/realm/realm-js",
-        "licenseUrl": "https://github.com/realm/realm-js",
         "parents": "my-app"
     },
     "redux-logger@3.0.6": {

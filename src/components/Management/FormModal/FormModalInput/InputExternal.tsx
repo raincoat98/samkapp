@@ -2,14 +2,13 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
-import { ObjectId } from "bson";
 import SearchPopover from "components/SearchPopover";
 import { Flex, Select } from "@chakra-ui/react";
 
 export default function FormModalInputExternal(props: {
   collectionName: COLLECTION_NAME_TYPE;
   defaultValue: string;
-  onChange: (id: ObjectId) => void;
+  onChange: (id: string) => void;
 }) {
   const { collectionName, defaultValue, onChange } = props;
 
@@ -29,11 +28,11 @@ export default function FormModalInputExternal(props: {
         placeholder={"없음"}
         defaultValue={defaultValue}
         onChange={(event) => {
-          if (event.target.value) onChange(new ObjectId(event.target.value));
+          if (event.target.value) onChange(event.target.value);
         }}
         ref={refSelect}
       >
-        {dataList.map(
+        {/* {dataList.map(
           (data: Record<string, any> & { _id: string | ObjectId }, index) => {
             const id =
               typeof data._id === "string" ? new ObjectId(data._id) : data._id;
@@ -44,14 +43,13 @@ export default function FormModalInputExternal(props: {
                 {`[${code}]: `}
                 {data["name"]}
 
-                {/* 생산 가능 수량 표시 */}
                 {maxQty[code] !== undefined
                   ? ` (생산 가능 수량: ${maxQty[code]})`
                   : ""}
               </option>
             );
           }
-        )}
+        )} */}
       </Select>
 
       <SearchPopover
@@ -62,7 +60,7 @@ export default function FormModalInputExternal(props: {
           if (refSelect.current) {
             const id = fuseResult.item._id;
             refSelect.current.value = id;
-            onChange(new ObjectId(id));
+            onChange(id);
           }
         }}
       />

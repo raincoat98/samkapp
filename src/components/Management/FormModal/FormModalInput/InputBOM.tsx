@@ -10,7 +10,6 @@ import {
 import FormModalInput from ".";
 import { part_bills_of_material } from "realmObjectModes";
 import { plusFill, minusFill } from "utils/icons";
-import { ObjectId } from "bson";
 
 export default function FormModalInputBOM(props: {
   defaultValue: part_bills_of_material[];
@@ -22,7 +21,7 @@ export default function FormModalInputBOM(props: {
 
   function onDataChange(
     key: "part_id" | "number",
-    value: ObjectId | number,
+    value: string | number,
     index: number
   ) {
     const newBomArray = [...bomList];
@@ -44,7 +43,7 @@ export default function FormModalInputBOM(props: {
       ...state,
       ...[
         {
-          part_id: new ObjectId(),
+          part_id: "",
           number: 0,
         },
       ],
@@ -81,7 +80,7 @@ export default function FormModalInputBOM(props: {
                 type="part"
                 isExternal={true}
                 defaultValue={bom.part_id}
-                onChange={(value: ObjectId) =>
+                onChange={(value: string) =>
                   onDataChange("part_id", value, index)
                 }
                 labelWidth="auto"

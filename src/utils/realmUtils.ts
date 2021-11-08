@@ -27,10 +27,14 @@ export type schemaType = {
 // 예외처리
 export const textAreaSchemaKeyList = ["remark"];
 export const readonlySchemaKeyList = [
-  "create_by",
-  "create_dttm",
-  "save_by",
-  "save_dttm",
+  "crt_id",
+  "crt_date",
+  "crt_day",
+  "crt_time",
+  "mod_id",
+  "mod_day",
+  "mod_date",
+  "mod_time",
 ];
 export const disabledSchemaKeyList = ["owner_id"];
 

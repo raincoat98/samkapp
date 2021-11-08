@@ -1,17 +1,11 @@
-import * as RealmWeb from "realm-web";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MongoDBRealmError } from "realm-web";
+import axios from "axios";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "utils/realmUtils";
 import * as realmObjectModes from "realmObjectModes";
-import { ObjectId } from "bson";
 
 const name = "realm";
-const APP_ID = "samkapp-dzval";
-const MONGO_CLIENT = "mongodb-atlas";
-const DATABASE_NAME = "database";
-const app = new RealmWeb.App({ id: APP_ID });
 
-function realmErrorToObject(realmError: MongoDBRealmError | any) {
+function realmErrorToObject(realmError: any) {
   const errorObject: RealmError = {
     error: realmError.error,
     errorCode: realmError.errorCode,
@@ -78,11 +72,7 @@ const initialState: RealmState = {
 
 // 데이터베이스 자동 로그인
 export const autoLogin = createAsyncThunk(`${name}/autoLogin`, async () => {
-  if (app.currentUser) {
-    return app.currentUser.profile.email;
-  } else {
-    return;
-  }
+  return "테스트 유저";
 });
 
 // 데이터베이스 로그인
@@ -92,12 +82,12 @@ export const login = createAsyncThunk(
     props: { email: string; password: string },
     { dispatch, rejectWithValue }
   ) => {
-    const { email, password } = props;
+    // const { email, password } = props;
 
-    const credentials = RealmWeb.Credentials.emailPassword(email, password);
+    // const credentials = RealmWeb.Credentials.emailPassword(email, password);
 
     try {
-      await app.logIn(credentials);
+      // await app.logIn(credentials);
 
       // 로그인 때에 모든 테이블  데이터 가져오기
       for (const key in COLLECTION_NAME) {
@@ -108,7 +98,8 @@ export const login = createAsyncThunk(
       return rejectWithValue(realmErrorToObject(error));
     }
 
-    return app.currentUser?.profile.email;
+    return props.email;
+    // return app.currentUser?.profile.email;
   }
 );
 
@@ -117,7 +108,7 @@ export const logout = createAsyncThunk(
   `${name}/logout`,
   async (undefinded, { dispatch, rejectWithValue }) => {
     try {
-      await app.currentUser?.logOut();
+      // await app.currentUser?.logOut();
 
       dispatch({
         type: `${name}/removeUser`,
@@ -139,7 +130,7 @@ export const register = createAsyncThunk(
     const { email, password } = props;
 
     try {
-      await app.emailPasswordAuth.registerUser(email, password);
+      // await app.emailPasswordAuth.registerUser(email, password);
       dispatch(login({ email, password }));
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
@@ -155,15 +146,15 @@ export const setCollectionData = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      const mongodb = app.currentUser?.mongoClient(MONGO_CLIENT);
-      const collection = mongodb
-        ?.db(DATABASE_NAME)
-        ?.collection<any>(collectionName);
-      const data = await collection?.find();
+      let data: any[] = [];
+      if (collectionName === "part") {
+        const response = await axios.get("http://localhost:3002/api/part");
+        data = response.data.results;
+      }
 
-      dispatch({
-        type: `${name}/computeQty`,
-      });
+      // dispatch({
+      //   type: `${name}/computeQty`,
+      // });
 
       return {
         collectionName,
@@ -185,20 +176,20 @@ export const insertData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    const { collectionName, document } = props;
+    // const { collectionName, document } = props;
 
     try {
-      await app.currentUser?.functions.actionFunc({
-        type: "insert",
-        collectionName,
-        doc: document,
-      });
+      // await app.currentUser?.functions.actionFunc({
+      //   type: "insert",
+      //   collectionName,
+      //   doc: document,
+      // });
 
-      await dispatch(setCollectionData(collectionName));
+      await dispatch(setCollectionData(props.collectionName));
 
-      dispatch({
-        type: `${name}/computeQty`,
-      });
+      // dispatch({
+      //   type: `${name}/computeQty`,
+      // });
 
       return;
     } catch (error) {
@@ -213,38 +204,36 @@ export const updateData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      filter: { _id: ObjectId };
+      filter: { _id: string };
       update: Record<string, any>;
       options?: object;
     },
     { dispatch, rejectWithValue }
   ) => {
-    const { collectionName, ...params } = props;
-    const { filter, update, options } = params;
+    // const { collectionName, ...params } = props;
+    // const { filter, update, options } = params;
 
     try {
-      await app.currentUser?.functions.actionFunc({
-        type: "update",
-        collectionName,
-        filter,
-        update,
-        options: options ? options : {},
-      });
-
-      const mongodb = app.currentUser?.mongoClient(MONGO_CLIENT);
-      const collection = mongodb
-        ?.db(DATABASE_NAME)
-        ?.collection<any>(collectionName);
-      const data = await collection?.find(filter);
-
-      dispatch({
-        type: `${name}/computeQty`,
-      });
-
-      return {
-        collectionName,
-        data,
-      };
+      // await app.currentUser?.functions.actionFunc({
+      //   type: "update",
+      //   collectionName,
+      //   filter,
+      //   update,
+      //   options: options ? options : {},
+      // });
+      // const mongodb = app.currentUser?.mongoClient(MONGO_CLIENT);
+      // const collection = mongodb
+      //   ?.db(DATABASE_NAME)
+      //   ?.collection<any>(collectionName);
+      // const data = await collection?.find(filter);
+      // dispatch({
+      //   type: `${name}/computeQty`,
+      // });
+      // return {
+      //   collectionName,
+      //   data,
+      // };
+      return;
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
     }
@@ -255,29 +244,30 @@ export const updateData = createAsyncThunk(
 export const deleteMany = createAsyncThunk(
   `${name}/deleteMany`,
   async (
-    props: { collectionName: COLLECTION_NAME_TYPE; ids: ObjectId[] },
+    props: { collectionName: COLLECTION_NAME_TYPE; ids: string[] },
     { dispatch, rejectWithValue }
   ) => {
-    const { collectionName, ids } = props;
+    // const { collectionName, ids } = props;
 
-    const filter = {
-      _id: { $in: ids },
-    };
+    // const filter = {
+    //   _id: { $in: ids },
+    // };
 
     try {
-      const result = await app.currentUser?.functions.actionFunc({
-        type: "deleteMany",
-        collectionName,
-        filter,
-      });
+      // const result = await app.currentUser?.functions.actionFunc({
+      //   type: "deleteMany",
+      //   collectionName,
+      //   filter,
+      // });
 
-      await dispatch(setCollectionData(collectionName));
+      // await dispatch(setCollectionData(collectionName));
 
-      dispatch({
-        type: `${name}/computeQty`,
-      });
+      // dispatch({
+      //   type: `${name}/computeQty`,
+      // });
 
-      return result;
+      // return result;
+      return;
     } catch (error) {
       return rejectWithValue(realmErrorToObject(error));
     }
@@ -295,24 +285,7 @@ export const distinct = createAsyncThunk(
       options?: object;
     },
     { rejectWithValue }
-  ) => {
-    const { collectionName, ...params } = props;
-    const { field, query, options } = params;
-
-    try {
-      const result = await app.currentUser?.functions.actionFunc({
-        type: "distinct",
-        collectionName,
-        field,
-        query,
-        options: options ? options : {},
-      });
-
-      return result;
-    } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
-    }
-  }
+  ) => {}
 );
 
 const userSlice = createSlice({
@@ -321,39 +294,33 @@ const userSlice = createSlice({
   reducers: {
     // 현재 재고로 만들 수 있는 품목 계산
     computeQty(state) {
-      const partDB = state.database.part;
-      const invDB = state.database.inv;
-
-      for (let index = 0; index < partDB.length; index++) {
-        const part = partDB[index];
-        const bomList = part.bills_of_material;
-        let maxQuantity = 0;
-        let quantityList: number[] = [];
-
-        if (Array.isArray(bomList)) {
-          for (let index = 0; index < bomList.length; index++) {
-            const bom = bomList[index];
-            const bomNum = bom.number;
-            const stock = invDB.filter((inv) => {
-              if (inv.part_id) {
-                let partId = inv.part_id as unknown as ObjectId;
-
-                // 문자열이라면 ObjectId로 캐스팅
-                if (typeof partId === "string") partId = new ObjectId(partId);
-                return partId.equals(bom.part_id);
-              } else return false;
-            })[0]?.inv_qty;
-
-            if (stock) quantityList.push(Math.floor(stock / bomNum));
-          }
-        }
-
-        if (quantityList.length) {
-          maxQuantity = Math.min(...quantityList);
-
-          if (part._id) state.maxMadeQty[part.code] = maxQuantity;
-        }
-      }
+      // const partDB = state.database.part;
+      // const invDB = state.database.inv;
+      // for (let index = 0; index < partDB.length; index++) {
+      //   const part = partDB[index];
+      //   const bomList = part.bills_of_material;
+      //   let maxQuantity = 0;
+      //   let quantityList: number[] = [];
+      //   if (Array.isArray(bomList)) {
+      //     for (let index = 0; index < bomList.length; index++) {
+      //       const bom = bomList[index];
+      //       const bomNum = bom.number;
+      //       const stock = invDB.filter((inv) => {
+      //         if (inv.part_id) {
+      //           let partId = inv.part_id as unknown as ObjectId;
+      //           // 문자열이라면 ObjectId로 캐스팅
+      //           if (typeof partId === "string") partId = new ObjectId(partId);
+      //           return partId.equals(bom.part_id);
+      //         } else return false;
+      //       })[0]?.inv_qty;
+      //       if (stock) quantityList.push(Math.floor(stock / bomNum));
+      //     }
+      //   }
+      //   if (quantityList.length) {
+      //     maxQuantity = Math.min(...quantityList);
+      //     if (part._id) state.maxMadeQty[part.code] = maxQuantity;
+      //   }
+      // }
     },
   },
   extraReducers: (builder) => {
@@ -396,7 +363,6 @@ const userSlice = createSlice({
           state.loading = false;
         }
       )
-      // 컬렉션 데이터 삽입
       .addCase(insertData.fulfilled.type, (state) => {
         state.loading = false;
       })
@@ -407,27 +373,27 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{
             collectionName: COLLECTION_NAME_TYPE;
-            data: (Record<string, any> & { _id: ObjectId })[];
+            data: (Record<string, any> & { _id: string })[];
           }>
         ) => {
-          const { collectionName, data } = action.payload;
+          // const { collectionName, data } = action.payload;
 
-          for (
-            let index = 0;
-            index < state.database[collectionName].length;
-            index++
-          ) {
-            const id1 = state.database[collectionName][index]._id;
+          // for (
+          //   let index = 0;
+          //   index < state.database[collectionName].length;
+          //   index++
+          // ) {
+          //   const id1 = state.database[collectionName][index]._id;
 
-            for (let index2 = 0; index2 < data.length; index2++) {
-              const updatedData = data[index2];
-              const id2 = updatedData._id;
+          //   for (let index2 = 0; index2 < data.length; index2++) {
+          //     const updatedData = data[index2];
+          //     const id2 = updatedData._id;
 
-              if (id1.equals(id2)) {
-                state.database[collectionName][index] = updatedData as any;
-              }
-            }
-          }
+          //     if (id1.equals(id2)) {
+          //       state.database[collectionName][index] = updatedData as any;
+          //     }
+          //   }
+          // }
 
           state.loading = false;
         }

@@ -41,7 +41,6 @@ import FormModal, {
   FormModalProps,
   formModalModeType,
 } from "components/Management/FormModal";
-import { ObjectId } from "bson";
 
 // 관리 페이지
 export default function Management(props: {
@@ -140,17 +139,17 @@ export default function Management(props: {
       // 외부 컬렉션 참조
       const header = column.Header as string;
       column.accessor = (originalRow: any) => {
-        const dataList = database[collectionName] as Array<Record<string, any>>;
-        const data = dataList.find((element) => {
-          const refId = new ObjectId(originalRow[header]);
-          const dataId = new ObjectId(element._id);
-          return refId.equals(dataId);
-        });
+        // const dataList = database[collectionName] as Array<Record<string, any>>;
+        // const data = dataList.find((element) => {
+        //   const refId = new ObjectId(originalRow[header]);
+        //   const dataId = new ObjectId(element._id);
+        //   return refId.equals(dataId);
+        // });
 
         // [%code%]: {%name%} 형식으로 표시
-        if (data !== undefined) {
-          return `[${data["code"]}]: ` + data["name"];
-        }
+        // if (data !== undefined) {
+        //   return `[${data["code"]}]: ` + data["name"];
+        // }
 
         return "";
       };
@@ -260,7 +259,7 @@ export default function Management(props: {
         dispatch(
           updateData({
             collectionName,
-            filter: { _id: new ObjectId(initialValue._id) },
+            filter: { _id: initialValue._id() },
             update: { $set: document },
           })
         );
@@ -273,12 +272,12 @@ export default function Management(props: {
 
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
-    dispatch(
-      deleteMany({
-        collectionName,
-        ids: checkedRows,
-      })
-    );
+    // dispatch(
+    //   deleteMany({
+    //     collectionName,
+    //     ids: checkedRows,
+    //   })
+    // );
   }
 
   return (
