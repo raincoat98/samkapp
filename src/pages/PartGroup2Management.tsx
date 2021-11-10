@@ -4,7 +4,7 @@ import Management from "../components/Management/index";
 import { part_group_2Schema } from "realmObjectModes";
 
 export default function PartGrou2Management() {
-  const collectionName = "part_group_2";
+  const collectionName = "tb_group2";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );

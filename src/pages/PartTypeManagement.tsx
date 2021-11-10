@@ -4,7 +4,7 @@ import Management from "../components/Management/index";
 import { part_typeSchema } from "realmObjectModes";
 
 export default function PartTypeManagement() {
-  const collectionName = "part_type";
+  const collectionName = "tb_part_type";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );

@@ -4,7 +4,7 @@ import Management from "../components/Management/index";
 import { warehouseSchema } from "realmObjectModes";
 
 export default function WarehouseManagement() {
-  const collectionName = "warehouse";
+  const collectionName = "tb_warehouse";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );

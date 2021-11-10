@@ -4,7 +4,7 @@ import Management from "../components/Management/index";
 import { customer_mngrSchema } from "realmObjectModes";
 
 export default function CustomerMngrManagement() {
-  const collectionName = "customer_mngr";
+  const collectionName = "tb_customer_mngr";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );

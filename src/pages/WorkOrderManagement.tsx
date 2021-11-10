@@ -6,7 +6,7 @@ import { work_orderSchema } from "realmObjectModes";
 import moment from "moment";
 
 export default function WorkOrderManagement() {
-  const collectionName = "work_order";
+  const collectionName = "tb_work_order";
   const [tabIndex, setTabIndex] = React.useState(0);
   const today = moment(Date.now()).format("YYYYMMDD");
 

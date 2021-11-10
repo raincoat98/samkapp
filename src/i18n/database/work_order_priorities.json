@@ -1,8 +1,0 @@
-{
-  "name": "우선순위",
-  "properties": {
-    "emergency": "긴급",
-    "normal": "일반",
-    "other": "기타"
-  }
-}

@@ -5,7 +5,7 @@ import Management from "../components/Management/index";
 import { invSchema } from "realmObjectModes";
 
 export default function InvManagement() {
-  const collectionName = "inv";
+  const collectionName = "tb_inventory";
   const [tabIndex, setTabIndex] = React.useState(0);
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]

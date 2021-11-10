@@ -3,18 +3,16 @@ import { initReactI18next } from "react-i18next";
 
 import error_code from "./error_code.json";
 
-import customer_mngr from "./database/customer_mngr.json";
-import customer from "./database/customer.json";
-import inv from "./database/inv.json";
-import part_group_1 from "./database/part_group_1.json";
-import part_group_2 from "./database/part_group_2.json";
-import part_price from "./database/part_price.json";
-import part_type from "./database/part_type.json";
-import part from "./database/part.json";
-import warehouse from "./database/warehouse.json";
-import work_order from "./database/work_order.json";
-import work_order_priorities from "./database/work_order_priorities.json";
-import work_order_progress from "./database/work_order_progress.json";
+import tb_customer_mngr from "./database/tb_customer_mngr.json";
+import tb_customer from "./database/tb_customer.json";
+import tb_inventory from "./database/tb_inventory.json";
+import tb_group1 from "./database/tb_group1.json";
+import tb_group2 from "./database/tb_group2.json";
+import tb_part_list_price from "./database/tb_part_list_price.json";
+import tb_part_type from "./database/tb_part_type.json";
+import tb_part from "./database/tb_part.json";
+import tb_warehouse from "./database/tb_warehouse.json";
+import tb_work_order from "./database/tb_work_order.json";
 
 const resources = {
   ko: {
@@ -23,18 +21,16 @@ const resources = {
       error_code,
 
       // 데이터베이스 테이블 번역
-      tb_customer_mngr: customer_mngr,
-      tb_customer: customer,
-      tb_inventory: inv,
-      tb_group1: part_group_1,
-      tb_group2: part_group_2,
-      tb_part_list_price: part_price,
-      tb_part_type: part_type,
-      tb_part: part,
-      tb_warehouse: warehouse,
-      tb_work_order: work_order,
-      tb_work_order_priorities: work_order_priorities,
-      tb_work_order_progress: work_order_progress,
+      tb_customer_mngr,
+      tb_customer,
+      tb_inventory,
+      tb_group1,
+      tb_group2,
+      tb_part_list_price,
+      tb_part_type,
+      tb_part,
+      tb_warehouse,
+      tb_work_order,
 
       crt_id: "생성자",
       crt_date: "생성일자",

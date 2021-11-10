@@ -35,16 +35,16 @@ export type RealmState = {
   error: RealmError | null;
   // 데이터베이스 컬렉션들
   database: {
-    [COLLECTION_NAME.customer]: realmObjectModes.customer[];
-    [COLLECTION_NAME.customer_mngr]: realmObjectModes.customer_mngr[];
-    [COLLECTION_NAME.inv]: realmObjectModes.inv[];
-    [COLLECTION_NAME.part]: realmObjectModes.part[];
-    [COLLECTION_NAME.part_group_1]: realmObjectModes.part_group_1[];
-    [COLLECTION_NAME.part_group_2]: realmObjectModes.part_group_2[];
-    [COLLECTION_NAME.part_price]: realmObjectModes.part_price[];
-    [COLLECTION_NAME.part_type]: realmObjectModes.part_type[];
-    [COLLECTION_NAME.warehouse]: realmObjectModes.warehouse[];
-    [COLLECTION_NAME.work_order]: realmObjectModes.work_order[];
+    [COLLECTION_NAME.tb_customer_mngr]: realmObjectModes.customer_mngr[];
+    [COLLECTION_NAME.tb_customer]: realmObjectModes.customer[];
+    [COLLECTION_NAME.tb_inventory]: realmObjectModes.inv[];
+    [COLLECTION_NAME.tb_group1]: realmObjectModes.part[];
+    [COLLECTION_NAME.tb_group2]: realmObjectModes.part_group_1[];
+    [COLLECTION_NAME.tb_part_list_price]: realmObjectModes.part_group_2[];
+    [COLLECTION_NAME.tb_part_type]: realmObjectModes.part_price[];
+    [COLLECTION_NAME.tb_part]: realmObjectModes.part_type[];
+    [COLLECTION_NAME.tb_warehouse]: realmObjectModes.warehouse[];
+    [COLLECTION_NAME.tb_work_order]: realmObjectModes.work_order[];
   };
   // 제작 가능 재고
   maxMadeQty: Record<string, number>;
@@ -56,16 +56,16 @@ const initialState: RealmState = {
   loggedIn: false,
   error: null,
   database: {
-    customer: [],
-    customer_mngr: [],
-    inv: [],
-    part: [],
-    part_group_1: [],
-    part_group_2: [],
-    part_price: [],
-    part_type: [],
-    warehouse: [],
-    work_order: [],
+    tb_customer_mngr: [],
+    tb_customer: [],
+    tb_inventory: [],
+    tb_group1: [],
+    tb_group2: [],
+    tb_part_list_price: [],
+    tb_part_type: [],
+    tb_part: [],
+    tb_warehouse: [],
+    tb_work_order: [],
   },
   maxMadeQty: {},
 };
@@ -147,7 +147,7 @@ export const setCollectionData = createAsyncThunk(
   ) => {
     try {
       let data: any[] = [];
-      if (collectionName === "part") {
+      if (collectionName === "tb_part") {
         const response = await axios.get("http://localhost:3002/api/part");
         data = response.data.results;
       }

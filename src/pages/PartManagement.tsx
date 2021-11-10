@@ -8,15 +8,15 @@ import {
 } from "realmObjectModes";
 
 export default function PartManagement() {
-  const collectionName = "part";
+  const collectionName = "tb_part";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
   const part_group_2Data = useSelector(
-    (state: RootState) => state.realm.database["part_group_2"]
+    (state: RootState) => state.realm.database["tb_group2"]
   );
   const part_group_1Data = useSelector(
-    (state: RootState) => state.realm.database["part_group_1"]
+    (state: RootState) => state.realm.database["tb_group1"]
   );
 
   return (

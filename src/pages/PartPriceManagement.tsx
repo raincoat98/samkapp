@@ -4,7 +4,7 @@ import Management from "../components/Management/index";
 import { part_priceSchema } from "realmObjectModes";
 
 export default function PartTypeManagement() {
-  const collectionName = "part_price";
+  const collectionName = "tb_part_list_price";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );

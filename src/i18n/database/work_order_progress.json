@@ -1,9 +1,0 @@
-{
-  "name": "진행상황",
-  "properties": {
-    "confirmed": "확인됨",
-    "shipped": "출고됨",
-    "producing": "생산중",
-    "done": "완료됨"
-  }
-}
