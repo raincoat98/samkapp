@@ -1,13 +1,9 @@
 {
   "name": "품목 단가",
   "properties": {
-    "apply_end": "적용종료일",
-    "apply_start": "적용시작일",
-    "os_price": "외주단가",
-    "code": "픔목 단가 코드",
-    "part_id": "품목",
-    "purchase_price": "구매단가",
-    "remark": "비고",
-    "selling_price": "판매단가"
+    "part_id": "품목코드",
+    "start_date": "적용시작일",
+    "end_date": "적용종료일",
+    "list_price": "권장소비자가격"
   }
 }

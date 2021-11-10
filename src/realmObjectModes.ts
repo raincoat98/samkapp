@@ -1,37 +1,25 @@
 export type part_group_2 = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  name: string;
-  owner_id: string;
-  part_group_1_id?: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  search_group?: string;
+  group2_id: string;
+  group2_name: string;
+  group1_id?: string;
+  search_group?: number;
   sort_seq?: number;
-  valid?: boolean;
+  remark?: string;
+  use_yn?: string;
 };
 
 export const part_group_2Schema = {
-  name: "part_group_2",
+  name: "tb_group2",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    name: "string",
-    owner_id: "string",
-    part_group_1_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    search_group: "string?",
+    group2_id: "string",
+    group2_name: "string",
+    group1_id: "string?",
+    search_group: "int?",
     sort_seq: "int?",
-    valid: "bool?",
+    remark: "string?",
+    use_yn: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "group2_id",
 };
 
 export type customer_mngr = {
@@ -76,202 +64,156 @@ export const customer_mngrSchema = {
 
 export type part = {
   part_id: number;
-  bom_id: number;
-  crt_id?: string;
-  crt_date?: Date;
   part_name: string;
   part_number: string;
-  owner_id: string;
-  group2_id?: string;
-  part_spec?: string;
-  part_type_id?: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  unit_id?: string;
+  part_spec: string;
+  part_type_id: string;
+  group2_id: string;
   warehouse_id?: string;
+  bom_id?: number;
+  unit_id?: string;
+  standard_cost?: number;
+  list_Price?: number;
+  remark?: string;
+  use_yn?: string;
+  del_yn?: string;
 };
 
 export const partSchema = {
-  name: "part",
+  name: "tb_part",
   properties: {
     part_id: "int",
-    bom_id: "number",
-    crt_id: "string?",
-    crt_date: "date?",
     part_name: "string",
     part_number: "string",
-    owner_id: "string",
-    group2_id: "string",
-    part_spec: "string?",
+    part_spec: "string",
     part_type_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
+    group2_id: "string",
+    warehouse_id: "string?",
+    bom_id: "int?",
     unit_id: "string?",
-    warehouse_id: "string",
+    standard_cost: "int?",
+    list_Price: "int?",
+    remark: "string?",
+    use_yn: "string?",
+    del_yn: "string?",
   },
   primaryKey: "part_id",
 };
 
 export type part_bills_of_material = {
-  number: number;
-  part_id: string;
+  bom_id: number;
+  product_id?: number;
+  assembly_id?: number;
+  start_date?: Date;
+  end_date?: Date;
+  unit_id?: string;
+  bom_level?: number;
+  assembly_Qty?: number;
 };
 
 export const part_bills_of_materialSchema = {
-  name: "part_bills_of_material",
-  embedded: true,
+  name: "tb_bill_of_materials",
   properties: {
-    number: "int",
-    part_id: "string",
+    bom_id: "int",
+    product_id: "int?",
+    assembly_id: "int?",
+    start_date: "date?",
+    end_date: "date?",
+    unit_id: "string?",
+    bom_level: "int?",
+    assembly_Qty: "int?",
   },
+  primaryKey: "bom_id",
 };
 
 export type part_group_1 = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
+  group1_id: string;
+  group1_name: string;
   is_material?: number;
-  name: string;
-  owner_id: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
   sort_seq?: number;
-  valid?: boolean;
+  remark?: string;
+  use_yn?: string;
 };
 
 export const part_group_1Schema = {
-  name: "part_group_1",
+  name: "tb_group1",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
+    group1_id: "string",
+    group1_name: "string",
     is_material: "int?",
-    name: "string",
-    owner_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
     sort_seq: "int?",
-    valid: "bool?",
+    remark: "string?",
+    use_yn: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "group1_id",
 };
 
 export type warehouse = {
-  _id: string;
-  cell_number?: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  is_dev?: boolean;
-  is_sub?: boolean;
-  name: string;
-  owner_id: string;
-  rack_qty?: string;
-  remark?: string;
-  row_qty?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  sort_seq?: number;
+  warehouse_id: string;
+  warehouse_name: string;
+  rack_no?: number;
+  cell_no?: number;
+  row_no?: number;
+  use_yn?: string;
+  del_yn?: string;
 };
 
 export const warehouseSchema = {
-  name: "warehouse",
+  name: "tb_warehouse",
   properties: {
-    _id: "string",
-    cell_number: "string?",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    is_dev: "bool?",
-    is_sub: "bool?",
-    name: "string",
-    owner_id: "string",
-    rack_qty: "string?",
-    remark: "string?",
-    row_qty: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    sort_seq: "int?",
+    warehouse_id: "string",
+    warehouse_name: "string",
+    rack_no: "int?",
+    cell_no: "int?",
+    row_no: "int?",
+    use_yn: "string?",
+    del_yn: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "warehouse_id",
 };
 
 export type part_price = {
-  _id: string;
-  apply_end?: Date;
-  apply_start?: Date;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  os_price?: string;
-  owner_id: string;
-  part_id?: part;
-  purchase_price?: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  selling_price?: string;
+  part_id?: number;
+  start_date: string;
+  end_date: string;
+  list_price?: string;
 };
 
 export const part_priceSchema = {
-  name: "part_price",
+  name: "tb_part_list_price",
   properties: {
-    _id: "string",
-    apply_end: "date?",
-    apply_start: "date?",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    os_price: "string?",
-    owner_id: "string",
-    part_id: "part",
-    purchase_price: "string?",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    selling_price: "string?",
+    part_id: "int?",
+    start_date: "string",
+    end_date: "string",
+    list_price: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "part_id",
 };
 
 export type inv = {
-  _id: string;
-  adequate_stock?: number;
-  crt_id?: string;
-  crt_date?: Date;
-  inv_month?: Date;
-  inv_qty: number;
-  owner_id: string;
-  part_id?: part;
-  rev_inv_qty?: number;
-  mod_id?: string;
-  mod_date?: Date;
-  warehouse_id?: string;
+  inv_month?: string;
+  part_id: number;
+  warehouse_id: string;
+  lot_no?: string;
+  quantity: number;
+  actual_quantity?: number;
+  shelf?: string;
+  bin?: number;
 };
 
 export const invSchema = {
-  name: "inv",
+  name: "tb_inventory",
   properties: {
-    _id: "string",
-    adequate_stock: "int?",
-    crt_id: "string?",
-    crt_date: "date?",
-    inv_month: "date?",
-    inv_qty: "int",
-    owner_id: "string",
-    part_id: "part",
-    rev_inv_qty: "int?",
-    mod_id: "string?",
-    mod_date: "date?",
+    inv_month: "string?",
+    part_id: "int",
     warehouse_id: "string",
+    lot_no: "string?",
+    quantity: "int",
+    actual_quantity: "int?",
+    shelf: "string?",
+    bin: "int?",
   },
-  primaryKey: "_id",
+  primaryKey: "inv_month",
 };
 
 export type transfer_in = {
@@ -294,176 +236,127 @@ export type transfer_in = {
 };
 
 export const transfer_inSchema = {
-  name: "transfer_in",
+  name: "tb_transfer_in",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    outsourcing_amont: "int?",
-    outsourcing_unit_price: "int?",
-    owner_id: "string",
-    part_id: "part",
-    purchase_amount: "int?",
+    transfer_in_id: "int?",
+    transfer_date: "string?",
+    transfer_type_id: "string?",
+    part_id: "int?",
     quantity: "int?",
-    mod_id: "string?",
-    mod_date: "date?",
-    transfer_date: "date?",
-    trasnfer_type_id: "string",
     unit_price: "int?",
-    warehouse_id: "string",
+    purchase_amont: "int?",
+    outsourcing_unit_price: "int?",
+    outsourcing_amont: "int?",
+    warehouse_id: "string?",
+    work_order_id: "int?",
   },
-  primaryKey: "_id",
+  primaryKey: "transfer_in_id",
 };
 
-export type 단위 = {
-  _id: string;
-  code: string;
-  name: string;
+export type unit = {
+  unit_id: string;
+  unit_name: string;
 };
 
-export const 단위Schema = {
-  name: "단위",
+export const unitSchema = {
+  name: "tb_unit",
   properties: {
-    _id: "string",
-    code: "string",
-    name: "string",
+    unit_id: "string",
+    unit_name: "string",
   },
-  primaryKey: "_id",
+  primaryKey: "unit_id",
 };
 
 export type transfer_type = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  name: string;
-  owner_id: string;
-  part_id?: string;
-  quantity?: number;
-  release_amont?: number;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  sort_seq?: number;
-  transfer_date?: Date;
+  transfer_type_id: string;
+  transfer_type_name?: string;
   transfer_flag?: number;
-  unit_price?: number;
-  valid?: boolean;
-  warehouse_id?: string;
-  work_order_id?: string;
+  sort_seq?: number;
+  remark?: string;
+  use_yn?: string;
 };
 
 export const transfer_typeSchema = {
-  name: "transfer_type",
+  name: "tb_transfer_type",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    name: "string",
-    owner_id: "string",
-    part_id: "string?",
-    quantity: "int?",
-    release_amont: "int?",
+    transfer_type_id: "string",
+    transfer_type_name: "string?",
+    transfer_flag: "string?",
+    sort_seq: "string?",
     remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    sort_seq: "int?",
-    transfer_date: "date?",
-    transfer_flag: "int?",
-    unit_price: "int?",
-    valid: "bool?",
-    warehouse_id: "string",
-    work_order_id: "string",
+    use_yn: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "transfer_type_id",
 };
 
 export type work_order = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
+  work_order_id: number;
+  work_order_number?: string;
   customer_id?: string;
-  owner_id: string;
-  part_id?: part;
+  part_id?: number;
+  quantity?: number;
   plan_date?: Date;
-  plan_qty?: number;
-  priorities: string;
-  progress?: string;
+  priorities?: number;
+  status?: number;
   remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
 };
 
 export const work_orderSchema = {
-  name: "work_order",
+  name: "tb_work_order",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    customer_id: "string",
-    owner_id: "string",
-    part_id: "part",
+    work_order_id: "int",
+    work_order_number: "string?",
+    customer_id: "string?",
+    part_id: "int?",
+    quantity: "int?",
     plan_date: "date?",
-    plan_qty: "int?",
-    priorities: "string",
-    progress: "string?",
+    priorities: "int?",
+    status: "int?",
     remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
   },
-  primaryKey: "_id",
+  primaryKey: "work_order_id",
 };
 
 export type customer = {
-  _id: string;
-  address?: address;
-  bill_limit_id?: string;
-  business_info?: string;
+  customer_id: string;
+  customer_name: string;
   business_number?: string;
   ceo_name?: string;
-  code?: string;
-  crt_id?: string;
-  crt_date?: Date;
-  credit_limit?: string;
-  fax?: string;
-  homepage?: string;
-  name?: string;
-  owner_id: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
   tel?: string;
-  valid?: boolean;
+  fax?: string;
+  zip_code?: string;
+  address?: string;
+  business_info?: string;
+  item_info?: string;
+  homepage?: string;
+  bill_limit_id?: string;
+  customer_group_id?: string;
+  credit_limit?: number;
+  remark?: string;
+  use_yn?: string;
 };
 
 export const customerSchema = {
-  name: "customer",
+  name: "tb_customer",
   properties: {
-    _id: "string",
-    address: "address",
-    bill_limit_id: "string?",
-    business_info: "string?",
+    customer_id: "string",
+    customer_name: "string",
     business_number: "string?",
     ceo_name: "string?",
-    code: "string?",
-    crt_id: "string?",
-    crt_date: "date?",
-    credit_limit: "string?",
-    fax: "string?",
-    homepage: "string?",
-    name: "string?",
-    owner_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
     tel: "string?",
-    valid: "bool?",
+    fax: "string?",
+    zip_code: "string?",
+    address: "string?",
+    business_info: "string?",
+    item_info: "string?",
+    homepage: "string?",
+    bill_limit_id: "string?",
+    customer_group_id: "string?",
+    credit_limit: "int?",
+    remark: "string?",
+    use_yn: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "customer_id",
 };
 
 export type address = {
@@ -481,75 +374,43 @@ export const addressSchema = {
 };
 
 export type part_type = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  is_material?: number;
-  name: string;
-  owner_id: string;
-  remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
-  sort_seq?: number;
-  valid?: boolean;
+  part_type_id: string;
+  part_type_name?: string;
 };
 
 export const part_typeSchema = {
-  name: "part_type",
+  name: "tb_part_type",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    is_material: "int?",
-    name: "string",
-    owner_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    sort_seq: "int?",
-    valid: "bool?",
+    part_type_id: "string",
+    part_type_name: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "part_type_id",
 };
 
 export type transfer_out = {
-  _id: string;
-  code: string;
-  crt_id?: string;
-  crt_date?: Date;
-  owner_id: string;
-  part_id?: part;
-  quantity?: number;
-  release_amont?: number;
-  mod_id?: string;
-  mod_date?: Date;
-  transfer_date?: Date;
-  trasnfer_type_id?: string;
+  transfer_out_id: number;
+  transfer_date: string;
+  transfer_type_id: string;
+  part_id: number;
+  quantity: number;
   unit_price?: number;
+  release_amont?: number;
   warehouse_id?: string;
   work_order_id?: string;
 };
 
 export const transfer_outSchema = {
-  name: "transfer_out",
+  name: "tb_transfer_out",
   properties: {
-    _id: "string",
-    code: "string",
-    crt_id: "string?",
-    crt_date: "date?",
-    owner_id: "string",
-    part_id: "part",
-    quantity: "int?",
-    release_amont: "int?",
-    mod_id: "string?",
-    mod_date: "date?",
-    transfer_date: "date?",
-    trasnfer_type_id: "string",
+    transfer_out_id: "int",
+    transfer_date: "string",
+    transfer_type_id: "string",
+    part_id: "int",
+    quantity: "int",
     unit_price: "int?",
-    warehouse_id: "string",
-    work_order_id: "string",
+    release_amont: "int?",
+    warehouse_id: "string?",
+    work_order_id: "string?",
   },
-  primaryKey: "_id",
+  primaryKey: "transfer_out_id",
 };

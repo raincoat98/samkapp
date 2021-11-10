@@ -12,7 +12,7 @@ export default function InvManagement() {
   );
 
   // 재고가 0인 배열
-  const noStockList = data.filter((item) => item.inv_qty === 0);
+  const noStockList = data.filter((item) => item.quantity === 0);
 
   return (
     <Management

@@ -1,12 +1,20 @@
 {
   "name": "대분류",
   "properties": {
-    "part_group_1_id": "중분류",
-    "code": "대분류 코드",
-    "name": "대분류명",
-    "remark": "비고",
-    "search_group": "검색 그룹",
+    "group2_id": "중분류코드",
+    "group2_name": "중분류명",
+    "group1_id": "대분류코드",
+    "search_group": "검색그룹",
     "sort_seq": "정렬순서",
-    "valid": "사용 여부"
+    "remark": "비고",
+    "use_yn": "사용여부",
+    "crt_id": "생성자",
+    "crt_date": "생성일시",
+    "crt_day": "생성일",
+    "crt_time": "생성시간",
+    "mod_id": "변경자",
+    "mod_day": "변경일",
+    "mod_date": "변경일시",
+    "mod_time": "변경시간"
   }
 }

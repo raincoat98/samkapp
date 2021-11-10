@@ -24,30 +24,28 @@ export default function FormModalInputBOM(props: {
     value: string | number,
     index: number
   ) {
-    const newBomArray = [...bomList];
-    const newBom: part_bills_of_material = { ...newBomArray[index] };
-
-    if (newBomArray[index]) {
-      if (typeof value === "number") newBom.number = value;
-      else newBom.part_id = value;
-
-      newBomArray[index] = newBom;
-      setBomList(newBomArray);
-      props.onChange(newBomArray);
-    }
+    // const newBomArray = [...bomList];
+    // const newBom: part_bills_of_material = { ...newBomArray[index] };
+    // if (newBomArray[index]) {
+    //   if (typeof value === "number") newBom.number = value;
+    //   else newBom.part_id = value;
+    //   newBomArray[index] = newBom;
+    //   setBomList(newBomArray);
+    //   props.onChange(newBomArray);
+    // }
   }
 
   // 필요 자재 제거
   function onDataAdd() {
-    setBomList((state) => [
-      ...state,
-      ...[
-        {
-          part_id: "",
-          number: 0,
-        },
-      ],
-    ]);
+    // setBomList((state) => [
+    //   ...state,
+    //   ...[
+    //     {
+    //       part_id: "",
+    //       number: 0,
+    //     },
+    //   ],
+    // ]);
   }
 
   // 필요 자재 제거
@@ -73,7 +71,7 @@ export default function FormModalInputBOM(props: {
 
       <Flex width="100%">
         <Stack flex="1" direction="column" spacing={3}>
-          {bomList.map((bom, index) => (
+          {/* {bomList.map((bom, index) => (
             <Stack direction="row" key={index}>
               <FormModalInput
                 name="part.properties.part_bills_of_material.part_id"
@@ -103,7 +101,7 @@ export default function FormModalInputBOM(props: {
                 aria-label="제거"
               />
             </Stack>
-          ))}
+          ))} */}
         </Stack>
       </Flex>
     </FormControl>

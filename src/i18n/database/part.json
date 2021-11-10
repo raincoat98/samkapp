@@ -1,15 +1,27 @@
 {
   "name": "품목",
   "properties": {
-    "part_id": "품목 아이디",
-    "part_number": "품목 넘버",
-    "group2_id": "대분류",
-    "part_name": "품명",
-    "bom_id": "BOM",
+    "part_id": "품목코드",
+    "part_name": "품목명",
+    "part_number": "품목번호",
     "part_spec": "규격",
-    "part_type_id": "품목 형태",
+    "part_type_id": "품목형태",
+    "group2_id": "품목분류2코드",
+    "warehouse_id": "창고위치",
+    "bom_id": "자재명세서코드",
+    "unit_id": "품목단위",
+    "standard_cost": "표준원가",
+    "list_Price": "권장소비자가격",
     "remark": "비고",
-    "unit_id": "품목 단위",
-    "warehouse_id": "창고"
+    "use_yn": "사용여부",
+    "del_yn": "삭제여부",
+    "crt_id": "생성자",
+    "crt_date": "생성일시",
+    "crt_day": "생성일",
+    "crt_time": "생성시간",
+    "mod_id": "변경자",
+    "mod_day": "변경일",
+    "mod_date": "변경일시",
+    "mod_time": "변경시간"
   }
 }

@@ -1,11 +1,19 @@
 {
-  "name": "중분류",
+  "name": "대분류",
   "properties": {
-    "is_material": "품목 구분",
-    "code": "중분류 코드",
-    "name": "중분류명",
-    "remark": "비고",
+    "group1_id": "품목분류1코드",
+    "group1_name": "품목분류1명",
+    "is_material": "품목구분 (0:제품;1:자재)",
     "sort_seq": "정렬순서",
-    "valid": "사용 여부"
+    "remark": "비고",
+    "use_yn": "사용여부",
+    "crt_id": "생성자",
+    "crt_date": "생성일시",
+    "crt_day": "생성일",
+    "crt_time": "생성시간",
+    "mod_id": "변경자",
+    "mod_day": "변경일",
+    "mod_date": "변경일시",
+    "mod_time": "변경시간"
   }
 }

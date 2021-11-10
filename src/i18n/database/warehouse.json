@@ -1,15 +1,26 @@
 {
   "name": "창고",
   "properties": {
-    "_id": "아이디",
-    "cell_number": "칸번호",
-    "is_dev": "출하 여부",
-    "is_sub": "하위 여부",
-    "rack_qty": "선반번호",
-    "remark": "비고",
-    "row_qty": "층번호",
-    "sort_seq": "정렬순서",
-    "code": "위치 코드",
-    "name": "위치명"
+    "warehouse_id": "창고코드",
+    "warehouse_name": "창고명",
+    "rack_no": "",
+    "cell_no": "",
+    "row_no": "",
+    "use_yn": "사용여부",
+    "del_yn": "삭제여부",
+    "crt_id": "생성자",
+    "crt_date": "생성일시",
+    "crt_day": "생성일",
+    "crt_time": "생성시간",
+    "mod_id": "변경자",
+    "mod_day": "변경일",
+    "mod_date": "변경일시",
+    "mod_time": "변경시간",
+    "state_cd": "상태코드(00: 비적치, 11:반입요청, 12:반입완료, 21:반출요청, 22:반출완료)",
+    "state_mod_id": "상태변경자",
+    "state_mod_day": "변경일",
+    "state_mod_date": "변경일시",
+    "state_mod_time": "변경시간",
+    "state_mod_user_cd": "변경자구분(1:관리자,2:사용자)"
   }
 }
