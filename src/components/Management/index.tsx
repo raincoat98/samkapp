@@ -2,12 +2,7 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  setCollectionData,
-  insertData,
-  updateData,
-  deleteMany,
-} from "store/realm";
+import { getData, insertData, updateData, deleteData } from "store/realm";
 import { useTranslation } from "react-i18next";
 import {
   COLLECTION_NAME,
@@ -217,13 +212,13 @@ export default function Management(props: {
   });
 
   const refreshData = React.useCallback(async () => {
-    dispatch(setCollectionData(collectionName));
+    dispatch(getData(collectionName));
 
     if (filterList) {
       for (let index = 0; index < filterList.length; index++) {
         const name = filterList[index].schema.name as COLLECTION_NAME_TYPE;
         if (Object.values(COLLECTION_NAME).includes(name)) {
-          dispatch(setCollectionData(name));
+          dispatch(getData(name));
         }
       }
     }
@@ -273,7 +268,7 @@ export default function Management(props: {
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
     // dispatch(
-    //   deleteMany({
+    //   deleteData({
     //     collectionName,
     //     ids: checkedRows,
     //   })

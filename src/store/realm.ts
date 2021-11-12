@@ -5,23 +5,6 @@ import * as realmObjectModes from "realmObjectModes";
 
 const name = "realm";
 
-function realmErrorToObject(realmError: any) {
-  const errorObject: RealmError = {
-    error: realmError.error,
-    errorCode: realmError.errorCode,
-    statusCode: realmError.statusCode,
-    message: realmError.message,
-  };
-  return errorObject;
-}
-
-export type RealmError = {
-  error: string;
-  errorCode: string;
-  statusCode: number;
-  message: string;
-};
-
 export type schemaType = {
   name: string;
   properties: Record<string, string>;
@@ -32,7 +15,7 @@ export type RealmState = {
   userName: string;
   loading: boolean;
   loggedIn: boolean;
-  error: RealmError | null;
+  error: any;
   // 데이터베이스 컬렉션들
   database: {
     [COLLECTION_NAME.tb_customer_mngr]: realmObjectModes.customer_mngr[];
@@ -54,7 +37,7 @@ const initialState: RealmState = {
   userName: "",
   loading: false,
   loggedIn: false,
-  error: null,
+  error: undefined,
   database: {
     tb_customer_mngr: [],
     tb_customer: [],
@@ -92,10 +75,10 @@ export const login = createAsyncThunk(
       // 로그인 때에 모든 테이블  데이터 가져오기
       for (const key in COLLECTION_NAME) {
         const collectionKey = key as COLLECTION_NAME_TYPE;
-        dispatch(setCollectionData(collectionKey));
+        dispatch(getData(collectionKey));
       }
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
 
     return props.email;
@@ -115,7 +98,7 @@ export const logout = createAsyncThunk(
       });
       return;
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
@@ -133,24 +116,24 @@ export const register = createAsyncThunk(
       // await app.emailPasswordAuth.registerUser(email, password);
       dispatch(login({ email, password }));
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
 
 // 컬렉션 데이터 가져오기
-export const setCollectionData = createAsyncThunk(
-  `${name}/setCollectionData`,
+export const getData = createAsyncThunk(
+  `${name}/getData`,
   async (
     collectionName: COLLECTION_NAME_TYPE,
     { dispatch, rejectWithValue }
   ) => {
     try {
       let data: any[] = [];
-      if (collectionName === "tb_part") {
-        const response = await axios.get("http://localhost:3002/api/part");
-        data = response.data.results;
-      }
+
+      const apiRoute = collectionName.replace("tb_", "");
+      const response = await axios.get(`http://localhost:3002/api/${apiRoute}`);
+      data = response.data.results;
 
       // dispatch({
       //   type: `${name}/computeQty`,
@@ -161,7 +144,7 @@ export const setCollectionData = createAsyncThunk(
         data,
       };
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
@@ -185,7 +168,7 @@ export const insertData = createAsyncThunk(
       //   doc: document,
       // });
 
-      await dispatch(setCollectionData(props.collectionName));
+      await dispatch(getData(props.collectionName));
 
       // dispatch({
       //   type: `${name}/computeQty`,
@@ -193,7 +176,7 @@ export const insertData = createAsyncThunk(
 
       return;
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
@@ -235,14 +218,14 @@ export const updateData = createAsyncThunk(
       // };
       return;
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
 
 // 컬렉션 데이터 삭제
-export const deleteMany = createAsyncThunk(
-  `${name}/deleteMany`,
+export const deleteData = createAsyncThunk(
+  `${name}/deleteData`,
   async (
     props: { collectionName: COLLECTION_NAME_TYPE; ids: string[] },
     { dispatch, rejectWithValue }
@@ -255,12 +238,12 @@ export const deleteMany = createAsyncThunk(
 
     try {
       // const result = await app.currentUser?.functions.actionFunc({
-      //   type: "deleteMany",
+      //   type: "deleteData",
       //   collectionName,
       //   filter,
       // });
 
-      // await dispatch(setCollectionData(collectionName));
+      // await dispatch(getData(collectionName));
 
       // dispatch({
       //   type: `${name}/computeQty`,
@@ -269,7 +252,7 @@ export const deleteMany = createAsyncThunk(
       // return result;
       return;
     } catch (error) {
-      return rejectWithValue(realmErrorToObject(error));
+      return rejectWithValue(error);
     }
   }
 );
@@ -350,7 +333,7 @@ const userSlice = createSlice({
       })
       // 컬렉션 데이터 가져오기
       .addCase(
-        setCollectionData.fulfilled.type,
+        getData.fulfilled.type,
         (
           state,
           action: PayloadAction<{
@@ -399,7 +382,7 @@ const userSlice = createSlice({
         }
       )
       // 컬렉션 데이터 삭제
-      .addCase(deleteMany.fulfilled.type, (state) => {
+      .addCase(deleteData.fulfilled.type, (state) => {
         state.loading = false;
       })
       // 컬렉션 특정값 추출
