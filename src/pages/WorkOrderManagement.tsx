@@ -38,20 +38,20 @@ export default function WorkOrderManagement() {
       } else return false;
     }).length + 1;
 
-  // 인덱스 앞 0 붙이기 (ex 007)
+  // 인덱스 앞 0 붙이기 (ex 00007)
   let prefix = "";
   for (
     let index = 0;
-    index < 3 - workOrderTodayIndex.toString().length;
+    index < 5 - workOrderTodayIndex.toString().length;
     index++
   ) {
     prefix += "0";
   }
 
   const formModalOptions = {
-    code: {
+    work_order_number: {
       autofill: {
-        value: `${today}_${prefix}${workOrderTodayIndex}`,
+        value: `${today}${prefix}${workOrderTodayIndex}`,
         disabled: true,
       },
     },

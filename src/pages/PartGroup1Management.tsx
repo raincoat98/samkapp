@@ -21,7 +21,7 @@ export default function PartGrou1Management() {
       schema={part_group_1Schema}
       collectionName={collectionName}
       formModalOptions={{
-        code: {
+        group1_id: {
           autofill: {
             value: `GR1_${prefix}${data.length}`,
           },
