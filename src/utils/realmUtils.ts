@@ -10,6 +10,8 @@ export const COLLECTION_NAME = {
   tb_group2: "tb_group2",
   tb_part_list_price: "tb_part_list_price",
   tb_part_type: "tb_part_type",
+  tb_transfer_in: "tb_transfer_in",
+  tb_transfer_out: "tb_transfer_out",
   tb_part: "tb_part",
   tb_warehouse: "tb_warehouse",
   tb_work_order: "tb_work_order",

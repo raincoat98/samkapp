@@ -11,6 +11,8 @@ import tb_group2 from "./database/tb_group2.json";
 import tb_part_list_price from "./database/tb_part_list_price.json";
 import tb_part_type from "./database/tb_part_type.json";
 import tb_part from "./database/tb_part.json";
+import tb_transfer_in from "./database/tb_transfer_in.json";
+import tb_transfer_out from "./database/tb_transfer_out.json";
 import tb_warehouse from "./database/tb_warehouse.json";
 import tb_work_order from "./database/tb_work_order.json";
 
@@ -29,6 +31,8 @@ const resources = {
       tb_part_list_price,
       tb_part_type,
       tb_part,
+      tb_transfer_in,
+      tb_transfer_out,
       tb_warehouse,
       tb_work_order,
 

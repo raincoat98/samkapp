@@ -5,6 +5,8 @@ import PartManagement from "pages/PartManagement";
 import PartGroup1Management from "pages/PartGroup1Management";
 import PartGroup2Management from "pages/PartGroup2Management";
 import PartTypeManagement from "pages/PartTypeManagement";
+import TransferIn from "pages/TransferIn";
+import TransferOut from "pages/TransferOut";
 import PartPriceManagement from "pages/PartPriceManagement";
 import WarehouseManagement from "pages/WarehouseManagement";
 import WorkOrderManagement from "pages/WorkOrderManagement";
@@ -46,6 +48,18 @@ export const routes: Record<string, route> = {
     name: "작업 지시 관리",
     path: "/work_order_manage",
     component: WorkOrderManagement,
+  },
+
+  // 입출고 관리
+  transfer_in: {
+    name: "입고 관리",
+    path: "/transfer_in",
+    component: TransferIn,
+  },
+  transfer_out: {
+    name: "출고 관리",
+    path: "/transfer_out",
+    component: TransferOut,
   },
 
   // 위치 관리
@@ -114,6 +128,8 @@ export const sidebarConfig: sidebarRouteType[] = [
   { name: "거래처 관리", route: routes.customer_manage },
   { name: "거래처 담당자 관리", route: routes.customer_mngr_manage },
   { name: "재고 관리", route: routes.inv_management },
+  { name: "입고 관리", route: routes.transfer_in },
+  { name: "출고 관리", route: routes.transfer_out },
   { name: "작업 지시 관리", route: routes.work_order_manage },
   { name: "창고 관리", route: routes.warehouse_manage },
   { name: "품목 관리", route: routes.part_manage },

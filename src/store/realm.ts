@@ -25,6 +25,8 @@ export type RealmState = {
     [COLLECTION_NAME.tb_group2]: realmObjectModes.part_group_1[];
     [COLLECTION_NAME.tb_part_list_price]: realmObjectModes.part_group_2[];
     [COLLECTION_NAME.tb_part_type]: realmObjectModes.part_price[];
+    [COLLECTION_NAME.tb_transfer_in]: realmObjectModes.tb_transfer_in[];
+    [COLLECTION_NAME.tb_transfer_out]: realmObjectModes.tb_transfer_out[];
     [COLLECTION_NAME.tb_part]: realmObjectModes.part_type[];
     [COLLECTION_NAME.tb_warehouse]: realmObjectModes.warehouse[];
     [COLLECTION_NAME.tb_work_order]: realmObjectModes.work_order[];
@@ -46,6 +48,8 @@ const initialState: RealmState = {
     tb_group2: [],
     tb_part_list_price: [],
     tb_part_type: [],
+    tb_transfer_in: [],
+    tb_transfer_out: [],
     tb_part: [],
     tb_warehouse: [],
     tb_work_order: [],

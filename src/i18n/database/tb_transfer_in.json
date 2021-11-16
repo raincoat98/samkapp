@@ -1,0 +1,24 @@
+{
+  "name": "입고",
+  "properties": {
+    "transfer_in_id": "입고번호",
+    "transfer_date": "입고일자",
+    "transfer_type_id": "이동형태코드",
+    "part_id": "부품코드",
+    "quantity": "입고수량",
+    "unit_price": "구매단가",
+    "purchase_amont": "구매금액",
+    "outsourcing_unit_price": "외주단가",
+    "outsourcing_amont": "외주금액",
+    "warehouse_id": "창고위치코드",
+    "work_order_id": "작업지시번호",
+    "crt_id": "생성자",
+    "crt_date": "생성일시",
+    "crt_day": "생성일",
+    "crt_time": "생성시간",
+    "mod_id": "변경자",
+    "mod_date": "변경일시",
+    "mod_day": "변경일",
+    "mod_time": "변경시간"
+  }
+}
