@@ -65,7 +65,7 @@ export type part_group_2 = {
   search_group?: number;
   sort_seq?: number;
   remark?: string;
-  use_yn?: string;
+  use_yn?: boolean;
 };
 
 export const part_group_2Schema = {
@@ -77,7 +77,7 @@ export const part_group_2Schema = {
     search_group: "int?",
     sort_seq: "int?",
     remark: "string?",
-    use_yn: "string?",
+    use_yn: "boolean?",
   },
   primaryKey: "group2_id",
 };
@@ -135,7 +135,7 @@ export type part = {
   standard_cost?: number;
   list_Price?: number;
   remark?: string;
-  use_yn?: string;
+  use_yn?: boolean;
   del_yn?: string;
 };
 
@@ -154,7 +154,7 @@ export const partSchema = {
     standard_cost: "int?",
     list_Price: "int?",
     remark: "string?",
-    use_yn: "string?",
+    use_yn: "boolean?",
     del_yn: "string?",
   },
   primaryKey: "part_id",
@@ -192,7 +192,7 @@ export type part_group_1 = {
   is_material?: number;
   sort_seq?: number;
   remark?: string;
-  use_yn?: string;
+  use_yn?: boolean;
 };
 
 export const part_group_1Schema = {
@@ -203,7 +203,7 @@ export const part_group_1Schema = {
     is_material: "int?",
     sort_seq: "int?",
     remark: "string?",
-    use_yn: "string?",
+    use_yn: "boolean?",
   },
   primaryKey: "group1_id",
 };
@@ -214,7 +214,7 @@ export type warehouse = {
   rack_no?: number;
   cell_no?: number;
   row_no?: number;
-  use_yn?: string;
+  use_yn?: boolean;
   del_yn?: string;
 };
 
@@ -226,7 +226,7 @@ export const warehouseSchema = {
     rack_no: "int?",
     cell_no: "int?",
     row_no: "int?",
-    use_yn: "string?",
+    use_yn: "boolean?",
     del_yn: "string?",
   },
   primaryKey: "warehouse_id",
@@ -333,7 +333,7 @@ export type transfer_type = {
   transfer_flag?: number;
   sort_seq?: number;
   remark?: string;
-  use_yn?: string;
+  use_yn?: boolean;
 };
 
 export const transfer_typeSchema = {
@@ -344,7 +344,7 @@ export const transfer_typeSchema = {
     transfer_flag: "string?",
     sort_seq: "string?",
     remark: "string?",
-    use_yn: "string?",
+    use_yn: "boolean?",
   },
   primaryKey: "transfer_type_id",
 };
@@ -393,7 +393,7 @@ export type customer = {
   customer_group_id?: string;
   credit_limit?: number;
   remark?: string;
-  use_yn?: string;
+  use_yn?: boolean;
 };
 
 export const customerSchema = {
@@ -414,7 +414,7 @@ export const customerSchema = {
     customer_group_id: "string?",
     credit_limit: "int?",
     remark: "string?",
-    use_yn: "string?",
+    use_yn: "boolean?",
   },
   primaryKey: "customer_id",
 };
