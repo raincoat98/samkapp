@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { tb_transfer_inSchema } from "realmObjectModes";
+import { tb_transfer_inSchema } from "schema/tb_transfer_in";
 
 export default function TransferInManager() {
   const collectionName = "tb_transfer_in";

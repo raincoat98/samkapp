@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { work_orderSchema } from "realmObjectModes";
+import { tb_work_orderSchema } from "schema/tb_work_order";
 import moment from "moment";
 
 export default function WorkOrderManagement() {
@@ -65,7 +65,7 @@ export default function WorkOrderManagement() {
   return (
     <Management
       title="작업 지시 관리"
-      schema={work_orderSchema}
+      schema={tb_work_orderSchema}
       collectionName={collectionName}
       formModalOptions={formModalOptions}
       tabList={["현재", "이전"]}

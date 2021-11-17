@@ -1,7 +1,22 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "utils/realmUtils";
-import * as realmObjectModes from "realmObjectModes";
+
+import { tb_bill_of_materials } from "schema/tb_bill_of_materials";
+import { tb_customer } from "schema/tb_customer";
+import { tb_group1 } from "schema/tb_group1";
+import { tb_group2 } from "schema/tb_group2";
+import { tb_inventory } from "schema/tb_inventory";
+import { tb_manager } from "schema/tb_manager";
+import { tb_part_list_price } from "schema/tb_part_list_price";
+import { tb_part_type } from "schema/tb_part_type";
+import { tb_part } from "schema/tb_part";
+import { tb_transfer_in } from "schema/tb_transfer_in";
+import { tb_transfer_out } from "schema/tb_transfer_out";
+import { tb_transfer_type } from "schema/tb_transfer_type";
+import { tb_unit } from "schema/tb_unit";
+import { tb_warehouse } from "schema/tb_warehouse";
+import { tb_work_order } from "schema/tb_work_order";
 
 const name = "realm";
 
@@ -18,18 +33,21 @@ export type RealmState = {
   error: any;
   // 데이터베이스 컬렉션들
   database: {
-    [COLLECTION_NAME.tb_customer_mngr]: realmObjectModes.customer_mngr[];
-    [COLLECTION_NAME.tb_customer]: realmObjectModes.customer[];
-    [COLLECTION_NAME.tb_inventory]: realmObjectModes.inv[];
-    [COLLECTION_NAME.tb_group1]: realmObjectModes.part[];
-    [COLLECTION_NAME.tb_group2]: realmObjectModes.part_group_1[];
-    [COLLECTION_NAME.tb_part_list_price]: realmObjectModes.part_group_2[];
-    [COLLECTION_NAME.tb_part_type]: realmObjectModes.part_price[];
-    [COLLECTION_NAME.tb_transfer_in]: realmObjectModes.tb_transfer_in[];
-    [COLLECTION_NAME.tb_transfer_out]: realmObjectModes.tb_transfer_out[];
-    [COLLECTION_NAME.tb_part]: realmObjectModes.part_type[];
-    [COLLECTION_NAME.tb_warehouse]: realmObjectModes.warehouse[];
-    [COLLECTION_NAME.tb_work_order]: realmObjectModes.work_order[];
+    [COLLECTION_NAME.tb_bill_of_materials]: tb_bill_of_materials[];
+    [COLLECTION_NAME.tb_customer]: tb_customer[];
+    [COLLECTION_NAME.tb_group1]: tb_group1[];
+    [COLLECTION_NAME.tb_group2]: tb_group2[];
+    [COLLECTION_NAME.tb_inventory]: tb_inventory[];
+    [COLLECTION_NAME.tb_manager]: tb_manager[];
+    [COLLECTION_NAME.tb_part_list_price]: tb_part_list_price[];
+    [COLLECTION_NAME.tb_part_type]: tb_part_type[];
+    [COLLECTION_NAME.tb_part]: tb_part[];
+    [COLLECTION_NAME.tb_transfer_in]: tb_transfer_in[];
+    [COLLECTION_NAME.tb_transfer_out]: tb_transfer_out[];
+    [COLLECTION_NAME.tb_transfer_type]: tb_transfer_type[];
+    [COLLECTION_NAME.tb_unit]: tb_unit[];
+    [COLLECTION_NAME.tb_warehouse]: tb_warehouse[];
+    [COLLECTION_NAME.tb_work_order]: tb_work_order[];
   };
   // 제작 가능 재고
   maxMadeQty: Record<string, number>;
@@ -41,18 +59,21 @@ const initialState: RealmState = {
   loggedIn: false,
   error: undefined,
   database: {
-    tb_customer_mngr: [],
-    tb_customer: [],
-    tb_inventory: [],
-    tb_group1: [],
-    tb_group2: [],
-    tb_part_list_price: [],
-    tb_part_type: [],
-    tb_transfer_in: [],
-    tb_transfer_out: [],
-    tb_part: [],
-    tb_warehouse: [],
-    tb_work_order: [],
+    [COLLECTION_NAME.tb_bill_of_materials]: [],
+    [COLLECTION_NAME.tb_customer]: [],
+    [COLLECTION_NAME.tb_group1]: [],
+    [COLLECTION_NAME.tb_group2]: [],
+    [COLLECTION_NAME.tb_inventory]: [],
+    [COLLECTION_NAME.tb_manager]: [],
+    [COLLECTION_NAME.tb_part_list_price]: [],
+    [COLLECTION_NAME.tb_part_type]: [],
+    [COLLECTION_NAME.tb_part]: [],
+    [COLLECTION_NAME.tb_transfer_in]: [],
+    [COLLECTION_NAME.tb_transfer_out]: [],
+    [COLLECTION_NAME.tb_transfer_type]: [],
+    [COLLECTION_NAME.tb_unit]: [],
+    [COLLECTION_NAME.tb_warehouse]: [],
+    [COLLECTION_NAME.tb_work_order]: [],
   },
   maxMadeQty: {},
 };

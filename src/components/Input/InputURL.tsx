@@ -2,20 +2,20 @@ import React from "react";
 import validator from "validator";
 import { externalLink } from "utils/icons";
 import { url as placeholderURL } from "utils/placeholders";
-import { Box, Icon, Input, InputProps, IconButton } from "@chakra-ui/react";
+import { Box, Icon, Input, IconButton } from "@chakra-ui/react";
 
-export default function FormModalInputURL(props: {
-  inputProps: InputProps | any;
+export default function InputURL(props: {
+  onChange: (value: string) => void;
+  defaultValue: string;
 }) {
-  const { inputProps } = props;
-
   const inputEl = React.useRef<HTMLInputElement>(null);
 
   return (
     <Box display="flex">
       <Input
+        onChange={(event) => props.onChange(event.target.value)}
+        defaultValue={props.defaultValue}
         ref={inputEl}
-        {...inputProps}
         mr={3}
         type="url"
         placeholder={placeholderURL}

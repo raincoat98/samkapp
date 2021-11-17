@@ -53,7 +53,7 @@ export default function FormModalInfo(props: {
 
               switch (data.type) {
                 case "string":
-                case "int": {
+                case "number": {
                   label = data.value;
                   value = data.value;
                   break;

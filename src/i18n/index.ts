@@ -3,11 +3,11 @@ import { initReactI18next } from "react-i18next";
 
 import error_code from "./error_code.json";
 
-import tb_customer_mngr from "./database/tb_customer_mngr.json";
 import tb_customer from "./database/tb_customer.json";
-import tb_inventory from "./database/tb_inventory.json";
 import tb_group1 from "./database/tb_group1.json";
 import tb_group2 from "./database/tb_group2.json";
+import tb_inventory from "./database/tb_inventory.json";
+import tb_manager from "./database/tb_manager.json";
 import tb_part_list_price from "./database/tb_part_list_price.json";
 import tb_part_type from "./database/tb_part_type.json";
 import tb_part from "./database/tb_part.json";
@@ -23,11 +23,11 @@ const resources = {
       error_code,
 
       // 데이터베이스 테이블 번역
-      tb_customer_mngr,
       tb_customer,
-      tb_inventory,
       tb_group1,
       tb_group2,
+      tb_inventory,
+      tb_manager,
       tb_part_list_price,
       tb_part_type,
       tb_part,

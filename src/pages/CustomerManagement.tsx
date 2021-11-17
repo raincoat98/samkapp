@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { customerSchema } from "realmObjectModes";
+import { tb_customerSchema } from "schema/tb_customer";
 
 export default function CustomerManagement() {
   const collectionName = "tb_customer";
@@ -12,7 +12,7 @@ export default function CustomerManagement() {
   return (
     <Management
       title="거래처 관리"
-      schema={customerSchema}
+      schema={tb_customerSchema}
       collectionName={collectionName}
       tableProps={{ data }}
     />

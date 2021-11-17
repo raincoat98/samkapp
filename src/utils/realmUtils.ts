@@ -3,16 +3,19 @@ import moment from "moment";
 
 // 데이터베이스 컬렉션 이름
 export const COLLECTION_NAME = {
-  tb_customer_mngr: "tb_customer_mngr",
+  tb_bill_of_materials: "tb_bill_of_materials",
   tb_customer: "tb_customer",
-  tb_inventory: "tb_inventory",
   tb_group1: "tb_group1",
   tb_group2: "tb_group2",
+  tb_inventory: "tb_inventory",
+  tb_manager: "tb_manager",
   tb_part_list_price: "tb_part_list_price",
   tb_part_type: "tb_part_type",
+  tb_part: "tb_part",
   tb_transfer_in: "tb_transfer_in",
   tb_transfer_out: "tb_transfer_out",
-  tb_part: "tb_part",
+  tb_transfer_type: "tb_transfer_type",
+  tb_unit: "tb_unit",
   tb_warehouse: "tb_warehouse",
   tb_work_order: "tb_work_order",
 } as const;
@@ -131,7 +134,7 @@ export function schemaToColums(props: {
 
     switch (type) {
       case "string":
-      case "int": {
+      case "number": {
         accessor = key;
         break;
       }
@@ -146,7 +149,7 @@ export function schemaToColums(props: {
         };
         break;
       }
-      case "bool": {
+      case "boolean": {
         accessor = (originalRow) => {
           const origRow = originalRow as Record<string, any>;
           const boolData = origRow[key] as boolean;

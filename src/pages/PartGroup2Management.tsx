@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { part_group_2Schema } from "realmObjectModes";
+import { tb_group2Schema } from "schema/tb_group2";
 
 export default function PartGrou2Management() {
   const collectionName = "tb_group2";
@@ -18,7 +18,7 @@ export default function PartGrou2Management() {
   return (
     <Management
       title="대분류 관리"
-      schema={part_group_2Schema}
+      schema={tb_group2Schema}
       collectionName={collectionName}
       formModalOptions={{
         group2_id: {

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { invSchema } from "realmObjectModes";
+import { tb_inventorySchema } from "schema/tb_inventory";
 
 export default function InvManagement() {
   const collectionName = "tb_inventory";
@@ -17,7 +17,7 @@ export default function InvManagement() {
   return (
     <Management
       title="재고 관리"
-      schema={invSchema}
+      schema={tb_inventorySchema}
       collectionName={collectionName}
       tabList={["전체", "재고 없음"]}
       onTabChange={(index: number) => setTabIndex(index)}

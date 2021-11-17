@@ -1,29 +1,25 @@
-import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { COLLECTION_NAME_TYPE, isMonth } from "utils/realmUtils";
 import placeholders from "utils/placeholders";
-import FormModalURLInput from "./InputURL";
+import InputFormControl from "components/Input/InputFormControl";
+import InputString from "components/Input/InputString";
+import InputNumber from "components/Input/InputNumber";
+import InputBool from "components/Input/InputBool";
+import InputDate from "components/Input/InputDate";
+import InputURL from "../../../Input/InputURL";
 import FormModalRefExternal from "./InputExternal";
 import {
-  FormControl,
-  FormLabel,
   Stack,
-  Box,
   Input,
   InputProps,
-  Textarea,
-  TextareaProps,
-  Switch,
-  SwitchProps,
   Select,
-  Tooltip,
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
 
 export default function FormModalInput(props: {
   name: string;
-  type: "string" | "int" | "date" | "bool" | string;
+  type: "string" | "number" | "date" | "boolean" | string;
   defaultValue: any;
   labelWidth?: string | number;
   onChange: (value: any) => void;
@@ -37,10 +33,6 @@ export default function FormModalInput(props: {
 }) {
   // 번역
   const { t: translate } = useTranslation();
-
-  // FormLabel width 설정
-  const labelWidth =
-    props.labelWidth === undefined ? "100px" : props.labelWidth;
 
   const inputProps: InputProps = {
     defaultValue: props.defaultValue,
@@ -97,79 +89,54 @@ export default function FormModalInput(props: {
       switch (props.type) {
         // 문자열
         case "string": {
-          // input인지 textarea인지 구분
-          if (!props.isTextarea) {
-            // URL 텍스트일 경우
-            if (props.isURL) {
-              element = <FormModalURLInput inputProps={{ ...inputProps }} />;
-            } else {
-              // 일반 텍스트
-              element = <Input type="text" {...inputProps} />;
-            }
+          // URL
+          if (props.isURL) {
+            element = (
+              <InputURL
+                onChange={(value) => props.onChange(value)}
+                defaultValue={props.defaultValue}
+              />
+            );
           } else {
-            // textarea (여러줄 입력 가능한 요소)
-            const textareaProps = inputProps as TextareaProps;
-            element = <Textarea type="text" {...textareaProps} />;
+            element = (
+              <InputString
+                onChange={(value) => props.onChange(value)}
+                defaultValue={props.defaultValue}
+                isTextarea={props.isTextarea}
+              />
+            );
           }
           break;
         }
         // 숫자
-        case "int": {
-          // Input type="number"
-          // valueAsNumber 값은 target.value를 number 타입으로 가져옴
-          inputProps.onChange = (event) =>
-            props.onChange(event.target.valueAsNumber);
-          element = <Input type="number" {...inputProps} />;
+        case "number": {
+          element = (
+            <InputNumber
+              onChange={(value) => props.onChange(value)}
+              defaultValue={props.defaultValue}
+            />
+          );
           break;
         }
         // 날짜
         case "date": {
-          if (isMonth(props.name)) {
-            inputProps.type = "month";
-
-            // 기존값이 있을 경우
-            if (props.defaultValue) {
-              // moment로 input date 포맷에 맞게 수정
-              inputProps.defaultValue = moment(props.defaultValue).format(
-                "YYYY-MM"
-              );
-            }
-          } else {
-            inputProps.type = "date";
-
-            // 기존값이 있을 경우
-            if (props.defaultValue) {
-              // moment로 input date 포맷에 맞게 수정
-              inputProps.defaultValue = moment(props.defaultValue).format(
-                "YYYY-MM-DD"
-              );
-            } else {
-              // 오늘 이후 날짜로만 가능하게 설정
-              inputProps.min = moment().format("YYYY-MM-DD");
-            }
-          }
-
-          // valueAsDate 값은 input date 값 포맷을 Date 객체로 가져옴
-          inputProps.onChange = (event) =>
-            props.onChange(event.target.valueAsDate);
-
-          // Input type="date"
-          element = <Input {...inputProps} />;
+          element = (
+            <InputDate
+              onChange={(value) => props.onChange(value)}
+              defaultValue={props.defaultValue}
+              isMonth={isMonth(props.name)}
+            />
+          );
           break;
         }
         // 불리언 값은 switch 요소로 설정
-        case "bool": {
-          const switchProps = inputProps as SwitchProps;
-
-          delete switchProps.defaultValue;
-          delete switchProps.variant;
-
-          switchProps.defaultChecked = props.defaultValue ? true : false;
-          switchProps.onChange = (event) =>
-            props.onChange(event.target.checked);
-
-          // Switch
-          element = <Switch {...switchProps} />;
+        case "boolean": {
+          element = (
+            <InputBool
+              isDefaultTrue={props.defaultValue ? true : false}
+              onChange={(checked) => props.onChange(checked)}
+            />
+          );
           break;
         }
         // 기본값
@@ -181,26 +148,15 @@ export default function FormModalInput(props: {
     }
   }
 
-  // 폼 박스 생성
-  const formControl = (
-    <FormControl
+  return (
+    <InputFormControl
+      name={props.name}
+      labelWidth={props.labelWidth}
       isRequired={props.isRequired}
-      display="flex"
-      alignItems="center"
+      isDisabled={props.isDisabled}
+      isReadOnly={props.isReadOnly}
     >
-      <FormLabel minWidth={labelWidth} marginBottom={0}>
-        {translate(`${props.name}`)}
-      </FormLabel>
-      <Box flex="1">{element}</Box>
-    </FormControl>
-  );
-
-  // 수정 불가능한 값일 경우 툴팁 추가
-  return props.isReadOnly || props.isDisabled ? (
-    <Tooltip label="이 값은 수정할 수 없습니다" placement="top">
-      {formControl}
-    </Tooltip>
-  ) : (
-    formControl
+      {element}
+    </InputFormControl>
   );
 }

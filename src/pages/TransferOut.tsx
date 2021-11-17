@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import { tb_transfer_outSchema } from "realmObjectModes";
+import { tb_transfer_outSchema } from "schema/tb_transfer_out";
 
 export default function TransferOutManager() {
   const collectionName = "tb_transfer_out";

@@ -139,9 +139,9 @@ export default function FormModal(props: FormModalProps) {
         switch (type) {
           // 문자열, 숫자, 날짜, 불리언
           case "string":
-          case "int":
+          case "number":
           case "date":
-          case "bool": {
+          case "boolean": {
             // enum 설정
             let enumData: any[] | undefined = undefined;
             switch (key) {

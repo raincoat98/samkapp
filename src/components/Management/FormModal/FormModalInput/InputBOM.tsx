@@ -8,14 +8,14 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import FormModalInput from ".";
-import { part_bills_of_material } from "realmObjectModes";
+import { tb_bill_of_materials } from "schema/tb_bill_of_materials";
 import { plusFill, minusFill } from "utils/icons";
 
 export default function FormModalInputBOM(props: {
-  defaultValue: part_bills_of_material[];
-  onChange: (result: part_bills_of_material[]) => void;
+  defaultValue: tb_bill_of_materials[];
+  onChange: (result: tb_bill_of_materials[]) => void;
 }) {
-  const [bomList, setBomList] = React.useState<part_bills_of_material[]>(
+  const [bomList, setBomList] = React.useState<tb_bill_of_materials[]>(
     props.defaultValue
   );
 
@@ -85,7 +85,7 @@ export default function FormModalInputBOM(props: {
               />
               <FormModalInput
                 name="part.properties.part_bills_of_material.number"
-                type="int"
+                type="number"
                 defaultValue={bom.number}
                 onChange={(value: number) =>
                   onDataChange("number", value, index)

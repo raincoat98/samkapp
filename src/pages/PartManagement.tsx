@@ -1,11 +1,9 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "../components/Management/index";
-import {
-  partSchema,
-  part_group_2Schema,
-  part_group_1Schema,
-} from "realmObjectModes";
+import { tb_partSchema } from "schema/tb_part";
+import { tb_group2Schema } from "schema/tb_group2";
+import { tb_group1Schema } from "schema/tb_group1";
 
 export default function PartManagement() {
   const collectionName = "tb_part";
@@ -22,12 +20,12 @@ export default function PartManagement() {
   return (
     <Management
       title="품목 관리"
-      schema={partSchema}
+      schema={tb_partSchema}
       collectionName={collectionName}
       tableProps={{ data }}
       filterList={[
-        { schema: part_group_2Schema, data: part_group_2Data ?? [] },
-        { schema: part_group_1Schema, data: part_group_1Data ?? [] },
+        { schema: tb_group1Schema, data: part_group_2Data ?? [] },
+        { schema: tb_group2Schema, data: part_group_1Data ?? [] },
       ]}
     />
   );
