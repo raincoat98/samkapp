@@ -164,7 +164,8 @@ export default function TableComponent(props: TableComponentProps) {
         </Button>
         <Center>
           {/* @ts-ignore */}
-          {tableState.pageIndex + 1} / {pageOptions.length}
+          {tableState.pageIndex + 1} /{" "}
+          {pageOptions.length === 0 ? 1 : pageOptions.length}
         </Center>
         <Button onClick={nextPage} isDisabled={!canNextPage}>
           다음
