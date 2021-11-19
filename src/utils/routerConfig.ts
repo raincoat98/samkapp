@@ -11,7 +11,6 @@ import PartPriceManagement from "pages/PartPriceManagement";
 import WarehouseManagement from "pages/WarehouseManagement";
 import WorkOrderManagement from "pages/WorkOrderManagement";
 
-import Announcement from "pages/SystemManagement/Announcement";
 import Setting from "pages/Setting";
 
 export type route = {
@@ -96,13 +95,6 @@ export const routes: Record<string, route> = {
     component: PartPriceManagement,
   },
 
-  // 시스템 관리
-  announcement: {
-    name: "시스템 관리",
-    path: "/announcement",
-    component: Announcement,
-  },
-
   // 설정
   setting: {
     name: "설정",
@@ -148,7 +140,6 @@ export const sidebarConfig: sidebarRouteType[] = [
   },
   { name: "품목 형태 관리", route: routes.part_type_manage },
   { name: "품목 가격 관리", route: routes.part_price_manage },
-  { name: "시스템 관리", route: routes.announcement },
 ];
 
 export default routerConfig;
