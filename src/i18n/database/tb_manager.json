@@ -1,14 +1,16 @@
 {
   "name": "거래처 담당자",
   "properties": {
+    "manager_id": "담당자 코드",
+    "customer_id": "거래처",
     "cell_phone": "휴대전화 번호",
     "class_position": "직급",
-    "customer_id": "거래처",
     "email": "이메일",
     "fax": "팩스",
     "name": "성명",
     "namecard": "명함 이미지",
     "remark": "비고",
-    "tel": "전화번호"
+    "tel": "전화번호",
+    "use_yn": "사용여부"
   }
 }

@@ -9,7 +9,6 @@ export type tb_manager = {
   fax?: string;
   name: string;
   namecard?: string;
-  owner_id: string;
   remark?: string;
   tel?: string;
   use_yn?: boolean;
@@ -49,10 +48,6 @@ export const tb_managerSchema: schemaType = {
     },
     namecard: {
       type: "string",
-    },
-    owner_id: {
-      type: "string",
-      isNotNull: true,
     },
     remark: {
       type: "string",

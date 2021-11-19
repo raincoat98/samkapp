@@ -3,7 +3,7 @@
   "properties": {
     "group1_id": "품목분류1코드",
     "group1_name": "품목분류1명",
-    "is_material": "품목구분 (0:제품;1:자재)",
+    "is_material": "품목구분",
     "sort_seq": "정렬순서",
     "remark": "비고",
     "use_yn": "사용여부",

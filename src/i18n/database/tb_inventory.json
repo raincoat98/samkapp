@@ -1,7 +1,7 @@
 {
   "name": "재고",
   "properties": {
-    "inv_month": "재고월 (YYYYMM)",
+    "inv_month": "재고월",
     "part_id": "품목코드",
     "warehouse_id": "창고코드",
     "lot_no": "로트번호",
