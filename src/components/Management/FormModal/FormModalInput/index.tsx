@@ -2,14 +2,15 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { propertyType } from "schema";
 import { isMonth } from "utils/realmUtils";
+
 import InputFormControl from "components/Input/InputFormControl";
+import InputSelect from "components/Input/InputSelect";
 import InputEnum from "components/Input/InputEnum";
 import InputString from "components/Input/InputString";
 import InputNumber from "components/Input/InputNumber";
 import InputBool from "components/Input/InputBool";
 import InputDate from "components/Input/InputDate";
-import InputURL from "../../../Input/InputURL";
-// import { Stack, Select, RadioGroup, Radio } from "@chakra-ui/react";
+import InputURL from "components/Input/InputURL";
 
 export default function FormModalInput(props: {
   name: string;
@@ -26,7 +27,9 @@ export default function FormModalInput(props: {
   const database = useSelector((state: RootState) => state.realm.database);
 
   let element: JSX.Element;
+
   if (property.foreign) {
+    // 외부 테이블 참조
     element = (
       <InputEnum
         enumList={database[property.foreign.table]}
@@ -34,37 +37,16 @@ export default function FormModalInput(props: {
         onChange={(value) => props.onChange(value)}
       />
     );
+  } else if (property.select) {
+    // 정해진 값들 중에서 선택
+    element = (
+      <InputSelect
+        selectList={property.select}
+        default={property.default}
+        onChange={(value) => props.onChange(value)}
+      />
+    );
   } else {
-    // enum 사용시 Select 요소 사용
-    // if (props.enumData && props.enumData.length) {
-    //   // enumData 길이가 3 이하일 경우 Radio 요소 사용, 아닐 경우 Select 요소 사용
-    //   if (props.enumData.length < 4) {
-    //     element = (
-    //       <RadioGroup
-    //         defaultValue={property.default}
-    //         onChange={(value) => props.onChange(value)}
-    //       >
-    //         <Stack direction="row">
-    //           {props.enumData.map((enumValue, index) => (
-    //             <Radio value={enumValue} key={index}>
-    //               {translate(`${enumValue}`)}
-    //             </Radio>
-    //           ))}
-    //         </Stack>
-    //       </RadioGroup>
-    //     );
-    //   } else {
-    //     element = (
-    //       <Select defaultValue={property.default} placeholder="없음">
-    //         {props.enumData.map((enumValue, index) => (
-    //           <option value={enumValue} key={index}>
-    //             {translate(`${enumValue}`)}
-    //           </option>
-    //         ))}
-    //       </Select>
-    //     );
-    //   }
-    // } else {
     // 스키마 타입 구분
     switch (property.type) {
       // 문자열
@@ -121,7 +103,6 @@ export default function FormModalInput(props: {
       }
     }
   }
-  // }
 
   return (
     <InputFormControl

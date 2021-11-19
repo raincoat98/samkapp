@@ -46,9 +46,42 @@ export const tb_work_orderSchema: schemaType = {
     },
     priorities: {
       type: "number",
+      default: 0,
+      select: [
+        {
+          name: "보통",
+          value: 0,
+        },
+        {
+          name: "긴급",
+          value: 1,
+        },
+        {
+          name: "기타",
+          value: 2,
+        },
+      ],
     },
     status: {
       type: "number",
+      select: [
+        {
+          name: "미확정",
+          value: null,
+        },
+        {
+          name: "대기",
+          value: 0,
+        },
+        {
+          name: "진행중",
+          value: 1,
+        },
+        {
+          name: "완료",
+          value: 2,
+        },
+      ],
     },
     remark: {
       type: "string",

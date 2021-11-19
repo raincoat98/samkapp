@@ -3,7 +3,7 @@ import { schemaType } from "./index";
 export type tb_transfer_type = {
   transfer_type_id: string;
   transfer_type_name?: string;
-  transfer_flag?: boolean;
+  transfer_flag?: number;
   use_yn?: boolean;
 };
 
@@ -20,8 +20,19 @@ export const tb_transfer_typeSchema: schemaType = {
       isNotNull: true,
     },
     transfer_flag: {
-      type: "boolean",
+      type: "number",
+      default: 1,
       isNotNull: true,
+      select: [
+        {
+          name: "입고",
+          value: 0,
+        },
+        {
+          name: "출고",
+          value: 1,
+        },
+      ],
     },
     use_yn: {
       type: "boolean",

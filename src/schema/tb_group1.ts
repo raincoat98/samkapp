@@ -24,7 +24,17 @@ export const tb_group1Schema: schemaType = {
     },
     is_material: {
       type: "number",
-      default: false,
+      default: 0,
+      select: [
+        {
+          name: "제품",
+          value: 0,
+        },
+        {
+          name: "자재",
+          value: 1,
+        },
+      ],
     },
     sort_seq: {
       type: "number",

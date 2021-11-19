@@ -8,6 +8,7 @@ export type schemaType = {
 export type propertyType = {
   type: "string" | "number" | "boolean" | "date";
   default?: any;
+  select?: selectType[];
   length?: number;
   foreign?: {
     table: COLLECTION_NAME_TYPE;
@@ -19,6 +20,8 @@ export type propertyType = {
   isReadOnly?: boolean;
   isArray?: boolean;
 };
+
+export type selectType = { name?: string; value: any };
 
 // 데이터베이스 컬렉션 이름
 export const COLLECTION_NAME = {
