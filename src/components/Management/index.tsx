@@ -5,11 +5,7 @@ import { useDispatch } from "react-redux";
 import { getData, insertData, updateData, deleteData } from "store/realm";
 import { useTranslation } from "react-i18next";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE, schemaType } from "schema";
-import {
-  schemaToColums,
-  readonlySchemaKeyList,
-  disabledSchemaKeyList,
-} from "utils/realmUtils";
+import { schemaToColums } from "utils/realmUtils";
 
 // 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
@@ -111,7 +107,6 @@ export default function Management(props: {
   // 테이블 데이터
   const columns = schemaToColums({
     schema,
-    exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
   });
 
   // 테이블 헤더 및 값 번역

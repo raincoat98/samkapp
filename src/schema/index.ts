@@ -2,23 +2,22 @@
 export type schemaType = {
   name: COLLECTION_NAME_TYPE;
   embedded?: boolean;
-  properties: Record<
-    string,
-    {
-      type: "string" | "number" | "boolean" | "date" | "address";
-      default?: any;
-      length?: number;
-      foreign?: {
-        table: COLLECTION_NAME_TYPE;
-        key: string | number;
-      };
-      isPrimary?: boolean;
-      isAutoSet?: boolean;
-      isNotNull?: boolean;
-      isReadOnly?: boolean;
-      isArray?: boolean;
-    }
-  >;
+  properties: Record<string, propertyType>;
+};
+
+export type propertyType = {
+  type: "string" | "number" | "boolean" | "date";
+  default?: any;
+  length?: number;
+  foreign?: {
+    table: COLLECTION_NAME_TYPE;
+    key: string;
+  };
+  isPrimary?: boolean;
+  isAutoSet?: boolean;
+  isNotNull?: boolean;
+  isReadOnly?: boolean;
+  isArray?: boolean;
 };
 
 // 데이터베이스 컬렉션 이름

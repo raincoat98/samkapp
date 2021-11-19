@@ -4,17 +4,6 @@ import { schemaType } from "schema";
 
 // 예외처리
 export const textAreaSchemaKeyList = ["remark"];
-export const readonlySchemaKeyList = [
-  "crt_id",
-  "crt_date",
-  "crt_day",
-  "crt_time",
-  "mod_id",
-  "mod_day",
-  "mod_date",
-  "mod_time",
-];
-export const disabledSchemaKeyList = ["owner_id"];
 
 export function isMonth(key: string) {
   return key.endsWith("month");
@@ -128,9 +117,6 @@ export function schemaToColums(props: {
           }
         };
         break;
-      }
-      case "address": {
-        continue;
       }
     }
 

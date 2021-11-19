@@ -2,17 +2,12 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { schemaType } from "schema";
-import {
-  sortData,
-  readonlySchemaKeyList,
-  disabledSchemaKeyList,
-  textAreaSchemaKeyList,
-} from "utils/realmUtils";
+import { sortData, textAreaSchemaKeyList } from "utils/realmUtils";
 import { Box, Stack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
 import FormModalInput from "./FormModalInput";
-import FormModalAddress from "./FormModalInput/InputAddress";
+// import FormModalAddress from "./FormModalInput/InputAddress";
 import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
 import FormModalAlert from "./FormModalAlert";
@@ -24,7 +19,6 @@ export type formItem = {
   isRequired?: boolean;
 };
 export type formModalModeType = "insert" | "update";
-export type autofillType = { value: any; disabled?: boolean };
 
 export const FormModalPropsKey = {
   mode: "mode",
@@ -77,23 +71,13 @@ export default function FormModal(props: FormModalProps) {
       let property = props.schema.properties[key];
 
       // 유저가 수정 못하는 값일 경우 다음으로
-      if (
-        (props.mode === "update" && property.isPrimary) ||
-        !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
-          .length
-      )
-        continue;
-
-      // 배열 여부
-      // let isArray = property.isArray;
+      if (props.mode === "update" && property.isPrimary) continue;
 
       // 필수값 여부
-      let isRequired = property.isNotNull;
+      const isRequired = property.isNotNull;
 
       // 읽기 전용 값인지 판단
-      let isReadonly = !!readonlySchemaKeyList.filter(
-        (readonlyKey) => readonlyKey === key
-      ).length;
+      const isReadonly = property.isReadOnly;
 
       // 비활성화된 값인지 여부
       let disabled = false;
@@ -114,55 +98,17 @@ export default function FormModal(props: FormModalProps) {
         }));
       }
 
-      let element: JSX.Element;
-
       if (!isReadonly) {
-        switch (property.type) {
-          // 문자열, 숫자, 날짜, 불리언
-          case "string":
-          case "number":
-          case "date":
-          case "boolean": {
-            element = (
-              <FormModalInput
-                name={`${props.schema.name}.properties.${key}`}
-                type={property.type}
-                defaultValue={defaultValue}
-                onChange={(value) => editData({ key, value })}
-                isTextarea={textAreaSchemaKeyList.includes(key)}
-                isRequired={isRequired}
-                isReadOnly={property.isReadOnly}
-                isDisabled={disabled}
-                isURL={key.includes("homepage") || key.includes("url")}
-              />
-            );
-
-            break;
-          }
-          // BOM (필요자재)
-          // case "part_bills_of_material": {
-          //   isRequired = false;
-          //   element = (
-          //     <FormModalBillsOfMaterial
-          //       defaultValue={defaultValue ?? []}
-          //       onChange={(value) => editData({ key, value })}
-          //     />
-          //   );
-          //   break;
-          // }
-          // 주소
-          case "address": {
-            isRequired = false;
-            element = (
-              <FormModalAddress
-                name={`${props.schema.name}.properties.${key}`}
-                defaultValue={defaultValue ?? {}}
-                onChange={(result) => editData({ key, value: result })}
-              />
-            );
-            break;
-          }
-        }
+        const element = (
+          <FormModalInput
+            name={`${props.schema.name}.properties.${key}`}
+            property={property}
+            onChange={(value) => editData({ key, value })}
+            isTextarea={textAreaSchemaKeyList.includes(key)}
+            isDisabled={disabled}
+            isURL={key.includes("homepage") || key.includes("url")}
+          />
+        );
 
         // 사용자가 직접 수정해야 하거나 봐야하는 값들
         setInputList((state) => [
