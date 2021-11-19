@@ -113,45 +113,6 @@ export default function Management(props: {
   Object.keys(columns).forEach((key) => {
     const column = columns[Number(key)];
 
-    if (
-      column.accessor === undefined &&
-      column.Header?.toString().endsWith("_id")
-    ) {
-      const collectionName = column.Header?.toString().replaceAll(
-        "_id",
-        ""
-      ) as COLLECTION_NAME_TYPE;
-
-      // 외부 컬렉션 참조
-      const header = column.Header as string;
-      column.accessor = (originalRow: any) => {
-        // const dataList = database[collectionName] as Array<Record<string, any>>;
-        // const data = dataList.find((element) => {
-        //   const refId = new ObjectId(originalRow[header]);
-        //   const dataId = new ObjectId(element._id);
-        //   return refId.equals(dataId);
-        // });
-
-        // [%code%]: {%name%} 형식으로 표시
-        // if (data !== undefined) {
-        //   return `[${data["code"]}]: ` + data["name"];
-        // }
-
-        return "";
-      };
-    }
-    // 값 번역
-    // 작업지시 우선순위
-    else if (column.Header === "priorities") {
-      column.accessor = (originalRow: any, rowIndex) =>
-        translate(originalRow["priorities"]);
-    }
-    // 작업지시 진행상황
-    else if (column.Header === "progress") {
-      column.accessor = (originalRow: any, rowIndex) =>
-        translate(originalRow["progress"]);
-    }
-
     // 헤더 번역
     column.Header = translate(
       `${schema.name}.properties.${column.Header}`
