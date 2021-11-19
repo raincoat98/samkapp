@@ -1,7 +1,7 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { COLLECTION_NAME_TYPE } from "utils/realmUtils";
+import { COLLECTION_NAME_TYPE } from "schema";
 import SearchPopover from "components/SearchPopover";
 import { Flex, Select } from "@chakra-ui/react";
 

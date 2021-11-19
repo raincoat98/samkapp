@@ -1,39 +1,68 @@
+import { schemaType } from "./index";
+
 export type tb_manager = {
-  _id: string;
+  manager_id: number;
+  customer_id?: number;
   cell_phone?: string;
   class_position?: string;
-  crt_id?: string;
-  crt_date?: Date;
-  customer_id?: string;
   email?: string;
   fax?: string;
   name: string;
   namecard?: string;
   owner_id: string;
   remark?: string;
-  mod_id?: string;
-  mod_date?: Date;
   tel?: string;
+  use_yn?: boolean;
 };
 
-export const tb_managerSchema = {
+export const tb_managerSchema: schemaType = {
   name: "tb_manager",
   properties: {
-    _id: "string",
-    cell_phone: "string?",
-    class_position: "string?",
-    crt_id: "string?",
-    crt_date: "date?",
-    customer_id: "string",
-    email: "string?",
-    fax: "string?",
-    name: "string",
-    namecard: "string?",
-    owner_id: "string",
-    remark: "string?",
-    mod_id: "string?",
-    mod_date: "date?",
-    tel: "string?",
+    manager_id: {
+      type: "number",
+      isPrimary: true,
+      isNotNull: true,
+    },
+    customer_id: {
+      type: "number",
+      isNotNull: true,
+      foreign: {
+        table: "tb_customer",
+        key: "customer_id",
+      },
+    },
+    cell_phone: {
+      type: "string",
+    },
+    class_position: {
+      type: "string",
+    },
+    email: {
+      type: "string",
+    },
+    fax: {
+      type: "string",
+    },
+    name: {
+      type: "string",
+      isNotNull: true,
+    },
+    namecard: {
+      type: "string",
+    },
+    owner_id: {
+      type: "string",
+      isNotNull: true,
+    },
+    remark: {
+      type: "string",
+    },
+    tel: {
+      type: "string",
+    },
+    use_yn: {
+      type: "boolean",
+      default: true,
+    },
   },
-  primaryKey: "_id",
 };

@@ -1,33 +1,6 @@
 import { Column, Accessor } from "react-table";
 import moment from "moment";
-
-// 데이터베이스 컬렉션 이름
-export const COLLECTION_NAME = {
-  tb_bill_of_materials: "tb_bill_of_materials",
-  tb_customer: "tb_customer",
-  tb_group1: "tb_group1",
-  tb_group2: "tb_group2",
-  tb_inventory: "tb_inventory",
-  tb_manager: "tb_manager",
-  tb_part_list_price: "tb_part_list_price",
-  tb_part_type: "tb_part_type",
-  tb_part: "tb_part",
-  tb_transfer_in: "tb_transfer_in",
-  tb_transfer_out: "tb_transfer_out",
-  tb_transfer_type: "tb_transfer_type",
-  tb_unit: "tb_unit",
-  tb_warehouse: "tb_warehouse",
-  tb_work_order: "tb_work_order",
-} as const;
-export type COLLECTION_NAME_TYPE =
-  typeof COLLECTION_NAME[keyof typeof COLLECTION_NAME];
-
-export type schemaType = {
-  name: string;
-  embedded?: boolean;
-  properties: Record<string, string>;
-  primaryKey: string;
-};
+import { schemaType } from "schema";
 
 // 예외처리
 export const textAreaSchemaKeyList = ["remark"];
@@ -42,14 +15,6 @@ export const readonlySchemaKeyList = [
   "mod_time",
 ];
 export const disabledSchemaKeyList = ["owner_id"];
-
-export function isReadOnly(key: string) {
-  return key.startsWith("_");
-}
-
-export function isRequired(type: string) {
-  return !type.endsWith("?");
-}
 
 export function isMonth(key: string) {
   return key.endsWith("month");
@@ -111,8 +76,10 @@ export function schemaToColums(props: {
     // 제외해야 할 키일 때 다음 항목으로
     if (exclude?.includes(key)) continue;
 
-    const type = schema.properties[key];
-    if (isRequired(type)) reqProperties.push(key);
+    const property = schema.properties[key];
+
+    // Null 값이 될 수 없음
+    if (property.isNotNull === true) reqProperties.push(key);
     else properties.push(key);
   }
 
@@ -129,7 +96,7 @@ export function schemaToColums(props: {
 
   for (let index = 0; index < allProperties.length; index++) {
     const key = allProperties[index];
-    const type = schema.properties[allProperties[index]].replaceAll("?", "");
+    const type = schema.properties[key].type;
     let accessor: string | Accessor<{}> | undefined;
 
     switch (type) {
@@ -162,13 +129,9 @@ export function schemaToColums(props: {
         };
         break;
       }
-      case "objectId":
-      case "part_bills_of_material[]":
       case "address": {
         continue;
       }
-      default:
-        accessor = undefined;
     }
 
     columns.push({

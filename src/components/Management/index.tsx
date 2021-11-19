@@ -4,10 +4,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getData, insertData, updateData, deleteData } from "store/realm";
 import { useTranslation } from "react-i18next";
+import { COLLECTION_NAME, COLLECTION_NAME_TYPE, schemaType } from "schema";
 import {
-  COLLECTION_NAME,
-  COLLECTION_NAME_TYPE,
-  schemaType,
   schemaToColums,
   readonlySchemaKeyList,
   disabledSchemaKeyList,
@@ -45,7 +43,6 @@ export default function Management(props: {
   tabList?: string[];
   onTabChange?: (tabIndex: number) => void;
   filterList?: { schema: schemaType; data: any[] }[];
-  formModalOptions?: FormModalProps["options"];
   tableProps: TableComponentProps;
 }) {
   const {
@@ -82,7 +79,6 @@ export default function Management(props: {
     isOpen: modalDisclosure.isOpen,
     onSave: onFormModalSave,
     onClose: modalDisclosure.onClose,
-    options: props.formModalOptions,
   };
 
   const onTableChange = React.useCallback(
@@ -324,14 +320,25 @@ export default function Management(props: {
                   key={index}
                   size="sm"
                 >
-                  {filter.data.map((filterItem, index) => (
-                    <option
-                      value={filterItem[filter.schema.primaryKey].toString()}
-                      key={index}
-                    >
-                      {filterItem["name"]}
-                    </option>
-                  ))}
+                  {filter.data.map((filterItem, index) => {
+                    let primaryKey = "";
+                    for (const key in filter.schema.properties) {
+                      const property = filter.schema.properties[key];
+                      if (property.isPrimary) primaryKey = key;
+                    }
+
+                    if (primaryKey === "")
+                      console.error("기본키를 찾을 수 없음");
+
+                    return (
+                      <option
+                        value={filterItem[primaryKey].toString()}
+                        key={index}
+                      >
+                        {filterItem["name"]}
+                      </option>
+                    );
+                  })}
                 </Select>
               ))}
             </Flex>

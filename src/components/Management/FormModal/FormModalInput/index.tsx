@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { COLLECTION_NAME_TYPE, isMonth } from "utils/realmUtils";
+import { COLLECTION_NAME_TYPE } from "schema";
+import { isMonth } from "utils/realmUtils";
 import placeholders from "utils/placeholders";
 import InputFormControl from "components/Input/InputFormControl";
 import InputString from "components/Input/InputString";

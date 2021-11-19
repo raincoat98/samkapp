@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "utils/realmUtils";
+import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
 import { tb_bill_of_materials } from "schema/tb_bill_of_materials";
 import { tb_customer } from "schema/tb_customer";
@@ -8,7 +8,7 @@ import { tb_group1 } from "schema/tb_group1";
 import { tb_group2 } from "schema/tb_group2";
 import { tb_inventory } from "schema/tb_inventory";
 import { tb_manager } from "schema/tb_manager";
-import { tb_part_list_price } from "schema/tb_part_list_price";
+import { tb_list_price } from "schema/tb_list_price";
 import { tb_part_type } from "schema/tb_part_type";
 import { tb_part } from "schema/tb_part";
 import { tb_transfer_in } from "schema/tb_transfer_in";
@@ -39,7 +39,7 @@ export type RealmState = {
     [COLLECTION_NAME.tb_group2]: tb_group2[];
     [COLLECTION_NAME.tb_inventory]: tb_inventory[];
     [COLLECTION_NAME.tb_manager]: tb_manager[];
-    [COLLECTION_NAME.tb_part_list_price]: tb_part_list_price[];
+    [COLLECTION_NAME.tb_list_price]: tb_list_price[];
     [COLLECTION_NAME.tb_part_type]: tb_part_type[];
     [COLLECTION_NAME.tb_part]: tb_part[];
     [COLLECTION_NAME.tb_transfer_in]: tb_transfer_in[];
@@ -65,7 +65,7 @@ const initialState: RealmState = {
     [COLLECTION_NAME.tb_group2]: [],
     [COLLECTION_NAME.tb_inventory]: [],
     [COLLECTION_NAME.tb_manager]: [],
-    [COLLECTION_NAME.tb_part_list_price]: [],
+    [COLLECTION_NAME.tb_list_price]: [],
     [COLLECTION_NAME.tb_part_type]: [],
     [COLLECTION_NAME.tb_part]: [],
     [COLLECTION_NAME.tb_transfer_in]: [],

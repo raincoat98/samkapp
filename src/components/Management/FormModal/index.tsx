@@ -1,9 +1,9 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
+import { schemaType } from "schema";
 import {
   sortData,
-  schemaType,
   readonlySchemaKeyList,
   disabledSchemaKeyList,
   textAreaSchemaKeyList,
@@ -13,7 +13,6 @@ import { Box, Stack } from "@chakra-ui/react";
 // FormModal 관련 컴포넌트 가져오기
 import FormModalInput from "./FormModalInput";
 import FormModalAddress from "./FormModalInput/InputAddress";
-import FormModalBillsOfMaterial from "./FormModalInput/InputBOM";
 import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
 import FormModalAlert from "./FormModalAlert";
@@ -34,7 +33,6 @@ export const FormModalPropsKey = {
   onSave: "onSave",
   initialValue: "initialValue",
   schema: "schema",
-  options: "options",
 } as const;
 export type FormModalProps = {
   mode: formModalModeType;
@@ -47,12 +45,6 @@ export type FormModalProps = {
   }) => void;
   initialValue: Record<string, any>;
   schema: schemaType;
-  options?: Record<
-    string,
-    {
-      autofill?: { value: any; disabled?: boolean };
-    }
-  >;
 };
 export default function FormModal(props: FormModalProps) {
   // 수정한 데이터가 저장되는 객체
@@ -81,24 +73,22 @@ export default function FormModal(props: FormModalProps) {
     setDisabledDataList([]);
 
     for (const key in props.schema.properties) {
+      // 프로퍼티
+      let property = props.schema.properties[key];
+
       // 유저가 수정 못하는 값일 경우 다음으로
       if (
-        (props.mode === "update" && props.schema.primaryKey === key) ||
+        (props.mode === "update" && property.isPrimary) ||
         !!disabledSchemaKeyList.filter((disabledKey) => disabledKey === key)
           .length
       )
         continue;
 
-      // 프로퍼티 타입
-      let type = props.schema.properties[key];
-
       // 배열 여부
-      let isArray = type.endsWith("[]");
-      if (isArray) type = type.replaceAll("[]", "");
+      // let isArray = property.isArray;
 
       // 필수값 여부
-      let isRequired = type.endsWith("?") ? false : true;
-      if (!isRequired) type = type.replaceAll("?", "");
+      let isRequired = property.isNotNull;
 
       // 읽기 전용 값인지 판단
       let isReadonly = !!readonlySchemaKeyList.filter(
@@ -114,84 +104,52 @@ export default function FormModal(props: FormModalProps) {
         : undefined;
 
       // 새 데이터를 삽일할 때 autofill에 있는 값을 자동으로 채움
-      if (props.mode === "insert") {
-        for (const optionKey in props.options) {
-          if (key === optionKey) {
-            const option = props.options[optionKey];
-            if (option.autofill) {
-              const autofillData = option.autofill;
-              // 값 지정
-              defaultValue = autofillData.value;
-              // disabled가 true 일 경우 수정불가능하게 함
-              disabled = autofillData.disabled ?? false;
-              setEditedDocument((state) => ({
-                ...state,
-                [optionKey]: autofillData.value,
-              }));
-            }
-          }
-        }
+      if (props.mode === "insert" && property.default !== undefined) {
+        // 값 지정
+        defaultValue = property.default;
+        if (property.isReadOnly) disabled = property.isReadOnly;
+        setEditedDocument((state) => ({
+          ...state,
+          [key]: defaultValue,
+        }));
       }
 
       let element: JSX.Element;
 
       if (!isReadonly) {
-        switch (type) {
+        switch (property.type) {
           // 문자열, 숫자, 날짜, 불리언
           case "string":
           case "number":
           case "date":
           case "boolean": {
-            // enum 설정
-            let enumData: any[] | undefined = undefined;
-            switch (key) {
-              // 작업 지시 우선순위
-              case "priorities":
-                enumData = ["emergency", "normal", "other"];
-                break;
-              // 작업 지시 진행상황
-              case "progress":
-                enumData = ["confirmed", "shipped", "producing", "done"];
-                break;
-            }
-
             element = (
               <FormModalInput
                 name={`${props.schema.name}.properties.${key}`}
-                type={type}
+                type={property.type}
                 defaultValue={defaultValue}
                 onChange={(value) => editData({ key, value })}
                 isTextarea={textAreaSchemaKeyList.includes(key)}
                 isRequired={isRequired}
-                isReadOnly={
-                  props.mode === "update" && key === props.schema.primaryKey
-                }
+                isReadOnly={property.isReadOnly}
                 isDisabled={disabled}
                 isURL={key.includes("homepage") || key.includes("url")}
-                enumData={enumData}
               />
             );
 
             break;
           }
-          // 배열, 객체, objectId (유니크한 아이디 값, UUID 비슷한 객체)
-          case "array":
-          case "object":
-          case "objectId": {
-            console.log("처리되지 않은", key, type);
-            continue;
-          }
           // BOM (필요자재)
-          case "part_bills_of_material": {
-            isRequired = false;
-            element = (
-              <FormModalBillsOfMaterial
-                defaultValue={defaultValue ?? []}
-                onChange={(value) => editData({ key, value })}
-              />
-            );
-            break;
-          }
+          // case "part_bills_of_material": {
+          //   isRequired = false;
+          //   element = (
+          //     <FormModalBillsOfMaterial
+          //       defaultValue={defaultValue ?? []}
+          //       onChange={(value) => editData({ key, value })}
+          //     />
+          //   );
+          //   break;
+          // }
           // 주소
           case "address": {
             isRequired = false;
@@ -200,21 +158,6 @@ export default function FormModal(props: FormModalProps) {
                 name={`${props.schema.name}.properties.${key}`}
                 defaultValue={defaultValue ?? {}}
                 onChange={(result) => editData({ key, value: result })}
-              />
-            );
-            break;
-          }
-          // 외부 테이블 및 스키마 처리
-          default: {
-            isRequired = false;
-            element = (
-              <FormModalInput
-                name={`${props.schema.name}.properties.${key}`}
-                type={type}
-                defaultValue={defaultValue}
-                onChange={(value) => editData({ key, value })}
-                isExternal={true}
-                isRequired={isRequired}
               />
             );
             break;
@@ -236,7 +179,7 @@ export default function FormModal(props: FormModalProps) {
           ...state,
           {
             key,
-            type,
+            type: property.type,
             value: defaultValue,
           },
         ]);
