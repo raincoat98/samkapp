@@ -8,4 +8,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    "/admin",
+    proxy({
+      target: "http://localhost:3002",
+      changeOrigin: true,
+    })
+  );
 };

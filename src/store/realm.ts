@@ -90,24 +90,27 @@ export const login = createAsyncThunk(
     props: { email: string; password: string },
     { dispatch, rejectWithValue }
   ) => {
-    // const { email, password } = props;
-
-    // const credentials = RealmWeb.Credentials.emailPassword(email, password);
+    const { email, password } = props;
 
     try {
-      // await app.logIn(credentials);
+      const response = await axios
+        .get("/admin", {
+          params: {
+            id: email,
+            password: password,
+          },
+        })
+        .then((res) => res.data.results[0].admin_id);
 
       // 로그인 때에 모든 테이블  데이터 가져오기
       for (const key in COLLECTION_NAME) {
         const collectionKey = key as COLLECTION_NAME_TYPE;
-        dispatch(getData(collectionKey));
+        //dispatch(getData(collectionKey));
       }
+      return response;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(new Error("Invalid email and password"));
     }
-
-    return props.email;
-    // return app.currentUser?.profile.email;
   }
 );
 
@@ -156,9 +159,8 @@ export const getData = createAsyncThunk(
     try {
       let data: any[] = [];
 
-      const response = await axios.get(
-        `http://localhost:3002/api/${collectionName}`
-      );
+      const apiRoute = collectionName.replace("tb_", "");
+      const response = await axios.get(`http://localhost:3002/api/${apiRoute}`);
       data = response.data.results;
 
       // dispatch({
@@ -350,6 +352,11 @@ const userSlice = createSlice({
         state.loading = false;
         state.loggedIn = true;
         state.userName = action.payload;
+      })
+      .addCase(login.rejected.type, (state, action: PayloadAction<string>) => {
+        state.loading = false;
+        state.loggedIn = false;
+        state.error = action.payload;
       })
       // 로그아웃
       .addCase(logout.fulfilled.type, (state) => {
