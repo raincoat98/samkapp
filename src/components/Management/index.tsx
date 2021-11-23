@@ -287,10 +287,7 @@ export default function Management(props: {
                       console.error("기본키를 찾을 수 없음");
 
                     return (
-                      <option
-                        value={filterItem[primaryKey].toString()}
-                        key={index}
-                      >
+                      <option value={filterItem[primaryKey]} key={index}>
                         {filterItem["name"]}
                       </option>
                     );

@@ -15,8 +15,9 @@ import InputURL from "components/Input/InputURL";
 export default function FormModalInput(props: {
   name: string;
   property: propertyType;
-  labelWidth?: string | number;
   onChange: (value: any) => void;
+  defaultValue?: any;
+  labelWidth?: string | number;
   isDisabled?: boolean;
   isURL?: boolean; // only string
   isTextarea?: boolean;
@@ -34,6 +35,7 @@ export default function FormModalInput(props: {
       <InputEnum
         enumList={database[property.foreign.table]}
         searchKey={property.foreign.key}
+        defaultValue={props.defaultValue ?? property.default}
         onChange={(value) => props.onChange(value)}
       />
     );
@@ -42,7 +44,7 @@ export default function FormModalInput(props: {
     element = (
       <InputSelect
         selectList={property.select}
-        default={property.default}
+        defaultValue={props.defaultValue ?? property.default}
         onChange={(value) => props.onChange(value)}
       />
     );
@@ -56,15 +58,15 @@ export default function FormModalInput(props: {
           element = (
             <InputURL
               onChange={(value) => props.onChange(value)}
-              defaultValue={property.default}
+              defaultValue={props.defaultValue ?? property.default}
             />
           );
         } else {
           element = (
             <InputString
               onChange={(value) => props.onChange(value)}
-              defaultValue={property.default}
-              isTextarea={props.isTextarea}
+              defaultValue={props.defaultValue ?? property.default}
+              isTextarea={props.defaultValue ?? props.isTextarea}
             />
           );
         }
@@ -75,7 +77,7 @@ export default function FormModalInput(props: {
         element = (
           <InputNumber
             onChange={(value) => props.onChange(value)}
-            defaultValue={property.default}
+            defaultValue={props.defaultValue ?? property.default}
           />
         );
         break;
@@ -85,7 +87,7 @@ export default function FormModalInput(props: {
         element = (
           <InputDate
             onChange={(value) => props.onChange(value)}
-            defaultValue={property.default}
+            defaultValue={props.defaultValue ?? property.default}
             isMonth={isMonth(props.name)}
           />
         );
@@ -95,7 +97,7 @@ export default function FormModalInput(props: {
       case "boolean": {
         element = (
           <InputBool
-            isDefaultTrue={property.default}
+            isDefaultTrue={props.defaultValue ?? property.default}
             onChange={(checked) => props.onChange(checked)}
           />
         );

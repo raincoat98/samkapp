@@ -4,10 +4,10 @@ import { Select } from "@chakra-ui/react";
 export default function InputSelect(props: {
   onChange: (value: any) => void;
   selectList: selectType[];
-  default?: any;
+  defaultValue?: any;
 }) {
   return (
-    <Select defaultValue={props.default} placeholder="없음">
+    <Select defaultValue={props.defaultValue} placeholder="없음">
       {props.selectList.map((selectItem, index) => (
         <option value={selectItem.value} key={index}>
           {selectItem.name ?? selectItem.value}

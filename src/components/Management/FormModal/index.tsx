@@ -103,6 +103,7 @@ export default function FormModal(props: FormModalProps) {
             name={`${props.schema.name}.properties.${key}`}
             property={property}
             onChange={(value) => editData({ key, value })}
+            defaultValue={defaultValue}
             isTextarea={textAreaSchemaKeyList.includes(key)}
             isDisabled={disabled}
             isURL={key.includes("homepage") || key.includes("url")}

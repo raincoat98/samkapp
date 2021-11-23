@@ -6,7 +6,10 @@ export default function InputEnum(props: {
   enumList: any[];
   searchKey: string;
   onChange: (selected: Fuse.FuseResult<any>) => void;
+  defaultValue?: any;
 }) {
+  const inputEl = React.useRef<HTMLInputElement>(null);
+
   // 검색 라이브러리
   const fuse = new Fuse(props.enumList, {
     keys: [props.searchKey],
@@ -21,6 +24,12 @@ export default function InputEnum(props: {
     Fuse.FuseResult<any>[]
   >([]);
 
+  // 검색 결과 클릭시
+  function onSearchItemClick(searhData: any) {
+    if (inputEl.current) inputEl.current.value = searhData;
+    props.onChange(searhData);
+  }
+
   return (
     <Box>
       <Input
@@ -28,6 +37,8 @@ export default function InputEnum(props: {
           setSearchResults(fuse.search(event.target.value));
           setSearchWord(event.target.value);
         }}
+        defaultValue={props.defaultValue}
+        ref={inputEl}
       />
       <Wrap marginTop={2}>
         {searchWord === ""
@@ -35,7 +46,7 @@ export default function InputEnum(props: {
             props.enumList.map((enumItem, index) => (
               <WrapItem key={index}>
                 <Button
-                  onClick={() => props.onChange(enumItem[props.searchKey])}
+                  onClick={() => onSearchItemClick(enumItem[props.searchKey])}
                   size="sm"
                   colorScheme="blue"
                 >
@@ -48,7 +59,7 @@ export default function InputEnum(props: {
               <WrapItem key={index}>
                 <Button
                   onClick={() =>
-                    props.onChange(searchResult.item[props.searchKey])
+                    onSearchItemClick(searchResult.item[props.searchKey])
                   }
                   size="sm"
                   colorScheme="blue"
