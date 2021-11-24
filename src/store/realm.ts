@@ -159,8 +159,9 @@ export const getData = createAsyncThunk(
     try {
       let data: any[] = [];
 
-      const apiRoute = collectionName.replace("tb_", "");
-      const response = await axios.get(`http://localhost:3002/api/${apiRoute}`);
+      const response = await axios.get(
+        `http://localhost:3002/api/${collectionName}`
+      );
       data = response.data.results;
 
       // dispatch({
