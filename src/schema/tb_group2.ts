@@ -39,6 +39,7 @@ export const tb_group2Schema: schemaType = {
     },
     remark: {
       type: "string",
+      isTextarea: true,
     },
     use_yn: {
       type: "boolean",

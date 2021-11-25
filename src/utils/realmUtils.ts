@@ -2,9 +2,6 @@ import { Column, Accessor } from "react-table";
 import moment from "moment";
 import { schemaType } from "schema";
 
-// 예외처리
-export const textAreaSchemaKeyList = ["remark"];
-
 export function isMonth(key: string) {
   return key.endsWith("month");
 }

@@ -20,7 +20,6 @@ export default function FormModalInput(props: {
   labelWidth?: string | number;
   isDisabled?: boolean;
   isURL?: boolean; // only string
-  isTextarea?: boolean;
 }) {
   const { property } = props;
 
@@ -66,7 +65,7 @@ export default function FormModalInput(props: {
             <InputString
               onChange={(value) => props.onChange(value)}
               defaultValue={props.defaultValue ?? property.default}
-              isTextarea={props.defaultValue ?? props.isTextarea}
+              isTextarea={property.isTextarea}
             />
           );
         }

@@ -51,6 +51,7 @@ export const tb_managerSchema: schemaType = {
     },
     remark: {
       type: "string",
+      isTextarea: true,
     },
     tel: {
       type: "string",

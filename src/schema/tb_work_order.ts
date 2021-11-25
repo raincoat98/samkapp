@@ -85,6 +85,7 @@ export const tb_work_orderSchema: schemaType = {
     },
     remark: {
       type: "string",
+      isTextarea: true,
     },
   },
 };

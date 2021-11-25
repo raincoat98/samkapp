@@ -98,6 +98,7 @@ export const tb_partSchema: schemaType = {
     },
     remark: {
       type: "string",
+      isTextarea: true,
     },
     use_yn: {
       type: "boolean",

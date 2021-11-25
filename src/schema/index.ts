@@ -18,6 +18,7 @@ export type propertyType = {
   isAutoSet?: boolean;
   isNotNull?: boolean;
   isReadOnly?: boolean;
+  isTextarea?: boolean;
   isArray?: boolean;
 };
 

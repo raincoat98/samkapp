@@ -2,7 +2,7 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { schemaType } from "schema";
-import { sortData, textAreaSchemaKeyList } from "utils/realmUtils";
+import { sortData } from "utils/realmUtils";
 import { Box, Stack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
@@ -104,7 +104,6 @@ export default function FormModal(props: FormModalProps) {
             property={property}
             onChange={(value) => editData({ key, value })}
             defaultValue={defaultValue}
-            isTextarea={textAreaSchemaKeyList.includes(key)}
             isDisabled={disabled}
             isURL={key.includes("homepage") || key.includes("url")}
           />
