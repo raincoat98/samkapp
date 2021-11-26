@@ -64,7 +64,7 @@ export const tb_transfer_outSchema: schemaType = {
       foreign: {
         table: "tb_work_order",
         key: "work_order_id",
-        display: "work_order_name",
+        display: "work_order_number",
       },
     },
   },
