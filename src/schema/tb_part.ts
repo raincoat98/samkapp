@@ -57,6 +57,7 @@ export const tb_partSchema: schemaType = {
       foreign: {
         table: "tb_part_type",
         key: "part_type_id",
+        display: "part_type_name",
       },
     },
     group2_id: {
@@ -65,6 +66,7 @@ export const tb_partSchema: schemaType = {
       foreign: {
         table: "tb_group2",
         key: "group2_id",
+        display: "group2_name",
       },
     },
     warehouse_id: {
@@ -73,6 +75,7 @@ export const tb_partSchema: schemaType = {
       foreign: {
         table: "tb_warehouse",
         key: "warehouse_id",
+        display: "warehouse_name",
       },
     },
     bom_id: {
@@ -80,6 +83,7 @@ export const tb_partSchema: schemaType = {
       foreign: {
         table: "tb_bill_of_materials",
         key: "bom_id",
+        display: "bom_id",
       },
     },
     unit_id: {

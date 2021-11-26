@@ -29,6 +29,7 @@ export const tb_group2Schema: schemaType = {
       foreign: {
         table: "tb_group1",
         key: "group1_id",
+        display: "group1_name",
       },
     },
     search_group: {

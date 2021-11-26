@@ -17,6 +17,7 @@ export const tb_list_priceSchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     start_date: {

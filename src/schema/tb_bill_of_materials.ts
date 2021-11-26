@@ -24,6 +24,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     assembly_id: {
@@ -31,6 +32,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     start_date: {
@@ -48,6 +50,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
       foreign: {
         table: "tb_unit",
         key: "unit_id",
+        display: "unit_name",
       },
     },
     bom_level: {

@@ -24,6 +24,7 @@ export const tb_inventorySchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     warehouse_id: {
@@ -33,6 +34,7 @@ export const tb_inventorySchema: schemaType = {
       foreign: {
         table: "tb_warehouse",
         key: "warehouse_id",
+        display: "warehouse_name",
       },
     },
     lot_no: {

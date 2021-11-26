@@ -5,6 +5,7 @@ import { Box, Wrap, WrapItem, Input, Button } from "@chakra-ui/react";
 export default function InputEnum(props: {
   enumList: any[];
   searchKey: string;
+  displayKey?: string;
   onChange: (selected: Fuse.FuseResult<any>) => void;
   defaultValue?: any;
 }) {
@@ -50,7 +51,7 @@ export default function InputEnum(props: {
                   size="sm"
                   colorScheme="blue"
                 >
-                  <Box>{enumItem[props.searchKey]}</Box>
+                  <Box>{enumItem[props.displayKey ?? props.searchKey]}</Box>
                 </Button>
               </WrapItem>
             ))
@@ -59,7 +60,9 @@ export default function InputEnum(props: {
               <WrapItem key={index}>
                 <Button
                   onClick={() =>
-                    onSearchItemClick(searchResult.item[props.searchKey])
+                    onSearchItemClick(
+                      searchResult.item[props.displayKey ?? props.searchKey]
+                    )
                   }
                   size="sm"
                   colorScheme="blue"

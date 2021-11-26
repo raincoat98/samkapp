@@ -29,6 +29,7 @@ export const tb_work_orderSchema: schemaType = {
       foreign: {
         table: "tb_customer",
         key: "customer_id",
+        display: "customer_name",
       },
     },
     part_id: {
@@ -36,6 +37,7 @@ export const tb_work_orderSchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     quantity: {

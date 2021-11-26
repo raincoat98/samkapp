@@ -28,6 +28,7 @@ export const tb_managerSchema: schemaType = {
       foreign: {
         table: "tb_customer",
         key: "customer_id",
+        display: "customer_name",
       },
     },
     cell_phone: {

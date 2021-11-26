@@ -30,6 +30,7 @@ export const tb_transfer_outSchema: schemaType = {
       foreign: {
         table: "tb_transfer_type",
         key: "transfer_type_id",
+        display: "transfer_type_name",
       },
     },
     part_id: {
@@ -38,6 +39,7 @@ export const tb_transfer_outSchema: schemaType = {
       foreign: {
         table: "tb_part",
         key: "part_id",
+        display: "part_name",
       },
     },
     quantity: {
@@ -54,6 +56,7 @@ export const tb_transfer_outSchema: schemaType = {
       foreign: {
         table: "tb_warehouse",
         key: "warehouse_id",
+        display: "warehouse_name",
       },
     },
     work_order_id: {
@@ -61,6 +64,7 @@ export const tb_transfer_outSchema: schemaType = {
       foreign: {
         table: "tb_work_order",
         key: "work_order_id",
+        display: "work_order_name",
       },
     },
   },

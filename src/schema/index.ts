@@ -13,6 +13,7 @@ export type propertyType = {
   foreign?: {
     table: COLLECTION_NAME_TYPE;
     key: string;
+    display?: string;
   };
   isPrimary?: boolean;
   isAutoSet?: boolean;
