@@ -11,9 +11,12 @@ export default function InputEnum(props: {
 }) {
   const inputEl = React.useRef<HTMLInputElement>(null);
 
+  const searchKeys: string[] = [props.searchKey];
+  if (props.displayKey) searchKeys.push(props.displayKey);
+
   // 검색 라이브러리
   const fuse = new Fuse(props.enumList, {
-    keys: [props.searchKey],
+    keys: searchKeys,
     includeScore: true,
   });
 
@@ -41,7 +44,7 @@ export default function InputEnum(props: {
         defaultValue={props.defaultValue}
         ref={inputEl}
       />
-      <Wrap marginTop={2}>
+      <Wrap marginTop={2} padding={1} maxHeight={200} overflow="auto">
         {searchWord === ""
           ? //  검색어를 입력하지 않았을 때
             props.enumList.map((enumItem, index) => (
@@ -60,14 +63,14 @@ export default function InputEnum(props: {
               <WrapItem key={index}>
                 <Button
                   onClick={() =>
-                    onSearchItemClick(
-                      searchResult.item[props.displayKey ?? props.searchKey]
-                    )
+                    onSearchItemClick(searchResult.item[props.searchKey])
                   }
                   size="sm"
                   colorScheme="blue"
                 >
-                  <Box>{searchResult.item[props.searchKey]}</Box>
+                  <Box>
+                    {searchResult.item[props.displayKey ?? props.searchKey]}
+                  </Box>
                 </Button>
               </WrapItem>
             ))}
