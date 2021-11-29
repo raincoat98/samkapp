@@ -4,11 +4,11 @@ export type tb_part = {
   part_id: number;
   part_name: string;
   part_number: string;
-  Spec1?: string;
-  Spec2?: string;
-  Spec3?: string;
-  Spec4?: string;
-  Spec5?: string;
+  spec1?: string;
+  spec2?: string;
+  spec3?: string;
+  spec4?: string;
+  spec5?: string;
   part_type_id: string;
   group2_id: number;
   warehouse_id: number;
@@ -36,19 +36,19 @@ export const tb_partSchema: schemaType = {
     part_number: {
       type: "string",
     },
-    Spec1: {
+    spec1: {
       type: "string",
     },
-    Spec2: {
+    spec2: {
       type: "string",
     },
-    Spec3: {
+    spec3: {
       type: "string",
     },
-    Spec4: {
+    spec4: {
       type: "string",
     },
-    Spec5: {
+    spec5: {
       type: "string",
     },
     part_type_id: {
