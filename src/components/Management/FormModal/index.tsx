@@ -2,7 +2,6 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { schemaType } from "schema";
-import { sortData } from "utils/realmUtils";
 import { Box, Stack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
@@ -130,34 +129,6 @@ export default function FormModal(props: FormModalProps) {
         ]);
       }
     }
-
-    // 정렬
-    setInputList((state) =>
-      state.sort((formItem1, formItem2) => {
-        let a = 99,
-          b = 99;
-
-        // 필수 필드라면 먼저 맨 앞으로
-        if (formItem1.isRequired) a = -1;
-        if (formItem2.isRequired) b = -1;
-
-        // 정렬 데이터 참조
-        const schemaSort = sortData[props.schema.name];
-        if (schemaSort) {
-          if (typeof schemaSort[formItem1.name] === "number")
-            a = schemaSort[formItem1.name];
-          if (typeof schemaSort[formItem2.name] === "number")
-            b = schemaSort[formItem2.name];
-        }
-
-        try {
-          return a - b;
-        } catch (error) {
-          console.error(error);
-          return 0;
-        }
-      })
-    );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.initialValue, database]);
