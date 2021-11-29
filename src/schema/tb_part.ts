@@ -2,8 +2,8 @@ import { schemaType } from "./index";
 
 export type tb_part = {
   part_id: number;
-  part_name: string;
   part_number: string;
+  part_name: string;
   spec1?: string;
   spec2?: string;
   spec3?: string;
@@ -29,12 +29,13 @@ export const tb_partSchema: schemaType = {
       isAutoSet: true,
       isNotNull: true,
     },
-    part_name: {
+    part_number: {
       type: "string",
       isNotNull: true,
     },
-    part_number: {
+    part_name: {
       type: "string",
+      isNotNull: true,
     },
     spec1: {
       type: "string",
