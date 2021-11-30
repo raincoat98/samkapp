@@ -116,7 +116,7 @@ export const sidebarConfig: sidebarRouteType[] = [
     name: "분류 관리",
     children: [
       {
-        name: "중분류 관리",
+        name: "품목 분류 관리",
         route: routes.part_gorup_2_manage,
       },
     ],
