@@ -105,24 +105,24 @@ export type sidebarRouteType = {
   children?: sidebarRouteType[];
 };
 export const sidebarConfig: sidebarRouteType[] = [
-  { name: "거래처 관리", route: routes.customer_manage },
   { name: "재고 관리", route: routes.inv_management },
   { name: "입고 관리", route: routes.transfer_in },
   { name: "출고 관리", route: routes.transfer_out },
   { name: "작업 지시 관리", route: routes.work_order_manage },
-  { name: "창고 관리", route: routes.warehouse_manage },
-  { name: "품목 관리", route: routes.part_manage },
   {
-    name: "분류 관리",
+    name: "마스터 관리",
     children: [
+      { name: "거래처 관리", route: routes.customer_manage },
+      { name: "품목 관리", route: routes.part_manage },
+      { name: "품목 가격 관리", route: routes.part_price_manage },
+      { name: "품목 형태 관리", route: routes.part_type_manage },
       {
         name: "품목 분류 관리",
         route: routes.part_gorup_2_manage,
       },
+      { name: "창고 관리", route: routes.warehouse_manage },
     ],
   },
-  { name: "품목 형태 관리", route: routes.part_type_manage },
-  { name: "품목 가격 관리", route: routes.part_price_manage },
 ];
 
 export default routerConfig;
