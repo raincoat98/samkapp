@@ -23,7 +23,6 @@ export default function InputPartId(props: {
   const [partItemSpec4, setPartItemSpec4] = React.useState<string>();
 
   React.useEffect(() => {
-    console.log(partItemId);
     if (partItemId !== undefined) props.onChange(partItemId);
   }, [partItemId, props]);
 
