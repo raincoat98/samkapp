@@ -1,4 +1,3 @@
-import CustomerMngrManagement from "pages/CustomerMngrManagement";
 import CustomerManagement from "pages/CustomerManagement";
 import InvManagement from "pages/InvManagement";
 import PartManagement from "pages/PartManagement";
@@ -26,13 +25,6 @@ export const routes: Record<string, route> = {
     name: "거래처 관리",
     path: "/customer_manage",
     component: CustomerManagement,
-  },
-
-  // 거래처 담당자 관리
-  customer_mngr_manage: {
-    name: "거래처 담당자 관리",
-    path: "/customer_mngr_manage",
-    component: CustomerMngrManagement,
   },
 
   // 재고 관리
@@ -118,7 +110,6 @@ export type sidebarRouteType = {
 };
 export const sidebarConfig: sidebarRouteType[] = [
   { name: "거래처 관리", route: routes.customer_manage },
-  { name: "거래처 담당자 관리", route: routes.customer_mngr_manage },
   { name: "재고 관리", route: routes.inv_management },
   { name: "입고 관리", route: routes.transfer_in },
   { name: "출고 관리", route: routes.transfer_out },
