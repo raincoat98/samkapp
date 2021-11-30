@@ -12,6 +12,8 @@ import InputBool from "components/Input/InputBool";
 import InputDate from "components/Input/InputDate";
 import InputURL from "components/Input/InputURL";
 
+import InputPartId from "components/Input/InputPartId";
+
 export default function FormModalInput(props: {
   name: string;
   property: propertyType;
@@ -30,15 +32,30 @@ export default function FormModalInput(props: {
 
   if (property.foreign) {
     // 외부 테이블 참조
-    element = (
-      <InputEnum
-        enumList={database[property.foreign.table]}
-        searchKey={property.foreign.key}
-        displayKey={property.foreign.display ?? property.foreign.key}
-        defaultValue={props.defaultValue ?? property.default}
-        onChange={(value) => props.onChange(value)}
-      />
-    );
+    if (
+      property.foreign.table === "tb_part" &&
+      property.foreign.key === "part_id"
+    ) {
+      element = (
+        <InputPartId
+          enumList={database[property.foreign.table]}
+          searchKey={property.foreign.key}
+          displayKey={property.foreign.display ?? property.foreign.key}
+          defaultValue={props.defaultValue ?? property.default}
+          onChange={(value) => props.onChange(value)}
+        />
+      );
+    } else {
+      element = (
+        <InputEnum
+          enumList={database[property.foreign.table]}
+          searchKey={property.foreign.key}
+          displayKey={property.foreign.display ?? property.foreign.key}
+          defaultValue={props.defaultValue ?? property.default}
+          onChange={(value) => props.onChange(value)}
+        />
+      );
+    }
   } else if (property.select) {
     // 정해진 값들 중에서 선택
     element = (
