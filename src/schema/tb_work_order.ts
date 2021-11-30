@@ -20,9 +20,12 @@ export const tb_work_orderSchema: schemaType = {
       isPrimary: true,
       isAutoSet: true,
       isNotNull: true,
+      isReadOnly: true,
     },
     work_order_number: {
       type: "string",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     customer_id: {
       type: "string",
