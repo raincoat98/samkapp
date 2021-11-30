@@ -1,7 +1,7 @@
 import CustomerManagement from "pages/CustomerManagement";
 import InvManagement from "pages/InvManagement";
 import PartManagement from "pages/PartManagement";
-import PartGroup1Management from "pages/PartGroup1Management";
+
 import PartGroup2Management from "pages/PartGroup2Management";
 import PartTypeManagement from "pages/PartTypeManagement";
 import TransferIn from "pages/TransferIn";
@@ -66,13 +66,9 @@ export const routes: Record<string, route> = {
     path: "/part_manage",
     component: PartManagement,
   },
-  part_gorup_1_manage: {
-    name: "중분류 관리",
-    path: "/part_gorup_1_manage",
-    component: PartGroup1Management,
-  },
+
   part_gorup_2_manage: {
-    name: "대분류 관리",
+    name: "중분류 관리",
     path: "/part_gorup_2_manage",
     component: PartGroup2Management,
   },
@@ -122,10 +118,6 @@ export const sidebarConfig: sidebarRouteType[] = [
       {
         name: "중분류 관리",
         route: routes.part_gorup_2_manage,
-      },
-      {
-        name: "대분류 관리",
-        route: routes.part_gorup_1_manage,
       },
     ],
   },

@@ -11,7 +11,7 @@ export default function PartGrou2Management() {
 
   return (
     <Management
-      title="대분류 관리"
+      title="중분류 관리"
       schema={tb_group2Schema}
       collectionName={collectionName}
       tableProps={{ data }}
