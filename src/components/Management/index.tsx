@@ -3,9 +3,10 @@ import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getData, insertData, updateData, deleteData } from "store/realm";
+import { Column, Accessor } from "react-table";
+import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE, schemaType } from "schema";
-import { schemaToColums } from "utils/realmUtils";
 
 // 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
@@ -108,6 +109,85 @@ export default function Management(props: {
   const columns = schemaToColums({
     schema,
   });
+
+  // 스키마에서 react-table 헤더로 변환
+  function schemaToColums(props: { schema: schemaType; exclude?: string[] }) {
+    const { schema, exclude } = props;
+
+    const columns: Column[] = [];
+
+    const properties: string[] = [];
+    for (const key in schema.properties) {
+      // 제외해야 할 키일 때 다음 항목으로
+      if (exclude?.includes(key)) continue;
+      properties.push(key);
+    }
+
+    for (let index = 0; index < properties.length; index++) {
+      const key = properties[index];
+      const type = schema.properties[key].type;
+      let accessor: string | Accessor<{}> | undefined;
+
+      switch (type) {
+        case "string":
+        case "number": {
+          // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
+          if (schema.properties[key].foreign) {
+            accessor = (originalRow: Record<string, any>) => {
+              const foreign = schema.properties[key].foreign;
+              if (foreign?.table) {
+                const dataList = [...database[foreign.table]];
+                const item: any = dataList.filter((data: any) => {
+                  return data[foreign.key] === originalRow[foreign.key];
+                })[0];
+                if (item) {
+                  return foreign.display
+                    ? item[foreign.display]
+                    : item[foreign.key];
+                }
+              }
+            };
+          } else accessor = key;
+          break;
+        }
+        case "date": {
+          accessor = (originalRow) => {
+            const origRow = originalRow as Record<string, any>;
+            return origRow[key]
+              ? isMonth(key)
+                ? moment(origRow[key]).format("YYYY-MM") // 년월
+                : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
+              : "";
+          };
+          break;
+        }
+        case "boolean": {
+          accessor = (originalRow) => {
+            const origRow = originalRow as Record<string, any>;
+            const boolData = origRow[key] as boolean;
+            switch (boolData) {
+              case true:
+                return "예";
+              default:
+                return "아니오";
+            }
+          };
+          break;
+        }
+      }
+
+      columns.push({
+        Header: key,
+        accessor,
+      });
+    }
+
+    return columns;
+
+    function isMonth(key: string) {
+      return key.endsWith("month");
+    }
+  }
 
   // 테이블 헤더 및 값 번역
   Object.keys(columns).forEach((key) => {
