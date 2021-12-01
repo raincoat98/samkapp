@@ -13,6 +13,10 @@ import InputURL from "components/Input/InputURL";
 
 import InputPartId from "components/Input/InputPartId";
 
+export function isMonth(key: string) {
+  return key.endsWith("month");
+}
+
 export default function FormModalInput(props: {
   name: string;
   property: propertyType;
