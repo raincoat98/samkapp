@@ -1,7 +1,6 @@
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { propertyType } from "schema";
-import { isMonth } from "utils/realmUtils";
 
 import InputFormControl from "components/Input/InputFormControl";
 import InputSelect from "components/Input/InputSelect";
