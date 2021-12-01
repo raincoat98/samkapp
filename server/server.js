@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const api = require("./routes/index");
 const admin = require("./routes/admin");
+const transferIn = require("./routes/transferIn");
 
 // Cross-Origin Resource Sharing(CORS) 오류 해결을 위해 사용
 const cors = require("cors");
@@ -11,6 +12,7 @@ app.use(cors());
 // api 처리는 './routes/index'에서 일괄처리
 app.use("/api", api);
 app.use("/admin", admin);
+app.use("/transfer-in", transferIn);
 
 // server port 3002 할당
 // 클라이언트와 다른 번호로 충돌나지 않도록
