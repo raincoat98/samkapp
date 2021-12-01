@@ -16,6 +16,7 @@ export const tb_inventorySchema: schemaType = {
   properties: {
     inv_month: {
       type: "string",
+      as: "month",
     },
     part_id: {
       type: "number",

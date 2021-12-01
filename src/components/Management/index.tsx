@@ -125,16 +125,18 @@ export default function Management(props: {
 
     for (let index = 0; index < properties.length; index++) {
       const key = properties[index];
-      const type = schema.properties[key].type;
+      const property = schema.properties[key];
+      const type = property.type;
+
       let accessor: string | Accessor<{}> | undefined;
 
       switch (type) {
         case "string":
         case "number": {
           // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
-          if (schema.properties[key].foreign) {
+          if (property.foreign) {
             accessor = (originalRow: Record<string, any>) => {
-              const foreign = schema.properties[key].foreign;
+              const foreign = property.foreign;
               if (foreign?.table) {
                 const dataList = [...database[foreign.table]];
                 const item: any = dataList.filter((data: any) => {
@@ -153,8 +155,10 @@ export default function Management(props: {
         case "date": {
           accessor = (originalRow) => {
             const origRow = originalRow as Record<string, any>;
+            const isMonth =
+              property.type === "month" || property.as === "month";
             return origRow[key]
-              ? isMonth(key)
+              ? isMonth
                 ? moment(origRow[key]).format("YYYY-MM") // 년월
                 : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
               : "";
@@ -183,10 +187,6 @@ export default function Management(props: {
     }
 
     return columns;
-
-    function isMonth(key: string) {
-      return key.endsWith("month");
-    }
   }
 
   // 테이블 헤더 및 값 번역

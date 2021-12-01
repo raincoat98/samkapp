@@ -14,10 +14,6 @@ import InputURL from "components/Input/InputURL";
 
 import InputPartId from "components/Input/InputPartId";
 
-export function isMonth(key: string) {
-  return key.endsWith("month");
-}
-
 export default function FormModalInput(props: {
   name: string;
   property: propertyType;
@@ -103,19 +99,23 @@ export default function FormModalInput(props: {
         );
         break;
       }
-      // 날짜
-      case "date": {
+      // 날짜 및 월
+      case "date":
+      case "month": {
+        const isMonth = propertyType === "month";
         element = (
           <InputDate
-            onChange={(value) =>
+            onChange={(value) => {
               props.onChange(
                 property.as
-                  ? moment(props.defaultValue).format("YYYYMMDD")
+                  ? isMonth
+                    ? moment(props.defaultValue).format("YYYYMM") // 년월
+                    : moment(props.defaultValue).format("YYYYMMDD") // 년월일
                   : value
-              )
-            }
+              );
+            }}
             defaultValue={props.defaultValue ?? property.default}
-            isMonth={isMonth(props.name)}
+            isMonth={isMonth}
           />
         );
         break;

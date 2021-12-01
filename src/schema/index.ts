@@ -5,11 +5,11 @@ export type schemaType = {
   properties: Record<string, propertyType>;
 };
 
-export type dataType = "string" | "number" | "boolean" | "date";
+export type dataType = "string" | "number" | "boolean" | "date" | "month";
 
 export type propertyType = {
   type: dataType; // 실제 데이터 타입
-  as?: "date"; // (type: string)  데이터를 입력할 시 사용되는 인풋 종류
+  as?: "date" | "month"; // (type: string, date)  데이터를 입력할 시 사용되는 인풋 종류
   default?: any; // 기본값
   select?: selectType[]; // 해당 배열의 값 중에서만 값을 선택 가능
   length?: number; // 값 최대 길이
