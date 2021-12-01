@@ -24,6 +24,7 @@ export const tb_transfer_inSchema: schemaType = {
     },
     transfer_date: {
       type: "string",
+      as: "date",
       isNotNull: true,
     },
     transfer_type_id: {

@@ -1,5 +1,6 @@
 import { RootState } from "store";
 import { useSelector } from "react-redux";
+import moment from "moment";
 import { propertyType } from "schema";
 
 import InputFormControl from "components/Input/InputFormControl";
@@ -30,7 +31,7 @@ export default function FormModalInput(props: {
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
-
+  const propertyType = property.as ?? property.type;
   let element: JSX.Element;
 
   if (property.foreign) {
@@ -70,7 +71,7 @@ export default function FormModalInput(props: {
     );
   } else {
     // 스키마 타입 구분
-    switch (property.type) {
+    switch (propertyType) {
       // 문자열
       case "string": {
         // URL
@@ -106,7 +107,13 @@ export default function FormModalInput(props: {
       case "date": {
         element = (
           <InputDate
-            onChange={(value) => props.onChange(value)}
+            onChange={(value) =>
+              props.onChange(
+                property.as
+                  ? moment(props.defaultValue).format("YYYYMMDD")
+                  : value
+              )
+            }
             defaultValue={props.defaultValue ?? property.default}
             isMonth={isMonth(props.name)}
           />

@@ -48,6 +48,7 @@ export const tb_work_orderSchema: schemaType = {
     },
     plan_date: {
       type: "string",
+      as: "date",
     },
     priorities: {
       type: "number",
