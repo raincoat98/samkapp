@@ -27,9 +27,9 @@ export const routes: Record<string, route> = {
     component: CustomerManagement,
   },
 
-  // 재고 관리
+  // 재고 현황
   inv_management: {
-    name: "재고 관리",
+    name: "재고 현황",
     path: "/inv_management",
     component: InvManagement,
   },
@@ -105,7 +105,7 @@ export type sidebarRouteType = {
   children?: sidebarRouteType[];
 };
 export const sidebarConfig: sidebarRouteType[] = [
-  { name: "재고 관리", route: routes.inv_management },
+  { name: "재고 현황", route: routes.inv_management },
   { name: "입고 관리", route: routes.transfer_in },
   { name: "출고 관리", route: routes.transfer_out },
   { name: "작업 지시 관리", route: routes.work_order_manage },

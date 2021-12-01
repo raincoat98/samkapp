@@ -16,7 +16,7 @@ export default function InvManagement() {
 
   return (
     <Management
-      title="재고 관리"
+      title="재고 현황"
       schema={tb_inventorySchema}
       collectionName={collectionName}
       tabList={["전체", "재고 없음"]}
