@@ -21,12 +21,12 @@ export const tb_list_priceSchema: schemaType = {
       },
     },
     start_date: {
-      type: "string",
+      type: "date",
       isPrimary: true,
       isNotNull: true,
     },
     end_date: {
-      type: "string",
+      type: "date",
       isNotNull: true,
     },
     list_price: {
