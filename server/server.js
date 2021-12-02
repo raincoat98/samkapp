@@ -5,6 +5,7 @@ const api = require("./routes/index");
 const admin = require("./routes/admin");
 const transferIn = require("./routes/transferIn");
 const transferOut = require("./routes/transferOut");
+const workOrder = require("./routes/workOrder");
 
 // Cross-Origin Resource Sharing(CORS) 오류 해결을 위해 사용
 const cors = require("cors");
@@ -15,6 +16,7 @@ app.use("/api", api);
 app.use("/admin", admin);
 app.use("/transfer-in", transferIn); // 입고
 app.use("/transfer-out", transferOut); // 출고
+app.use("/work-order", workOrder); // 작업지시
 
 // server port 3002 할당
 // 클라이언트와 다른 번호로 충돌나지 않도록
