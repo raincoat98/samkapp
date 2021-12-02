@@ -6,9 +6,9 @@ export type tb_inventory = {
   warehouse_id: number;
   lot_no?: number;
   quantity: number;
-  actual_quantity?: number;
   shelf?: string;
   bin?: number;
+  status: boolean;
 };
 
 export const tb_inventorySchema: schemaType = {
@@ -46,14 +46,15 @@ export const tb_inventorySchema: schemaType = {
       default: 0,
       isNotNull: true,
     },
-    actual_quantity: {
-      type: "number",
-    },
     shelf: {
       type: "string",
     },
     bin: {
       type: "number",
+    },
+    status: {
+      type: "boolean",
+      isNotNull: true,
     },
   },
 };
