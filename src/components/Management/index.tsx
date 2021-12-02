@@ -183,6 +183,7 @@ export default function Management(props: {
       columns.push({
         Header: key,
         accessor,
+        width: 130,
       });
     }
 
