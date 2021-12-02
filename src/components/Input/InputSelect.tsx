@@ -7,7 +7,11 @@ export default function InputSelect(props: {
   defaultValue?: any;
 }) {
   return (
-    <Select defaultValue={props.defaultValue} placeholder="없음">
+    <Select
+      onChange={(event) => props.onChange(event.target.value)}
+      defaultValue={props.defaultValue}
+      placeholder="없음"
+    >
       {props.selectList.map((selectItem, index) => (
         <option value={selectItem.value} key={index}>
           {selectItem.name ?? selectItem.value}
