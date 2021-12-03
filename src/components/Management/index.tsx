@@ -26,7 +26,7 @@ import {
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
-import FormModal, { formModalModeType } from "components/Management/FormModal";
+import FormModal, { formModalModeType } from "components/FormModal";
 
 // 관리 페이지
 export default function Management(props: {
