@@ -9,7 +9,7 @@ export type SystemState = {
 
 const initialState: SystemState = {
   isSidebarOpen: true,
-  appName: "SamKapp",
+  appName: "SMES",
   logo: logo,
 };
 

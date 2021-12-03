@@ -1,8 +1,7 @@
 {
-  "name": "my-app",
+  "name": "smes",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://samkapp-dzval.mongodbstitch.com/",
   "license": "UNLICENSED",
   "repository": {
     "type": "git",

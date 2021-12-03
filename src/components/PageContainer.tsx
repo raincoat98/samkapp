@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 import { useStyleConfig, Flex, FlexProps } from "@chakra-ui/react";
 import PageTitle from "./PageTitle";
 import PageContent from "./PageContent";
@@ -9,9 +11,12 @@ export default function PageContainer(
   const { children, headerChildren, title, ...rest } = props;
   const styles = useStyleConfig("PageContainer");
 
+  // 앱 이름 가져오기
+  const appName = useSelector((state: RootState) => state.system.appName);
+
   // 페이지 이름 바꾸기
   React.useEffect(() => {
-    title && (document.title = `${title} - SamKapp`);
+    title && (document.title = `${title} - ${appName}`);
   });
 
   return (
