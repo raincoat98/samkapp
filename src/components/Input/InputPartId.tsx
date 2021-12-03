@@ -1,7 +1,7 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { Box, Flex, Select, FormControl, FormLabel } from "@chakra-ui/react";
+import { Box, Flex, Select, FormLabel } from "@chakra-ui/react";
 import { tb_group2 } from "schema/tb_group2";
 import { tb_part } from "schema/tb_part";
 
@@ -120,7 +120,7 @@ export default function InputPartId(props: {
 
       <Flex>
         {group2Item?.spec1 ? (
-          <FormControl>
+          <Box flex="1">
             <FormLabel>{group2Item.spec1}</FormLabel>
             <Select
               defaultValue={partItemSpec1}
@@ -152,13 +152,13 @@ export default function InputPartId(props: {
                 </option>
               ))}
             </Select>
-          </FormControl>
+          </Box>
         ) : (
           ""
         )}
 
         {group2Item?.spec2 ? (
-          <FormControl>
+          <Box flex="1">
             <FormLabel>{group2Item.spec2}</FormLabel>
             <Select
               defaultValue={partItemSpec2}
@@ -188,13 +188,13 @@ export default function InputPartId(props: {
                 </option>
               ))}
             </Select>
-          </FormControl>
+          </Box>
         ) : (
           ""
         )}
 
         {group2Item?.spec3 ? (
-          <FormControl>
+          <Box flex="1">
             <FormLabel>{group2Item.spec3}</FormLabel>
             <Select
               defaultValue={partItemSpec3}
@@ -224,13 +224,13 @@ export default function InputPartId(props: {
                 </option>
               ))}
             </Select>
-          </FormControl>
+          </Box>
         ) : (
           ""
         )}
 
         {group2Item?.spec4 ? (
-          <FormControl>
+          <Box flex="1">
             <FormLabel>{group2Item.spec4}</FormLabel>
             <Select
               defaultValue={partItemSpec4}
@@ -260,13 +260,13 @@ export default function InputPartId(props: {
                 </option>
               ))}
             </Select>
-          </FormControl>
+          </Box>
         ) : (
           ""
         )}
 
         {group2Item?.spec5 ? (
-          <FormControl>
+          <Box flex="1">
             <FormLabel>{group2Item.spec5}</FormLabel>
             <Select
               defaultValue={partItemSpec5}
@@ -285,7 +285,7 @@ export default function InputPartId(props: {
                 </option>
               ))}
             </Select>
-          </FormControl>
+          </Box>
         ) : (
           ""
         )}
