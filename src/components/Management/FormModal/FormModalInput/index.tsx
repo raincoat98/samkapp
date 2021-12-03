@@ -38,8 +38,6 @@ export default function FormModalInput(props: {
     ) {
       element = (
         <InputPartId
-          enumList={database[property.foreign.table]}
-          searchKey={property.foreign.key}
           displayKey={property.foreign.display ?? property.foreign.key}
           defaultValue={props.defaultValue ?? property.default}
           onChange={(value) => props.onChange(value)}
