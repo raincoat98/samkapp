@@ -19,7 +19,6 @@ export default function FormModalInput(props: {
   property: propertyType;
   onChange: (value: any) => void;
   defaultValue?: any;
-  labelWidth?: string | number;
   isDisabled?: boolean;
   isURL?: boolean; // only string
 }) {
@@ -134,7 +133,6 @@ export default function FormModalInput(props: {
   return (
     <InputFormControl
       name={props.name}
-      labelWidth={props.labelWidth}
       isRequired={property.isNotNull}
       isDisabled={props.isDisabled}
       isReadOnly={property.isReadOnly}

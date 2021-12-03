@@ -68,8 +68,8 @@ export default function FormModal(props: FormModalProps) {
       // 프로퍼티
       let property = props.schema.properties[key];
 
-      // 유저가 수정 못하는 값일 경우 다음으로
-      if (props.mode === "update" && property.isPrimary) continue;
+      // 직접 추가시에 데이터베이스에서 자동 생성되는 값은 넘어감
+      if (props.mode === "insert" && property.isAutoSet) continue;
 
       // 필수값 여부
       const isRequired = property.isNotNull;
@@ -79,6 +79,8 @@ export default function FormModal(props: FormModalProps) {
 
       // 비활성화된 값인지 여부
       let disabled = false;
+      // 기본키는 수정할 수 없으므로 수정 불가능하게
+      if (props.mode === "update" && property.isPrimary) disabled = true;
 
       // 기본값 설정
       let defaultValue = props.initialValue

@@ -3,27 +3,24 @@ import { FormControl, FormLabel, Box, Tooltip } from "@chakra-ui/react";
 
 export default function InputFormControl(props: {
   name: string;
-  labelWidth?: string | number;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  isReadOnly?: boolean;
+  isRequired?: boolean; // 필수 여부
+  isDisabled?: boolean; // 입력 불가능 (readonly 보다 더 어둡게 표시됨)
+  isReadOnly?: boolean; // 수정 불가능
   children: React.ReactNode;
 }) {
   // 번역
   const { t: translate } = useTranslation();
 
-  // FormLabel width 설정
-  const labelWidth =
-    props.labelWidth === undefined ? "100px" : props.labelWidth;
-
   // 폼 박스 생성
   const formControl = (
     <FormControl
+      isReadOnly={props.isReadOnly}
+      isDisabled={props.isDisabled}
       isRequired={props.isRequired}
       display="flex"
       alignItems="center"
     >
-      <FormLabel minWidth={labelWidth} marginBottom={0}>
+      <FormLabel minWidth={"100px"} marginBottom={0}>
         {translate(`${props.name}`)}
       </FormLabel>
       <Box flex="1">{props.children}</Box>

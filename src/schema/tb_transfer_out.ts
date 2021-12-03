@@ -19,6 +19,7 @@ export const tb_transfer_outSchema: schemaType = {
       type: "number",
       isPrimary: true,
       isNotNull: true,
+      isAutoSet: true,
     },
     transfer_date: {
       type: "string",
@@ -67,6 +68,7 @@ export const tb_transfer_outSchema: schemaType = {
         key: "work_order_id",
         display: "work_order_number",
       },
+      isAutoSet: true,
     },
   },
 };
