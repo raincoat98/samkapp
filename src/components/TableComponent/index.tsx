@@ -35,18 +35,13 @@ const SELECTION_COLUMN = "_selection";
 
 export type TableComponentProps = {
   columns?: Array<Column>;
-  data?: Array<any>;
+  data: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
   onRowClick?: (data: {
     event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>;
     row: Row<{}>;
   }) => void;
-  rowStyle?: {
-    color?: Record<string, Record<string, any>>;
-    bgColor?: Record<string, Record<string, any>>;
-    bgColorHover?: Record<string, Record<string, any>>;
-  };
 };
 
 export default function TableComponent(props: TableComponentProps) {
@@ -65,7 +60,7 @@ export default function TableComponent(props: TableComponentProps) {
 
   // React-Table
   const memoColumns = React.useMemo(() => props.columns ?? [], [props.columns]);
-  const memoData = React.useMemo(() => props.data ?? [], [props.data]);
+  const memoData = React.useMemo(() => props.data, [props.data]);
   const tableInstance = useTable(
     {
       columns: memoColumns,
@@ -205,50 +200,11 @@ export default function TableComponent(props: TableComponentProps) {
         {page.map((row: Row) => {
           prepareRow(row);
 
-          // rowStyle 적용
-          const rowStyle = props.rowStyle;
-          const origData: Record<string, any> = row.original;
-          let color: any;
-          let bgColor: any;
-          let bgColorHover: any;
-
-          // 열 스타일 지정
-          if (rowStyle) {
-            for (const key in origData) {
-              // 글자 색상
-              if (rowStyle.color) {
-                const item = rowStyle.color[key];
-                for (const colorKey in item) {
-                  if (origData[key] === colorKey) color = item[colorKey];
-                }
-              }
-
-              // 배경 색상
-              if (rowStyle.bgColor) {
-                const item = rowStyle.bgColor[key];
-                for (const bgColorkey in item) {
-                  if (origData[key] === bgColorkey) bgColor = item[bgColorkey];
-                }
-              }
-
-              // 배경 색상 hover
-              if (rowStyle.bgColorHover) {
-                const item = rowStyle.bgColorHover[key];
-                for (const bgColorHoverKey in item) {
-                  if (origData[key] === bgColorHoverKey)
-                    bgColorHover = item[bgColorHoverKey];
-                }
-              }
-            }
-          }
-
           return (
             <Tr
               {...row.getRowProps()}
-              color={color}
-              bgColor={bgColor}
               _hover={{
-                background: bgColorHover ?? defaultBgColorSelected,
+                background: defaultBgColorSelected,
               }}
             >
               {row.cells.map((cell, index) => (

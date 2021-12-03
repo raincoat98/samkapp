@@ -6,7 +6,7 @@ import { getData, insertData, updateData, deleteData } from "store/realm";
 import { Column, Accessor } from "react-table";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { COLLECTION_NAME, COLLECTION_NAME_TYPE, schemaType } from "schema";
+import { schemaType } from "schema";
 
 // 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
@@ -15,7 +15,6 @@ import { ReducerTableState, Row, TableInstance } from "react-table";
 // chakra-ui
 import {
   useDisclosure,
-  useColorModeValue,
   Flex,
   Select,
   ButtonGroup,
@@ -27,36 +26,28 @@ import {
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
-import FormModal, {
-  FormModalProps,
-  formModalModeType,
-} from "components/Management/FormModal";
+import FormModal, { formModalModeType } from "components/Management/FormModal";
 
 // 관리 페이지
 export default function Management(props: {
-  title: string;
-  collectionName: COLLECTION_NAME_TYPE;
-  schema: schemaType;
+  title: string; // 브라우저 페이지 이름
+  schema: schemaType; // 테이블 스키마
   tabList?: string[];
+  filterList?: { schema: schemaType; key: string; display: string }[];
   onTabChange?: (tabIndex: number) => void;
-  filterList?: { schema: schemaType; data: any[] }[];
   tableProps: TableComponentProps;
 }) {
-  const {
-    title,
-    collectionName,
-    schema,
-    tabList,
-    onTabChange,
-    filterList,
-    tableProps,
-  } = props;
+  const { title, schema, tabList, onTabChange, filterList, tableProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
+  const tableDataList = tableProps.data;
+  const [filteredDataList, setFilteredDataList] = React.useState<any[]>([
+    ...tableDataList,
+  ]);
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -68,15 +59,6 @@ export default function Management(props: {
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
   const [modalMode, setModalMode] = React.useState<formModalModeType>("insert");
-
-  const formModalProps: FormModalProps = {
-    schema,
-    mode: modalMode,
-    initialValue: selected,
-    isOpen: modalDisclosure.isOpen,
-    onSave: onFormModalSave,
-    onClose: modalDisclosure.onClose,
-  };
 
   const onTableChange = React.useCallback(
     (props: {
@@ -212,7 +194,7 @@ export default function Management(props: {
   };
   mainTable = TableComponent({
     columns,
-    data: tableProps.data,
+    data: filteredDataList,
     onRowClick: onTableRowClick,
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
@@ -225,37 +207,19 @@ export default function Management(props: {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     ),
-    rowStyle: {
-      color: {
-        priorities: {
-          emergency: useColorModeValue("white", "white"),
-        },
-      },
-      bgColor: {
-        priorities: {
-          emergency: useColorModeValue("red.300", "red.800"),
-        },
-      },
-      bgColorHover: {
-        priorities: {
-          emergency: useColorModeValue("red.400", "red.700"),
-        },
-      },
-    },
   });
 
-  const refreshData = React.useCallback(async () => {
-    dispatch(getData(collectionName));
+  function refreshData() {
+    // 현재 테이블 데이터 새로고침
+    dispatch(getData(schema.name));
 
+    // 필터 데이터 새로고침
     if (filterList) {
       for (let index = 0; index < filterList.length; index++) {
-        const name = filterList[index].schema.name as COLLECTION_NAME_TYPE;
-        if (Object.values(COLLECTION_NAME).includes(name)) {
-          dispatch(getData(name));
-        }
+        dispatch(getData(filterList[index].schema.name));
       }
     }
-  }, [collectionName, dispatch, filterList]);
+  }
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
@@ -280,13 +244,13 @@ export default function Management(props: {
 
     switch (type) {
       case "insert": {
-        dispatch(insertData({ collectionName, document }));
+        dispatch(insertData({ collectionName: schema.name, document }));
         break;
       }
       case "update": {
         dispatch(
           updateData({
-            collectionName,
+            collectionName: schema.name,
             filter: { _id: initialValue._id() },
             update: { $set: document },
           })
@@ -311,7 +275,14 @@ export default function Management(props: {
   return (
     <>
       {/* 입력 다이얼로그 */}
-      <FormModal {...formModalProps} />
+      <FormModal
+        schema={schema}
+        mode={modalMode}
+        initialValue={selected}
+        isOpen={modalDisclosure.isOpen}
+        onSave={onFormModalSave}
+        onClose={modalDisclosure.onClose}
+      />
 
       <PageContainer
         title={title}
@@ -348,33 +319,48 @@ export default function Management(props: {
           ) : (
             ""
           )}
+
           {/* 필터 추가 */}
           {Array.isArray(filterList) ? (
             <Flex>
-              {filterList?.map((filter, index) => (
-                <Select
-                  placeholder={translate(`${filter.schema.name}.name`)}
-                  key={index}
-                  size="sm"
-                >
-                  {filter.data.map((filterItem, index) => {
-                    let primaryKey = "";
-                    for (const key in filter.schema.properties) {
-                      const property = filter.schema.properties[key];
-                      if (property.isPrimary) primaryKey = key;
-                    }
+              {filterList?.map((filterItem, index) => {
+                const filterDataList: any[] = [
+                  ...database[filterItem.schema.name],
+                ];
 
-                    if (primaryKey === "")
-                      console.error("기본키를 찾을 수 없음");
-
-                    return (
-                      <option value={filterItem[primaryKey]} key={index}>
-                        {filterItem["name"]}
-                      </option>
-                    );
-                  })}
-                </Select>
-              ))}
+                return (
+                  <Select
+                    onChange={(event) => {
+                      const dataList = [...tableDataList];
+                      // 선택 해제시
+                      if (!event.target.value) {
+                        setFilteredDataList(dataList);
+                      } else {
+                        setFilteredDataList(
+                          dataList.filter(
+                            (item: any) =>
+                              item[filterItem.key] ===
+                              filterDataList[Number(event.target.value)][
+                                filterItem.key
+                              ]
+                          )
+                        );
+                      }
+                    }}
+                    placeholder={translate(`${filterItem.schema.name}.name`)}
+                    size="sm"
+                    key={index}
+                  >
+                    {filterDataList.map((item: any, index) => {
+                      return (
+                        <option value={index} key={index}>
+                          {item[filterItem.display]}
+                        </option>
+                      );
+                    })}
+                  </Select>
+                );
+              })}
             </Flex>
           ) : (
             ""

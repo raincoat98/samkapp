@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "components/Management/index";
 import { tb_work_orderSchema } from "schema/tb_work_order";
 import moment from "moment";
 
@@ -31,7 +31,6 @@ export default function WorkOrderManagement() {
     <Management
       title="작업 지시 관리"
       schema={tb_work_orderSchema}
-      collectionName={collectionName}
       tabList={["현재", "이전"]}
       onTabChange={(index: number) => setTabIndex(index)}
       tableProps={{ data: tabIndex === 0 ? latestDataList : oldDataList }}

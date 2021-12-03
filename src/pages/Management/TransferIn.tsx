@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "components/Management/index";
 import { tb_transfer_inSchema } from "schema/tb_transfer_in";
 
 export default function TransferInManager() {
@@ -13,7 +13,6 @@ export default function TransferInManager() {
     <Management
       title="입고 관리"
       schema={tb_transfer_inSchema}
-      collectionName={collectionName}
       tableProps={{ data }}
     />
   );

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "components/Management/index";
 import { tb_warehouseSchema } from "schema/tb_warehouse";
 
 export default function WarehouseManagement() {
@@ -13,7 +13,6 @@ export default function WarehouseManagement() {
     <Management
       title="창고 관리"
       schema={tb_warehouseSchema}
-      collectionName={collectionName}
       tableProps={{ data }}
     />
   );

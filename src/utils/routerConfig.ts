@@ -1,14 +1,14 @@
-import CustomerManagement from "pages/CustomerManagement";
-import InvManagement from "pages/InvManagement";
-import PartManagement from "pages/PartManagement";
-
-import PartGroup2Management from "pages/PartGroup2Management";
-import PartTypeManagement from "pages/PartTypeManagement";
-import TransferIn from "pages/TransferIn";
-import TransferOut from "pages/TransferOut";
-import PartPriceManagement from "pages/PartPriceManagement";
-import WarehouseManagement from "pages/WarehouseManagement";
-import WorkOrderManagement from "pages/WorkOrderManagement";
+// 관리 페이지
+import CustomerManagement from "pages/Management/CustomerManagement";
+import InvManagement from "pages/Management/InvManagement";
+import PartManagement from "pages/Management/PartManagement";
+import PartGroup2Management from "pages/Management/PartGroup2Management";
+import PartTypeManagement from "pages/Management/PartTypeManagement";
+import TransferIn from "pages/Management/TransferIn";
+import TransferOut from "pages/Management/TransferOut";
+import PartPriceManagement from "pages/Management/PartPriceManagement";
+import WarehouseManagement from "pages/Management/WarehouseManagement";
+import WorkOrderManagement from "pages/Management/WorkOrderManagement";
 
 import Setting from "pages/Setting";
 

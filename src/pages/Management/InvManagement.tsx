@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "components/Management/index";
 import { tb_inventorySchema } from "schema/tb_inventory";
 
 export default function InvManagement() {
@@ -18,7 +18,6 @@ export default function InvManagement() {
     <Management
       title="재고 현황"
       schema={tb_inventorySchema}
-      collectionName={collectionName}
       tabList={["전체", "재고 없음"]}
       onTabChange={(index: number) => setTabIndex(index)}
       tableProps={{ data: tabIndex === 0 ? data : noStockList }}

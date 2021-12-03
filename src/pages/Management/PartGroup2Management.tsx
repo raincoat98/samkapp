@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import Management from "../components/Management/index";
+import Management from "components/Management/index";
 import { tb_group2Schema } from "schema/tb_group2";
 
 export default function PartGrou2Management() {
@@ -13,7 +13,6 @@ export default function PartGrou2Management() {
     <Management
       title="품목 분류 관리"
       schema={tb_group2Schema}
-      collectionName={collectionName}
       tableProps={{ data }}
     />
   );
