@@ -5,7 +5,7 @@ export type tb_transfer_in = {
   transfer_date: string;
   transfer_type_id: string;
   part_id: number;
-  quantity?: number;
+  quantity: number;
   unit_price?: number;
   purchase_amont?: number;
   outsourcing_unit_price?: number;
@@ -48,6 +48,7 @@ export const tb_transfer_inSchema: schemaType = {
     },
     quantity: {
       type: "number",
+      isNotNull: true,
     },
     unit_price: {
       type: "number",
