@@ -106,8 +106,8 @@ export default function FormModalInput(props: {
               props.onChange(
                 property.as
                   ? isMonth
-                    ? moment(props.defaultValue).format("YYYYMM") // 년월
-                    : moment(props.defaultValue).format("YYYYMMDD") // 년월일
+                    ? moment(value).format("YYYY-MM") // 년월
+                    : moment(value).format("YYYY-MM-DD") // 년월일
                   : value
               );
             }}
