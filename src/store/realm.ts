@@ -390,7 +390,6 @@ const userSlice = createSlice({
         }
       )
       // 컬렉션 데이터 업데이트
-      .addCase(updateData.fulfilled.type, (state) => {
       .addCase(
         updateData.fulfilled.type,
         (
