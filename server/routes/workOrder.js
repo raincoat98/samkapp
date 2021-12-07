@@ -15,14 +15,14 @@ router.get("/all", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
     } else {
       for (var data of results) {
         dataList.push(data);
       }
+      console.log("select ok");
     }
     res.send({ results });
-    console.log("select ok");
   });
 });
 
@@ -42,16 +42,19 @@ router.get("/create", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
+    } else {
+      console.log("insert ok");
     }
-    console.log("insert ok");
+    res.send({ results });
   });
 });
 
 //작업지시 수정
 router.get("/update", (req, res) => {
-  const sql = "CALL usp_work_order_UPD(?,?,?,?,?,?)";
+  const sql = "CALL usp_work_order_UPD(?,?,?,?,?,?,?)";
   const params = [
+    req.query["work_order_no"],
     req.query["part_id"],
     req.query["customer_id"],
     req.query["quantity"],
@@ -62,9 +65,11 @@ router.get("/update", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
+    } else {
+      console.log("update ok");
     }
-    console.log("update ok");
+    res.send({ results });
   });
 });
 
@@ -75,9 +80,11 @@ router.delete("/delete", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
+    } else {
+      console.log("delete ok");
     }
-    console.log("delete ok");
+    res.send({ results });
   });
 });
 
