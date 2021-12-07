@@ -45,11 +45,11 @@ router.get("/create", (req, res) => {
 router.get("/update", (req, res) => {
   const sql = "CALL usp_transfer_in_UPD(?,?,?,?,?)";
   const params = [
+    req.query["transfer_in_id"],
     req.query["transfer_type_id"],
     req.query["part_id"],
-    req.query["quantity"],
-    req.query["warehouse_id"],
     req.query["work_order_id"],
+    req.query["quantity"],
   ];
 
   connection.query(sql, params, function (error, results) {
