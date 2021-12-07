@@ -50,8 +50,6 @@ export type RealmState = {
     [COLLECTION_NAME.tb_warehouse]: tb_warehouse[];
     [COLLECTION_NAME.tb_work_order]: tb_work_order[];
   };
-  // 제작 가능 재고
-  maxMadeQty: Record<string, number>;
 };
 
 const initialState: RealmState = {
@@ -76,7 +74,6 @@ const initialState: RealmState = {
     [COLLECTION_NAME.tb_warehouse]: [],
     [COLLECTION_NAME.tb_work_order]: [],
   },
-  maxMadeQty: {},
 };
 
 // 데이터베이스 자동 로그인
@@ -162,10 +159,6 @@ export const getData = createAsyncThunk(
 
       const response = await axios.get(`${SERVER_URL}/api/${collectionName}`);
       data = response.data.results;
-
-      // dispatch({
-      //   type: `${name}/computeQty`,
-      // });
 
       return {
         collectionName,
@@ -273,10 +266,6 @@ export const deleteData = createAsyncThunk(
 
       // await dispatch(getData(collectionName));
 
-      // dispatch({
-      //   type: `${name}/computeQty`,
-      // });
-
       // return result;
       return;
     } catch (error) {
@@ -302,38 +291,7 @@ export const distinct = createAsyncThunk(
 const userSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    // 현재 재고로 만들 수 있는 품목 계산
-    computeQty(state) {
-      // const partDB = state.database.part;
-      // const invDB = state.database.inv;
-      // for (let index = 0; index < partDB.length; index++) {
-      //   const part = partDB[index];
-      //   const bomList = part.bills_of_material;
-      //   let maxQuantity = 0;
-      //   let quantityList: number[] = [];
-      //   if (Array.isArray(bomList)) {
-      //     for (let index = 0; index < bomList.length; index++) {
-      //       const bom = bomList[index];
-      //       const bomNum = bom.number;
-      //       const stock = invDB.filter((inv) => {
-      //         if (inv.part_id) {
-      //           let partId = inv.part_id as unknown as ObjectId;
-      //           // 문자열이라면 ObjectId로 캐스팅
-      //           if (typeof partId === "string") partId = new ObjectId(partId);
-      //           return partId.equals(bom.part_id);
-      //         } else return false;
-      //       })[0]?.inv_qty;
-      //       if (stock) quantityList.push(Math.floor(stock / bomNum));
-      //     }
-      //   }
-      //   if (quantityList.length) {
-      //     maxQuantity = Math.min(...quantityList);
-      //     if (part._id) state.maxMadeQty[part.code] = maxQuantity;
-      //   }
-      // }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -429,6 +387,5 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer, actions } = userSlice;
-export const { computeQty } = actions;
+const { reducer } = userSlice;
 export default reducer;
