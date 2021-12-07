@@ -16,14 +16,14 @@ export default function WorkOrderManagement() {
   // 현재 작업지시 목록
   const latestDataList = data.filter((item) => {
     if (item?.plan_date) {
-      return moment(item.plan_date).isSameOrAfter(Date.now());
+      return moment(item.plan_date).isSameOrAfter(moment().format("YYYYMMDD"));
     } else return false;
   });
 
   // 이전 작업지시 목록
   const oldDataList = data.filter((item) => {
     if (item?.plan_date) {
-      return moment(item.plan_date).isBefore(Date.now());
+      return moment(item.plan_date).isBefore(moment().format("YYYYMMDD"));
     } else return true;
   });
 
