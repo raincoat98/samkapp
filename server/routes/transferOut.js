@@ -15,7 +15,7 @@ router.get("/all", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
     } else {
       for (var data of results) {
         dataList.push(data);
@@ -39,9 +39,11 @@ router.get("/create", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
+    } else {
+      console.log("insert ok");
     }
-    console.log("insert ok");
+    res.send({ results });
   });
 });
 
@@ -52,9 +54,11 @@ router.delete("/delete", (req, res) => {
 
   connection.query(sql, params, function (error, results) {
     if (error) {
-      throw error;
+      console.log(error);
+    } else {
+      console.log("delete ok");
     }
-    console.log("delete ok");
+    res.send({ results });
   });
 });
 
