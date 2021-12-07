@@ -199,6 +199,7 @@ export const insertData = createAsyncThunk(
         }
       }
 
+      await dispatch(getData(props.collectionName));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -218,7 +219,6 @@ export const updateData = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      // await app.currentUser?.functions.actionFunc({
       let response: AxiosResponse<any, any>;
       switch (props.collectionName) {
         case "tb_transfer_in": {
