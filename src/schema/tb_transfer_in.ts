@@ -69,6 +69,7 @@ export const tb_transfer_inSchema: schemaType = {
         key: "warehouse_id",
         display: "warehouse_name",
       },
+      isNotNull: true,
     },
     work_order_id: {
       type: "number",

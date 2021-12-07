@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
 import { tb_bill_of_materials } from "schema/tb_bill_of_materials";
@@ -19,6 +19,7 @@ import { tb_warehouse } from "schema/tb_warehouse";
 import { tb_work_order } from "schema/tb_work_order";
 
 const name = "realm";
+const SERVER_URL = "http://localhost:3002";
 
 export type schemaType = {
   name: string;
@@ -159,9 +160,7 @@ export const getData = createAsyncThunk(
     try {
       let data: any[] = [];
 
-      const response = await axios.get(
-        `http://localhost:3002/api/${collectionName}`
-      );
+      const response = await axios.get(`${SERVER_URL}/api/${collectionName}`);
       data = response.data.results;
 
       // dispatch({
@@ -188,22 +187,26 @@ export const insertData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    // const { collectionName, document } = props;
-
     try {
-      // await app.currentUser?.functions.actionFunc({
-      //   type: "insert",
-      //   collectionName,
-      //   doc: document,
-      // });
+      let response: AxiosResponse<any, any>;
+      switch (props.collectionName) {
+        case "tb_transfer_in": {
+          response = await axios.get(`${SERVER_URL}/transfer-in/create`, {
+            params: props.document,
+          });
+          break;
+        }
+        default: {
+          let collectionName = props.collectionName.replaceAll("_", "-");
+          if (collectionName.startsWith("tb_"))
+            collectionName = collectionName.replace("tb_", "");
+          response = await axios.get(`${SERVER_URL}/transfer-in/create`, {
+            params: props.document,
+          });
+        }
+      }
 
-      await dispatch(getData(props.collectionName));
-
-      // dispatch({
-      //   type: `${name}/computeQty`,
-      // });
-
-      return;
+      return { response };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -216,36 +219,32 @@ export const updateData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      filter: { _id: string };
+      filter: Record<string, string>;
       update: Record<string, any>;
-      options?: object;
     },
     { dispatch, rejectWithValue }
   ) => {
-    // const { collectionName, ...params } = props;
-    // const { filter, update, options } = params;
-
     try {
       // await app.currentUser?.functions.actionFunc({
-      //   type: "update",
-      //   collectionName,
-      //   filter,
-      //   update,
-      //   options: options ? options : {},
-      // });
-      // const mongodb = app.currentUser?.mongoClient(MONGO_CLIENT);
-      // const collection = mongodb
-      //   ?.db(DATABASE_NAME)
-      //   ?.collection<any>(collectionName);
-      // const data = await collection?.find(filter);
-      // dispatch({
-      //   type: `${name}/computeQty`,
-      // });
-      // return {
-      //   collectionName,
-      //   data,
-      // };
-      return;
+      let response: AxiosResponse<any, any>;
+      switch (props.collectionName) {
+        case "tb_transfer_in": {
+          response = await axios.get(`${SERVER_URL}/transfer-in/update`, {
+            params: props.update,
+          });
+          break;
+        }
+        default: {
+          let collectionName = props.collectionName.replaceAll("_", "-");
+          if (collectionName.startsWith("tb_"))
+            collectionName = collectionName.replace("tb_", "");
+          response = await axios.get(`${SERVER_URL}/transfer-in/update`, {
+            params: props.update,
+          });
+        }
+      }
+      await dispatch(getData(props.collectionName));
+      return { response };
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -380,38 +379,25 @@ const userSlice = createSlice({
           state.loading = false;
         }
       )
-      .addCase(insertData.fulfilled.type, (state) => {
-        state.loading = false;
-      })
+      .addCase(
+        insertData.fulfilled.type,
+        (
+          state,
+          action: PayloadAction<{ response: AxiosResponse<any, any> }>
+        ) => {
+          console.log(action.payload.response);
+          state.loading = false;
+        }
+      )
       // 컬렉션 데이터 업데이트
+      .addCase(updateData.fulfilled.type, (state) => {
       .addCase(
         updateData.fulfilled.type,
         (
           state,
-          action: PayloadAction<{
-            collectionName: COLLECTION_NAME_TYPE;
-            data: (Record<string, any> & { _id: string })[];
-          }>
+          action: PayloadAction<{ response: AxiosResponse<any, any> }>
         ) => {
-          // const { collectionName, data } = action.payload;
-
-          // for (
-          //   let index = 0;
-          //   index < state.database[collectionName].length;
-          //   index++
-          // ) {
-          //   const id1 = state.database[collectionName][index]._id;
-
-          //   for (let index2 = 0; index2 < data.length; index2++) {
-          //     const updatedData = data[index2];
-          //     const id2 = updatedData._id;
-
-          //     if (id1.equals(id2)) {
-          //       state.database[collectionName][index] = updatedData as any;
-          //     }
-          //   }
-          // }
-
+          console.log(action.payload.response);
           state.loading = false;
         }
       )

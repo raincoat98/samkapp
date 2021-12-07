@@ -251,8 +251,8 @@ export default function Management(props: {
         dispatch(
           updateData({
             collectionName: schema.name,
-            filter: { _id: initialValue._id() },
-            update: { $set: document },
+            filter: initialValue,
+            update: { ...initialValue, ...document },
           })
         );
         break;
