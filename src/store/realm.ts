@@ -182,22 +182,13 @@ export const insertData = createAsyncThunk(
   ) => {
     try {
       let response: AxiosResponse<any, any>;
-      switch (props.collectionName) {
-        case "tb_transfer_in": {
-          response = await axios.get(`${SERVER_URL}/transfer-in/create`, {
-            params: props.document,
-          });
-          break;
-        }
-        default: {
-          let collectionName = props.collectionName.replaceAll("_", "-");
-          if (collectionName.startsWith("tb_"))
-            collectionName = collectionName.replace("tb_", "");
-          response = await axios.get(`${SERVER_URL}/transfer-in/create`, {
-            params: props.document,
-          });
-        }
-      }
+      let route = props.collectionName as string;
+
+      if (route.startsWith("tb_")) route = route.replace("tb_", "");
+      route = route.replaceAll("_", "-");
+      response = await axios.get(`${SERVER_URL}/${route}/create`, {
+        params: props.document,
+      });
 
       await dispatch(getData(props.collectionName));
       return { response };
@@ -220,22 +211,14 @@ export const updateData = createAsyncThunk(
   ) => {
     try {
       let response: AxiosResponse<any, any>;
-      switch (props.collectionName) {
-        case "tb_transfer_in": {
-          response = await axios.get(`${SERVER_URL}/transfer-in/update`, {
-            params: props.update,
-          });
-          break;
-        }
-        default: {
-          let collectionName = props.collectionName.replaceAll("_", "-");
-          if (collectionName.startsWith("tb_"))
-            collectionName = collectionName.replace("tb_", "");
-          response = await axios.get(`${SERVER_URL}/transfer-in/update`, {
-            params: props.update,
-          });
-        }
-      }
+      let route = props.collectionName as string;
+
+      if (route.startsWith("tb_")) route = route.replace("tb_", "");
+      route = route.replaceAll("_", "-");
+      response = await axios.get(`${SERVER_URL}/${route}/update`, {
+        params: props.update,
+      });
+
       await dispatch(getData(props.collectionName));
       return { response };
     } catch (error) {
