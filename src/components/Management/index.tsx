@@ -151,12 +151,8 @@ export default function Management(props: {
           accessor = (originalRow) => {
             const origRow = originalRow as Record<string, any>;
             const boolData = origRow[key] as boolean;
-            switch (boolData) {
-              case true:
-                return "예";
-              default:
-                return "아니오";
-            }
+            if (boolData) return "예";
+            else return "아니오";
           };
           break;
         }
