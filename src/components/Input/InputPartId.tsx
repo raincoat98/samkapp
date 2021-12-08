@@ -10,6 +10,8 @@ export default function InputPartId(props: {
   onChange: (partId: number) => void;
   defaultValue?: any;
 }) {
+  const [isInit, setIsInit] = React.useState(false);
+
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
   const partList = database.tb_part;
@@ -88,8 +90,11 @@ export default function InputPartId(props: {
   }, [group2List, partList, props.defaultValue]);
 
   React.useEffect(() => {
-    if (partItemId !== undefined) props.onChange(partItemId);
-  }, [partItemId, props]);
+    // 최초로 발생하는 이벤트는 초기화 작업중에 발생하는 이벤트이기 때문에 넘김
+    if (!isInit) setIsInit(true);
+    else if (partItemId !== undefined && partItemId !== props.defaultValue)
+      props.onChange(partItemId);
+  }, [isInit, partItemId, props]);
 
   return (
     <Box>
