@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Modal,
   ModalOverlay,
@@ -24,6 +25,9 @@ export default function FormModalPopup(props: {
   const { title, isOpen, isSaveDisabled, onSubmit, onClose, children, info } =
     props;
 
+  const formEl = React.useRef<HTMLFormElement>(null);
+  const [isFormVal, setIsFormVal] = React.useState(false);
+
   return (
     <Portal>
       <Modal
@@ -38,13 +42,26 @@ export default function FormModalPopup(props: {
         <ModalContent>
           <ModalHeader borderBottomWidth="1px">{title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
+          <ModalBody>
+            <form
+              ref={formEl}
+              onChange={(event) => {
+                if (formEl.current) {
+                  //폼 유효성 검사
+                  setIsFormVal(formEl.current.checkValidity());
+                }
+              }}
+              action=""
+            >
+              {children}
+            </form>
+          </ModalBody>
           <ModalFooter borderTopWidth="1px">
             <Box flex="1">{info}</Box>
             <ButtonGroup>
               <Button
                 onClick={() => onSubmit()}
-                isDisabled={isSaveDisabled}
+                isDisabled={!isFormVal || isSaveDisabled}
                 colorScheme="blue"
               >
                 저장
