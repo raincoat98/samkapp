@@ -43,6 +43,12 @@ export default function InputPartId(props: {
   const [partItemSpec4, setPartItemSpec4] = React.useState<string>();
   const [partItemSpec5, setPartItemSpec5] = React.useState<string>();
 
+  const spec1El = React.useRef<HTMLSelectElement>(null);
+  const spec2El = React.useRef<HTMLSelectElement>(null);
+  const spec3El = React.useRef<HTMLSelectElement>(null);
+  const spec4El = React.useRef<HTMLSelectElement>(null);
+  const spec5El = React.useRef<HTMLSelectElement>(null);
+
   React.useEffect(() => {
     for (let index = 0; index < partList.length; index++) {
       const partItem = partList[index];
@@ -130,7 +136,13 @@ export default function InputPartId(props: {
             <Select
               defaultValue={partItemSpec1}
               placeholder="없음"
+              ref={spec1El}
               onChange={(event) => {
+                if (spec2El.current) spec2El.current.value = "";
+                if (spec3El.current) spec3El.current.value = "";
+                if (spec4El.current) spec4El.current.value = "";
+                if (spec5El.current) spec5El.current.value = "";
+
                 if (event.target.value) {
                   setPartItemSpec1(event.target.value);
 
@@ -168,22 +180,29 @@ export default function InputPartId(props: {
             <Select
               defaultValue={partItemSpec2}
               placeholder="없음"
+              ref={spec2El}
               onChange={(event) => {
-                setPartItemSpec2(event.target.value);
+                if (spec3El.current) spec3El.current.value = "";
+                if (spec4El.current) spec4El.current.value = "";
+                if (spec5El.current) spec5El.current.value = "";
 
-                // 필터 3
-                setFilteredPartList3(
-                  filteredPartList2.filter((partItem) => {
-                    return partItem.spec2 === event.target.value;
-                  })
-                );
+                if (event.target.value) {
+                  setPartItemSpec2(event.target.value);
 
-                if (!group2Item?.spec3) {
-                  setPartItemId(
-                    filteredPartList2.filter(
-                      (partItem) => partItem.spec2 === event.target.value
-                    )[0].part_id
+                  // 필터 3
+                  setFilteredPartList3(
+                    filteredPartList2.filter((partItem) => {
+                      return partItem.spec2 === event.target.value;
+                    })
                   );
+
+                  if (!group2Item?.spec3) {
+                    setPartItemId(
+                      filteredPartList2.filter(
+                        (partItem) => partItem.spec2 === event.target.value
+                      )[0].part_id
+                    );
+                  }
                 }
               }}
             >
@@ -204,22 +223,28 @@ export default function InputPartId(props: {
             <Select
               defaultValue={partItemSpec3}
               placeholder="없음"
+              ref={spec3El}
               onChange={(event) => {
-                setPartItemSpec3(event.target.value);
+                if (spec4El.current) spec4El.current.value = "";
+                if (spec5El.current) spec5El.current.value = "";
 
-                // 필터 4
-                setFilteredPartList4(
-                  filteredPartList3.filter((partItem) => {
-                    return partItem.spec3 === event.target.value;
-                  })
-                );
+                if (event.target.value) {
+                  setPartItemSpec3(event.target.value);
 
-                if (!group2Item?.spec4) {
-                  setPartItemId(
-                    filteredPartList3.filter(
-                      (partItem) => partItem.spec3 === event.target.value
-                    )[0].part_id
+                  // 필터 4
+                  setFilteredPartList4(
+                    filteredPartList3.filter((partItem) => {
+                      return partItem.spec3 === event.target.value;
+                    })
                   );
+
+                  if (!group2Item?.spec4) {
+                    setPartItemId(
+                      filteredPartList3.filter(
+                        (partItem) => partItem.spec3 === event.target.value
+                      )[0].part_id
+                    );
+                  }
                 }
               }}
             >
@@ -240,22 +265,27 @@ export default function InputPartId(props: {
             <Select
               defaultValue={partItemSpec4}
               placeholder="없음"
+              ref={spec4El}
               onChange={(event) => {
-                setPartItemSpec4(event.target.value);
+                if (spec5El.current) spec5El.current.value = "";
 
-                // 필터 5
-                setFilteredPartList5(
-                  filteredPartList4.filter((partItem) => {
-                    return partItem.spec4 === event.target.value;
-                  })
-                );
+                if (event.target.value) {
+                  setPartItemSpec4(event.target.value);
 
-                if (!group2Item?.spec5) {
-                  setPartItemId(
-                    filteredPartList4.filter(
-                      (partItem) => partItem.spec4 === event.target.value
-                    )[0].part_id
+                  // 필터 5
+                  setFilteredPartList5(
+                    filteredPartList4.filter((partItem) => {
+                      return partItem.spec4 === event.target.value;
+                    })
                   );
+
+                  if (!group2Item?.spec5) {
+                    setPartItemId(
+                      filteredPartList4.filter(
+                        (partItem) => partItem.spec4 === event.target.value
+                      )[0].part_id
+                    );
+                  }
                 }
               }}
             >
@@ -276,12 +306,15 @@ export default function InputPartId(props: {
             <Select
               defaultValue={partItemSpec5}
               placeholder="없음"
+              ref={spec5El}
               onChange={(event) => {
-                setPartItemId(
-                  filteredPartList5.filter(
-                    (partItem) => partItem.spec5 === event.target.value
-                  )[0].part_id
-                );
+                if (event.target.value) {
+                  setPartItemId(
+                    filteredPartList5.filter(
+                      (partItem) => partItem.spec5 === event.target.value
+                    )[0].part_id
+                  );
+                }
               }}
             >
               {filteredPartList5.map((partItem, index) => (
