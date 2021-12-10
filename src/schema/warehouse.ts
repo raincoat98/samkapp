@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_warehouse = {
+export type warehouse = {
   warehouse_id: number;
   warehouse_name: string;
   rack_no?: number;
@@ -9,8 +9,8 @@ export type tb_warehouse = {
   use_yn?: boolean;
 };
 
-export const tb_warehouseSchema: schemaType = {
-  name: "tb_warehouse",
+export const warehouseSchema: schemaType = {
+  name: "warehouse",
   properties: {
     warehouse_id: {
       type: "number",

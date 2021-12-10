@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "components/Management/index";
-import { tb_list_priceSchema } from "schema/tb_list_price";
+import { list_priceSchema } from "schema/list_price";
 
 export default function PartTypeManagement() {
-  const collectionName = "tb_list_price";
+  const collectionName = "list_price";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
@@ -12,7 +12,7 @@ export default function PartTypeManagement() {
   return (
     <Management
       title="품목 가격 관리"
-      schema={tb_list_priceSchema}
+      schema={list_priceSchema}
       tableProps={{ data }}
     />
   );

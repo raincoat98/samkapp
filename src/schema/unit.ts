@@ -1,12 +1,12 @@
 import { schemaType } from "./index";
 
-export type tb_unit = {
+export type unit = {
   unit_id: string;
   unit_name: string;
 };
 
-export const tb_unitSchema: schemaType = {
-  name: "tb_unit",
+export const unitSchema: schemaType = {
+  name: "unit",
   properties: {
     unit_id: {
       type: "string",

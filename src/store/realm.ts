@@ -2,21 +2,20 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
-import { tb_bill_of_materials } from "schema/tb_bill_of_materials";
-import { tb_customer } from "schema/tb_customer";
-import { tb_group1 } from "schema/tb_group1";
-import { tb_group2 } from "schema/tb_group2";
-import { tb_inventory } from "schema/tb_inventory";
-import { tb_manager } from "schema/tb_manager";
-import { tb_list_price } from "schema/tb_list_price";
-import { tb_part_type } from "schema/tb_part_type";
-import { tb_part } from "schema/tb_part";
-import { tb_transfer_in } from "schema/tb_transfer_in";
-import { tb_transfer_out } from "schema/tb_transfer_out";
-import { tb_transfer_type } from "schema/tb_transfer_type";
-import { tb_unit } from "schema/tb_unit";
-import { tb_warehouse } from "schema/tb_warehouse";
-import { tb_work_order } from "schema/tb_work_order";
+import { bill_of_materials } from "schema/bill_of_materials";
+import { customer } from "schema/customer";
+import { group1 } from "schema/group1";
+import { group2 } from "schema/group2";
+import { inventory } from "schema/inventory";
+import { list_price } from "schema/list_price";
+import { part } from "schema/part";
+import { part_type } from "schema/part_type";
+import { transfer_in } from "schema/transfer_in";
+import { transfer_out } from "schema/transfer_out";
+import { transfer_type } from "schema/transfer_type";
+import { unit } from "schema/unit";
+import { warehouse } from "schema/warehouse";
+import { work_order } from "schema/work_order";
 
 const name = "realm";
 const SERVER_URL = "http://localhost:3002";
@@ -34,21 +33,20 @@ export type RealmState = {
   error: any;
   // 데이터베이스 컬렉션들
   database: {
-    [COLLECTION_NAME.tb_bill_of_materials]: tb_bill_of_materials[];
-    [COLLECTION_NAME.tb_customer]: tb_customer[];
-    [COLLECTION_NAME.tb_group1]: tb_group1[];
-    [COLLECTION_NAME.tb_group2]: tb_group2[];
-    [COLLECTION_NAME.tb_inventory]: tb_inventory[];
-    [COLLECTION_NAME.tb_manager]: tb_manager[];
-    [COLLECTION_NAME.tb_list_price]: tb_list_price[];
-    [COLLECTION_NAME.tb_part_type]: tb_part_type[];
-    [COLLECTION_NAME.tb_part]: tb_part[];
-    [COLLECTION_NAME.tb_transfer_in]: tb_transfer_in[];
-    [COLLECTION_NAME.tb_transfer_out]: tb_transfer_out[];
-    [COLLECTION_NAME.tb_transfer_type]: tb_transfer_type[];
-    [COLLECTION_NAME.tb_unit]: tb_unit[];
-    [COLLECTION_NAME.tb_warehouse]: tb_warehouse[];
-    [COLLECTION_NAME.tb_work_order]: tb_work_order[];
+    [COLLECTION_NAME.bill_of_materials]: bill_of_materials[];
+    [COLLECTION_NAME.customer]: customer[];
+    [COLLECTION_NAME.group1]: group1[];
+    [COLLECTION_NAME.group2]: group2[];
+    [COLLECTION_NAME.inventory]: inventory[];
+    [COLLECTION_NAME.list_price]: list_price[];
+    [COLLECTION_NAME.part_type]: part_type[];
+    [COLLECTION_NAME.part]: part[];
+    [COLLECTION_NAME.transfer_in]: transfer_in[];
+    [COLLECTION_NAME.transfer_out]: transfer_out[];
+    [COLLECTION_NAME.transfer_type]: transfer_type[];
+    [COLLECTION_NAME.unit]: unit[];
+    [COLLECTION_NAME.warehouse]: warehouse[];
+    [COLLECTION_NAME.work_order]: work_order[];
   };
 };
 
@@ -58,21 +56,20 @@ const initialState: RealmState = {
   loggedIn: false,
   error: undefined,
   database: {
-    [COLLECTION_NAME.tb_bill_of_materials]: [],
-    [COLLECTION_NAME.tb_customer]: [],
-    [COLLECTION_NAME.tb_group1]: [],
-    [COLLECTION_NAME.tb_group2]: [],
-    [COLLECTION_NAME.tb_inventory]: [],
-    [COLLECTION_NAME.tb_manager]: [],
-    [COLLECTION_NAME.tb_list_price]: [],
-    [COLLECTION_NAME.tb_part_type]: [],
-    [COLLECTION_NAME.tb_part]: [],
-    [COLLECTION_NAME.tb_transfer_in]: [],
-    [COLLECTION_NAME.tb_transfer_out]: [],
-    [COLLECTION_NAME.tb_transfer_type]: [],
-    [COLLECTION_NAME.tb_unit]: [],
-    [COLLECTION_NAME.tb_warehouse]: [],
-    [COLLECTION_NAME.tb_work_order]: [],
+    [COLLECTION_NAME.bill_of_materials]: [],
+    [COLLECTION_NAME.customer]: [],
+    [COLLECTION_NAME.group1]: [],
+    [COLLECTION_NAME.group2]: [],
+    [COLLECTION_NAME.inventory]: [],
+    [COLLECTION_NAME.list_price]: [],
+    [COLLECTION_NAME.part_type]: [],
+    [COLLECTION_NAME.part]: [],
+    [COLLECTION_NAME.transfer_in]: [],
+    [COLLECTION_NAME.transfer_out]: [],
+    [COLLECTION_NAME.transfer_type]: [],
+    [COLLECTION_NAME.unit]: [],
+    [COLLECTION_NAME.warehouse]: [],
+    [COLLECTION_NAME.work_order]: [],
   },
 };
 
@@ -155,14 +152,15 @@ export const getData = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      let data: any[] = [];
+      let response: AxiosResponse<any, any>;
+      let route = collectionName as string;
 
-      const response = await axios.get(`${SERVER_URL}/api/${collectionName}`);
-      data = response.data.results;
+      route = route.replaceAll("_", "-");
+      response = await axios.get(`${SERVER_URL}/${route}/all`);
 
       return {
         collectionName,
-        data,
+        data: response.data.results,
       };
     } catch (error) {
       return rejectWithValue(error);
@@ -184,7 +182,6 @@ export const insertData = createAsyncThunk(
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
-      if (route.startsWith("tb_")) route = route.replace("tb_", "");
       route = route.replaceAll("_", "-");
       response = await axios.get(`${SERVER_URL}/${route}/create`, {
         params: props.document,
@@ -213,7 +210,6 @@ export const updateData = createAsyncThunk(
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
-      if (route.startsWith("tb_")) route = route.replace("tb_", "");
       route = route.replaceAll("_", "-");
       response = await axios.get(`${SERVER_URL}/${route}/update`, {
         params: props.update,

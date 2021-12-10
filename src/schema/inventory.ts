@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_inventory = {
+export type inventory = {
   inv_month?: string;
   part_id: number;
   warehouse_id: number;
@@ -11,8 +11,8 @@ export type tb_inventory = {
   status: boolean;
 };
 
-export const tb_inventorySchema: schemaType = {
-  name: "tb_inventory",
+export const inventorySchema: schemaType = {
+  name: "inventory",
   properties: {
     inv_month: {
       type: "string",
@@ -23,7 +23,7 @@ export const tb_inventorySchema: schemaType = {
       isNotNull: true,
       isPrimary: true,
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },
@@ -33,7 +33,7 @@ export const tb_inventorySchema: schemaType = {
       isNotNull: true,
       isPrimary: true,
       foreign: {
-        table: "tb_warehouse",
+        table: "warehouse",
         key: "warehouse_id",
         display: "warehouse_name",
       },

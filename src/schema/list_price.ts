@@ -1,21 +1,21 @@
 import { schemaType } from "./index";
 
-export type tb_list_price = {
+export type list_price = {
   part_id: number;
   start_date: string;
   end_date: string;
   list_price: number;
 };
 
-export const tb_list_priceSchema: schemaType = {
-  name: "tb_list_price",
+export const list_priceSchema: schemaType = {
+  name: "list_price",
   properties: {
     part_id: {
       type: "number",
       isPrimary: true,
       isNotNull: true,
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },

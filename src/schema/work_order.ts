@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_work_order = {
+export type work_order = {
   work_order_id: number;
   work_order_number?: string;
   customer_id?: string;
@@ -12,8 +12,8 @@ export type tb_work_order = {
   remark?: string;
 };
 
-export const tb_work_orderSchema: schemaType = {
-  name: "tb_work_order",
+export const work_orderSchema: schemaType = {
+  name: "work_order",
   properties: {
     work_order_id: {
       type: "number",
@@ -30,7 +30,7 @@ export const tb_work_orderSchema: schemaType = {
     customer_id: {
       type: "string",
       foreign: {
-        table: "tb_customer",
+        table: "customer",
         key: "customer_id",
         display: "customer_name",
       },
@@ -38,7 +38,7 @@ export const tb_work_orderSchema: schemaType = {
     part_id: {
       type: "number",
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },

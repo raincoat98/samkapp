@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_transfer_in = {
+export type transfer_in = {
   transfer_in_id: number;
   transfer_date: string;
   transfer_type_id: string;
@@ -14,8 +14,8 @@ export type tb_transfer_in = {
   work_order_id?: number;
 };
 
-export const tb_transfer_inSchema: schemaType = {
-  name: "tb_transfer_in",
+export const transfer_inSchema: schemaType = {
+  name: "transfer_in",
   properties: {
     transfer_in_id: {
       type: "number",
@@ -32,7 +32,7 @@ export const tb_transfer_inSchema: schemaType = {
       type: "string",
       isNotNull: true,
       foreign: {
-        table: "tb_transfer_type",
+        table: "transfer_type",
         key: "transfer_type_id",
         display: "transfer_type_name",
       },
@@ -41,7 +41,7 @@ export const tb_transfer_inSchema: schemaType = {
       type: "number",
       isNotNull: true,
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },
@@ -52,20 +52,28 @@ export const tb_transfer_inSchema: schemaType = {
     },
     unit_price: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     purchase_amont: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     outsourcing_unit_price: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     outsourcing_amont: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     warehouse_id: {
       type: "number",
       foreign: {
-        table: "tb_warehouse",
+        table: "warehouse",
         key: "warehouse_id",
         display: "warehouse_name",
       },
@@ -74,7 +82,7 @@ export const tb_transfer_inSchema: schemaType = {
     work_order_id: {
       type: "number",
       foreign: {
-        table: "tb_work_order",
+        table: "work_order",
         key: "work_order_id",
         display: "work_order_number",
       },

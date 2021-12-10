@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "components/Management/index";
-import { tb_warehouseSchema } from "schema/tb_warehouse";
+import { warehouseSchema } from "schema/warehouse";
 
 export default function WarehouseManagement() {
-  const collectionName = "tb_warehouse";
+  const collectionName = "warehouse";
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
@@ -12,7 +12,7 @@ export default function WarehouseManagement() {
   return (
     <Management
       title="창고 관리"
-      schema={tb_warehouseSchema}
+      schema={warehouseSchema}
       tableProps={{ data }}
     />
   );

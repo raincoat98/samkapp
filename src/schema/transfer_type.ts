@@ -1,14 +1,14 @@
 import { schemaType } from "./index";
 
-export type tb_transfer_type = {
+export type transfer_type = {
   transfer_type_id: string;
   transfer_type_name?: string;
   transfer_flag?: number;
   use_yn?: boolean;
 };
 
-export const tb_transfer_typeSchema: schemaType = {
-  name: "tb_transfer_type",
+export const transfer_typeSchema: schemaType = {
+  name: "transfer_type",
   properties: {
     transfer_type_id: {
       type: "string",

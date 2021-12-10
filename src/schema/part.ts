@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_part = {
+export type part = {
   part_id: number;
   part_number: string;
   part_name: string;
@@ -20,8 +20,8 @@ export type tb_part = {
   use_yn?: boolean;
 };
 
-export const tb_partSchema: schemaType = {
-  name: "tb_part",
+export const partSchema: schemaType = {
+  name: "part",
   properties: {
     part_id: {
       type: "number",
@@ -56,7 +56,7 @@ export const tb_partSchema: schemaType = {
       type: "string",
       isNotNull: true,
       foreign: {
-        table: "tb_part_type",
+        table: "part_type",
         key: "part_type_id",
         display: "part_type_name",
       },
@@ -65,7 +65,7 @@ export const tb_partSchema: schemaType = {
       type: "number",
       isNotNull: true,
       foreign: {
-        table: "tb_group2",
+        table: "group2",
         key: "group2_id",
         display: "group2_name",
       },
@@ -74,7 +74,7 @@ export const tb_partSchema: schemaType = {
       type: "number",
       isNotNull: true,
       foreign: {
-        table: "tb_warehouse",
+        table: "warehouse",
         key: "warehouse_id",
         display: "warehouse_name",
       },
@@ -82,7 +82,7 @@ export const tb_partSchema: schemaType = {
     bom_id: {
       type: "number",
       foreign: {
-        table: "tb_bill_of_materials",
+        table: "bill_of_materials",
         key: "bom_id",
         display: "bom_id",
       },
@@ -91,7 +91,7 @@ export const tb_partSchema: schemaType = {
       type: "string",
       isNotNull: true,
       foreign: {
-        table: "tb_unit",
+        table: "unit",
         key: "unit_id",
       },
     },

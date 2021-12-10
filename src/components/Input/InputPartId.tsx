@@ -2,8 +2,8 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { Box, Flex, Select, FormLabel } from "@chakra-ui/react";
-import { tb_group2 } from "schema/tb_group2";
-import { tb_part } from "schema/tb_part";
+import { group2 } from "schema/group2";
+import { part } from "schema/part";
 
 export default function InputPartId(props: {
   displayKey?: string;
@@ -14,27 +14,17 @@ export default function InputPartId(props: {
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
-  const partList = database.tb_part;
-  const group2List = database.tb_group2;
+  const partList = database.part;
+  const group2List = database.group2;
 
   // 필터된 품목 리스트
-  const [filteredPartList1, setFilteredPartList1] = React.useState<tb_part[]>(
-    []
-  );
-  const [filteredPartList2, setFilteredPartList2] = React.useState<tb_part[]>(
-    []
-  );
-  const [filteredPartList3, setFilteredPartList3] = React.useState<tb_part[]>(
-    []
-  );
-  const [filteredPartList4, setFilteredPartList4] = React.useState<tb_part[]>(
-    []
-  );
-  const [filteredPartList5, setFilteredPartList5] = React.useState<tb_part[]>(
-    []
-  );
+  const [filteredPartList1, setFilteredPartList1] = React.useState<part[]>([]);
+  const [filteredPartList2, setFilteredPartList2] = React.useState<part[]>([]);
+  const [filteredPartList3, setFilteredPartList3] = React.useState<part[]>([]);
+  const [filteredPartList4, setFilteredPartList4] = React.useState<part[]>([]);
+  const [filteredPartList5, setFilteredPartList5] = React.useState<part[]>([]);
 
-  const [group2Item, setGroup2Item] = React.useState<tb_group2>();
+  const [group2Item, setGroup2Item] = React.useState<group2>();
 
   const [partItemId, setPartItemId] = React.useState<number>();
   const [partItemSpec1, setPartItemSpec1] = React.useState<string>();

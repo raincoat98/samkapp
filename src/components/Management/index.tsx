@@ -93,22 +93,20 @@ export default function Management(props: {
   });
 
   // 스키마에서 react-table 헤더로 변환
-  function schemaToColums(props: { schema: schemaType; exclude?: string[] }) {
-    const { schema, exclude } = props;
+  function schemaToColums(props: { schema: schemaType }) {
+    const { schema } = props;
 
     const columns: Column[] = [];
 
     const properties: string[] = [];
-    for (const key in schema.properties) {
-      // 제외해야 할 키일 때 다음 항목으로
-      if (exclude?.includes(key)) continue;
-      properties.push(key);
-    }
+    for (const key in schema.properties) properties.push(key);
 
     for (let index = 0; index < properties.length; index++) {
       const key = properties[index];
       const property = schema.properties[key];
       const type = property.type;
+
+      if (property.isNotVisible) continue;
 
       let accessor: string | Accessor<{}> | undefined;
 

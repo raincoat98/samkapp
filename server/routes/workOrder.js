@@ -22,7 +22,7 @@ router.get("/all", (req, res) => {
       }
       console.log("select ok");
     }
-    res.send({ results });
+    res.send({ results: results[0] });
   });
 });
 
@@ -69,7 +69,7 @@ router.get("/update", (req, res) => {
     } else {
       console.log("update ok");
     }
-    res.send({ results });
+    res.send({ results: results[0] });
   });
 });
 

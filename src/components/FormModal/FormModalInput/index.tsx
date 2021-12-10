@@ -32,7 +32,7 @@ export default function FormModalInput(props: {
   if (property.foreign) {
     // 외부 테이블 참조
     if (
-      property.foreign.table === "tb_part" &&
+      property.foreign.table === "part" &&
       property.foreign.key === "part_id"
     ) {
       element = (

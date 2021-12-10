@@ -70,6 +70,8 @@ export default function FormModal(props: FormModalProps) {
 
       // 직접 추가시에 데이터베이스에서 자동 생성되는 값은 넘어감
       if (props.mode === "insert" && property.isAutoSet) continue;
+      // 아예 보여주지 않을 값도 넘어감
+      if (property.isNotVisible) continue;
 
       // 필수값 여부
       const isRequired = property.isNotNull;

@@ -21,7 +21,7 @@ router.get("/all", (req, res) => {
         dataList.push(data);
       }
     }
-    res.send({ results });
+    res.send({ results: results[0] });
     console.log("select ok");
   });
 });

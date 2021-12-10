@@ -2,11 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "components/Management/index";
-import { tb_work_orderSchema } from "schema/tb_work_order";
+import { work_orderSchema } from "schema/work_order";
 import moment from "moment";
 
 export default function WorkOrderManagement() {
-  const collectionName = "tb_work_order";
+  const collectionName = "work_order";
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const data = useSelector(
@@ -30,7 +30,7 @@ export default function WorkOrderManagement() {
   return (
     <Management
       title="작업 지시 관리"
-      schema={tb_work_orderSchema}
+      schema={work_orderSchema}
       tabList={["현재", "이전"]}
       onTabChange={(index: number) => setTabIndex(index)}
       tableProps={{ data: tabIndex === 0 ? latestDataList : oldDataList }}

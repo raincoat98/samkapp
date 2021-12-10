@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_group2 = {
+export type group2 = {
   group2_id: number;
   group2_name: string;
   spec1?: string;
@@ -15,8 +15,8 @@ export type tb_group2 = {
   use_yn?: boolean;
 };
 
-export const tb_group2Schema: schemaType = {
-  name: "tb_group2",
+export const group2Schema: schemaType = {
+  name: "group2",
   properties: {
     group2_id: {
       type: "number",
@@ -47,7 +47,7 @@ export const tb_group2Schema: schemaType = {
       type: "number",
       isNotNull: true,
       foreign: {
-        table: "tb_group1",
+        table: "group1",
         key: "group1_id",
         display: "group1_name",
       },

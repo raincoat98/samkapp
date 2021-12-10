@@ -8,7 +8,7 @@ router.get("/all", (req, res) => {
   var dataList = [];
   const sql =
     "SELECT part_id, part_number, part_name, spec1, spec2, spec3, spec4, spec5, part_type_id, group2_id, warehouse_id, " +
-    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date" +
+    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date " +
     "FROM tb_part";
   connection.query(sql, function (error, results) {
     if (error) {

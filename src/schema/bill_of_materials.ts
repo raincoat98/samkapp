@@ -1,6 +1,6 @@
 import { schemaType } from "./index";
 
-export type tb_bill_of_materials = {
+export type bill_of_materials = {
   bom_id: number;
   product_id?: number;
   assembly_id?: number;
@@ -11,8 +11,8 @@ export type tb_bill_of_materials = {
   assembly_Qty?: number;
 };
 
-export const tb_bill_of_materialsSchema: schemaType = {
-  name: "tb_bill_of_materials",
+export const bill_of_materialsSchema: schemaType = {
+  name: "bill_of_materials",
   properties: {
     bom_id: {
       type: "number",
@@ -22,7 +22,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
     product_id: {
       type: "number",
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },
@@ -30,7 +30,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
     assembly_id: {
       type: "number",
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },
@@ -48,7 +48,7 @@ export const tb_bill_of_materialsSchema: schemaType = {
     unit_id: {
       type: "string",
       foreign: {
-        table: "tb_unit",
+        table: "unit",
         key: "unit_id",
         display: "unit_name",
       },

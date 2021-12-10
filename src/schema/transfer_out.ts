@@ -1,9 +1,10 @@
 import { schemaType } from "./index";
 
-export type tb_transfer_out = {
+export type transfer_out = {
   transfer_out_id: number;
   transfer_date: string;
   transfer_type_id: string;
+  priorities: number;
   part_id: number;
   quantity?: number;
   unit_price?: number;
@@ -12,14 +13,15 @@ export type tb_transfer_out = {
   work_order_id?: string;
 };
 
-export const tb_transfer_outSchema: schemaType = {
-  name: "tb_transfer_out",
+export const transfer_outSchema: schemaType = {
+  name: "transfer_out",
   properties: {
     transfer_out_id: {
       type: "number",
       isPrimary: true,
       isNotNull: true,
       isAutoSet: true,
+      isNotVisible: true,
     },
     transfer_date: {
       type: "string",
@@ -30,33 +32,56 @@ export const tb_transfer_outSchema: schemaType = {
       type: "string",
       isNotNull: true,
       foreign: {
-        table: "tb_transfer_type",
+        table: "transfer_type",
         key: "transfer_type_id",
         display: "transfer_type_name",
       },
+    },
+    priorities: {
+      type: "number",
+      default: 0,
+      select: [
+        {
+          name: "보통",
+          value: 0,
+        },
+        {
+          name: "긴급",
+          value: 1,
+        },
+        {
+          name: "기타",
+          value: 2,
+        },
+      ],
     },
     part_id: {
       type: "number",
       isNotNull: true,
       foreign: {
-        table: "tb_part",
+        table: "part",
         key: "part_id",
         display: "part_name",
       },
     },
     quantity: {
       type: "number",
+      isNotNull: true,
     },
     unit_price: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     release_amont: {
       type: "number",
+      isAutoSet: true,
+      isReadOnly: true,
     },
     warehouse_id: {
       type: "number",
       foreign: {
-        table: "tb_warehouse",
+        table: "warehouse",
         key: "warehouse_id",
         display: "warehouse_name",
       },
@@ -65,7 +90,7 @@ export const tb_transfer_outSchema: schemaType = {
     work_order_id: {
       type: "string",
       foreign: {
-        table: "tb_work_order",
+        table: "work_order",
         key: "work_order_id",
         display: "work_order_number",
       },

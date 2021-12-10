@@ -18,6 +18,7 @@ export type propertyType = {
     key: string; // 외부 테이블에서 참조하는 프로퍼티의 키
     display?: string; // 외부 테이블 선택시 유저가 보게 될 프로퍼티의 키
   };
+  isNotVisible?: boolean; // 유저에게 보여지지 않는지 여부 (추가, 수정 모두)
   isPrimary?: boolean; // 기본 키 여부
   isAutoSet?: boolean; // 데이터베이스 내부에서 자동으로 입력하는지 여부
   isNotNull?: boolean; // 필수로 입력되어야 하는지 여부
@@ -30,21 +31,20 @@ export type selectType = { name?: string; value: any };
 
 // 데이터베이스 컬렉션 이름
 export const COLLECTION_NAME = {
-  tb_bill_of_materials: "tb_bill_of_materials",
-  tb_customer: "tb_customer",
-  tb_group1: "tb_group1",
-  tb_group2: "tb_group2",
-  tb_inventory: "tb_inventory",
-  tb_list_price: "tb_list_price",
-  tb_manager: "tb_manager",
-  tb_part_type: "tb_part_type",
-  tb_part: "tb_part",
-  tb_transfer_in: "tb_transfer_in",
-  tb_transfer_out: "tb_transfer_out",
-  tb_transfer_type: "tb_transfer_type",
-  tb_unit: "tb_unit",
-  tb_warehouse: "tb_warehouse",
-  tb_work_order: "tb_work_order",
+  bill_of_materials: "bill_of_materials",
+  customer: "customer",
+  group1: "group1",
+  group2: "group2",
+  inventory: "inventory",
+  list_price: "list_price",
+  part_type: "part_type",
+  part: "part",
+  transfer_in: "transfer_in",
+  transfer_out: "transfer_out",
+  transfer_type: "transfer_type",
+  unit: "unit",
+  warehouse: "warehouse",
+  work_order: "work_order",
 } as const;
 export type COLLECTION_NAME_TYPE =
   typeof COLLECTION_NAME[keyof typeof COLLECTION_NAME];
