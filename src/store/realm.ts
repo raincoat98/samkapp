@@ -227,29 +227,24 @@ export const updateData = createAsyncThunk(
 export const deleteData = createAsyncThunk(
   `${name}/deleteData`,
   async (
-    props: { collectionName: COLLECTION_NAME_TYPE; ids: string[] },
+    props: {
+      collectionName: COLLECTION_NAME_TYPE;
+      items: Record<string, any>[];
+    },
     { dispatch, rejectWithValue }
   ) => {
-    // const { collectionName, ids } = props;
-
-    // const filter = {
-    //   _id: { $in: ids },
-    // };
-
-    try {
-      // const result = await app.currentUser?.functions.actionFunc({
-      //   type: "deleteData",
-      //   collectionName,
-      //   filter,
-      // });
-
-      // await dispatch(getData(collectionName));
-
-      // return result;
-      return;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+    // try {
+    //   let response: AxiosResponse<any, any>;
+    //   let route = props.collectionName as string;
+    //   route = route.replaceAll("_", "-");
+    //   response = await axios.get(`${SERVER_URL}/${route}/delete`, {
+    //     params: props.items,
+    //   });
+    //   await dispatch(getData(props.collectionName));
+    //   return { response };
+    // } catch (error) {
+    //   return rejectWithValue(error);
+    // }
   }
 );
 

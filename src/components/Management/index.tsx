@@ -66,17 +66,14 @@ export default function Management(props: {
       if (table && Object.entries(state.selectedRowIds).length !== 0) {
         const selectedRowIds = state.selectedRowIds;
 
-        const selectedItemIdList: any[] = [];
+        const selectedItemList: any[] = [];
         const rowsById = table.rowsById;
 
         for (const key in selectedRowIds) {
-          if (rowsById[key]) {
-            const origData = rowsById[key].original as Record<string, any>;
-            selectedItemIdList.push(origData._id);
-          }
+          if (rowsById[key]) selectedItemList.push(rowsById[key].original);
         }
 
-        setCheckedRows(selectedItemIdList);
+        setCheckedRows(selectedItemList);
       } else setCheckedRows([]);
     },
     []
@@ -246,12 +243,12 @@ export default function Management(props: {
 
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
-    // dispatch(
-    //   deleteData({
-    //     collectionName,
-    //     ids: checkedRows,
-    //   })
-    // );
+    dispatch(
+      deleteData({
+        collectionName: schema.name,
+        items: checkedRows,
+      })
+    );
   }
 
   return (
