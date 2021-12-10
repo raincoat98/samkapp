@@ -33,21 +33,16 @@ export default function Management(props: {
   title: string; // 브라우저 페이지 이름
   schema: schemaType; // 테이블 스키마
   tabList?: string[];
-  filterList?: { schema: schemaType; key: string; display: string }[];
   onTabChange?: (tabIndex: number) => void;
   tableProps: TableComponentProps;
 }) {
-  const { title, schema, tabList, onTabChange, filterList, tableProps } = props;
+  const { title, schema, tabList, onTabChange, tableProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
-  const tableDataList = tableProps.data;
-  const [filteredDataList, setFilteredDataList] = React.useState<any[]>([
-    ...tableDataList,
-  ]);
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -188,7 +183,7 @@ export default function Management(props: {
   };
   mainTable = TableComponent({
     columns,
-    data: filteredDataList,
+    data: tableProps.data,
     onRowClick: onTableRowClick,
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
@@ -206,13 +201,6 @@ export default function Management(props: {
   function refreshData() {
     // 현재 테이블 데이터 새로고침
     dispatch(getData(schema.name));
-
-    // 필터 데이터 새로고침
-    if (filterList) {
-      for (let index = 0; index < filterList.length; index++) {
-        dispatch(getData(filterList[index].schema.name));
-      }
-    }
   }
 
   // 데이터베이스에 데이터 insert 준비
@@ -299,66 +287,35 @@ export default function Management(props: {
         <Flex direction="column" width="100%" height="100%">
           {/* 탭 추가 */}
           {Array.isArray(tabList) ? (
-            <Tabs
-              onChange={(tabIndex) => {
-                if (onTabChange) onTabChange(tabIndex);
-              }}
-            >
-              <TabList>
+            tabList.length > 5 ? (
+              <Select
+                onChange={(event) => {
+                  if (onTabChange) onTabChange(Number(event.target.value));
+                }}
+              >
                 {tabList?.map((tab, index) => (
-                  <Tab key={index}>{tab}</Tab>
+                  <option key={index} value={index}>
+                    {tab}
+                  </option>
                 ))}
-              </TabList>
-            </Tabs>
+              </Select>
+            ) : (
+              <Tabs
+                onChange={(tabIndex) => {
+                  if (onTabChange) onTabChange(tabIndex);
+                }}
+              >
+                <TabList>
+                  {tabList?.map((tab, index) => (
+                    <Tab key={index}>{tab}</Tab>
+                  ))}
+                </TabList>
+              </Tabs>
+            )
           ) : (
             ""
           )}
 
-          {/* 필터 추가 */}
-          {Array.isArray(filterList) ? (
-            <Flex>
-              {filterList?.map((filterItem, index) => {
-                const filterDataList: any[] = [
-                  ...database[filterItem.schema.name],
-                ];
-
-                return (
-                  <Select
-                    onChange={(event) => {
-                      const dataList = [...tableDataList];
-                      // 선택 해제시
-                      if (!event.target.value) {
-                        setFilteredDataList(dataList);
-                      } else {
-                        setFilteredDataList(
-                          dataList.filter(
-                            (item: any) =>
-                              item[filterItem.key] ===
-                              filterDataList[Number(event.target.value)][
-                                filterItem.key
-                              ]
-                          )
-                        );
-                      }
-                    }}
-                    placeholder={translate(`${filterItem.schema.name}.name`)}
-                    size="sm"
-                    key={index}
-                  >
-                    {filterDataList.map((item: any, index) => {
-                      return (
-                        <option value={index} key={index}>
-                          {item[filterItem.display]}
-                        </option>
-                      );
-                    })}
-                  </Select>
-                );
-              })}
-            </Flex>
-          ) : (
-            ""
-          )}
           {mainTable.component.box}
         </Flex>
       </PageContainer>
