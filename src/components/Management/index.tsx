@@ -102,49 +102,63 @@ export default function Management(props: {
 
       let accessor: string | Accessor<{}> | undefined;
 
-      switch (type) {
-        case "string":
-        case "number": {
-          // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
-          if (property.foreign) {
-            accessor = (originalRow: Record<string, any>) => {
-              const foreign = property.foreign;
-              if (foreign?.table) {
-                const dataList = [...database[foreign.table]];
-                const item: any = dataList.filter((data: any) => {
-                  return data[foreign.key] === originalRow[foreign.key];
-                })[0];
-                if (item) {
-                  return foreign.display
-                    ? item[foreign.display]
-                    : item[foreign.key];
+      // 선택 input일 경우 (예: 우선순위)
+      if (property.select) {
+        const select = property.select;
+        accessor = (originalRow) => {
+          const origRow = originalRow as Record<string, any>;
+          const selectedData = origRow[key];
+          const selected = select.filter((data) => {
+            return data.value === selectedData;
+          })[0];
+          if (selected) return selected.name;
+          else return selectedData;
+        };
+      } else {
+        switch (type) {
+          case "string":
+          case "number": {
+            // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
+            if (property.foreign) {
+              accessor = (originalRow: Record<string, any>) => {
+                const foreign = property.foreign;
+                if (foreign?.table) {
+                  const dataList = [...database[foreign.table]];
+                  const item: any = dataList.filter((data: any) => {
+                    return data[foreign.key] === originalRow[foreign.key];
+                  })[0];
+                  if (item) {
+                    return foreign.display
+                      ? item[foreign.display]
+                      : item[foreign.key];
+                  }
                 }
-              }
+              };
+            } else accessor = key;
+            break;
+          }
+          case "date": {
+            accessor = (originalRow) => {
+              const origRow = originalRow as Record<string, any>;
+              const isMonth =
+                property.type === "month" || property.as === "month";
+              return origRow[key]
+                ? isMonth
+                  ? moment(origRow[key]).format("YYYY-MM") // 년월
+                  : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
+                : "";
             };
-          } else accessor = key;
-          break;
-        }
-        case "date": {
-          accessor = (originalRow) => {
-            const origRow = originalRow as Record<string, any>;
-            const isMonth =
-              property.type === "month" || property.as === "month";
-            return origRow[key]
-              ? isMonth
-                ? moment(origRow[key]).format("YYYY-MM") // 년월
-                : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
-              : "";
-          };
-          break;
-        }
-        case "boolean": {
-          accessor = (originalRow) => {
-            const origRow = originalRow as Record<string, any>;
-            const boolData = origRow[key] as boolean;
-            if (boolData) return "예";
-            else return "아니오";
-          };
-          break;
+            break;
+          }
+          case "boolean": {
+            accessor = (originalRow) => {
+              const origRow = originalRow as Record<string, any>;
+              const boolData = origRow[key] as boolean;
+              if (boolData) return "예";
+              else return "아니오";
+            };
+            break;
+          }
         }
       }
 
