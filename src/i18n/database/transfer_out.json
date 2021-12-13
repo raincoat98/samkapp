@@ -4,6 +4,8 @@
     "transfer_out_id": "출고번호",
     "transfer_date": "출고일자",
     "transfer_type_id": "이동형태코드",
+    "plan_date": "계획일자",
+    "customer_id": "거래처",
     "part_id": "부품코드",
     "priorities": "우선순위",
     "quantity": "출고수량",
