@@ -102,13 +102,14 @@ export const transfer_outSchema: schemaType = {
       isNotNull: true,
     },
     work_order_id: {
-      type: "string",
+      type: "number",
       foreign: {
         table: "work_order",
         key: "work_order_id",
         display: "work_order_number",
       },
       isAutoSet: true,
+      isReadOnly: true,
     },
   },
 };
