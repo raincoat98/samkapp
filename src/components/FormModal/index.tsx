@@ -6,7 +6,6 @@ import { Box, Stack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
 import FormModalInput from "./FormModalInput";
-import FormModalInfo, { FormModalInfoData } from "./FormModalInfo";
 import FormModalPopup from "./FormModalPopup";
 import FormModalAlert from "./FormModalAlert";
 
@@ -46,10 +45,6 @@ export default function FormModal(props: FormModalProps) {
 
   // 필드 값
   const [inputList, setInputList] = React.useState<formItem[]>([]);
-  // 수정 불가능 값
-  const [disabledDataList, setDisabledDataList] = React.useState<
-    FormModalInfoData[]
-  >([]);
 
   const [isFormModalAlertOpen, setIsFormModalAlertOpen] =
     React.useState<boolean>(false);
@@ -62,7 +57,6 @@ export default function FormModal(props: FormModalProps) {
     // 초기화
     setEditedDocument({});
     setInputList([]);
-    setDisabledDataList([]);
 
     for (const key in props.schema.properties) {
       // 프로퍼티
@@ -76,11 +70,8 @@ export default function FormModal(props: FormModalProps) {
       // 필수값 여부
       const isRequired = property.isNotNull;
 
-      // 읽기 전용 값인지 판단
-      const isReadonly = property.isReadOnly;
-
       // 비활성화된 값인지 여부
-      let disabled = false;
+      let disabled = property.isReadOnly as boolean;
       // 기본키는 수정할 수 없으므로 수정 불가능하게
       if (props.mode === "update" && property.isPrimary) disabled = true;
 
@@ -100,38 +91,26 @@ export default function FormModal(props: FormModalProps) {
         }));
       }
 
-      if (!isReadonly) {
-        const element = (
-          <FormModalInput
-            name={`${props.schema.name}.properties.${key}`}
-            property={property}
-            onChange={(value) => editData({ key, value })}
-            defaultValue={defaultValue}
-            isDisabled={disabled}
-            isURL={key.includes("homepage") || key.includes("url")}
-          />
-        );
+      const element = (
+        <FormModalInput
+          name={`${props.schema.name}.properties.${key}`}
+          property={property}
+          onChange={(value) => editData({ key, value })}
+          defaultValue={defaultValue}
+          isDisabled={disabled}
+          isURL={key.includes("homepage") || key.includes("url")}
+        />
+      );
 
-        // 사용자가 직접 수정해야 하거나 봐야하는 값들
-        setInputList((state) => [
-          ...state,
-          {
-            name: key,
-            element,
-            isRequired,
-          },
-        ]);
-      } else {
-        // 사용자가 수정할 때 보여질 필요 없는 값들
-        setDisabledDataList((state) => [
-          ...state,
-          {
-            key,
-            type: property.type,
-            value: defaultValue,
-          },
-        ]);
-      }
+      // 사용자가 직접 수정해야 하거나 봐야하는 값들
+      setInputList((state) => [
+        ...state,
+        {
+          name: key,
+          element,
+          isRequired,
+        },
+      ]);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,14 +151,6 @@ export default function FormModal(props: FormModalProps) {
           props.onClose();
         }
       }}
-      // 정보 값(생성날짜, 수정자 등)은 수정 모드일 때만 추가
-      info={
-        props.mode === "update" ? (
-          <FormModalInfo dataList={disabledDataList} />
-        ) : (
-          ""
-        )
-      }
     >
       <FormModalAlert
         isOpen={isFormModalAlertOpen}
