@@ -34,6 +34,7 @@ export const work_orderSchema: schemaType = {
         key: "customer_id",
         display: "customer_name",
       },
+      isReadOnly: true,
     },
     part_id: {
       type: "number",
@@ -42,13 +43,16 @@ export const work_orderSchema: schemaType = {
         key: "part_id",
         display: "part_name",
       },
+      isReadOnly: true,
     },
     quantity: {
       type: "number",
+      isReadOnly: true,
     },
     plan_date: {
       type: "string",
       as: "date",
+      isReadOnly: true,
     },
     priorities: {
       type: "number",
@@ -67,6 +71,7 @@ export const work_orderSchema: schemaType = {
           value: 2,
         },
       ],
+      isReadOnly: true,
     },
     status: {
       type: "number",
@@ -92,6 +97,7 @@ export const work_orderSchema: schemaType = {
     remark: {
       type: "string",
       isTextarea: true,
+      isReadOnly: true,
     },
   },
 };
