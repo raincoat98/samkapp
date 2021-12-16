@@ -26,7 +26,13 @@ export type schemaType = {
   primaryKey: string;
 };
 
+export type historyType = {
+  name: string;
+  props: any;
+};
+
 export type RealmState = {
+  history: historyType[];
   userName: string;
   loading: boolean;
   loggedIn: boolean;
@@ -51,6 +57,7 @@ export type RealmState = {
 };
 
 const initialState: RealmState = {
+  history: [],
   userName: "",
   loading: false,
   loggedIn: false,
@@ -151,6 +158,13 @@ export const getData = createAsyncThunk(
     collectionName: COLLECTION_NAME_TYPE,
     { dispatch, rejectWithValue }
   ) => {
+    dispatch(
+      addHistory({
+        name: "getData",
+        props: collectionName,
+      })
+    );
+
     try {
       let response: AxiosResponse<any, any>;
       let route = collectionName as string;
@@ -178,6 +192,13 @@ export const insertData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
+    dispatch(
+      addHistory({
+        name: "insertData",
+        props,
+      })
+    );
+
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -206,6 +227,13 @@ export const updateData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
+    dispatch(
+      addHistory({
+        name: "updateData",
+        props,
+      })
+    );
+
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -233,6 +261,12 @@ export const deleteData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
+    dispatch(
+      addHistory({
+        name: "deleteData",
+        props,
+      })
+    );
     // try {
     //   let response: AxiosResponse<any, any>;
     //   let route = props.collectionName as string;
@@ -265,7 +299,11 @@ export const distinct = createAsyncThunk(
 const userSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    addHistory(state, action: PayloadAction<historyType>) {
+      state.history.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -361,5 +399,6 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer } = userSlice;
+const { reducer, actions } = userSlice;
+export const { addHistory } = actions;
 export default reducer;
