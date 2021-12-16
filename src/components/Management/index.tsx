@@ -90,97 +90,88 @@ export default function Management(props: {
 
     const columns: Column[] = [];
 
-    const properties: string[] = [];
-    for (const key in schema.properties) properties.push(key);
+    for (const key in schema.properties) {
+      if (Object.prototype.hasOwnProperty.call(schema.properties, key)) {
+        const property = schema.properties[key];
+        const type = property.type;
 
-    for (let index = 0; index < properties.length; index++) {
-      const key = properties[index];
-      const property = schema.properties[key];
-      const type = property.type;
+        if (property.isNotVisible) continue;
 
-      if (property.isNotVisible) continue;
+        let accessor: string | Accessor<{}> | undefined;
 
-      let accessor: string | Accessor<{}> | undefined;
-
-      // 선택 input일 경우 (예: 우선순위)
-      if (property.select) {
-        const select = property.select;
-        accessor = (originalRow) => {
-          const origRow = originalRow as Record<string, any>;
-          const selectedData = origRow[key];
-          const selected = select.filter((data) => {
-            return data.value === selectedData;
-          })[0];
-          if (selected) return selected.name;
-          else return selectedData;
-        };
-      } else {
-        switch (type) {
-          case "string":
-          case "number": {
-            // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
-            if (property.foreign) {
-              accessor = (originalRow: Record<string, any>) => {
-                const foreign = property.foreign;
-                if (foreign?.table) {
-                  const dataList = [...database[foreign.table]];
-                  const item: any = dataList.filter((data: any) => {
-                    return data[foreign.key] === originalRow[foreign.key];
-                  })[0];
-                  if (item) {
-                    return foreign.display
-                      ? item[foreign.display]
-                      : item[foreign.key];
+        // 선택 input일 경우 (예: 우선순위)
+        if (property.select) {
+          const select = property.select;
+          accessor = (originalRow) => {
+            const origRow = originalRow as Record<string, any>;
+            const selectedData = origRow[key];
+            const selected = select.filter((data) => {
+              return data.value === selectedData;
+            })[0];
+            if (selected) return selected.name;
+            else return selectedData;
+          };
+        } else {
+          switch (type) {
+            case "string":
+            case "number": {
+              // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
+              if (property.foreign) {
+                accessor = (originalRow: Record<string, any>) => {
+                  const foreign = property.foreign;
+                  if (foreign?.table) {
+                    const dataList = [...database[foreign.table]];
+                    const item: any = dataList.filter((data: any) => {
+                      return data[foreign.key] === originalRow[foreign.key];
+                    })[0];
+                    if (item) {
+                      return foreign.display
+                        ? item[foreign.display]
+                        : item[foreign.key];
+                    }
                   }
-                }
+                };
+              } else accessor = key;
+              break;
+            }
+            case "date": {
+              accessor = (originalRow) => {
+                const origRow = originalRow as Record<string, any>;
+                const isMonth =
+                  property.type === "month" || property.as === "month";
+                return origRow[key]
+                  ? isMonth
+                    ? moment(origRow[key]).format("YYYY-MM") // 년월
+                    : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
+                  : "";
               };
-            } else accessor = key;
-            break;
-          }
-          case "date": {
-            accessor = (originalRow) => {
-              const origRow = originalRow as Record<string, any>;
-              const isMonth =
-                property.type === "month" || property.as === "month";
-              return origRow[key]
-                ? isMonth
-                  ? moment(origRow[key]).format("YYYY-MM") // 년월
-                  : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
-                : "";
-            };
-            break;
-          }
-          case "boolean": {
-            accessor = (originalRow) => {
-              const origRow = originalRow as Record<string, any>;
-              const boolData = origRow[key] as boolean;
-              if (boolData) return "예";
-              else return "아니오";
-            };
-            break;
+              break;
+            }
+            case "boolean": {
+              accessor = (originalRow) => {
+                const origRow = originalRow as Record<string, any>;
+                const boolData = origRow[key] as boolean;
+                if (boolData) return "예";
+                else return "아니오";
+              };
+              break;
+            }
           }
         }
-      }
 
-      columns.push({
-        Header: key,
-        accessor,
-        width: 130,
-      });
+        // 헤더 번역
+        const header = translate(`${schema.name}.properties.${key}`);
+
+        columns.push({
+          Header: header,
+          accessor,
+          width: 130,
+        });
+      }
     }
 
     return columns;
   }
-
-  // 테이블 헤더 및 값 번역
-  Object.keys(columns).forEach((key) => {
-    const column = columns[Number(key)];
-
-    // 헤더 번역
-    column.Header = translate(
-      `${schema.name}.properties.${column.Header}`
-    ) as string;
-  });
 
   // 테이블 초기화
   let mainTable: {
