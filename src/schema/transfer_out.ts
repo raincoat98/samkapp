@@ -29,6 +29,8 @@ export const transfer_outSchema: schemaType = {
       type: "string",
       as: "date",
       isNotNull: true,
+      isAutoSet: true,
+      isReadOnly: true,
     },
     transfer_type_id: {
       type: "string",
@@ -60,6 +62,7 @@ export const transfer_outSchema: schemaType = {
     plan_date: {
       type: "string",
       as: "date",
+      default: new Date(),
     },
     customer_id: {
       type: "string",
