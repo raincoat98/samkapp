@@ -4,10 +4,7 @@ export type inventory = {
   inv_month?: string;
   part_id: number;
   warehouse_id: number;
-  lot_no?: number;
   quantity: number;
-  shelf?: string;
-  bin?: number;
   status: boolean;
 };
 
@@ -63,19 +60,10 @@ export const inventorySchema: schemaType = {
         display: "warehouse_name",
       },
     },
-    lot_no: {
-      type: "number",
-    },
     quantity: {
       type: "number",
       default: 0,
       isNotNull: true,
-    },
-    shelf: {
-      type: "string",
-    },
-    bin: {
-      type: "number",
     },
     status: {
       type: "boolean",
