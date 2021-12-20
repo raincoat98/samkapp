@@ -282,20 +282,6 @@ export const deleteData = createAsyncThunk(
   }
 );
 
-// 컬렉션 특정값 추출
-export const distinct = createAsyncThunk(
-  `${name}/distinct`,
-  async (
-    props: {
-      collectionName: COLLECTION_NAME_TYPE;
-      field: string;
-      query?: Record<string, any>;
-      options?: object;
-    },
-    { rejectWithValue }
-  ) => {}
-);
-
 const userSlice = createSlice({
   name,
   initialState,
@@ -372,10 +358,6 @@ const userSlice = createSlice({
       )
       // 컬렉션 데이터 삭제
       .addCase(deleteData.fulfilled.type, (state) => {
-        state.loading = false;
-      })
-      // 컬렉션 특정값 추출
-      .addCase(distinct.fulfilled.type, (state) => {
         state.loading = false;
       })
 

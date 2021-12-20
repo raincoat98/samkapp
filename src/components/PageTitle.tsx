@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { toggleSidebar } from "store/system";
 import { menu } from "utils/icons";
 import colors from "utils/colors";
 import {
@@ -42,16 +43,14 @@ export default function PageTitle(props: HeadingProps) {
       <Flex align="center">
         <IconButton
           icon={<Icon as={menu} />}
-          onClick={() =>
-            dispatch({
-              type: "system/toggleSidebar",
-            })
-          }
+          onClick={() => dispatch(toggleSidebar())}
           mr={3}
           variant="ghost"
           aria-label="사이드바 전환"
         />
-        <Heading>{title}</Heading>
+        <Heading as="h3" size="lg">
+          {title}
+        </Heading>
         <Spacer />
         {children}
       </Flex>

@@ -38,10 +38,7 @@ export type TableComponentProps = {
   data: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
-  onRowClick?: (data: {
-    event: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>;
-    row: Row<{}>;
-  }) => void;
+  onRowClick?: (row: Row<{}>) => void;
 };
 
 export default function TableComponent(props: TableComponentProps) {
@@ -159,8 +156,9 @@ export default function TableComponent(props: TableComponentProps) {
         </Button>
         <Center>
           {/* @ts-ignore */}
-          {tableState.pageIndex + 1} /{" "}
-          {pageOptions.length === 0 ? 1 : pageOptions.length}
+          {`${tableState.pageIndex + 1} / ${
+            pageOptions.length === 0 ? 1 : pageOptions.length
+          }`}
         </Center>
         <Button onClick={nextPage} isDisabled={!canNextPage}>
           다음
@@ -213,7 +211,7 @@ export default function TableComponent(props: TableComponentProps) {
                   onClick={(event) => {
                     // 체크박스 관리 행일 때는 이벤트 취소
                     if (cell.column.id === SELECTION_COLUMN) return;
-                    if (props.onRowClick) props.onRowClick({ event, row });
+                    if (props.onRowClick) props.onRowClick(row);
                   }}
                   key={index}
                 />
@@ -233,14 +231,11 @@ export default function TableComponent(props: TableComponentProps) {
           <Box flex="1" overflow="auto">
             {tableElement}
           </Box>
-          <Flex
-            {...(isLandscape ? { direction: "row" } : { direction: "column" })}
-            p={3}
-          >
-            <Box flex="1" {...(isLandscape ? { pr: 3 } : { pb: 3 })}>
+          <Flex direction={isLandscape ? "row" : "column"} p={3}>
+            <Box flex="1" pr={isLandscape ? 3 : 0} pb={isLandscape ? 0 : 3}>
               {searchElement}
             </Box>
-            <Box>{paginationElement}</Box>
+            {paginationElement}
           </Flex>
         </Flex>
       ),

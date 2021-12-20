@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
+import { toggleSidebar } from "store/system";
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,7 +8,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import routerConfig from "utils/routerConfig";
-import { useMediaQuery, Box, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Sidebar from "components/Sidebar";
 import NoMatch from "pages/NoMatch";
 
@@ -19,19 +20,12 @@ export default function AppRouter() {
     (state: RootState) => state.system.isSidebarOpen
   );
 
-  const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
   return (
     <Router>
       <Flex h={"100%"} w={"100%"}>
         <Sidebar
           isOpen={isSidebarOpen}
-          onClose={() => {
-            dispatch({
-              type: "system/toggleSidebar",
-            });
-          }}
-          isLandscape={isLandscape}
+          onClose={() => dispatch(toggleSidebar())}
         />
 
         <Box flex={1} overflow="auto">
@@ -50,7 +44,7 @@ export default function AppRouter() {
               const route = routerConfig.routes[key];
               return (
                 <Route path={route.path} key={index}>
-                  {<route.component />}
+                  <route.component />
                 </Route>
               );
             })}

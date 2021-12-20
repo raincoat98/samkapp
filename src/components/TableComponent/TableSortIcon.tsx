@@ -6,18 +6,10 @@ export default function TableSortIcon(props: {
   isSortedDesc: boolean;
 }) {
   return (
-    <chakra.span pl="2" display="inline-flex">
-      {/* @ts-ignore */}
-      {props.isSorted ? (
-        // @ts-ignore
-        props.isSortedDesc ? (
-          <Icon as={sortDown} />
-        ) : (
-          <Icon as={sortUp} />
-        )
-      ) : (
-        <Icon as={sort} />
-      )}
+    <chakra.span paddingLeft="1" display="inline-flex">
+      <Icon
+        as={props.isSorted ? (props.isSortedDesc ? sortDown : sortUp) : sort}
+      />
     </chakra.span>
   );
 }

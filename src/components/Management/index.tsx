@@ -10,7 +10,7 @@ import { schemaType } from "schema";
 
 // 테이블 관련 컴포넌트
 import TableComponent, { TableComponentProps } from "components/TableComponent";
-import { ReducerTableState, Row, TableInstance } from "react-table";
+import { ReducerTableState, TableInstance } from "react-table";
 
 // chakra-ui
 import {
@@ -80,97 +80,83 @@ export default function Management(props: {
   );
 
   // 테이블 데이터
-  const columns = schemaToColums({
-    schema,
-  });
+  const columns: Column[] = [];
+  for (const key in schema.properties) {
+    const property = schema.properties[key];
+    const type = property.type;
 
-  // 스키마에서 react-table 헤더로 변환
-  function schemaToColums(props: { schema: schemaType }) {
-    const { schema } = props;
+    if (property.isNotVisible) continue;
 
-    const columns: Column[] = [];
+    let accessor: string | Accessor<{}> | undefined;
 
-    for (const key in schema.properties) {
-      if (Object.prototype.hasOwnProperty.call(schema.properties, key)) {
-        const property = schema.properties[key];
-        const type = property.type;
-
-        if (property.isNotVisible) continue;
-
-        let accessor: string | Accessor<{}> | undefined;
-
-        // 선택 input일 경우 (예: 우선순위)
-        if (property.select) {
-          const select = property.select;
+    // 선택 input일 경우 (예: 우선순위)
+    if (property.select) {
+      const select = property.select;
+      accessor = (originalRow) => {
+        const origRow = originalRow as Record<string, any>;
+        const selectedData = origRow[key];
+        const selected = select.filter((data) => {
+          return data.value === selectedData;
+        })[0];
+        if (selected) return selected.name;
+        else return selectedData;
+      };
+    } else {
+      switch (type) {
+        case "string":
+        case "number": {
+          // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
+          if (property.foreign) {
+            accessor = (originalRow: Record<string, any>) => {
+              const foreign = property.foreign;
+              if (foreign?.table) {
+                const dataList = [...database[foreign.table]];
+                const item: any = dataList.filter((data: any) => {
+                  return data[foreign.key] === originalRow[foreign.key];
+                })[0];
+                if (item) {
+                  return foreign.display
+                    ? item[foreign.display]
+                    : item[foreign.key];
+                }
+              }
+            };
+          } else accessor = key;
+          break;
+        }
+        case "date": {
           accessor = (originalRow) => {
             const origRow = originalRow as Record<string, any>;
-            const selectedData = origRow[key];
-            const selected = select.filter((data) => {
-              return data.value === selectedData;
-            })[0];
-            if (selected) return selected.name;
-            else return selectedData;
+            const isMonth =
+              property.type === "month" || property.as === "month";
+            return origRow[key]
+              ? isMonth
+                ? moment(origRow[key]).format("YYYY-MM") // 년월
+                : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
+              : "";
           };
-        } else {
-          switch (type) {
-            case "string":
-            case "number": {
-              // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
-              if (property.foreign) {
-                accessor = (originalRow: Record<string, any>) => {
-                  const foreign = property.foreign;
-                  if (foreign?.table) {
-                    const dataList = [...database[foreign.table]];
-                    const item: any = dataList.filter((data: any) => {
-                      return data[foreign.key] === originalRow[foreign.key];
-                    })[0];
-                    if (item) {
-                      return foreign.display
-                        ? item[foreign.display]
-                        : item[foreign.key];
-                    }
-                  }
-                };
-              } else accessor = key;
-              break;
-            }
-            case "date": {
-              accessor = (originalRow) => {
-                const origRow = originalRow as Record<string, any>;
-                const isMonth =
-                  property.type === "month" || property.as === "month";
-                return origRow[key]
-                  ? isMonth
-                    ? moment(origRow[key]).format("YYYY-MM") // 년월
-                    : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
-                  : "";
-              };
-              break;
-            }
-            case "boolean": {
-              accessor = (originalRow) => {
-                const origRow = originalRow as Record<string, any>;
-                const boolData = origRow[key] as boolean;
-                if (boolData) return "예";
-                else return "아니오";
-              };
-              break;
-            }
-          }
+          break;
         }
-
-        // 헤더 번역
-        const header = translate(`${schema.name}.properties.${key}`);
-
-        columns.push({
-          Header: header,
-          accessor,
-          width: 130,
-        });
+        case "boolean": {
+          accessor = (originalRow) => {
+            const origRow = originalRow as Record<string, any>;
+            const boolData = origRow[key] as boolean;
+            if (boolData) return "예";
+            else return "아니오";
+          };
+          break;
+        }
       }
     }
 
-    return columns;
+    // 헤더 번역
+    const header = translate(`${schema.name}.properties.${key}`);
+
+    columns.push({
+      Header: header,
+      accessor,
+      width: 130,
+    });
   }
 
   // 테이블 초기화
@@ -186,7 +172,12 @@ export default function Management(props: {
   mainTable = TableComponent({
     columns,
     data: tableProps.data,
-    onRowClick: onTableRowClick,
+    // 열 클릭 이벤트
+    onRowClick: (row) => {
+      setModalMode("update");
+      setSelected(row.original as any);
+      modalDisclosure.onOpen();
+    },
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
         onTableChange({
@@ -209,13 +200,6 @@ export default function Management(props: {
   function prepareInsert() {
     setModalMode("insert");
     setSelected(undefined);
-    modalDisclosure.onOpen();
-  }
-
-  // 데이터베이스에 데이터 update 준비
-  function onTableRowClick(props: { event: any; row: Row<{}> }) {
-    setModalMode("update");
-    setSelected(props.row.original as any);
     modalDisclosure.onOpen();
   }
 

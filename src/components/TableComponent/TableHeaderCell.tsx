@@ -3,12 +3,17 @@ import { Th, Heading } from "@chakra-ui/react";
 import TableSortIcon from "./TableSortIcon";
 
 export default function TableHeaderCell(
-  props: TableHeaderProps & { column: HeaderGroup; excludeIds?: string[] }
+  props: TableHeaderProps & {
+    column: HeaderGroup;
+    excludeIds?: string[];
+  }
 ) {
-  const { column, excludeIds, ...rest } = props;
+  const { column, excludeIds, ...rest } = props as TableHeaderProps & {
+    column: any; // react-table 타입스크립트 문제 때문에 any로 변환
+    excludeIds?: string[];
+  };
   return (
     <Th
-      // @ts-ignore
       {...column.getHeaderProps(column.getSortByToggleProps())}
       textAlign="center"
       whiteSpace="pre"
@@ -23,9 +28,7 @@ export default function TableHeaderCell(
 
       {!excludeIds?.includes(column.id) ? (
         <TableSortIcon
-          // @ts-ignore
           isSorted={column.isSorted}
-          // @ts-ignore
           isSortedDesc={column.isSortedDesc}
         />
       ) : null}
