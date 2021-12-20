@@ -5,20 +5,21 @@ const connection = require("../lib/db.js");
 
 // 거래처 조회
 router.get("/all", (req, res) => {
-  var dataList = [];
-  const sql =
-    "SELECT customer_id, customer_name, business_number, ceo_name, tel, fax, zip_code, address, business_info, item_info, homepage, " +
-    "bill_limit_id, customer_group_id, credit_limit, remark, use_yn, crt_id, crt_date, mod_id, mod_date " +
-    "FROM tb_customer";
-  connection.query(sql, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      for (var data of results) {
-        dataList.push(data);
-      }
+  const dataList = [];
+  const sql = "CALL usp_customer_LST(?,?,?)";
+  const params = [
+    req.query["customer_name"],
+    req.query["ceo_name"],
+    req.query["addr_name"],
+  ];
+
+  connection.query(sql, params, function (error, results) {
+    if (error) console.log(error);
+    else {
+      for (let data of results) dataList.push(data);
+      console.log("select ok");
     }
-    res.send({ results });
+    res.send({ results: results[0] });
   });
 });
 
