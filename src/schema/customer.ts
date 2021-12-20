@@ -12,9 +12,6 @@ export type customer = {
   business_info?: string;
   item_info?: string;
   homepage?: string;
-  bill_limit_id?: string;
-  customer_group_id?: string;
-  credit_limit?: string;
   remark?: string;
 };
 
@@ -61,15 +58,6 @@ export const customerSchema: schemaType = {
       type: "string",
     },
     homepage: {
-      type: "string",
-    },
-    bill_limit_id: {
-      type: "string",
-    },
-    customer_group_id: {
-      type: "string",
-    },
-    credit_limit: {
       type: "string",
     },
     remark: {
