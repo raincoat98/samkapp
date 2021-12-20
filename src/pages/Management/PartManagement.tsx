@@ -21,9 +21,11 @@ export default function PartManagement() {
   );
 
   function getData() {
-    return data.filter(
-      (partData) => partData.group2_id === partGroupDataList[tabIndex].group2_id
-    );
+    return data.filter((partData) => {
+      if (partGroupDataList[tabIndex])
+        return partData.group2_id === partGroupDataList[tabIndex].group2_id;
+      else return false;
+    });
   }
 
   return (
