@@ -28,6 +28,31 @@ export const inventorySchema: schemaType = {
         display: "part_name",
       },
     },
+    spec1: {
+      type: "string",
+      isReadOnly: true,
+      isAutoSet: true,
+    },
+    spec2: {
+      type: "string",
+      isReadOnly: true,
+      isAutoSet: true,
+    },
+    spec3: {
+      type: "string",
+      isReadOnly: true,
+      isAutoSet: true,
+    },
+    spec4: {
+      type: "string",
+      isReadOnly: true,
+      isAutoSet: true,
+    },
+    spec5: {
+      type: "string",
+      isReadOnly: true,
+      isAutoSet: true,
+    },
     warehouse_id: {
       type: "number",
       isNotNull: true,
