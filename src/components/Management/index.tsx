@@ -193,7 +193,7 @@ export default function Management(props: {
 
   function refreshData() {
     // 현재 테이블 데이터 새로고침
-    dispatch(getData(schema.name));
+    dispatch(getData({ collectionName: schema.name }));
   }
 
   // 데이터베이스에 데이터 insert 준비

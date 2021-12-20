@@ -81,9 +81,17 @@ const initialState: RealmState = {
 };
 
 // 데이터베이스 자동 로그인
-export const autoLogin = createAsyncThunk(`${name}/autoLogin`, async () => {
-  return "테스트 유저";
-});
+export const autoLogin = createAsyncThunk(
+  `${name}/autoLogin`,
+  async (props, { dispatch }) => {
+    // 로그인 때에 모든 테이블  데이터 가져오기
+    for (const key in COLLECTION_NAME) {
+      const collectionName = key as COLLECTION_NAME_TYPE;
+      await dispatch(getData({ collectionName }));
+    }
+    return "테스트 유저";
+  }
+);
 
 // 데이터베이스 로그인
 export const login = createAsyncThunk(
@@ -106,8 +114,8 @@ export const login = createAsyncThunk(
 
       // 로그인 때에 모든 테이블  데이터 가져오기
       for (const key in COLLECTION_NAME) {
-        const collectionKey = key as COLLECTION_NAME_TYPE;
-        //dispatch(getData(collectionKey));
+        const collectionName = key as COLLECTION_NAME_TYPE;
+        await dispatch(getData({ collectionName }));
       }
       return response;
     } catch (error) {
@@ -121,8 +129,6 @@ export const logout = createAsyncThunk(
   `${name}/logout`,
   async (undefinded, { dispatch, rejectWithValue }) => {
     try {
-      // await app.currentUser?.logOut();
-
       dispatch({
         type: `${name}/removeUser`,
       });
@@ -141,9 +147,7 @@ export const register = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     const { email, password } = props;
-
     try {
-      // await app.emailPasswordAuth.registerUser(email, password);
       dispatch(login({ email, password }));
     } catch (error) {
       return rejectWithValue(error);
@@ -155,25 +159,27 @@ export const register = createAsyncThunk(
 export const getData = createAsyncThunk(
   `${name}/getData`,
   async (
-    collectionName: COLLECTION_NAME_TYPE,
+    props: {
+      collectionName: COLLECTION_NAME_TYPE;
+    },
     { dispatch, rejectWithValue }
   ) => {
     dispatch(
       addHistory({
         name: "getData",
-        props: collectionName,
+        props,
       })
     );
 
     try {
       let response: AxiosResponse<any, any>;
-      let route = collectionName as string;
+      let route = props.collectionName as string;
 
       route = route.replaceAll("_", "-");
       response = await axios.get(`${SERVER_URL}/${route}/all`);
 
       return {
-        collectionName,
+        collectionName: props.collectionName,
         data: response.data.results,
       };
     } catch (error) {
@@ -208,7 +214,7 @@ export const insertData = createAsyncThunk(
         params: props.document,
       });
 
-      await dispatch(getData(props.collectionName));
+      await dispatch(getData({ collectionName: props.collectionName }));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -243,7 +249,7 @@ export const updateData = createAsyncThunk(
         params: props.update,
       });
 
-      await dispatch(getData(props.collectionName));
+      await dispatch(getData({ collectionName: props.collectionName }));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
