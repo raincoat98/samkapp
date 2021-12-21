@@ -99,16 +99,16 @@ export default function InputPartId(props: {
         value={group2Item?.group2_id}
         placeholder="없음"
         onChange={(event) => {
-          const group2Item = group2List.filter((group2Item) => {
-            return group2Item.group2_id === Number(event.target.value);
-          })[0];
+          const group2Item = group2List.filter(
+            (group2Item) => group2Item.group2_id === Number(event.target.value)
+          )[0];
           setGroup2Item(group2Item);
 
           // 필터 1
           setFilteredPartList1(
-            partList.filter((partItem) => {
-              return partItem.group2_id === group2Item?.group2_id;
-            })
+            partList.filter(
+              (partItem) => partItem.group2_id === group2Item?.group2_id
+            )
           );
         }}
       >
@@ -138,9 +138,9 @@ export default function InputPartId(props: {
 
                   // 필터 2
                   setFilteredPartList2(
-                    filteredPartList1.filter((partItem) => {
-                      return partItem.spec1 === event.target.value;
-                    })
+                    filteredPartList1.filter(
+                      (partItem) => partItem.spec1 === event.target.value
+                    )
                   );
 
                   if (!group2Item?.spec2) {
@@ -153,11 +153,24 @@ export default function InputPartId(props: {
                 }
               }}
             >
-              {filteredPartList1.map((partItem, index) => (
-                <option value={partItem.spec1} key={index}>
-                  {partItem.spec1}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  filteredPartList1
+                    .filter(
+                      (item) =>
+                        item["spec1"] !== undefined && item["spec1"] !== ""
+                    )
+                    .map((item) => item["spec1"])
+                )
+              )
+                .sort()
+                .map((spec, index) => {
+                  return (
+                    <option value={spec} key={index}>
+                      {spec}
+                    </option>
+                  );
+                })}
             </Select>
           </Box>
         ) : (
@@ -181,9 +194,9 @@ export default function InputPartId(props: {
 
                   // 필터 3
                   setFilteredPartList3(
-                    filteredPartList2.filter((partItem) => {
-                      return partItem.spec2 === event.target.value;
-                    })
+                    filteredPartList2.filter(
+                      (partItem) => partItem.spec2 === event.target.value
+                    )
                   );
 
                   if (!group2Item?.spec3) {
@@ -196,11 +209,24 @@ export default function InputPartId(props: {
                 }
               }}
             >
-              {filteredPartList2.map((partItem, index) => (
-                <option value={partItem.spec2} key={index}>
-                  {partItem.spec2}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  filteredPartList2
+                    .filter(
+                      (item) =>
+                        item["spec2"] !== undefined && item["spec2"] !== ""
+                    )
+                    .map((item) => item["spec2"])
+                )
+              )
+                .sort()
+                .map((spec, index) => {
+                  return (
+                    <option value={spec} key={index}>
+                      {spec}
+                    </option>
+                  );
+                })}
             </Select>
           </Box>
         ) : (
@@ -223,9 +249,9 @@ export default function InputPartId(props: {
 
                   // 필터 4
                   setFilteredPartList4(
-                    filteredPartList3.filter((partItem) => {
-                      return partItem.spec3 === event.target.value;
-                    })
+                    filteredPartList3.filter(
+                      (partItem) => partItem.spec3 === event.target.value
+                    )
                   );
 
                   if (!group2Item?.spec4) {
@@ -238,11 +264,24 @@ export default function InputPartId(props: {
                 }
               }}
             >
-              {filteredPartList3.map((partItem, index) => (
-                <option value={partItem.spec3} key={index}>
-                  {partItem.spec3}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  filteredPartList3
+                    .filter(
+                      (item) =>
+                        item["spec3"] !== undefined && item["spec3"] !== ""
+                    )
+                    .map((item) => item["spec3"])
+                )
+              )
+                .sort()
+                .map((spec, index) => {
+                  return (
+                    <option value={spec} key={index}>
+                      {spec}
+                    </option>
+                  );
+                })}
             </Select>
           </Box>
         ) : (
@@ -264,9 +303,9 @@ export default function InputPartId(props: {
 
                   // 필터 5
                   setFilteredPartList5(
-                    filteredPartList4.filter((partItem) => {
-                      return partItem.spec4 === event.target.value;
-                    })
+                    filteredPartList4.filter(
+                      (partItem) => partItem.spec4 === event.target.value
+                    )
                   );
 
                   if (!group2Item?.spec5) {
@@ -279,11 +318,24 @@ export default function InputPartId(props: {
                 }
               }}
             >
-              {filteredPartList4.map((partItem, index) => (
-                <option value={partItem.spec4} key={index}>
-                  {partItem.spec4}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  filteredPartList4
+                    .filter(
+                      (item) =>
+                        item["spec4"] !== undefined && item["spec4"] !== ""
+                    )
+                    .map((item) => item["spec4"])
+                )
+              )
+                .sort()
+                .map((spec, index) => {
+                  return (
+                    <option value={spec} key={index}>
+                      {spec}
+                    </option>
+                  );
+                })}
             </Select>
           </Box>
         ) : (
@@ -307,11 +359,24 @@ export default function InputPartId(props: {
                 }
               }}
             >
-              {filteredPartList5.map((partItem, index) => (
-                <option value={partItem.spec5} key={index}>
-                  {partItem.spec5}
-                </option>
-              ))}
+              {Array.from(
+                new Set(
+                  filteredPartList5
+                    .filter(
+                      (item) =>
+                        item["spec5"] !== undefined && item["spec5"] !== ""
+                    )
+                    .map((item) => item["spec5"])
+                )
+              )
+                .sort()
+                .map((spec, index) => {
+                  return (
+                    <option value={spec} key={index}>
+                      {spec}
+                    </option>
+                  );
+                })}
             </Select>
           </Box>
         ) : (
