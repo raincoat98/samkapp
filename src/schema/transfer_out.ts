@@ -1,4 +1,5 @@
 import { schemaType } from "./index";
+import moment from "moment";
 
 export type transfer_out = {
   transfer_out_id: number;
@@ -62,7 +63,7 @@ export const transfer_outSchema: schemaType = {
     plan_date: {
       type: "string",
       as: "date",
-      default: new Date(),
+      default: moment(new Date()).format("YYYY-MM-DD"),
     },
     customer_id: {
       type: "string",
