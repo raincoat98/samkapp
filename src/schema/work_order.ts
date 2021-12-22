@@ -5,9 +5,9 @@ export type work_order = {
   work_order_number?: string;
   customer_id?: string;
   part_id?: number;
-  quantity?: number;
+  quantity: number;
   plan_date?: string;
-  priorities?: number;
+  priorities: number;
   status?: number;
   remark?: string;
 };
@@ -47,6 +47,7 @@ export const work_orderSchema: schemaType = {
     },
     quantity: {
       type: "number",
+      isNotNull: true,
       isReadOnly: true,
     },
     plan_date: {
@@ -71,6 +72,7 @@ export const work_orderSchema: schemaType = {
           value: 2,
         },
       ],
+      isNotNull: true,
       isReadOnly: true,
     },
     status: {
