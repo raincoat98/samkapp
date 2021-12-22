@@ -25,11 +25,7 @@ router.get("/all", (req, res) => {
 
 // 거래처 등록
 router.get("/create", (req, res) => {
-  const sql =
-    "INSERT INTO tb_customer " +
-    "(customer_name, business_number, ceo_name, tel, fax, zip_code, address, business_info, item_info, homepage, " +
-    "bill_limit_id, customer_group_id, credit_limit, remark, use_yn, crt_id, crt_date, mod_id, mod_date) " +
-    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const sql = "CALL usp_customer_INS(?,?,?,?,?,?,?,?,?,?,?)";
   const params = [
     req.query["customer_name"],
     req.query["business_number"],
@@ -41,36 +37,21 @@ router.get("/create", (req, res) => {
     req.query["business_info"],
     req.query["item_info"],
     req.query["homepage"],
-    req.query["bill_limit_id"],
-    req.query["customer_group_id"],
-    req.query["credit_limit"],
     req.query["remark"],
-    req.query["use_yn"],
-    req.query["crt_id"],
-    req.query["crt_date"],
-    req.query["mod_id"],
-    req.query["mod_date"],
-    req.query["customer_id"],
   ];
 
   connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("insert ok");
-    }
+    if (error) console.log(error);
+    else console.log("insert ok");
     res.send({ results });
   });
 });
 
 //거래처 수정
 router.get("/update", (req, res) => {
-  const sql =
-    "UPDATE tb_customer" +
-    "SET customer_name=?, business_number=?, ceo_name=?, tel=?, fax=?, zip_code=?, address=?, business_info=?, item_info=?, homepage=?, " +
-    "bill_limit_id=?, customer_group_id=?, credit_limit=?, remark=?, use_yn=?, crt_id=?, crt_date=?, mod_id=?, mod_date=? " +
-    "WHERE customer_id=?";
+  const sql = "CALL usp_customer_UPD(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
   const params = [
+    req.query["customer_id"],
     req.query["customer_name"],
     req.query["business_number"],
     req.query["ceo_name"],
@@ -85,20 +66,11 @@ router.get("/update", (req, res) => {
     req.query["customer_group_id"],
     req.query["credit_limit"],
     req.query["remark"],
-    req.query["use_yn"],
-    req.query["crt_id"],
-    req.query["crt_date"],
-    req.query["mod_id"],
-    req.query["mod_date"],
-    req.query["customer_id"],
   ];
 
   connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("update ok");
-    }
+    if (error) console.log(error);
+    else console.log("update ok");
     res.send({ results });
   });
 });

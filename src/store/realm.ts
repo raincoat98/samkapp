@@ -263,7 +263,7 @@ export const deleteData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      items: Record<string, any>[];
+      item: Record<string, any>;
     },
     { dispatch, rejectWithValue }
   ) => {
@@ -273,18 +273,26 @@ export const deleteData = createAsyncThunk(
         props,
       })
     );
-    // try {
-    //   let response: AxiosResponse<any, any>;
-    //   let route = props.collectionName as string;
-    //   route = route.replaceAll("_", "-");
-    //   response = await axios.get(`${SERVER_URL}/${route}/delete`, {
-    //     params: props.items,
-    //   });
-    //   await dispatch(getData(props.collectionName));
-    //   return { response };
-    // } catch (error) {
-    //   return rejectWithValue(error);
-    // }
+
+    console.log(props);
+
+    try {
+      let response: AxiosResponse<any, any>;
+      let route = props.collectionName as string;
+
+      route = route.replaceAll("_", "-");
+      response = await axios.get(`${SERVER_URL}/${route}/delete`, {
+        params: props.item,
+      });
+
+      await dispatch(getData({ collectionName: props.collectionName }));
+      console.log(response);
+      return { response };
+    } catch (error) {
+      console.log(error);
+
+      return rejectWithValue(error);
+    }
   }
 );
 
