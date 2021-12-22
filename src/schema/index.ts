@@ -17,6 +17,7 @@ export type propertyType = {
     table: COLLECTION_NAME_TYPE; // 외부 테이블 이름
     key: string; // 외부 테이블에서 참조하는 프로퍼티의 키
     display?: string; // 외부 테이블 선택시 유저가 보게 될 프로퍼티의 키
+    filter?: Record<string, any>; // 같은 값인 데이터만 보여주기
   };
   isNotVisible?: boolean; // 유저에게 보여지지 않는지 여부 (추가, 수정 모두)
   isPrimary?: boolean; // 기본 키 여부

@@ -40,6 +40,7 @@ export const transfer_outSchema: schemaType = {
         table: "transfer_type",
         key: "transfer_type_id",
         display: "transfer_type_name",
+        filter: { transfer_flag: 1 },
       },
     },
     priorities: {

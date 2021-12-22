@@ -35,6 +35,7 @@ export const transfer_inSchema: schemaType = {
         table: "transfer_type",
         key: "transfer_type_id",
         display: "transfer_type_name",
+        filter: { transfer_flag: 0 },
       },
     },
     part_id: {
