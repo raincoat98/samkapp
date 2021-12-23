@@ -232,12 +232,15 @@ export default function Management(props: {
 
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
-    dispatch(
-      deleteData({
-        collectionName: schema.name,
-        items: checkedRows,
-      })
-    );
+    for (let index = 0; index < checkedRows.length; index++) {
+      const row = checkedRows[index];
+      await dispatch(
+        deleteData({
+          collectionName: schema.name,
+          item: row,
+        })
+      );
+    }
   }
 
   return (

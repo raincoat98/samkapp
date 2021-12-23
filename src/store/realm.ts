@@ -281,7 +281,7 @@ export const deleteData = createAsyncThunk(
       let route = props.collectionName as string;
 
       route = route.replaceAll("_", "-");
-      response = await axios.get(`${SERVER_URL}/${route}/delete`, {
+      response = await axios.delete(`${SERVER_URL}/${route}/delete`, {
         params: props.item,
       });
 
