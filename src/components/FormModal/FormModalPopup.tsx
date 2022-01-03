@@ -16,7 +16,7 @@ import Pdf from "components/Pdf";
 
 export default function FormModalPopup(props: {
   title: string;
-  printData: any;
+  printData?: any;
   isOpen: boolean;
   isSaveDisabled: boolean;
   onClose: () => void;
@@ -68,9 +68,13 @@ export default function FormModalPopup(props: {
             </form>
           </ModalBody>
           <ModalFooter borderTopWidth="1px">
-            <ButtonGroup flex="1">
-              <Button onClick={() => printPopupState.onOpen()}>출력</Button>
-            </ButtonGroup>
+            {printData ? (
+              <ButtonGroup flex="1">
+                <Button onClick={() => printPopupState.onOpen()}>출력</Button>
+              </ButtonGroup>
+            ) : (
+              ""
+            )}
 
             <ButtonGroup>
               <Button
@@ -98,7 +102,7 @@ export default function FormModalPopup(props: {
           <ModalHeader borderBottomWidth="1px">출력하기</ModalHeader>
           <ModalCloseButton />
           <ModalBody height="100%" padding={0}>
-            <Pdf data={printData}></Pdf>
+            {printData ? <Pdf data={printData}></Pdf> : ""}
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -130,7 +130,11 @@ export default function FormModal(props: FormModalProps) {
       // 다이얼로그 제목
       title={props.mode === "insert" ? "추가" : "수정"}
       // 출력물 데이터
-      printData={{ ...props.initialValue, ...editedDocument }}
+      printData={
+        props.schema.name === "work_order"
+          ? { ...props.initialValue, ...editedDocument }
+          : undefined
+      }
       // 다이얼로그 열림 상태 여부
       isOpen={props.isOpen}
       // 아무것도 수정되지 않았을 때 저장 버튼 비활성화
