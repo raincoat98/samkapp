@@ -3,10 +3,12 @@ import { schemaType } from "./index";
 export type work_order = {
   work_order_id: number;
   work_order_number?: string;
-  customer_id?: string;
+  customer_id?: number;
   part_id?: number;
   quantity: number;
   plan_date?: string;
+  transfer_date: string;
+  transfer_type_id: string;
   priorities: number;
   status?: number;
   remark?: string;
@@ -28,7 +30,7 @@ export const work_orderSchema: schemaType = {
       isReadOnly: true,
     },
     customer_id: {
-      type: "string",
+      type: "number",
       foreign: {
         table: "customer",
         key: "customer_id",
@@ -53,6 +55,15 @@ export const work_orderSchema: schemaType = {
     plan_date: {
       type: "string",
       as: "date",
+      isReadOnly: true,
+    },
+    transfer_date: {
+      type: "string",
+      as: "date",
+      isReadOnly: true,
+    },
+    transfer_type_id: {
+      type: "string",
       isReadOnly: true,
     },
     priorities: {

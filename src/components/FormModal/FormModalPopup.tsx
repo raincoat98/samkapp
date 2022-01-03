@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  useDisclosure,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -8,25 +9,35 @@ import {
   ModalBody,
   ModalCloseButton,
   Portal,
-  Box,
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
+import Pdf from "components/Pdf";
 
 export default function FormModalPopup(props: {
   title: string;
+  printData: any;
   isOpen: boolean;
   isSaveDisabled: boolean;
   onClose: () => void;
   onSubmit: () => void;
   children: React.ReactNode;
-  info?: React.ReactNode;
 }) {
-  const { title, isOpen, isSaveDisabled, onSubmit, onClose, children, info } =
-    props;
+  const {
+    title,
+    printData,
+    isOpen,
+    isSaveDisabled,
+    onSubmit,
+    onClose,
+    children,
+  } = props;
 
   const formEl = React.useRef<HTMLFormElement>(null);
   const [isFormVal, setIsFormVal] = React.useState(false);
+
+  // PDF 표시 상태
+  const printPopupState = useDisclosure();
 
   return (
     <Portal>
@@ -57,7 +68,10 @@ export default function FormModalPopup(props: {
             </form>
           </ModalBody>
           <ModalFooter borderTopWidth="1px">
-            <Box flex="1">{info}</Box>
+            <ButtonGroup flex="1">
+              <Button onClick={() => printPopupState.onOpen()}>출력</Button>
+            </ButtonGroup>
+
             <ButtonGroup>
               <Button
                 onClick={() => onSubmit()}
@@ -69,6 +83,23 @@ export default function FormModalPopup(props: {
               <Button onClick={() => onClose()}>닫기</Button>
             </ButtonGroup>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={printPopupState.isOpen}
+        onClose={() => printPopupState.onClose()}
+        size="full"
+        isCentered={true}
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent height="100%">
+          <ModalHeader borderBottomWidth="1px">출력하기</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody height="100%" padding={0}>
+            <Pdf data={printData}></Pdf>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Portal>
