@@ -1,4 +1,4 @@
-import DB_CONFIG from "./config";
+const DB_CONFIG = require("./config");
 
 const mysql = require("mysql"); // mysql 변수에 mysql 모듈을 할당
 const connection = mysql.createConnection({
