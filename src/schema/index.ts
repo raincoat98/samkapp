@@ -32,6 +32,7 @@ export type selectType = { name?: string; value: any };
 
 // 데이터베이스 컬렉션 이름
 export const COLLECTION_NAME = {
+  user: "user",
   bill_of_materials: "bill_of_materials",
   customer: "customer",
   group1: "group1",

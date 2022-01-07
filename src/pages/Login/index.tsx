@@ -26,7 +26,7 @@ export default function Login() {
 
   const [isRegister, setIsRegister] = React.useState(false);
 
-  const [email, setEmail] = React.useState("");
+  const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [passwordShow, setPasswordShow] = React.useState(false);
 
@@ -48,11 +48,11 @@ export default function Login() {
                 children={<Icon as={icons.id} />}
               />
               <Input
-                id="email"
-                placeholder="이메일"
+                id="user-id"
+                placeholder="아이디"
                 autoComplete="username"
                 isRequired={true}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) => setUserId(event.target.value)}
               />
             </InputGroup>
 
@@ -79,14 +79,14 @@ export default function Login() {
 
             {isRegister ? (
               <Button
-                onClick={() => dispatch(register({ email, password }))}
+                onClick={() => dispatch(register({ id: userId, password }))}
                 colorScheme="blue"
               >
                 회원가입
               </Button>
             ) : (
               <Button
-                onClick={() => dispatch(login({ email, password }))}
+                onClick={() => dispatch(login({ id: userId, password }))}
                 colorScheme="blue"
               >
                 로그인

@@ -15,6 +15,7 @@ const transferIn = require("./routes/transferIn");
 const transferOut = require("./routes/transferOut");
 const transferType = require("./routes/transferType");
 const unit = require("./routes/unit");
+const user = require("./routes/user");
 const warehouse = require("./routes/warehouse");
 const workOrder = require("./routes/workOrder");
 
@@ -37,6 +38,7 @@ app.use("/transfer-in", transferIn); // 입고
 app.use("/transfer-out", transferOut); // 출고
 app.use("/transfer-type", transferType); // 출고
 app.use("/unit", unit); // 품목 가격
+app.use("/user", user); // 계정 정보 및 로그인
 app.use("/warehouse", warehouse); // 창고
 app.use("/work-order", workOrder); // 작업지시
 

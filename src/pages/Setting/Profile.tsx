@@ -5,7 +5,7 @@ import { user } from "utils/icons";
 import { Icon, Heading, Button, Wrap, WrapItem } from "@chakra-ui/react";
 
 export default function Profile() {
-  const userName = useSelector((state: RootState) => state.realm.userName);
+  const userName = useSelector((state: RootState) => state.realm.user.name);
   const dispatch = useDispatch();
 
   return (

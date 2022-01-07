@@ -14,6 +14,7 @@ import { transfer_in } from "schema/transfer_in";
 import { transfer_out } from "schema/transfer_out";
 import { transfer_type } from "schema/transfer_type";
 import { unit } from "schema/unit";
+import { user } from "schema/user";
 import { warehouse } from "schema/warehouse";
 import { work_order } from "schema/work_order";
 
@@ -33,7 +34,9 @@ export type historyType = {
 
 export type RealmState = {
   history: historyType[];
-  userName: string;
+  user: {
+    name: string;
+  };
   loading: boolean;
   loggedIn: boolean;
   error: any;
@@ -51,6 +54,7 @@ export type RealmState = {
     [COLLECTION_NAME.transfer_out]: transfer_out[];
     [COLLECTION_NAME.transfer_type]: transfer_type[];
     [COLLECTION_NAME.unit]: unit[];
+    [COLLECTION_NAME.user]: user[];
     [COLLECTION_NAME.warehouse]: warehouse[];
     [COLLECTION_NAME.work_order]: work_order[];
   };
@@ -58,7 +62,7 @@ export type RealmState = {
 
 const initialState: RealmState = {
   history: [],
-  userName: "",
+  user: { name: "" },
   loading: false,
   loggedIn: false,
   error: undefined,
@@ -75,6 +79,7 @@ const initialState: RealmState = {
     [COLLECTION_NAME.transfer_out]: [],
     [COLLECTION_NAME.transfer_type]: [],
     [COLLECTION_NAME.unit]: [],
+    [COLLECTION_NAME.user]: [],
     [COLLECTION_NAME.warehouse]: [],
     [COLLECTION_NAME.work_order]: [],
   },
@@ -97,27 +102,28 @@ export const autoLogin = createAsyncThunk(
 export const login = createAsyncThunk(
   `${name}/login`,
   async (
-    props: { email: string; password: string },
+    props: { id: string; password: string },
     { dispatch, rejectWithValue }
   ) => {
-    const { email, password } = props;
-
+    const { id, password } = props;
     try {
-      const response = await axios
-        .get("/admin", {
-          params: {
-            id: email,
-            password: password,
-          },
-        })
-        .then((res) => res.data.results[0].admin_id);
+      let response: AxiosResponse<any, any>;
+      response = await axios.get(`${SERVER_URL}/user/login`, {
+        params: {
+          user_id: id,
+          password,
+        },
+      });
+
+      if (!response.data) throw response;
 
       // 로그인 때에 모든 테이블  데이터 가져오기
       for (const key in COLLECTION_NAME) {
         const collectionName = key as COLLECTION_NAME_TYPE;
         await dispatch(getData({ collectionName }));
       }
-      return response;
+
+      return response.data.result;
     } catch (error) {
       return rejectWithValue(new Error("Invalid email and password"));
     }
@@ -143,12 +149,12 @@ export const logout = createAsyncThunk(
 export const register = createAsyncThunk(
   `${name}/register`,
   async (
-    props: { email: string; password: string },
+    props: { id: string; password: string },
     { dispatch, rejectWithValue }
   ) => {
-    const { email, password } = props;
+    const { id, password } = props;
     try {
-      dispatch(login({ email, password }));
+      dispatch(login({ id, password }));
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -313,15 +319,17 @@ const userSlice = createSlice({
           state.loading = false;
           if (action.payload) {
             state.loggedIn = true;
-            state.userName = action.payload;
+            state.user.name = action.payload;
           }
         }
       )
       // 로그인
-      .addCase(login.fulfilled.type, (state, action: PayloadAction<string>) => {
+      .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
+        console.log(action.payload);
+
         state.loading = false;
         state.loggedIn = true;
-        state.userName = action.payload;
+        state.user.name = action.payload.name;
       })
       .addCase(login.rejected.type, (state, action: PayloadAction<string>) => {
         state.loading = false;
@@ -332,7 +340,7 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled.type, (state) => {
         state.loading = false;
         state.loggedIn = false;
-        state.userName = "";
+        state.user.name = "";
       })
       // 컬렉션 데이터 가져오기
       .addCase(
