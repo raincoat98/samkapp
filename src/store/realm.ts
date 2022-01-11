@@ -10,6 +10,7 @@ import { inventory } from "schema/inventory";
 import { list_price } from "schema/list_price";
 import { part } from "schema/part";
 import { part_type } from "schema/part_type";
+import { product_order } from "schema/product_order";
 import { transfer_in } from "schema/transfer_in";
 import { transfer_out } from "schema/transfer_out";
 import { transfer_type } from "schema/transfer_type";
@@ -50,6 +51,7 @@ export type RealmState = {
     [COLLECTION_NAME.list_price]: list_price[];
     [COLLECTION_NAME.part_type]: part_type[];
     [COLLECTION_NAME.part]: part[];
+    [COLLECTION_NAME.product_order]: product_order[];
     [COLLECTION_NAME.transfer_in]: transfer_in[];
     [COLLECTION_NAME.transfer_out]: transfer_out[];
     [COLLECTION_NAME.transfer_type]: transfer_type[];
@@ -75,6 +77,7 @@ const initialState: RealmState = {
     [COLLECTION_NAME.list_price]: [],
     [COLLECTION_NAME.part_type]: [],
     [COLLECTION_NAME.part]: [],
+    [COLLECTION_NAME.product_order]: [],
     [COLLECTION_NAME.transfer_in]: [],
     [COLLECTION_NAME.transfer_out]: [],
     [COLLECTION_NAME.transfer_type]: [],

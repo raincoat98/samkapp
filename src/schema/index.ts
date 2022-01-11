@@ -41,6 +41,7 @@ export const COLLECTION_NAME = {
   list_price: "list_price",
   part_type: "part_type",
   part: "part",
+  product_order: "product_order",
   transfer_in: "transfer_in",
   transfer_out: "transfer_out",
   transfer_type: "transfer_type",

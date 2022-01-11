@@ -11,6 +11,7 @@ import inventory from "./database/inventory";
 import list_price from "./database/list_price";
 import part_type from "./database/part_type";
 import part from "./database/part";
+import product_order from "./database/product_order";
 import transfer_in from "./database/transfer_in";
 import transfer_out from "./database/transfer_out";
 import warehouse from "./database/warehouse";
@@ -30,6 +31,7 @@ const resources = {
       list_price: combine(list_price),
       part_type: combine(part_type),
       part: combine(part),
+      product_order: combine(product_order),
       transfer_in: combine(transfer_in),
       transfer_out: combine(transfer_out),
       warehouse: combine(warehouse),

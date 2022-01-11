@@ -11,6 +11,7 @@ const inventory = require("./routes/inventory");
 const listPrice = require("./routes/listPrice");
 const part = require("./routes/part");
 const partType = require("./routes/partType");
+const productOrder = require("./routes/productOrder");
 const transferIn = require("./routes/transferIn");
 const transferOut = require("./routes/transferOut");
 const transferType = require("./routes/transferType");
@@ -34,6 +35,7 @@ app.use("/inventory", inventory); // 재고
 app.use("/list-price", listPrice); // 품목 가격
 app.use("/part", part); // 품목
 app.use("/part-type", partType); // 품목 형태
+app.use("/product-order", productOrder); // 품목 형태
 app.use("/transfer-in", transferIn); // 입고
 app.use("/transfer-out", transferOut); // 출고
 app.use("/transfer-type", transferType); // 출고

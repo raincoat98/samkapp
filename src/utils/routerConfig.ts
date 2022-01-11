@@ -4,6 +4,7 @@ import InvManagement from "pages/Management/InvManagement";
 import PartManagement from "pages/Management/PartManagement";
 import PartGroup2Management from "pages/Management/PartGroup2Management";
 import PartTypeManagement from "pages/Management/PartTypeManagement";
+import ProdOrderManagement from "pages/Management/ProdOrder";
 import TransferIn from "pages/Management/TransferIn";
 import TransferOut from "pages/Management/TransferOut";
 import PartPriceManagement from "pages/Management/PartPriceManagement";
@@ -51,6 +52,12 @@ export const routes: Record<string, route> = {
     name: "출고 관리",
     path: "/transfer_out",
     component: TransferOut,
+  },
+
+  prod_order: {
+    name: "생산지시 관리",
+    path: "/prod_manage",
+    component: ProdOrderManagement,
   },
 
   // 위치 관리
@@ -108,6 +115,7 @@ export const sidebarConfig: sidebarRouteType[] = [
   { name: "재고 현황", route: routes.inv_management },
   { name: "입고 관리", route: routes.transfer_in },
   { name: "출고 관리", route: routes.transfer_out },
+  { name: "생산 지시 관리", route: routes.prod_order },
   { name: "작업 지시 관리", route: routes.work_order_manage },
   {
     name: "마스터 관리",
