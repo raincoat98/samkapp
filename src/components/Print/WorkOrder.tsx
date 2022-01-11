@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   cellContent: { flex: 3 },
 });
 
-export default function Pdf(props: { data: work_order }) {
+export default function PrintWorkOrder(props: { data: work_order }) {
   const database = useSelector((state: RootState) => state.realm.database);
 
   const part = database.part.filter(
@@ -100,8 +100,6 @@ export default function Pdf(props: { data: work_order }) {
     part.spec4,
     part.spec5,
   ];
-
-  console.log(props.data);
 
   return (
     <PDFViewer width="100%" height="100%">

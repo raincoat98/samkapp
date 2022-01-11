@@ -12,26 +12,23 @@ import {
   ButtonGroup,
   Button,
 } from "@chakra-ui/react";
-import Pdf from "components/Pdf";
-
+import { COLLECTION_NAME_TYPE } from "schema";
+import WorkOrderPrint from "components/Print/WorkOrder";
+import TransferOutPrint from "components/Print/TransferOut";
 export default function FormModalPopup(props: {
   title: string;
-  printData?: any;
+  print?: {
+    format: COLLECTION_NAME_TYPE;
+    data: any;
+  };
   isOpen: boolean;
   isSaveDisabled: boolean;
   onClose: () => void;
   onSubmit: () => void;
   children: React.ReactNode;
 }) {
-  const {
-    title,
-    printData,
-    isOpen,
-    isSaveDisabled,
-    onSubmit,
-    onClose,
-    children,
-  } = props;
+  const { title, print, isOpen, isSaveDisabled, onSubmit, onClose, children } =
+    props;
 
   const formEl = React.useRef<HTMLFormElement>(null);
   const [isFormVal, setIsFormVal] = React.useState(false);
@@ -68,12 +65,11 @@ export default function FormModalPopup(props: {
             </form>
           </ModalBody>
           <ModalFooter borderTopWidth="1px">
-            {printData ? (
+            {(print?.format === "work_order" ||
+              print?.format === "transfer_out") && (
               <ButtonGroup flex="1">
                 <Button onClick={() => printPopupState.onOpen()}>출력</Button>
               </ButtonGroup>
-            ) : (
-              ""
             )}
 
             <ButtonGroup>
@@ -102,7 +98,15 @@ export default function FormModalPopup(props: {
           <ModalHeader borderBottomWidth="1px">출력하기</ModalHeader>
           <ModalCloseButton />
           <ModalBody height="100%" padding={0}>
-            {printData ? <Pdf data={printData}></Pdf> : ""}
+            {/* 작업지시서 출력 */}
+            {print?.format === "work_order" && (
+              <WorkOrderPrint data={print.data}></WorkOrderPrint>
+            )}
+
+            {/* 출고지시서 출력 */}
+            {print?.format === "transfer_out" && (
+              <TransferOutPrint data={print.data}></TransferOutPrint>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

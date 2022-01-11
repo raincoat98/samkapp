@@ -7,7 +7,7 @@ export type transfer_out = {
   transfer_type_id: string;
   priorities: number;
   plan_date?: string;
-  customer_id?: string;
+  customer_id?: number;
   part_id: number;
   quantity?: number;
   unit_price?: number;
@@ -67,7 +67,7 @@ export const transfer_outSchema: schemaType = {
       default: moment(new Date()).format("YYYY-MM-DD"),
     },
     customer_id: {
-      type: "string",
+      type: "number",
       foreign: {
         table: "customer",
         key: "customer_id",
