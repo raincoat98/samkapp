@@ -37,7 +37,7 @@ export default function Sidebar(props: {
     >
       <Flex>
         <Center>
-          {isLandscape ? "" : <CloseButton onClick={() => props.onClose()} />}
+          {!isLandscape && <CloseButton onClick={() => props.onClose()} />}
         </Center>
 
         <Center w={"100%"} maxH={100}>

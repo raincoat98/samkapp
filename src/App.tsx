@@ -20,7 +20,7 @@ export default function App() {
     >
       <SpinnerComponent />
 
-      {error ? <ErrorAlert error={error} /> : ""}
+      {error && <ErrorAlert error={error} />}
 
       {!isLoggedIn ? <Login /> : <AppRouter />}
     </div>

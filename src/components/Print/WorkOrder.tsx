@@ -128,11 +128,10 @@ export default function PrintWorkOrder(props: { data: work_order }) {
                 계획일자
               </Text>
               <Text style={[styles.cell, styles.cellContent]}>
-                {props.data.plan_date
-                  ? moment(props.data.plan_date).format(
-                      "YYYY년 MM월 DD일 (dddd)"
-                    )
-                  : ""}
+                {props.data.plan_date &&
+                  moment(props.data.plan_date).format(
+                    "YYYY년 MM월 DD일 (dddd)"
+                  )}
               </Text>
             </View>
 
@@ -141,12 +140,11 @@ export default function PrintWorkOrder(props: { data: work_order }) {
                 고객사
               </Text>
               <Text style={[styles.cell, styles.cellContent]}>
-                {props.data.customer_id
-                  ? database.customer.filter(
-                      (customer) =>
-                        customer.customer_id === props.data.customer_id
-                    )[0]
-                  : ""}
+                {props.data.customer_id &&
+                  database.customer.filter(
+                    (customer) =>
+                      customer.customer_id === props.data.customer_id
+                  )[0]}
               </Text>
             </View>
 

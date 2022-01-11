@@ -12,7 +12,7 @@ export default function InputDate(props: {
         type="month"
         onChange={(event) => props.onChange(event.target.valueAsDate)}
         defaultValue={
-          props.defaultValue ? moment(props.defaultValue).format("YYYY-MM") : ""
+          props.defaultValue && moment(props.defaultValue).format("YYYY-MM")
         }
       />
     );
@@ -22,9 +22,7 @@ export default function InputDate(props: {
         type="date"
         onChange={(event) => props.onChange(event.target.valueAsDate)}
         defaultValue={
-          props.defaultValue
-            ? moment(props.defaultValue).format("YYYY-MM-DD")
-            : ""
+          props.defaultValue && moment(props.defaultValue).format("YYYY-MM-DD")
         }
         min={moment().format("YYYY-MM-DD")}
       />

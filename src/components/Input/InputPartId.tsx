@@ -120,7 +120,7 @@ export default function InputPartId(props: {
       </Select>
 
       <Flex>
-        {group2Item?.spec1 ? (
+        {group2Item?.spec1 && (
           <Box flex="1">
             <FormLabel>{group2Item.spec1}</FormLabel>
             <Select
@@ -173,11 +173,9 @@ export default function InputPartId(props: {
                 })}
             </Select>
           </Box>
-        ) : (
-          ""
         )}
 
-        {group2Item?.spec2 ? (
+        {group2Item?.spec2 && (
           <Box flex="1">
             <FormLabel>{group2Item.spec2}</FormLabel>
             <Select
@@ -229,11 +227,9 @@ export default function InputPartId(props: {
                 })}
             </Select>
           </Box>
-        ) : (
-          ""
         )}
 
-        {group2Item?.spec3 ? (
+        {group2Item?.spec3 && (
           <Box flex="1">
             <FormLabel>{group2Item.spec3}</FormLabel>
             <Select
@@ -284,11 +280,9 @@ export default function InputPartId(props: {
                 })}
             </Select>
           </Box>
-        ) : (
-          ""
         )}
 
-        {group2Item?.spec4 ? (
+        {group2Item?.spec4 && (
           <Box flex="1">
             <FormLabel>{group2Item.spec4}</FormLabel>
             <Select
@@ -338,11 +332,9 @@ export default function InputPartId(props: {
                 })}
             </Select>
           </Box>
-        ) : (
-          ""
         )}
 
-        {group2Item?.spec5 ? (
+        {group2Item?.spec5 && (
           <Box flex="1">
             <FormLabel>{group2Item.spec5}</FormLabel>
             <Select
@@ -379,8 +371,6 @@ export default function InputPartId(props: {
                 })}
             </Select>
           </Box>
-        ) : (
-          ""
         )}
       </Flex>
     </Box>
