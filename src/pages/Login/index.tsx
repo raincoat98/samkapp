@@ -93,7 +93,7 @@ export default function Login() {
               </Button>
             )}
 
-            {isRegister ? (
+            {/* {isRegister ? (
               <FormHelperText>
                 계정을 이미 가지고 계신가요?
                 <Button
@@ -115,7 +115,7 @@ export default function Login() {
                   회원가입
                 </Button>
               </FormHelperText>
-            )}
+            )} */}
           </Stack>
         </FormControl>
       </Box>
