@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FormControl, FormLabel, Box, Tooltip } from "@chakra-ui/react";
+import { FormControl, FormLabel, Box } from "@chakra-ui/react";
 
 export default function InputFormControl(props: {
   name: string;
@@ -23,16 +23,19 @@ export default function InputFormControl(props: {
       <FormLabel minWidth={"100px"} marginBottom={0}>
         {translate(`${props.name}`)}
       </FormLabel>
-      <Box flex="1">{props.children}</Box>
+      <Box
+        flex="1"
+        // 수정 불가능한 값일 경우 툴팁 추가
+        title={
+          props.isReadOnly || props.isDisabled
+            ? "이 값은 수정할 수 없습니다."
+            : "수정하려면 클릭해주세요."
+        }
+      >
+        {props.children}
+      </Box>
     </FormControl>
   );
 
-  // 수정 불가능한 값일 경우 툴팁 추가
-  return props.isReadOnly || props.isDisabled ? (
-    <Tooltip label="이 값은 수정할 수 없습니다" placement="top">
-      {formControl}
-    </Tooltip>
-  ) : (
-    formControl
-  );
+  return formControl;
 }
