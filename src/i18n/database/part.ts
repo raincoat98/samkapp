@@ -11,7 +11,7 @@ const part = {
     spec4: "규격4",
     spec5: "규격5",
     part_type_id: "품목형태",
-    group2_id: "품목분류2코드",
+    group2_id: "품목분류",
     warehouse_id: "창고위치",
     bom_id: "자재명세서코드",
     unit_id: "품목단위",

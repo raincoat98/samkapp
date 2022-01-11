@@ -1,7 +1,7 @@
 const list_price = {
   name: "품목 단가",
   properties: {
-    part_id: "품목코드",
+    part_id: "품목",
     spec1: "규격1",
     spec2: "규격2",
     spec3: "규격3",
