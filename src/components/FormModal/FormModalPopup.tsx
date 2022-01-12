@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  useMediaQuery,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -30,6 +31,7 @@ export default function FormModalPopup(props: {
   const { title, print, isOpen, isSaveDisabled, onSubmit, onClose, children } =
     props;
 
+  const [isLandscape] = useMediaQuery("(orientation: landscape)");
   const formEl = React.useRef<HTMLFormElement>(null);
   const [isFormVal, setIsFormVal] = React.useState(false);
 
@@ -41,9 +43,9 @@ export default function FormModalPopup(props: {
       <Modal
         isOpen={isOpen}
         onClose={() => onClose()}
-        isCentered={true}
-        size="2xl"
-        scrollBehavior="inside"
+        size={isLandscape ? "2xl" : "full"}
+        isCentered={isLandscape}
+        scrollBehavior={isLandscape ? "inside" : "outside"}
       >
         <ModalOverlay />
 
