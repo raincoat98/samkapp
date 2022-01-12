@@ -3,6 +3,7 @@ import { schemaType } from "./index";
 export type work_order = {
   work_order_id: number;
   work_order_number?: string;
+  status?: number;
   customer_id?: number;
   part_id?: number;
   quantity: number;
@@ -10,7 +11,6 @@ export type work_order = {
   transfer_date: string;
   transfer_type_id: string;
   priorities: number;
-  status?: number;
   remark?: string;
 };
 
@@ -28,6 +28,27 @@ export const work_orderSchema: schemaType = {
       type: "string",
       isAutoSet: true,
       isReadOnly: true,
+    },
+    status: {
+      type: "number",
+      select: [
+        {
+          name: "미확정",
+          value: null,
+        },
+        {
+          name: "대기",
+          value: 0,
+        },
+        {
+          name: "진행중",
+          value: 1,
+        },
+        {
+          name: "완료",
+          value: 2,
+        },
+      ],
     },
     customer_id: {
       type: "number",
@@ -90,27 +111,6 @@ export const work_orderSchema: schemaType = {
       ],
       isNotNull: true,
       isReadOnly: true,
-    },
-    status: {
-      type: "number",
-      select: [
-        {
-          name: "미확정",
-          value: null,
-        },
-        {
-          name: "대기",
-          value: 0,
-        },
-        {
-          name: "진행중",
-          value: 1,
-        },
-        {
-          name: "완료",
-          value: 2,
-        },
-      ],
     },
     remark: {
       type: "string",
