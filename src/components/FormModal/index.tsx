@@ -98,7 +98,6 @@ export default function FormModal(props: FormModalProps) {
           onChange={(value) => editData({ key, value })}
           defaultValue={defaultValue}
           isDisabled={disabled}
-          isURL={key.includes("homepage") || key.includes("url")}
         />
       );
 

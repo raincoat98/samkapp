@@ -83,12 +83,6 @@
     "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
     "parents": "smes"
   },
-  "@types/validator@13.6.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-    "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
-    "parents": "smes"
-  },
   "axios@0.24.0": {
     "licenses": "MIT",
     "repository": "https://github.com/axios/axios",
@@ -207,12 +201,6 @@
     "licenses": "Apache-2.0",
     "repository": "https://github.com/Microsoft/TypeScript",
     "licenseUrl": "https://github.com/Microsoft/TypeScript/raw/master/LICENSE.txt",
-    "parents": "smes"
-  },
-  "validator@13.6.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/validatorjs/validator.js",
-    "licenseUrl": "https://github.com/validatorjs/validator.js/raw/master/LICENSE",
     "parents": "smes"
   },
   "web-vitals@2.1.0": {

@@ -10,7 +10,6 @@ import InputString from "components/Input/InputString";
 import InputNumber from "components/Input/InputNumber";
 import InputBool from "components/Input/InputBool";
 import InputDate from "components/Input/InputDate";
-import InputURL from "components/Input/InputURL";
 
 import InputPartId from "components/Input/InputPartId";
 
@@ -20,7 +19,6 @@ export default function FormModalInput(props: {
   onChange: (value: any) => void;
   defaultValue?: any;
   isDisabled?: boolean;
-  isURL?: boolean; // only string
 }) {
   const { property } = props;
 
@@ -68,23 +66,13 @@ export default function FormModalInput(props: {
     switch (propertyType) {
       // 문자열
       case "string": {
-        // URL
-        if (props.isURL) {
-          element = (
-            <InputURL
-              onChange={(value) => props.onChange(value)}
-              defaultValue={props.defaultValue ?? property.default}
-            />
-          );
-        } else {
-          element = (
-            <InputString
-              onChange={(value) => props.onChange(value)}
-              defaultValue={props.defaultValue ?? property.default}
-              isTextarea={property.isTextarea}
-            />
-          );
-        }
+        element = (
+          <InputString
+            onChange={(value) => props.onChange(value)}
+            defaultValue={props.defaultValue ?? property.default}
+            isTextarea={property.isTextarea}
+          />
+        );
         break;
       }
       // 숫자
