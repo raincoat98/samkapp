@@ -41,12 +41,6 @@
     "licenseUrl": "https://github.com/testing-library/user-event/raw/master/LICENSE",
     "parents": "smes"
   },
-  "@types/file-saver@2.0.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-    "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
-    "parents": "smes"
-  },
   "@types/jest@27.0.1": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
@@ -87,12 +81,6 @@
     "licenses": "MIT",
     "repository": "https://github.com/axios/axios",
     "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
-    "parents": "smes"
-  },
-  "file-saver@2.0.5": {
-    "licenses": "MIT",
-    "repository": "https://github.com/eligrey/FileSaver.js",
-    "licenseUrl": "https://github.com/eligrey/FileSaver.js/raw/master/LICENSE.md",
     "parents": "smes"
   },
   "framer-motion@4.1.17": {
@@ -207,12 +195,6 @@
     "licenses": "Apache-2.0",
     "repository": "https://github.com/GoogleChrome/web-vitals",
     "licenseUrl": "https://github.com/GoogleChrome/web-vitals/raw/master/LICENSE",
-    "parents": "smes"
-  },
-  "xlsx@0.17.1": {
-    "licenses": "Apache-2.0",
-    "repository": "https://github.com/SheetJS/sheetjs",
-    "licenseUrl": "https://github.com/SheetJS/sheetjs/raw/master/LICENSE",
     "parents": "smes"
   }
 }
