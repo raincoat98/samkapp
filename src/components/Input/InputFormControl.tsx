@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { FormControl, FormLabel, Box } from "@chakra-ui/react";
+import { useMediaQuery, FormControl, FormLabel, Box } from "@chakra-ui/react";
 
 export default function InputFormControl(props: {
   name: string;
@@ -11,6 +11,9 @@ export default function InputFormControl(props: {
   // 번역
   const { t: translate } = useTranslation();
 
+  // 화면 방향
+  const [isLandscape] = useMediaQuery("(orientation: landscape)");
+
   // 폼 박스 생성
   const formControl = (
     <FormControl
@@ -18,7 +21,7 @@ export default function InputFormControl(props: {
       isDisabled={props.isDisabled}
       isRequired={props.isRequired}
       display="flex"
-      alignItems="center"
+      flexDirection={isLandscape ? "row" : "column"}
     >
       <FormLabel minWidth={"100px"} marginBottom={0}>
         {translate(`${props.name}`)}
