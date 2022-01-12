@@ -33,10 +33,6 @@ export const work_orderSchema: schemaType = {
       type: "number",
       select: [
         {
-          name: "미확정",
-          value: null,
-        },
-        {
           name: "대기",
           value: 0,
         },

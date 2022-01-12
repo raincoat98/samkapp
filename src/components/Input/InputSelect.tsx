@@ -8,7 +8,10 @@ export default function InputSelect(props: {
 }) {
   return (
     <Select
-      onChange={(event) => props.onChange(event.target.value)}
+      onChange={(event) => {
+        const value = event.target.value === "" ? null : event.target.value;
+        props.onChange(value);
+      }}
       defaultValue={props.defaultValue}
       placeholder="없음"
     >
