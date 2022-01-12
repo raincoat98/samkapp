@@ -65,6 +65,11 @@ export const work_orderSchema: schemaType = {
     transfer_type_id: {
       type: "string",
       isReadOnly: true,
+      foreign: {
+        table: "transfer_type",
+        key: "transfer_type_id",
+        display: "transfer_type_name",
+      },
     },
     priorities: {
       type: "number",
