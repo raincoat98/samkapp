@@ -1,6 +1,5 @@
 import {
   Document,
-  Font,
   Page,
   Text,
   View,
@@ -11,24 +10,7 @@ import moment from "moment";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { work_order } from "schema/work_order";
-
-Font.register({
-  family: "Nanum Gothic",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Bold.ttf",
-      fontWeight: 700,
-    },
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-ExtraBold.ttf",
-      fontWeight: 800,
-    },
-  ],
-});
+import { customer } from "schema/customer";
 
 const styles = StyleSheet.create({
   // 페이지
@@ -73,6 +55,11 @@ const styles = StyleSheet.create({
 
 export default function PrintWorkOrder(props: { data: work_order }) {
   const database = useSelector((state: RootState) => state.realm.database);
+
+  // 거래처가 DB에서 삭제된 경우 거래처 정보가 존재하지 않을 가능성 존재
+  const customer: customer | undefined = database.customer.filter(
+    (customer) => customer.customer_id === props.data.customer_id
+  )[0];
 
   const part = database.part.filter(
     (part) => part.part_id === props.data.part_id
@@ -140,11 +127,7 @@ export default function PrintWorkOrder(props: { data: work_order }) {
                 고객사
               </Text>
               <Text style={[styles.cell, styles.cellContent]}>
-                {props.data.customer_id &&
-                  database.customer.filter(
-                    (customer) =>
-                      customer.customer_id === props.data.customer_id
-                  )[0]}
+                {customer?.customer_name}
               </Text>
             </View>
 

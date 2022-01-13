@@ -1,6 +1,5 @@
 import {
   Document,
-  Font,
   Page,
   Text,
   View,
@@ -11,24 +10,7 @@ import moment from "moment";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { transfer_out } from "schema/transfer_out";
-
-Font.register({
-  family: "Nanum Gothic",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Bold.ttf",
-      fontWeight: 700,
-    },
-    {
-      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-ExtraBold.ttf",
-      fontWeight: 800,
-    },
-  ],
-});
+import { customer } from "schema/customer";
 
 const styles = StyleSheet.create({
   // 페이지
@@ -85,7 +67,8 @@ export default function PrintTransferOut(props: { data: transfer_out }) {
 
   const database = useSelector((state: RootState) => state.realm.database);
 
-  const customer = database.customer.filter(
+  // 거래처가 DB에서 삭제된 경우 거래처 정보가 존재하지 않을 가능성 존재
+  const customer: customer | undefined = database.customer.filter(
     (customer) => customer.customer_id === data.customer_id
   )[0];
 
@@ -123,7 +106,7 @@ export default function PrintTransferOut(props: { data: transfer_out }) {
 
             <View style={[styles.tableRow]}>
               <Text style={[styles.cellWithoutFlex]}>거래처</Text>
-              <Text style={[styles.cell]}>{customer.customer_name}</Text>
+              <Text style={[styles.cell]}>{customer?.customer_name}</Text>
             </View>
 
             <View style={[styles.tableRow]}>

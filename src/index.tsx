@@ -31,6 +31,25 @@ import rootReducer from "store";
 // Moment (시간 관리 라이브러리) - 한국어 지원
 import "moment/locale/ko";
 
+import { Font as ReactPdfFont } from "@react-pdf/renderer";
+ReactPdfFont.register({
+  family: "Nanum Gothic",
+  fonts: [
+    {
+      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf",
+      fontWeight: 400,
+    },
+    {
+      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Bold.ttf",
+      fontWeight: 700,
+    },
+    {
+      src: "https://fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-ExtraBold.ttf",
+      fontWeight: 800,
+    },
+  ],
+});
+
 // redux 미들웨어 적용
 let logger: any;
 
