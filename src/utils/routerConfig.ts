@@ -35,9 +35,9 @@ export const routes: Record<string, route> = {
     component: InvManagement,
   },
 
-  // 작업 지시 관리
+  // 작업지시 관리
   work_order_manage: {
-    name: "작업 지시 관리",
+    name: "작업지시 현황",
     path: "/work_order_manage",
     component: WorkOrderManagement,
   },
@@ -55,7 +55,7 @@ export const routes: Record<string, route> = {
   },
 
   prod_order: {
-    name: "생산지시 관리",
+    name: "생산지시 현황",
     path: "/prod_manage",
     component: ProdOrderManagement,
   },
@@ -115,8 +115,8 @@ export const sidebarConfig: sidebarRouteType[] = [
   { name: "재고 현황", route: routes.inv_management },
   { name: "입고 관리", route: routes.transfer_in },
   { name: "출고 관리", route: routes.transfer_out },
-  { name: "생산 지시 관리", route: routes.prod_order },
-  { name: "작업 지시 관리", route: routes.work_order_manage },
+  { name: "생산지시 현황", route: routes.prod_order },
+  { name: "작업지시 현황", route: routes.work_order_manage },
   {
     name: "마스터 관리",
     children: [

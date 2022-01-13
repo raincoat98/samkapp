@@ -127,7 +127,7 @@ export default function FormModal(props: FormModalProps) {
     // 전체화면 다이얼로그
     <FormModalPopup
       // 다이얼로그 제목
-      title={props.mode === "insert" ? "추가" : "수정"}
+      title={props.mode === "insert" ? "신규" : "수정"}
       mode={props.mode}
       // 출력물 데이터
       print={{

@@ -267,7 +267,7 @@ export default function Management(props: {
               삭제
             </Button>
             <Button onClick={() => prepareInsert()} colorScheme="blue">
-              추가
+              신규
             </Button>
             <Button onClick={() => refreshData()}>새로고침</Button>
           </ButtonGroup>

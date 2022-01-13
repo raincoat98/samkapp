@@ -20,7 +20,7 @@ export default function WorkOrderManagement() {
 
   return (
     <Management
-      title="작업 지시 관리"
+      title="작업지시 현황"
       schema={work_orderSchema}
       tabList={["진행중", "완료"]}
       onTabChange={(index: number) => setTabIndex(index)}

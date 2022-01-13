@@ -11,7 +11,7 @@ export default function ProductOrderManager() {
 
   return (
     <Management
-      title="생산지시 관리"
+      title="생산지시 현황"
       schema={product_orderSchema}
       tableProps={{ data }}
     />
