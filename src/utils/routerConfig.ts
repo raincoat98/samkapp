@@ -102,7 +102,7 @@ const routerConfig: {
   defaultPath: string;
   routes: Record<string, route>;
 } = {
-  defaultPath: "/setting",
+  defaultPath: "/work_order_manage",
   routes,
 };
 
