@@ -3,7 +3,7 @@ const transfer_out = {
   properties: {
     transfer_out_id: "출고번호",
     transfer_date: "출고일자",
-    transfer_type_id: "이동형태",
+    transfer_type_id: "작업 형태",
     plan_date: "계획일자",
     customer_id: "거래처",
     part_id: "품목",

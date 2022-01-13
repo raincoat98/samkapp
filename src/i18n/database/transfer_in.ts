@@ -3,7 +3,7 @@ const transfer_in = {
   properties: {
     transfer_in_id: "입고번호",
     transfer_date: "입고일자",
-    transfer_type_id: "이동형태",
+    transfer_type_id: "작업 형태",
     part_id: "품목",
     quantity: "입고수량",
     unit_price: "구매단가",
