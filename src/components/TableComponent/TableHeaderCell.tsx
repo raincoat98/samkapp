@@ -1,5 +1,5 @@
 import { HeaderGroup, TableHeaderProps } from "react-table";
-import { Th, Heading } from "@chakra-ui/react";
+import { useColorModeValue, Th, Heading } from "@chakra-ui/react";
 import TableSortIcon from "./TableSortIcon";
 
 export default function TableHeaderCell(
@@ -15,14 +15,22 @@ export default function TableHeaderCell(
   return (
     <Th
       {...column.getHeaderProps(column.getSortByToggleProps())}
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
       textAlign="center"
       whiteSpace="pre"
-      _notFirst={{ borderLeftWidth: "1px" }}
       padding={3}
       margin={0}
+      // 외곽선
+      borderColor={useColorModeValue("gray.300", "gray.600")}
+      _notFirst={{ borderLeftWidth: 1 }}
       {...rest}
+      _hover={{
+        color: useColorModeValue("black", "white"),
+      }}
     >
-      <Heading as="h6" size="xs" display="inline-block">
+      <Heading as="h6" size="sm" display="inline-block">
         {column.render("Header")}
       </Heading>
 

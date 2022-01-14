@@ -1,21 +1,25 @@
 import { Cell } from "react-table";
-import { Td, TableCellProps, Center } from "@chakra-ui/react";
+import { useColorModeValue, Td, TableCellProps } from "@chakra-ui/react";
 
 export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
   const { cell, ...rest } = props;
   return (
     <Td
       {...cell.getCellProps()}
-      textAlign="center"
-      verticalAlign="middle"
-      _notFirst={{ borderLeftWidth: "1px" }}
+      display="flex"
       padding={3}
       margin={0}
+      textAlign="center"
+      alignItems="center"
+      justifyContent="center"
+      // verticalAlign="bottom"
+      // 외곽선
+      borderColor={useColorModeValue("gray.300", "gray.600")}
+      borderBottomWidth={1}
+      _notFirst={{ borderLeftWidth: 1 }}
       {...rest}
     >
-      <Center width="100%" height="100%">
-        {cell.render("Cell")}
-      </Center>
+      {cell.render("Cell")}
     </Td>
   );
 }

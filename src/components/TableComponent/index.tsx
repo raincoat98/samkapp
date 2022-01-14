@@ -179,11 +179,14 @@ export default function TableComponent(props: TableComponentProps) {
           top: "0px",
         }}
         zIndex="docked"
-        boxShadow="base"
+        boxShadow="md"
         bg={defaultBgColor}
       >
         {headerGroups.map((headerGroup) => (
-          <Tr {...headerGroup.getHeaderGroupProps()}>
+          <Tr
+            {...headerGroup.getHeaderGroupProps()}
+            backgroundColor={defaultBgColorSelected}
+          >
             {headerGroup.headers.map((column, index) => (
               <TableHeaderCell
                 column={column}
@@ -201,6 +204,7 @@ export default function TableComponent(props: TableComponentProps) {
           return (
             <Tr
               {...row.getRowProps()}
+              borderCollpase="collpase"
               _hover={{
                 background: defaultBgColorSelected,
               }}
