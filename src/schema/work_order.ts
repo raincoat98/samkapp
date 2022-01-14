@@ -23,6 +23,7 @@ export const work_orderSchema: schemaType = {
       isAutoSet: true,
       isNotNull: true,
       isReadOnly: true,
+      isNotVisible: true,
     },
     work_order_number: {
       type: "string",
