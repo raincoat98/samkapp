@@ -28,13 +28,7 @@ export type schemaType = {
   primaryKey: string;
 };
 
-export type historyType = {
-  name: string;
-  props: any;
-};
-
 export type RealmState = {
-  history: historyType[];
   user: {
     name: string;
   };
@@ -63,7 +57,6 @@ export type RealmState = {
 };
 
 const initialState: RealmState = {
-  history: [],
   user: { name: "" },
   loading: false,
   loggedIn: false,
@@ -173,13 +166,6 @@ export const getData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    dispatch(
-      addHistory({
-        name: "getData",
-        props,
-      })
-    );
-
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -207,13 +193,6 @@ export const insertData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    dispatch(
-      addHistory({
-        name: "insertData",
-        props,
-      })
-    );
-
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -242,13 +221,6 @@ export const updateData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    dispatch(
-      addHistory({
-        name: "updateData",
-        props,
-      })
-    );
-
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -276,15 +248,6 @@ export const deleteData = createAsyncThunk(
     },
     { dispatch, rejectWithValue }
   ) => {
-    dispatch(
-      addHistory({
-        name: "deleteData",
-        props,
-      })
-    );
-
-    console.log(props);
-
     try {
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
@@ -308,11 +271,7 @@ export const deleteData = createAsyncThunk(
 const userSlice = createSlice({
   name,
   initialState,
-  reducers: {
-    addHistory(state, action: PayloadAction<historyType>) {
-      state.history.push(action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -406,6 +365,7 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer, actions } = userSlice;
-export const { addHistory } = actions;
+const { reducer } = userSlice;
+// const { reducer, actions } = userSlice;
+// export const {} = actions;
 export default reducer;
