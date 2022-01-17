@@ -196,7 +196,6 @@ export default function TableComponent(props: TableComponentProps) {
           return (
             <Tr
               {...row.getRowProps()}
-              borderCollpase="collpase"
               _hover={{
                 background: defaultBgColorSelected,
               }}
