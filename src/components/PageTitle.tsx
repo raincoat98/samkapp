@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "store/system";
 import { menu } from "utils/icons";
-import colors from "utils/colors";
+import { menuBackground, borderColor } from "utils/colors";
 import {
   useStyleConfig,
   chakra,
@@ -20,11 +20,8 @@ export default function PageTitle(props: HeadingProps) {
 
   const dispatch = useDispatch();
 
-  // 색상 가져오기
-  const bgColor = useColorModeValue(
-    colors.background.light,
-    colors.background.dark
-  );
+  const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
+  const borColor = useColorModeValue(borderColor.light, borderColor.dark);
 
   return (
     <chakra.header
@@ -34,7 +31,8 @@ export default function PageTitle(props: HeadingProps) {
       top="0px"
       variant="page-title"
       padding="3"
-      borderBottomWidth="1px"
+      borderBottomWidth={1}
+      borderColor={borColor}
       bgColor={bgColor}
       transition={"var(--chakra-transition-duration-normal)"}
       userSelect="none"

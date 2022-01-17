@@ -46,10 +46,6 @@ export default function TableComponent(props: TableComponentProps) {
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
   // 색상 가져오기
-  const defaultBgColor = useColorModeValue(
-    colors.background.light,
-    colors.background.dark
-  );
   const defaultBgColorSelected = useColorModeValue(
     colors.backgroundSelected.light,
     colors.backgroundSelected.dark
@@ -180,13 +176,9 @@ export default function TableComponent(props: TableComponentProps) {
         }}
         zIndex="docked"
         boxShadow="md"
-        bg={defaultBgColor}
       >
         {headerGroups.map((headerGroup) => (
-          <Tr
-            {...headerGroup.getHeaderGroupProps()}
-            backgroundColor={defaultBgColorSelected}
-          >
+          <Tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, index) => (
               <TableHeaderCell
                 column={column}

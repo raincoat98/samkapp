@@ -6,6 +6,7 @@ import Moment from "react-moment";
 import {
   useColorMode,
   useMediaQuery,
+  useColorModeValue,
   Image,
   Box,
   Flex,
@@ -16,11 +17,15 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import SidebarMenu from "./SidebarMenu";
+import { menuBackground, borderColor } from "utils/colors";
 
 export default function Sidebar(props: {
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
+  const borColor = useColorModeValue(borderColor.light, borderColor.dark);
+
   const { colorMode } = useColorMode();
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
   const logo = useSelector((state: RootState) => state.system.logo);
@@ -33,7 +38,9 @@ export default function Sidebar(props: {
       w={isLandscape ? 250 : "100%"}
       p={5}
       // 우측 외곽선
-      borderRightWidth="1px"
+      borderRightWidth={1}
+      borderColor={borColor}
+      bgColor={bgColor}
     >
       <Flex>
         <Center>
@@ -65,6 +72,8 @@ export default function Sidebar(props: {
             history.push("/setting");
             if (!isLandscape) props.onClose();
           }}
+          borderWidth={1}
+          borderColor={borColor}
           width="fit-content"
           aria-label="설정"
         />

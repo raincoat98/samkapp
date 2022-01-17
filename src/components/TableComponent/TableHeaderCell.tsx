@@ -1,6 +1,7 @@
 import { HeaderGroup, TableHeaderProps } from "react-table";
 import { useColorModeValue, Th, Heading } from "@chakra-ui/react";
 import TableSortIcon from "./TableSortIcon";
+import { contentBackground } from "utils/colors";
 
 export default function TableHeaderCell(
   props: TableHeaderProps & {
@@ -22,13 +23,19 @@ export default function TableHeaderCell(
       whiteSpace="pre"
       padding={3}
       margin={0}
+      // 색상
+      color={useColorModeValue("black", "white")}
       // 외곽선
       borderColor={useColorModeValue("gray.300", "gray.600")}
+      bgColor={useColorModeValue(
+        contentBackground.light,
+        contentBackground.dark
+      )}
       _notFirst={{ borderLeftWidth: 1 }}
-      {...rest}
       _hover={{
-        color: useColorModeValue("black", "white"),
+        bgColor: useColorModeValue("gray.100", "black"),
       }}
+      {...rest}
     >
       <Heading as="h6" size="sm" display="inline-block">
         {column.render("Header")}

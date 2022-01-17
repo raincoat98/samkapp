@@ -28,6 +28,7 @@ export const partSchema: schemaType = {
       isPrimary: true,
       isAutoSet: true,
       isNotNull: true,
+      isDisalbePreview: true,
     },
     part_number: {
       type: "string",
@@ -86,6 +87,7 @@ export const partSchema: schemaType = {
         key: "bom_id",
         display: "bom_id",
       },
+      isDisalbePreview: true,
     },
     unit_id: {
       type: "string",
@@ -107,6 +109,8 @@ export const partSchema: schemaType = {
     },
     use_yn: {
       type: "boolean",
+      default: true,
+      isDisalbePreview: true,
     },
   },
 };

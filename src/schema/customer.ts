@@ -31,6 +31,7 @@ export const customerSchema: schemaType = {
     },
     business_number: {
       type: "string",
+      isDisalbePreview: true,
     },
     ceo_name: {
       type: "string",
@@ -46,10 +47,12 @@ export const customerSchema: schemaType = {
     zip_code: {
       type: "string",
       isNotNull: true,
+      isDisalbePreview: true,
     },
     address: {
       type: "string",
       isNotNull: true,
+      isDisalbePreview: true,
     },
     business_info: {
       type: "string",
@@ -59,6 +62,7 @@ export const customerSchema: schemaType = {
     },
     homepage: {
       type: "string",
+      isDisalbePreview: true,
     },
     remark: {
       type: "string",

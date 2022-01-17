@@ -16,9 +16,9 @@ export default function Profile() {
           boxSize="64px"
           borderRadius="full"
           overflow="hidden"
-          backgroundColor="white"
-          color="black"
           padding="3"
+          bgColor="white"
+          color="black"
         />
       </WrapItem>
 

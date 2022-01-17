@@ -19,13 +19,13 @@ export type propertyType = {
     display?: string; // 외부 테이블 선택시 유저가 보게 될 프로퍼티의 키
     filter?: Record<string, any>; // 같은 값인 데이터만 보여주기
   };
-  isNotVisible?: boolean; // 유저에게 보여지지 않는지 여부 (추가, 수정 모두)
   isPrimary?: boolean; // 기본 키 여부
-  isAutoSet?: boolean; // 데이터베이스 내부에서 자동으로 입력하는지 여부
   isNotNull?: boolean; // 필수로 입력되어야 하는지 여부
+  isNotVisible?: boolean; // 유저에게 보여지지 않는지 여부 (추가, 수정 모두)
+  isAutoSet?: boolean; // 데이터베이스 내부에서 자동으로 입력하는지 여부
   isReadOnly?: boolean; // 유저가 읽기만 가능하고 작성하는 것은 불가능한 값
   isTextarea?: boolean; // (type: string) 문자열을 여러 줄로 받을지 여부
-  isArray?: boolean; // 값이 배열인지 배열 여부
+  isDisalbePreview?: boolean; // 테이블 뷰에서 보여주지 않고 상세 보기에서만 보여줄지 여부
 };
 
 export type selectType = { name?: string; value: any };

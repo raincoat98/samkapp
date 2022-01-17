@@ -6,7 +6,10 @@ export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
   return (
     <Td
       {...cell.getCellProps()}
-      display="flex"
+      display="block"
+      overflow="hidden"
+      textOverflow="ellipsis"
+      whiteSpace="nowrap"
       padding={3}
       margin={0}
       textAlign="center"

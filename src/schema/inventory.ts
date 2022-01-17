@@ -68,6 +68,7 @@ export const inventorySchema: schemaType = {
     status: {
       type: "boolean",
       isNotNull: true,
+      isDisalbePreview: true,
     },
   },
 };

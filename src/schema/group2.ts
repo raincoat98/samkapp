@@ -51,12 +51,14 @@ export const group2Schema: schemaType = {
         key: "group1_id",
         display: "group1_name",
       },
+      isDisalbePreview: true,
     },
     search_group: {
       type: "number",
     },
     sort_seq: {
       type: "number",
+      isDisalbePreview: true,
     },
     remark: {
       type: "string",
@@ -65,6 +67,7 @@ export const group2Schema: schemaType = {
     use_yn: {
       type: "boolean",
       default: true,
+      isDisalbePreview: true,
     },
   },
 };

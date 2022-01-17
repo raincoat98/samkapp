@@ -85,7 +85,7 @@ export default function Management(props: {
     const property = schema.properties[key];
     const type = property.as ?? property.type;
 
-    if (property.isNotVisible) continue;
+    if (property.isDisalbePreview || property.isNotVisible) continue;
 
     let accessor: string | Accessor<{}> | undefined;
 
