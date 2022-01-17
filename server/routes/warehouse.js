@@ -7,7 +7,7 @@ const connection = require("../lib/db.js");
 router.get("/all", (req, res) => {
   var dataList = [];
   const sql =
-    "SELECT warehouse_id, warehouse_name, rack_no, cell_no, row_no, use_yn, crt_id, crt_date, mod_id, mod_date " +
+    "SELECT warehouse_id, warehouse_name, rack_no, cell_no, row_no, use_yn " +
     "FROM tb_warehouse";
   connection.query(sql, function (error, results) {
     if (error) {
@@ -25,7 +25,7 @@ router.get("/all", (req, res) => {
 router.get("/create", (req, res) => {
   const sql =
     "INSERT INTO tb_warehouse " +
-    "(warehouse_name, rack_no, cell_no, row_no, use_yn, crt_id, crt_date, mod_id, mod_date) " +
+    "(warehouse_name, rack_no, cell_no, row_no, use_yn) " +
     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const params = [
     req.query["warehouse_name"],
@@ -33,10 +33,6 @@ router.get("/create", (req, res) => {
     req.query["cell_no"],
     req.query["row_no"],
     req.query["use_yn"],
-    req.query["crt_id"],
-    req.query["crt_date"],
-    req.query["mod_id"],
-    req.query["mod_date"],
   ];
 
   connection.query(sql, params, function (error, results) {
@@ -54,7 +50,6 @@ router.get("/update", (req, res) => {
   const sql =
     "UPDATE tb_warehouse " +
     "SET warehouse_name=?, rack_no=?, cell_no=?, row_no=?, use_yn=?, " +
-    "crt_id=?, crt_date=?, mod_id=?, mod_date=? " +
     "WHERE warehouse_id=?";
 
   const params = [
@@ -63,10 +58,6 @@ router.get("/update", (req, res) => {
     req.query["cell_no"],
     req.query["row_no"],
     req.query["use_yn"],
-    req.query["crt_id"],
-    req.query["crt_date"],
-    req.query["mod_id"],
-    req.query["mod_date"],
     req.query["warehouse_id"],
   ];
 
