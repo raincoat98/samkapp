@@ -5,7 +5,6 @@ const api = require("./routes/index");
 const admin = require("./routes/admin");
 const billOfMaterials = require("./routes/billOfMaterials");
 const customer = require("./routes/customer");
-const group1 = require("./routes/group1");
 const group2 = require("./routes/group2");
 const inventory = require("./routes/inventory");
 const listPrice = require("./routes/listPrice");
@@ -29,7 +28,6 @@ app.use("/api", api);
 app.use("/admin", admin);
 app.use("/bill-of-materials", billOfMaterials); // BOM
 app.use("/customer", customer); // 거래처
-app.use("/group1", group1); // 품목 분류 1 (제거 예정)
 app.use("/group2", group2); // 품목 분류
 app.use("/inventory", inventory); // 재고
 app.use("/list-price", listPrice); // 품목 가격

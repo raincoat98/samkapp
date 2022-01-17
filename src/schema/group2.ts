@@ -8,7 +8,6 @@ export type group2 = {
   spec3?: string;
   spec4?: string;
   spec5?: string;
-  group1_id?: number;
   search_group?: number;
   sort_seq?: number;
   remark?: string;
@@ -42,16 +41,6 @@ export const group2Schema: schemaType = {
     },
     spec5: {
       type: "string",
-    },
-    group1_id: {
-      type: "number",
-      isNotNull: true,
-      foreign: {
-        table: "group1",
-        key: "group1_id",
-        display: "group1_name",
-      },
-      isDisalbePreview: true,
     },
     search_group: {
       type: "number",

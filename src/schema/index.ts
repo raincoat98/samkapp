@@ -35,7 +35,6 @@ export const COLLECTION_NAME = {
   user: "user",
   bill_of_materials: "bill_of_materials",
   customer: "customer",
-  group1: "group1",
   group2: "group2",
   inventory: "inventory",
   list_price: "list_price",

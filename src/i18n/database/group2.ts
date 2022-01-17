@@ -9,7 +9,6 @@ const group2 = {
     spec3: "규격3",
     spec4: "규격4",
     spec5: "규격5",
-    group1_id: "대분류코드",
     search_group: "검색그룹",
     sort_seq: "정렬순서",
     remark,

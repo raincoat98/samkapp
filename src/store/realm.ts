@@ -4,7 +4,6 @@ import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
 import { bill_of_materials } from "schema/bill_of_materials";
 import { customer } from "schema/customer";
-import { group1 } from "schema/group1";
 import { group2 } from "schema/group2";
 import { inventory } from "schema/inventory";
 import { list_price } from "schema/list_price";
@@ -39,7 +38,6 @@ export type RealmState = {
   database: {
     [COLLECTION_NAME.bill_of_materials]: bill_of_materials[];
     [COLLECTION_NAME.customer]: customer[];
-    [COLLECTION_NAME.group1]: group1[];
     [COLLECTION_NAME.group2]: group2[];
     [COLLECTION_NAME.inventory]: inventory[];
     [COLLECTION_NAME.list_price]: list_price[];
@@ -64,7 +62,6 @@ const initialState: RealmState = {
   database: {
     [COLLECTION_NAME.bill_of_materials]: [],
     [COLLECTION_NAME.customer]: [],
-    [COLLECTION_NAME.group1]: [],
     [COLLECTION_NAME.group2]: [],
     [COLLECTION_NAME.inventory]: [],
     [COLLECTION_NAME.list_price]: [],

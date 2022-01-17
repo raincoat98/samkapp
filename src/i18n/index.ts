@@ -5,7 +5,6 @@ import error_code from "./error_code.json";
 import { info, use_yn, del_yn } from "./database/common";
 
 import customer from "./database/customer";
-import group1 from "./database/group1";
 import group2 from "./database/group2";
 import inventory from "./database/inventory";
 import list_price from "./database/list_price";
@@ -25,7 +24,6 @@ const resources = {
 
       // 데이터베이스 테이블 번역
       customer: combine(customer),
-      group1: combine(group1),
       group2: combine(group2),
       inventory: combine(inventory),
       list_price: combine(list_price),
