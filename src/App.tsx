@@ -1,36 +1,32 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "./store";
+import { chakra, useColorModeValue } from "@chakra-ui/react";
+import { menuBackground } from "utils/colors";
 import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
-import SpinnerComponent from "components/base/SpinnerComponent";
+import SpinnerComponent from "components/SpinnerComponent";
 import ErrorAlert from "components/ErrorAlert";
-import { autoLogin } from "store/realm";
 
 export default function App() {
-  const dispatch = useDispatch();
+  const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
+
   const isLoggedIn = useSelector((state: RootState) => state.realm.loggedIn);
 
   // 에러 객체
   const error = useSelector((state: RootState) => state.realm.error);
 
-  React.useEffect(() => {
-    dispatch(autoLogin());
-  }, [dispatch]);
-
   return (
-    <div
-      style={{
-        fontFamily: "맑은 고딕",
-        width: "100%",
-        height: "100vh",
-      }}
+    <chakra.div
+      fontFamily="맑은 고딕, 나눔고딕"
+      width="100%"
+      height="100vh"
+      bgColor={bgColor}
     >
       <SpinnerComponent />
 
-      {error ? <ErrorAlert error={error} /> : ""}
+      {error && <ErrorAlert error={error} />}
 
       {!isLoggedIn ? <Login /> : <AppRouter />}
-    </div>
+    </chakra.div>
   );
 }

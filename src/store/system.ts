@@ -1,26 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import logo from "images/logo.png";
 
-type colorType = { light: string; dark: string };
-
 export type SystemState = {
   isSidebarOpen: boolean;
   appName: string;
   logo: string;
-  color: {
-    background: colorType;
-    backgroundSelected: colorType;
-  };
 };
 
 const initialState: SystemState = {
   isSidebarOpen: true,
-  appName: "SamKapp",
+  appName: "SMES",
   logo: logo,
-  color: {
-    background: { light: "white", dark: "gray.800" },
-    backgroundSelected: { light: "gray.100", dark: "gray.700" },
-  },
 };
 
 const userSlice = createSlice({

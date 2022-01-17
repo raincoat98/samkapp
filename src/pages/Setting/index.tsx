@@ -1,5 +1,5 @@
-import PageContainer from "../../components/base/PageContainer";
-import ModalComponent from "../../components/base/ModalComponent";
+import PageContainer from "../../components/PageContainer";
+import ModalComponent from "../../components/ModalComponent";
 import Profile from "./Profile";
 import LicensesList from "./LicensesList";
 import {
@@ -58,7 +58,7 @@ export default function Setting() {
             기타
           </Heading>
           <br />
-          <Button onClick={licenseModalDisclosure.onOpen}>
+          <Button onClick={() => licenseModalDisclosure.onOpen()}>
             오픈소스 라이센스
           </Button>
         </Box>

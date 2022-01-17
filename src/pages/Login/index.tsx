@@ -1,15 +1,18 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { login } from "store/realm";
+import { login, register } from "store/realm";
 import * as icons from "utils/icons";
 import SwitchColorMode from "./SwitchColorMode";
 import {
+  Box,
   Center,
   Stack,
   Heading,
   Button,
   Icon,
+  FormControl,
+  FormHelperText,
   InputGroup,
   InputLeftElement,
   InputRightElement,
@@ -21,7 +24,9 @@ export default function Login() {
 
   const appName = useSelector((state: RootState) => state.system.appName);
 
-  const [email, setEmail] = React.useState("");
+  const [isRegister, setIsRegister] = React.useState(false);
+
+  const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [passwordShow, setPasswordShow] = React.useState(false);
 
@@ -30,59 +35,90 @@ export default function Login() {
     setPasswordShow(!passwordShow);
   }
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    dispatch(login({ email, password }));
-  }
-
   return (
     <Center w={"100%"} h={"100%"}>
-      <form action="" onSubmit={onSubmit}>
-        <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
-          <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
+      <Box>
+        <FormControl>
+          <Stack spacing={5} p={10} borderWidth={1} rounded="md" boxShadow="xl">
+            <Heading size="md">{appName}에 오신 것을 환영합니다.</Heading>
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Icon as={icons.id} />}
-            />
-            <Input
-              placeholder="이메일"
-              autoComplete="username"
-              isRequired={true}
-              onChange={(event) => {
-                setEmail(event.target.value);
-              }}
-            />
-          </InputGroup>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Icon as={icons.id} />}
+              />
+              <Input
+                id="user-id"
+                placeholder="아이디"
+                autoComplete="username"
+                isRequired={true}
+                onChange={(event) => setUserId(event.target.value)}
+              />
+            </InputGroup>
 
-          <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Icon as={icons.password} />}
-            />
-            <Input
-              type={passwordShow ? "text" : "password"}
-              placeholder="비밀번호"
-              autoComplete="current-password"
-              pr="4.5rem"
-              isRequired={true}
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-            <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={togglePasswordShow}>
-                {passwordShow ? "숨기기" : "보기"}
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Icon as={icons.password} />}
+              />
+              <Input
+                id="password"
+                type={passwordShow ? "text" : "password"}
+                placeholder="비밀번호"
+                autoComplete="current-password"
+                pr="4.5rem"
+                isRequired={true}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <InputRightElement width="4.5rem">
+                <Button h="1.75rem" size="sm" onClick={togglePasswordShow}>
+                  {passwordShow ? "숨기기" : "보기"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
+            {isRegister ? (
+              <Button
+                onClick={() => dispatch(register({ id: userId, password }))}
+                colorScheme="blue"
+              >
+                회원가입
               </Button>
-            </InputRightElement>
-          </InputGroup>
+            ) : (
+              <Button
+                onClick={() => dispatch(login({ id: userId, password }))}
+                colorScheme="blue"
+              >
+                로그인
+              </Button>
+            )}
 
-          <Button type="submit" colorScheme="blue">
-            로그인
-          </Button>
-        </Stack>
-      </form>
+            {/* {isRegister ? (
+              <FormHelperText>
+                계정을 이미 가지고 계신가요?
+                <Button
+                  onClick={() => setIsRegister(!isRegister)}
+                  variant="link"
+                  marginLeft={2}
+                >
+                  로그인
+                </Button>
+              </FormHelperText>
+            ) : (
+              <FormHelperText>
+                계정이 없으신가요?
+                <Button
+                  onClick={() => setIsRegister(!isRegister)}
+                  variant="link"
+                  marginLeft={2}
+                >
+                  회원가입
+                </Button>
+              </FormHelperText>
+            )} */}
+          </Stack>
+        </FormControl>
+      </Box>
 
       <SwitchColorMode />
     </Center>

@@ -25,11 +25,8 @@ export default function LicensesList() {
   const licenseObject = JSON.parse(licensesString);
   const licenseList: licenseType[] = [];
 
-  for (const key in licenseObject) {
-    if (Object.prototype.hasOwnProperty.call(licenseObject, key)) {
-      licenseList.push({ name: key, ...licenseObject[key] });
-    }
-  }
+  for (const key in licenseObject)
+    licenseList.push({ name: key, ...licenseObject[key] });
 
   return (
     <Accordion allowMultiple={true}>

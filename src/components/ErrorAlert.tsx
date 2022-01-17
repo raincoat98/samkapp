@@ -1,6 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { RealmError } from "store/realm";
 import {
   useDisclosure,
   Alert,
@@ -10,12 +8,10 @@ import {
   CloseButton,
 } from "@chakra-ui/react";
 
-export default function ErrorAlert(props: { error: RealmError }) {
-  const { error } = props;
-
-  const { t: translate } = useTranslation();
+export default function ErrorAlert(props: { error: any }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // 오류 감지
   React.useEffect(() => {
     if (props.error) onOpen();
     else onClose();
@@ -29,11 +25,9 @@ export default function ErrorAlert(props: { error: RealmError }) {
       textAlign="center"
     >
       <AlertIcon />
-      <AlertTitle mr={2}>
-        {translate(`error_code.${error.errorCode}.message`)}
-      </AlertTitle>
+      <AlertTitle mr={2}>{props.error.message}</AlertTitle>
       <AlertDescription>
-        {translate(`error_code.${error.errorCode}.guide`)}
+        오류가 발생했습니다. 다시 시도해주세요.
       </AlertDescription>
       <CloseButton
         onClick={() => onClose()}

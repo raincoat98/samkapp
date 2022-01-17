@@ -1,36 +1,48 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import {
-  setCollectionData,
-  insertData,
-  updateData,
-  deleteMany,
-} from "store/realm";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getData, insertData, updateData, deleteData } from "store/realm";
+import { Column, Accessor } from "react-table";
+import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { schemaType, schemaToColums } from "utils/realmUtils";
-import PageContainer from "components/base/PageContainer";
-import FormModal from "components/Management/FormModal";
-import TableComponent from "components/base/TableComponent";
-import { Row } from "react-table";
-import { useDisclosure, Flex, Select, Button } from "@chakra-ui/react";
-import {
-  BaseButtonGroups,
-  DeleteButton,
-  AddButton,
-} from "components/base/Buttons";
+import { schemaType } from "schema";
 
+// 테이블 관련 컴포넌트
+import TableComponent, { TableComponentProps } from "components/TableComponent";
+import { ReducerTableState, TableInstance } from "react-table";
+
+// chakra-ui
+import {
+  useDisclosure,
+  Flex,
+  Select,
+  ButtonGroup,
+  Button,
+  Tabs,
+  TabList,
+  Tab,
+} from "@chakra-ui/react";
+
+// 관련 컴포넌트
+import PageContainer from "components/PageContainer";
+import FormModal, { formModalModeType } from "components/FormModal";
+
+// 관리 페이지
 export default function Management(props: {
-  title: string;
-  collectionName: string;
-  schema: schemaType;
-  filterList?: { schema: schemaType; data: any[] }[];
-  tableData: any[];
+  title: string; // 브라우저 페이지 이름
+  schema: schemaType; // 테이블 스키마
+  tabList?: string[];
+  onTabChange?: (tabIndex: number) => void;
+  tableProps: TableComponentProps;
 }) {
-  const { title, collectionName, schema, filterList, tableData } = props;
+  const { title, schema, tabList, onTabChange, tableProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
+
+  // 데이터베이스
+  const database = useSelector((state: RootState) => state.realm.database);
 
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
@@ -41,56 +53,147 @@ export default function Management(props: {
   // 현재 수정중인 데이터
   const [selected, setSelected] = React.useState<any>();
   // 폼모달 모드
-  const [modalMode, setModalMode] = React.useState("");
+  const [modalMode, setModalMode] = React.useState<formModalModeType>("insert");
 
   const onTableChange = React.useCallback(
-    (props: { table: any; state: any; action: { type: string } }) => {
+    (props: {
+      table: TableInstance;
+      state: ReducerTableState<any>;
+      action: { type: string };
+    }) => {
       const { table, state } = props;
 
       if (table && Object.entries(state.selectedRowIds).length !== 0) {
         const selectedRowIds = state.selectedRowIds;
 
-        const selectedItemIdList: any[] = [];
+        const selectedItemList: any[] = [];
         const rowsById = table.rowsById;
 
         for (const key in selectedRowIds) {
-          selectedItemIdList.push(rowsById[key]?.original._id);
+          if (rowsById[key]) selectedItemList.push(rowsById[key].original);
         }
 
-        setCheckedRows(selectedItemIdList);
+        setCheckedRows(selectedItemList);
       } else setCheckedRows([]);
     },
     []
   );
 
-  // 테이블 헤더에서 제외할 것들
-  const disabledSchemaKeyList = useSelector(
-    (state: RootState) => state.realm.disabledSchemaKeyList
-  );
-  const readonlySchemaKeyList = useSelector(
-    (state: RootState) => state.realm.readonlySchemaKeyList
-  );
-
   // 테이블 데이터
-  const columns = schemaToColums({
-    schema,
-    exclude: [...disabledSchemaKeyList, ...readonlySchemaKeyList],
-  });
-  Object.keys(columns).forEach((key) => {
-    if (Object.prototype.hasOwnProperty.call(columns, key)) {
-      const header = translate(
-        `${schema.name}.properties.${columns[Number(key)].accessor}`
-      );
-      columns[Number(key)].Header = header;
+  const columns: Column[] = [];
+  for (const key in schema.properties) {
+    const property = schema.properties[key];
+    const type = property.as ?? property.type;
+
+    if (property.isDisalbePreview || property.isNotVisible) continue;
+
+    let accessor: string | Accessor<{}> | undefined;
+
+    // 선택 input일 경우 (예: 우선순위)
+    if (property.select) {
+      const select = property.select;
+      accessor = (originalRow) => {
+        try {
+          const origRow = originalRow as Record<string, any>;
+          const selectedData = origRow[key];
+          const selected = select.filter((data) => {
+            return data.value === selectedData;
+          })[0];
+          if (selected) return selected.name;
+          else return selectedData;
+        } catch (error) {
+          console.error(error);
+          return "잘못된 값";
+        }
+      };
+    } else {
+      switch (type) {
+        case "string":
+        case "number": {
+          // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
+          if (property.foreign) {
+            accessor = (originalRow: Record<string, any>) => {
+              try {
+                const foreign = property.foreign;
+                if (foreign?.table) {
+                  const dataList = [...database[foreign.table]];
+                  const item: any = dataList.filter((data: any) => {
+                    return data[foreign.key] === originalRow[foreign.key];
+                  })[0];
+                  if (item) {
+                    return foreign.display
+                      ? item[foreign.display]
+                      : item[foreign.key];
+                  }
+                }
+              } catch (error) {
+                console.error(error);
+                return "잘못된 값";
+              }
+            };
+          } else accessor = key;
+          break;
+        }
+        case "date":
+        case "month": {
+          accessor = (originalRow) => {
+            try {
+              const origRow = originalRow as Record<string, any>;
+              const isMonth =
+                property.type === "month" || property.as === "month";
+              return origRow[key]
+                ? isMonth
+                  ? moment(origRow[key]).format("YYYY-MM") // 년월
+                  : moment(origRow[key]).format("YYYY-MM-DD") // 년월일
+                : "";
+            } catch (error) {
+              console.error(error);
+              return "잘못된 값";
+            }
+          };
+          break;
+        }
+        case "boolean": {
+          accessor = (originalRow) => {
+            const origRow = originalRow as Record<string, any>;
+            const boolData = origRow[key] as boolean;
+            if (boolData) return "예";
+            else return "아니오";
+          };
+          break;
+        }
+      }
     }
-  });
+
+    // 헤더 번역
+    const header = translate(`${schema.name}.properties.${key}`);
+
+    columns.push({
+      Header: header,
+      accessor,
+      width: 130,
+    });
+  }
 
   // 테이블 초기화
-  let mainTable: any;
+  let mainTable: {
+    tableInstance: TableInstance<object>;
+    component: {
+      box: JSX.Element;
+      search: JSX.Element;
+      pagination: JSX.Element;
+      table: JSX.Element;
+    };
+  };
   mainTable = TableComponent({
     columns,
-    data: tableData,
-    onRowClick: onTableRowClick,
+    data: tableProps.data,
+    // 열 클릭 이벤트
+    onRowClick: (row) => {
+      setModalMode("update");
+      setSelected(row.original as any);
+      modalDisclosure.onOpen();
+    },
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
         onTableChange({
@@ -104,17 +207,10 @@ export default function Management(props: {
     ),
   });
 
-  const refreshData = React.useCallback(async () => {
-    dispatch(setCollectionData(collectionName));
-
-    if (filterList) {
-      for (let index = 0; index < filterList.length; index++) {
-        console.log(filterList[index].schema.name);
-
-        dispatch(setCollectionData(filterList[index].schema.name));
-      }
-    }
-  }, [collectionName, dispatch, filterList]);
+  function refreshData() {
+    // 현재 테이블 데이터 새로고침
+    dispatch(getData({ collectionName: schema.name }));
+  }
 
   // 데이터베이스에 데이터 insert 준비
   function prepareInsert() {
@@ -123,14 +219,7 @@ export default function Management(props: {
     modalDisclosure.onOpen();
   }
 
-  // 데이터베이스에 데이터 update 준비
-  function onTableRowClick(props: { event: any; row: Row<{}> }) {
-    setModalMode("update");
-    setSelected(props.row.original as any);
-    modalDisclosure.onOpen();
-  }
-
-  async function onFormModalChange(props: {
+  async function onFormModalSave(props: {
     type: string;
     document: Record<string, any>;
     initialValue: Record<string, any>;
@@ -139,15 +228,15 @@ export default function Management(props: {
 
     switch (type) {
       case "insert": {
-        dispatch(insertData({ collectionName, document }));
+        dispatch(insertData({ collectionName: schema.name, document }));
         break;
       }
       case "update": {
         dispatch(
           updateData({
-            collectionName,
-            filter: { _id: initialValue._id },
-            update: { $set: document },
+            collectionName: schema.name,
+            filter: initialValue,
+            update: { ...initialValue, ...document },
           })
         );
         break;
@@ -159,69 +248,79 @@ export default function Management(props: {
 
   // 데이터베이스에 체크한 열 제거 요청
   async function deleteSelected() {
-    dispatch(
-      deleteMany({
-        collectionName,
-        ids: checkedRows,
-      })
-    );
+    for (let index = 0; index < checkedRows.length; index++) {
+      const row = checkedRows[index];
+      await dispatch(
+        deleteData({
+          collectionName: schema.name,
+          item: row,
+        })
+      );
+    }
   }
 
   return (
     <>
+      {/* 입력 다이얼로그 */}
       <FormModal
         schema={schema}
         mode={modalMode}
         initialValue={selected}
         isOpen={modalDisclosure.isOpen}
-        onChange={onFormModalChange}
+        onSave={onFormModalSave}
         onClose={modalDisclosure.onClose}
-        children={null}
       />
 
       <PageContainer
         title={title}
         headerChildren={
-          <BaseButtonGroups>
-            <DeleteButton
-              isDisabled={Object.keys(checkedRows).length === 0}
-              onClick={deleteSelected}
-              title="선택한 항목을 삭제합니다."
-            />
-            <AddButton onClick={prepareInsert} />
+          <ButtonGroup>
             <Button
-              onClick={() => {
-                refreshData();
-              }}
+              onClick={() => deleteSelected()}
+              isDisabled={Object.keys(checkedRows).length === 0}
+              colorScheme="red"
             >
-              새로고침
+              삭제
             </Button>
-          </BaseButtonGroups>
+            <Button onClick={() => prepareInsert()} colorScheme="blue">
+              신규
+            </Button>
+            <Button onClick={() => refreshData()}>새로고침</Button>
+          </ButtonGroup>
         }
       >
         <Flex direction="column" width="100%" height="100%">
-          {Array.isArray(filterList) ? (
-            <Flex>
-              {filterList?.map((filter, index) => (
-                <Select
-                  placeholder={translate(`${filter.schema.name}.name`)}
-                  key={index}
-                  size="sm"
-                >
-                  {filter.data.map((filterItem, index) => (
-                    <option
-                      value={filterItem[filter.schema.primaryKey].toString()}
-                      key={index}
-                    >
-                      {filterItem[`${filter.schema.name}_name`]}
-                    </option>
+          {/* 탭 추가 */}
+          {Array.isArray(tabList) ? (
+            tabList.length > 5 ? (
+              <Select
+                onChange={(event) => {
+                  if (onTabChange) onTabChange(Number(event.target.value));
+                }}
+              >
+                {tabList?.map((tab, index) => (
+                  <option key={index} value={index}>
+                    {tab}
+                  </option>
+                ))}
+              </Select>
+            ) : (
+              <Tabs
+                onChange={(tabIndex) => {
+                  if (onTabChange) onTabChange(tabIndex);
+                }}
+              >
+                <TabList>
+                  {tabList?.map((tab, index) => (
+                    <Tab key={index}>{tab}</Tab>
                   ))}
-                </Select>
-              ))}
-            </Flex>
+                </TabList>
+              </Tabs>
+            )
           ) : (
             ""
           )}
+
           {mainTable.component.box}
         </Flex>
       </PageContainer>
