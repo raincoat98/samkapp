@@ -17,11 +17,13 @@ import {
 } from "react-icons/ai";
 import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
+import { IoMdRefresh } from "react-icons/io";
 import { IoBusinessOutline } from "react-icons/io5";
 import { BiCircle } from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
 
+export const refresh = IoMdRefresh;
 export const sort = FaSort;
 export const sortUp = FaSortUp;
 export const sortDown = FaSortDown;

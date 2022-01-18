@@ -22,11 +22,14 @@ import {
   Tabs,
   TabList,
   Tab,
+  Icon,
+  IconButton,
 } from "@chakra-ui/react";
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
+import { refresh } from "utils/icons";
 
 // 관리 페이지
 export default function Management(props: {
@@ -286,7 +289,11 @@ export default function Management(props: {
             <Button onClick={() => prepareInsert()} colorScheme="blue">
               신규
             </Button>
-            <Button onClick={() => refreshData()}>새로고침</Button>
+            <IconButton
+              icon={<Icon as={refresh} />}
+              onClick={() => refreshData()}
+              aria-label="새로고침"
+            />
           </ButtonGroup>
         }
       >
