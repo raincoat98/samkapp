@@ -29,7 +29,7 @@ import {
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
-import { refresh } from "utils/icons";
+import { refresh, add, trash } from "utils/icons";
 
 // 관리 페이지
 export default function Management(props: {
@@ -279,20 +279,29 @@ export default function Management(props: {
         title={title}
         headerChildren={
           <ButtonGroup>
-            <Button
+            <IconButton
               onClick={() => deleteSelected()}
+              icon={<Icon as={trash} />}
               isDisabled={Object.keys(checkedRows).length === 0}
               colorScheme="red"
-            >
-              삭제
-            </Button>
-            <Button onClick={() => prepareInsert()} colorScheme="blue">
-              신규
-            </Button>
+              aria-label="삭제"
+              title="삭제"
+              borderWidth={1}
+            />
+            <IconButton
+              onClick={() => prepareInsert()}
+              icon={<Icon as={add} />}
+              colorScheme="blue"
+              aria-label="신규"
+              title="신규"
+              borderWidth={1}
+            />
             <IconButton
               icon={<Icon as={refresh} />}
               onClick={() => refreshData()}
               aria-label="새로고침"
+              title="새로고침"
+              borderWidth={1}
             />
           </ButtonGroup>
         }
