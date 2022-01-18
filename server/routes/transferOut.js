@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express();
-
 const connection = require("../lib/db.js");
+const runProcedure = require("./index");
 
 // 출고 조회
 router.get("/all", (req, res) => {
-  var dataList = [];
   const sql = "CALL usp_transfer_out_LST(?,?,?)";
   const params = [
     req.query["transfer_type_id"],
@@ -13,21 +12,10 @@ router.get("/all", (req, res) => {
     req.query["warehouse_id"],
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      for (var data of results) {
-        dataList.push(data);
-      }
-    }
-    res.send({ results: results[0] });
-    console.log("select ok");
-  });
+  runProcedure(res, sql, params);
 });
 
 // 출고 등록
-// http://localhost:3002/transfer-out/create?transfer_type_id=OUT_SALES&plan_date=20211218&priorities=1&part_id=1&quantity=1001&warehouse_id=1&customer_id=1
 router.get("/create", (req, res) => {
   const sql = "CALL usp_transfer_out_INS(?,?,?,?,?,?,?)";
   const params = [
@@ -40,14 +28,7 @@ router.get("/create", (req, res) => {
     req.query["customer_id"],
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("insert ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 // 출고 삭제

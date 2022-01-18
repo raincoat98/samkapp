@@ -8,7 +8,7 @@ router.get("/all", (req, res) => {
   var dataList = [];
   const sql =
     "SELECT part_id, part_number, part_name, spec1, spec2, spec3, spec4, spec5, part_type_id, group2_id, warehouse_id, " +
-    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, " +
+    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date " +
     "FROM tb_part";
   connection.query(sql, function (error, results) {
     if (error) {
@@ -27,8 +27,8 @@ router.get("/create", (req, res) => {
   const sql =
     "INSERT INTO tb_part " +
     "(part_number, part_name, spec1, spec2, spec3, spec4, spec5, part_type_id, group2_id, warehouse_id, " +
-    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, ) " +
-    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date) " +
+    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const params = [
     req.query["part_number"],
     req.query["part_name"],
@@ -46,6 +46,10 @@ router.get("/create", (req, res) => {
     req.query["list_price"],
     req.query["remark"],
     req.query["use_yn"],
+    req.query["crt_id"],
+    req.query["crt_date"],
+    req.query["mod_id"],
+    req.query["mod_date"],
   ];
 
   connection.query(sql, params, function (error, results) {
@@ -63,7 +67,7 @@ router.get("/update", (req, res) => {
   const sql =
     "UPDATE tb_part" +
     "SET part_number=?, part_name=?, spec1=?, spec2=?, spec3=?, spec4=?, spec5=?, part_type_id=?, group2_id=?, warehouse_id=?, " +
-    "bom_id=?, unit_id=?, standard_cost=?, list_price=?, remark=?, use_yn=? " +
+    "bom_id=?, unit_id=?, standard_cost=?, list_price=?, remark=?, use_yn=?, crt_id=?, crt_date=?, mod_id=?, mod_date=?" +
     "WHERE part_id=?";
   const params = [
     req.query["part_number"],

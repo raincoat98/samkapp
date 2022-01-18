@@ -9,8 +9,6 @@ export type group2 = {
   spec4?: string;
   spec5?: string;
   search_group?: number;
-  sort_seq?: number;
-  remark?: string;
   use_yn?: boolean;
 };
 
@@ -44,14 +42,6 @@ export const group2Schema: schemaType = {
     },
     search_group: {
       type: "number",
-    },
-    sort_seq: {
-      type: "number",
-      isDisalbePreview: true,
-    },
-    remark: {
-      type: "string",
-      isTextarea: true,
     },
     use_yn: {
       type: "boolean",

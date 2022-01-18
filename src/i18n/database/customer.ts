@@ -14,6 +14,11 @@ const customer = {
     remark,
     tel: "전화번호",
     zip_code: "우편번호",
+    person_charge: "담당자",
+    position: "직급",
+    person_info1: "담당자 연락처 1",
+    person_info2: "담당자 연락처 2",
+    email: "담당자 이메일",
   },
 };
 export default customer;

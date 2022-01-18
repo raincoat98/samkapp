@@ -12,6 +12,11 @@ export type customer = {
   business_info?: string;
   item_info?: string;
   homepage?: string;
+  person_charge?: string;
+  position?: string;
+  person_info1?: string;
+  person_info2?: string;
+  email?: string;
   remark?: string;
 };
 
@@ -63,6 +68,21 @@ export const customerSchema: schemaType = {
     homepage: {
       type: "string",
       isDisalbePreview: true,
+    },
+    person_charge: {
+      type: "string",
+    },
+    position: {
+      type: "string",
+    },
+    person_info1: {
+      type: "string",
+    },
+    person_info2: {
+      type: "string",
+    },
+    email: {
+      type: "string",
     },
     remark: {
       type: "string",

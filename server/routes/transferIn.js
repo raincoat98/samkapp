@@ -1,27 +1,22 @@
 const express = require("express");
 const router = express();
-
 const connection = require("../lib/db.js");
+const runProcedure = require("./index");
 
-// 입고 조회
+// 입고
+// 조회
 router.get("/all", (req, res) => {
-  var dataList = [];
-  const sql = "SELECT * FROM tb_transfer_in";
-  connection.query(sql, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      for (var data of results) {
-        dataList.push(data);
-      }
-    }
-    res.send({ results });
-  });
+  const sql = "CALL usp_transfer_in_LST (?,?,?)";
+  const params = [
+    req.query["transfer_type_id"],
+    req.query["part_id"],
+    req.query["warehouse_id"],
+  ];
+
+  runProcedure(res, sql, params);
 });
 
 // 입고 등록
-// http://localhost:3002/transfer-in/create?transfer_type_id=IN_BUY&part_id=2&quantity=1600&warehouse_id=1
-// mariadb call - CALL usp_transfer_in_INS('IN_BUY','1',1200, 1)
 router.get("/create", (req, res) => {
   const sql = "CALL usp_transfer_in_INS(?,?,?,?)";
   const params = [
@@ -31,14 +26,7 @@ router.get("/create", (req, res) => {
     req.query["warehouse_id"],
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("insert ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 //입고 수정
@@ -52,14 +40,7 @@ router.get("/update", (req, res) => {
     req.query["quantity"],
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("update ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 // 입고 삭제
