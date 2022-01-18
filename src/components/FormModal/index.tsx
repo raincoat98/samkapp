@@ -17,17 +17,10 @@ export type formItem = {
 };
 export type formModalModeType = "insert" | "update";
 
-export const FormModalPropsKey = {
-  mode: "mode",
-  isOpen: "isOpen",
-  onClose: "onClose",
-  onSave: "onSave",
-  initialValue: "initialValue",
-  schema: "schema",
-} as const;
 export type FormModalProps = {
   mode: formModalModeType;
   isOpen: boolean;
+  onOpen: () => void;
   onClose: () => void;
   onSave: (data: {
     type: formModalModeType;
@@ -138,6 +131,8 @@ export default function FormModal(props: FormModalProps) {
       isOpen={props.isOpen}
       // 아무것도 수정되지 않았을 때 저장 버튼 비활성화
       isSaveDisabled={Object.keys(editedDocument).length === 0}
+      // 다이얼로그가 자체적으로 자신을 실행 가능
+      onOpen={() => props.onOpen()}
       // 다이얼로그가 저장 실행시
       onSubmit={() => {
         props.onSave({

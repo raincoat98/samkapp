@@ -268,6 +268,7 @@ export default function Management(props: {
         initialValue={selected}
         isOpen={modalDisclosure.isOpen}
         onSave={onFormModalSave}
+        onOpen={modalDisclosure.onOpen}
         onClose={modalDisclosure.onClose}
       />
 
