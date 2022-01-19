@@ -65,11 +65,13 @@ export const transfer_inSchema: schemaType = {
       type: "number",
       isAutoSet: true,
       isReadOnly: true,
+      isDisalbePreview: true,
     },
     outsourcing_amont: {
       type: "number",
       isAutoSet: true,
       isReadOnly: true,
+      isDisalbePreview: true,
     },
     warehouse_id: {
       type: "number",
