@@ -15,9 +15,8 @@ import { ReducerTableState, TableInstance } from "react-table";
 // chakra-ui
 import {
   useDisclosure,
-  Flex
+  Flex,
   ButtonGroup,
-  Button
   Icon,
   IconButton,
 } from "@chakra-ui/react";
