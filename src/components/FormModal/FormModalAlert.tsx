@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,7 +13,8 @@ export default function FormModalAlert(props: {
   isOpen: boolean;
   onClose: (isConfirmed: boolean) => void;
 }) {
-  const cancelRef = React.useRef<HTMLButtonElement>(null);
+  // 취소 버튼 ref
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
     <AlertDialog

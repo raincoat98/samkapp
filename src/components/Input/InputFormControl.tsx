@@ -22,21 +22,18 @@ export default function InputFormControl(props: {
       isRequired={props.isRequired}
       display="flex"
       flexDirection={isLandscape ? "row" : "column"}
+      alignItems={isLandscape ? "center" : "normal"}
+      // 수정 불가능한 값일 경우 툴팁 추가
+      title={
+        props.isReadOnly || props.isDisabled
+          ? "이 값은 수정할 수 없습니다."
+          : "수정하려면 클릭해주세요."
+      }
     >
       <FormLabel minWidth={"100px"} marginBottom={0}>
         {translate(`${props.name}`)}
       </FormLabel>
-      <Box
-        flex="1"
-        // 수정 불가능한 값일 경우 툴팁 추가
-        title={
-          props.isReadOnly || props.isDisabled
-            ? "이 값은 수정할 수 없습니다."
-            : "수정하려면 클릭해주세요."
-        }
-      >
-        {props.children}
-      </Box>
+      <Box flex="1">{props.children}</Box>
     </FormControl>
   );
 

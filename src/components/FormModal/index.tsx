@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { schemaType } from "schema";
@@ -32,21 +32,19 @@ export type FormModalProps = {
 };
 export default function FormModal(props: FormModalProps) {
   // 수정한 데이터가 저장되는 객체
-  const [editedDocument, setEditedDocument] = React.useState<
-    Record<string, any>
-  >({});
+  const [editedDocument, setEditedDocument] = useState<Record<string, any>>({});
 
   // 필드 값
-  const [inputList, setInputList] = React.useState<formItem[]>([]);
+  const [inputList, setInputList] = useState<formItem[]>([]);
 
   const [isFormModalAlertOpen, setIsFormModalAlertOpen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
 
   // initialValue 가 바뀔 때만 기본값 수정
-  React.useEffect(() => {
+  useEffect(() => {
     // 초기화
     setEditedDocument({});
     setInputList([]);

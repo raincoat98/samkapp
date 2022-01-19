@@ -1,14 +1,6 @@
-import React from "react";
+import { ReactNode, useState, useRef } from "react";
 import {
-  useMediaQuery,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Portal,
   ButtonGroup,
   Button,
@@ -19,6 +11,9 @@ import { COLLECTION_NAME_TYPE } from "schema";
 import { formModalModeType } from "./index";
 import WorkOrderPrint from "components/Print/WorkOrder";
 import TransferOutPrint from "components/Print/TransferOut";
+import Popup from "components/Popup";
+import PrintPopup from "components/Print/PrintPopup";
+
 export default function FormModalPopup(props: {
   title: string;
   mode: formModalModeType;
@@ -31,57 +26,65 @@ export default function FormModalPopup(props: {
   onOpen: () => void;
   onClose: () => void;
   onSubmit: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  const [isLandscape] = useMediaQuery("(orientation: landscape)");
-  const formEl = React.useRef<HTMLFormElement>(null);
-  const [isFormVal, setIsFormVal] = React.useState(false);
-  const [isKeepOpen, setIsKeepOpen] = React.useState(false);
+  // 폼 아이디
+  const formId = "modal-form";
+
+  // 폼 엘리먼트 ref
+  const formEl = useRef<HTMLFormElement>(null);
+
+  // 폼 입력 후에도 팝업을 열어둘지 여부
+  const [isKeepOpen, setIsKeepOpen] = useState(false);
 
   // PDF 표시 상태
   const printPopupState = useDisclosure();
 
   return (
     <Portal>
-      <Modal
+      {/* 폼 팝업 */}
+      <Popup
+        title={props.title}
         isOpen={props.isOpen}
-        onClose={() => props.onClose()}
-        size={isLandscape ? "2xl" : "full"}
-        isCentered={isLandscape}
-        scrollBehavior={isLandscape ? "inside" : "outside"}
-      >
-        <ModalOverlay />
-
-        <ModalContent>
-          <ModalHeader borderBottomWidth="1px">{props.title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <chakra.form
-              ref={formEl}
-              onChange={(event) => {
-                if (formEl.current) {
-                  //폼 유효성 검사
-                  setIsFormVal(formEl.current.checkValidity());
-                }
-              }}
-              action=""
-            >
-              {props.children}
-            </chakra.form>
-          </ModalBody>
-          <ModalFooter borderTopWidth="1px">
+        onClose={props.onClose}
+        children={
+          <chakra.form
+            ref={formEl}
+            id={formId}
+            onSubmit={(event) => {
+              event.preventDefault();
+              props.onSubmit();
+              if (isKeepOpen) {
+                formEl.current?.reset();
+                props.onOpen();
+              }
+            }}
+            action=""
+          >
+            {props.children}
+          </chakra.form>
+        }
+        footerChildren={
+          <>
             {/* 수정 화면일 때만 출력 버튼을 표시 */}
             {props.mode === "update" &&
               (props.print?.format === "work_order" ||
                 props.print?.format === "transfer_out") && (
                 <ButtonGroup flex="1">
-                  <Button onClick={() => printPopupState.onOpen()}>출력</Button>
+                  <Button
+                    onClick={() => printPopupState.onOpen()}
+                    borderWidth={1}
+                    borderColor="gray.400"
+                  >
+                    출력
+                  </Button>
                 </ButtonGroup>
               )}
 
             <ButtonGroup>
               {props.mode === "insert" && (
                 <Checkbox
+                  borderColor="blue.500"
                   defaultChecked={isKeepOpen}
                   onChange={(event) => setIsKeepOpen(event.target.checked)}
                 >
@@ -89,48 +92,33 @@ export default function FormModalPopup(props: {
                 </Checkbox>
               )}
               <Button
-                onClick={() => {
-                  props.onSubmit();
-                  if (isKeepOpen) {
-                    formEl.current?.reset();
-                    props.onOpen();
-                  }
-                }}
-                isDisabled={!isFormVal || props.isSaveDisabled}
+                type="submit"
+                form={formId}
+                isDisabled={props.isSaveDisabled}
                 colorScheme="blue"
               >
                 저장
               </Button>
-              <Button onClick={() => props.onClose()}>닫기</Button>
             </ButtonGroup>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </>
+        }
+      ></Popup>
 
-      <Modal
+      <PrintPopup
         isOpen={printPopupState.isOpen}
         onClose={() => printPopupState.onClose()}
-        size="full"
-        isCentered={true}
-        scrollBehavior="inside"
       >
-        <ModalOverlay />
-        <ModalContent height="100%">
-          <ModalHeader borderBottomWidth="1px">출력하기</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody height="100%" padding={0}>
-            {/* 작업지시서 출력 */}
-            {props.print?.format === "work_order" && (
-              <WorkOrderPrint data={props.print.data}></WorkOrderPrint>
-            )}
-
-            {/* 출고지시서 출력 */}
-            {props.print?.format === "transfer_out" && (
-              <TransferOutPrint data={props.print.data}></TransferOutPrint>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        <>
+          {/* 작업지시서 출력 */}
+          {props.print?.format === "work_order" && (
+            <WorkOrderPrint data={props.print.data}></WorkOrderPrint>
+          )}
+          {/* 출고지시서 출력 */}
+          {props.print?.format === "transfer_out" && (
+            <TransferOutPrint data={props.print.data}></TransferOutPrint>
+          )}
+        </>
+      </PrintPopup>
     </Portal>
   );
 }

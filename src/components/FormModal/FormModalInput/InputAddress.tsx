@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef } from "react";
 import DaumAddressPopup from "components/DaumAddressPopup";
 import { useTranslation } from "react-i18next";
 import { address } from "schema/embedded/address";
@@ -20,8 +20,11 @@ export default function FormModalInputAddress(props: {
 }) {
   const { name, defaultValue, onChange } = props;
 
-  const addressRef = React.useRef<HTMLTextAreaElement>(null);
-  const zipCodeRef = React.useRef<HTMLInputElement>(null);
+  // 주소 엘리먼트 ref
+  const addressRef = useRef<HTMLTextAreaElement>(null);
+
+  // 우편번호 엘리먼트 ref
+  const zipCodeRef = useRef<HTMLInputElement>(null);
 
   const addressPopupDisclosure = useDisclosure();
   const { t: translate } = useTranslation();
