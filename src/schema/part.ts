@@ -56,6 +56,7 @@ export const partSchema: schemaType = {
     part_type_id: {
       type: "string",
       isNotNull: true,
+      isDisalbePreview: true,
       foreign: {
         table: "part_type",
         key: "part_type_id",
@@ -65,6 +66,7 @@ export const partSchema: schemaType = {
     group2_id: {
       type: "number",
       isNotNull: true,
+      isDisalbePreview: true,
       foreign: {
         table: "group2",
         key: "group2_id",

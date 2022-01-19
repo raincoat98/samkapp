@@ -15,13 +15,9 @@ import { ReducerTableState, TableInstance } from "react-table";
 // chakra-ui
 import {
   useDisclosure,
-  Flex,
-  Select,
+  Flex
   ButtonGroup,
-  Button,
-  Tabs,
-  TabList,
-  Tab,
+  Button
   Icon,
   IconButton,
 } from "@chakra-ui/react";
@@ -31,15 +27,16 @@ import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
 import { refresh, add, trash } from "utils/icons";
 
+import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
+
 // 관리 페이지
 export default function Management(props: {
   title: string; // 브라우저 페이지 이름
   schema: schemaType; // 테이블 스키마
-  tabList?: string[];
-  onTabChange?: (tabIndex: number) => void;
   tableProps: TableComponentProps;
+  tabProps?: ManagementTableTabsProps;
 }) {
-  const { title, schema, tabList, onTabChange, tableProps } = props;
+  const { title, schema, tableProps, tabProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -308,35 +305,7 @@ export default function Management(props: {
       >
         <Flex direction="column" width="100%" height="100%">
           {/* 탭 추가 */}
-          {Array.isArray(tabList) ? (
-            tabList.length > 5 ? (
-              <Select
-                onChange={(event) => {
-                  if (onTabChange) onTabChange(Number(event.target.value));
-                }}
-              >
-                {tabList?.map((tab, index) => (
-                  <option key={index} value={index}>
-                    {tab}
-                  </option>
-                ))}
-              </Select>
-            ) : (
-              <Tabs
-                onChange={(tabIndex) => {
-                  if (onTabChange) onTabChange(tabIndex);
-                }}
-              >
-                <TabList>
-                  {tabList?.map((tab, index) => (
-                    <Tab key={index}>{tab}</Tab>
-                  ))}
-                </TabList>
-              </Tabs>
-            )
-          ) : (
-            ""
-          )}
+          {tabProps && <TableTabs {...tabProps} />}
 
           {mainTable.component.box}
         </Flex>

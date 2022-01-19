@@ -167,7 +167,7 @@ export default function TableComponent(props: TableComponentProps) {
   );
 
   const tableElement = (
-    <Table {...getTableProps()} wordBreak="break-all">
+    <Table {...getTableProps()} variant="striped" wordBreak="break-all">
       <Thead
         style={{
           userSelect: "none",

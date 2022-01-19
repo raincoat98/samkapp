@@ -22,8 +22,15 @@ export default function WorkOrderManagement() {
     <Management
       title="작업지시 현황"
       schema={work_orderSchema}
-      tabList={["진행중", "완료"]}
-      onTabChange={(index: number) => setTabIndex(index)}
+      tabProps={{
+        tabGroups: [
+          {
+            data: ["진행중", "완료"],
+            onTabChange: (props) =>
+              props.index !== undefined && setTabIndex(props.index),
+          },
+        ],
+      }}
       tableProps={{ data: tabIndex === 0 ? latestDataList : oldDataList }}
     />
   );
