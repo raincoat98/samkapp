@@ -69,20 +69,24 @@ export const customerSchema: schemaType = {
       type: "string",
       isDisalbePreview: true,
     },
+    email: {
+      type: "string",
+    },
     person_charge: {
       type: "string",
+      isDisalbePreview: true,
     },
     position: {
       type: "string",
+      isDisalbePreview: true,
     },
     person_info1: {
       type: "string",
+      isDisalbePreview: true,
     },
     person_info2: {
       type: "string",
-    },
-    email: {
-      type: "string",
+      isDisalbePreview: true,
     },
     remark: {
       type: "string",
