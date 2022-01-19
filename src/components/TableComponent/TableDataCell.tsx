@@ -1,5 +1,6 @@
 import { Cell } from "react-table";
 import { useColorModeValue, Td, TableCellProps } from "@chakra-ui/react";
+import { borderColor } from "utils/colors";
 
 export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
   const { cell, ...rest } = props;
@@ -15,9 +16,8 @@ export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
       textAlign="center"
       alignItems="center"
       justifyContent="center"
-      // verticalAlign="bottom"
       // 외곽선
-      borderColor={useColorModeValue("gray.300", "gray.600")}
+      borderColor={useColorModeValue(borderColor.light, borderColor.dark)}
       borderBottomWidth={1}
       _notFirst={{ borderLeftWidth: 1 }}
       {...rest}
