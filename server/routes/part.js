@@ -1,102 +1,66 @@
 const express = require("express");
 const router = express();
-
 const connection = require("../lib/db.js");
+const runProcedure = require("./index");
 
-// 품목 조회
+// 품목
+// 조회
 router.get("/all", (req, res) => {
-  var dataList = [];
-  const sql =
-    "SELECT part_id, part_number, part_name, spec1, spec2, spec3, spec4, spec5, part_type_id, group2_id, warehouse_id, " +
-    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date " +
-    "FROM tb_part";
-  connection.query(sql, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      for (var data of results) {
-        dataList.push(data);
-      }
-    }
-    res.send({ results });
-  });
+  const sql = "CALL usp_part_LST (?)";
+  const params = [req.query["group_id"]];
+
+  runProcedure(res, sql, params);
 });
 
 // 품목 등록
 router.get("/create", (req, res) => {
-  const sql =
-    "INSERT INTO tb_part " +
-    "(part_number, part_name, spec1, spec2, spec3, spec4, spec5, part_type_id, group2_id, warehouse_id, " +
-    "bom_id, unit_id, standard_cost, list_price, remark, use_yn, crt_id, crt_date, mod_id, mod_date) " +
-    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const sql = `CALL usp_part_INS (${new Array(16).fill("?").toString()})`;
   const params = [
-    req.query["part_number"],
-    req.query["part_name"],
+    req.query["part_number"], // NOT NULL
+    req.query["part_name"], // NOT NULL
     req.query["spec1"],
     req.query["spec2"],
     req.query["spec3"],
     req.query["spec4"],
     req.query["spec5"],
-    req.query["part_type_id"],
-    req.query["group2_id"],
+    req.query["part_type_id"], // NOT NULL
+    req.query["group2_id"], // NOT NULL
     req.query["warehouse_id"],
     req.query["bom_id"],
     req.query["unit_id"],
     req.query["standard_cost"],
     req.query["list_price"],
     req.query["remark"],
-    req.query["use_yn"],
-    req.query["crt_id"],
-    req.query["crt_date"],
-    req.query["mod_id"],
-    req.query["mod_date"],
+    req.query["use_yn"], // NOT NULL
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("insert ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 //품목 수정
 router.get("/update", (req, res) => {
-  const sql =
-    "UPDATE tb_part" +
-    "SET part_number=?, part_name=?, spec1=?, spec2=?, spec3=?, spec4=?, spec5=?, part_type_id=?, group2_id=?, warehouse_id=?, " +
-    "bom_id=?, unit_id=?, standard_cost=?, list_price=?, remark=?, use_yn=?, crt_id=?, crt_date=?, mod_id=?, mod_date=?" +
-    "WHERE part_id=?";
+  const sql = `CALL usp_part_UPD (${new Array(17).fill("?").toString()})`;
   const params = [
-    req.query["part_number"],
-    req.query["part_name"],
+    req.query["part_id"], // NOT NULL
+    req.query["part_number"], // NOT NULL
+    req.query["part_name"], // NOT NULL
     req.query["spec1"],
     req.query["spec2"],
     req.query["spec3"],
     req.query["spec4"],
     req.query["spec5"],
-    req.query["part_type_id"],
-    req.query["group2_id"],
+    req.query["part_type_id"], // NOT NULL
+    req.query["group2_id"], // NOT NULL
     req.query["warehouse_id"],
     req.query["bom_id"],
     req.query["unit_id"],
     req.query["standard_cost"],
     req.query["list_price"],
     req.query["remark"],
-    req.query["use_yn"],
-    req.query["part_id"],
+    req.query["use_yn"], // NOT NULL
   ];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("update ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 // 품목 삭제
