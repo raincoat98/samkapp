@@ -59,7 +59,10 @@ export default function Login() {
           />
         </Box>
         <chakra.form
-          onSubmit={() => dispatch(login({ id: userId, password }))}
+          onSubmit={(event) => {
+            event.preventDefault();
+            dispatch(login({ id: userId, password }));
+          }}
           action=""
         >
           <FormControl isRequired={true}>
