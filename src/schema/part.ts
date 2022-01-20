@@ -15,7 +15,7 @@ export type part = {
   bom_id?: number;
   unit_id: string;
   standard_cost?: number;
-  list_Price?: number;
+  list_price?: number;
   remark?: string;
   use_yn?: boolean;
 };
@@ -102,7 +102,7 @@ export const partSchema: schemaType = {
     standard_cost: {
       type: "number",
     },
-    list_Price: {
+    list_price: {
       type: "number",
     },
     remark: {
