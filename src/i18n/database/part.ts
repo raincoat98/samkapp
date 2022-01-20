@@ -16,7 +16,7 @@ const part = {
     bom_id: "자재명세서코드",
     unit_id: "품목단위",
     standard_cost: "표준원가",
-    list_Price: "권장소비자가격",
+    list_price: "권장소비자가",
     remark,
   },
 };

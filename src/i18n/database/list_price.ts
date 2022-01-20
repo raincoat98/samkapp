@@ -9,7 +9,7 @@ const list_price = {
     spec5: "규격5",
     start_date: "적용시작일",
     end_date: "적용종료일",
-    list_price: "권장소비자가격",
+    list_price: "권장소비자가",
   },
 };
 export default list_price;
