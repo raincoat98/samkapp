@@ -24,8 +24,9 @@ import {
   Stack,
   Flex,
   Box,
-  Button,
   Checkbox,
+  IconButton,
+  Icon,
 } from "@chakra-ui/react";
 import {
   tableBgColor,
@@ -34,6 +35,7 @@ import {
   tableRowBgColorHover,
   borderColor,
 } from "utils/colors";
+import { arrowBack, arrowForward, caretLeft, caretRight } from "utils/icons";
 
 // 테이블 특수 컬럼 아이디 (인덱스, 체크박스)
 const INDEX_COLUMN = "_index";
@@ -67,6 +69,12 @@ export default function TableComponent(props: TableComponentProps) {
   const tableRowBgColorHoverValue = useColorModeValue(
     tableRowBgColorHover.light,
     tableRowBgColorHover.dark
+  );
+
+  // 외곽선 색상
+  const borderColorValue = useColorModeValue(
+    borderColor.light,
+    borderColor.dark
   );
 
   // React-Table
@@ -162,24 +170,48 @@ export default function TableComponent(props: TableComponentProps) {
   const paginationElement = (
     <Center>
       <Stack direction="column" spacing={3} isInline={true}>
-        <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          맨 앞으로
-        </Button>
-        <Button onClick={previousPage} isDisabled={!canPreviousPage}>
-          이전
-        </Button>
+        <IconButton
+          onClick={() => gotoPage(0)}
+          disabled={!canPreviousPage}
+          icon={<Icon as={arrowBack} />}
+          aria-label="맨 앞으로"
+          title="맨 앞으로"
+          borderColor={borderColorValue}
+          borderWidth={1}
+        />
+        <IconButton
+          onClick={previousPage}
+          isDisabled={!canPreviousPage}
+          icon={<Icon as={caretLeft} />}
+          aria-label="이전"
+          title="이전"
+          borderColor={borderColorValue}
+          borderWidth={1}
+        />
         <Center>
           {/* @ts-ignore */}
           {`${tableState.pageIndex + 1} / ${
             pageOptions.length === 0 ? 1 : pageOptions.length
           }`}
         </Center>
-        <Button onClick={nextPage} isDisabled={!canNextPage}>
-          다음
-        </Button>
-        <Button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          맨 뒤로
-        </Button>
+        <IconButton
+          onClick={nextPage}
+          isDisabled={!canNextPage}
+          icon={<Icon as={caretRight} />}
+          aria-label="다음"
+          title="다음"
+          borderColor={borderColorValue}
+          borderWidth={1}
+        />
+        <IconButton
+          onClick={() => gotoPage(pageCount - 1)}
+          disabled={!canNextPage}
+          icon={<Icon as={arrowForward} />}
+          aria-label="맨 뒤로"
+          title="맨 뒤로"
+          borderColor={borderColorValue}
+          borderWidth={1}
+        />
       </Stack>
     </Center>
   );
@@ -249,7 +281,12 @@ export default function TableComponent(props: TableComponentProps) {
           <Box flex="1" overflow="auto">
             {tableElement}
           </Box>
-          <Flex direction={isLandscape ? "row" : "column"} p={3}>
+          <Flex
+            direction={isLandscape ? "row" : "column"}
+            p={3}
+            borderColor={borderColorValue}
+            borderTopWidth={1}
+          >
             <Box flex="1" pr={isLandscape ? 3 : 0} pb={isLandscape ? 0 : 3}>
               {searchElement}
             </Box>

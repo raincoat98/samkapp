@@ -1,4 +1,12 @@
-import { Flex, Select, Tabs, TabList, Tab } from "@chakra-ui/react";
+import {
+  useColorModeValue,
+  Flex,
+  Select,
+  Tabs,
+  TabList,
+  Tab,
+} from "@chakra-ui/react";
+import { borderColor } from "utils/colors";
 
 export type ManagementTableTabsProps = {
   tabGroups: {
@@ -10,6 +18,11 @@ export type ManagementTableTabsProps = {
 };
 
 export default function ManagementTableTabs(props: ManagementTableTabsProps) {
+  const borderColorValue = useColorModeValue(
+    borderColor.light,
+    borderColor.dark
+  );
+
   return props.tabGroups.length > 1 || props.tabGroups[0].data.length > 5 ? (
     <Flex>
       {props.tabGroups.map((tabGroup, index) => {
@@ -25,7 +38,8 @@ export default function ManagementTableTabs(props: ManagementTableTabsProps) {
             placeholder={tabGroup.allowNull ? "전체" : undefined}
             borderRadius={0}
             flex={1}
-            size={"sm"}
+            size={"md"}
+            borderColor={borderColorValue}
             fontWeight={"bold"}
             key={index}
           >
@@ -48,6 +62,8 @@ export default function ManagementTableTabs(props: ManagementTableTabsProps) {
       }}
       size={"sm"}
       variant={"solid-rounded"}
+      borderColor={borderColorValue}
+      borderBottomWidth={1}
       p={1}
     >
       <TabList>

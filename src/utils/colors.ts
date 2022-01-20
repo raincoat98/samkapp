@@ -8,7 +8,7 @@ export const tableHeaderBgColor = { light: "gray.200", dark: "gray.800" };
 export const tableHeaderBgColorHover = { light: "white", dark: "black" };
 export const tableRowBgColor = { light: "white", dark: "black" };
 export const tableRowBgColorStriped = { light: "gray.100", dark: "gray.900" };
-export const tableRowBgColorHover = { light: "gray.200", dark: "gray.800" };
+export const tableRowBgColorHover = { light: "blue.100", dark: "blue.900" };
 
 export const menuBackground = { light: "gray.200", dark: "gray.800" };
 export const contentBackground = { light: "white", dark: "gray.900" };

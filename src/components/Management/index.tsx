@@ -13,18 +13,12 @@ import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { ReducerTableState, TableInstance } from "react-table";
 
 // chakra-ui
-import {
-  useDisclosure,
-  Flex,
-  ButtonGroup,
-  Icon,
-  IconButton,
-} from "@chakra-ui/react";
+import { useDisclosure, Flex } from "@chakra-ui/react";
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
-import { refresh, add, trash } from "utils/icons";
+import ManagementHeaderButtonGroup from "./HeaderButtonGroup";
 
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
 
@@ -274,32 +268,14 @@ export default function Management(props: {
       <PageContainer
         title={title}
         headerChildren={
-          <ButtonGroup>
-            <IconButton
-              onClick={() => deleteSelected()}
-              icon={<Icon as={trash} />}
-              isDisabled={Object.keys(checkedRows).length === 0}
-              colorScheme="red"
-              aria-label="삭제"
-              title="삭제"
-              borderWidth={1}
-            />
-            <IconButton
-              onClick={() => prepareInsert()}
-              icon={<Icon as={add} />}
-              colorScheme="blue"
-              aria-label="신규"
-              title="신규"
-              borderWidth={1}
-            />
-            <IconButton
-              icon={<Icon as={refresh} />}
-              onClick={() => refreshData()}
-              aria-label="새로고침"
-              title="새로고침"
-              borderWidth={1}
-            />
-          </ButtonGroup>
+          <ManagementHeaderButtonGroup
+            isDeleteDisabled={Object.keys(checkedRows).length === 0}
+            onDeleteClick={deleteSelected}
+            isAddDisabled={false}
+            onAddClick={prepareInsert}
+            isRefreshDisabled={false}
+            onRefreshClick={refreshData}
+          />
         }
       >
         <Flex direction="column" width="100%" height="100%">
