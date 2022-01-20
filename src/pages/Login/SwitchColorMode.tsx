@@ -7,16 +7,17 @@ export default function SwitchColorMode() {
   return (
     <Tooltip
       hasArrow
-      placement="left"
+      placement={"left"}
       label={colorMode === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
     >
       <IconButton
         icon={<Icon as={colorMode === "dark" ? lightMode : darkMode} />}
         onClick={toggleColorMode}
-        position="absolute"
+        position={"absolute"}
         right={5}
         bottom={5}
-        aria-label="라이트 모드 & 다크모드 전환"
+        boxShadow={"md"}
+        aria-label={"라이트 모드 & 다크모드 전환"}
       />
     </Tooltip>
   );

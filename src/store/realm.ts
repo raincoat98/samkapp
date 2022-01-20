@@ -138,22 +138,6 @@ export const logout = createAsyncThunk(
   }
 );
 
-// 데이터베이스 회원가입
-export const register = createAsyncThunk(
-  `${name}/register`,
-  async (
-    props: { id: string; password: string },
-    { dispatch, rejectWithValue }
-  ) => {
-    const { id, password } = props;
-    try {
-      dispatch(login({ id, password }));
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
-
 // 컬렉션 데이터 가져오기
 export const getData = createAsyncThunk(
   `${name}/getData`,
