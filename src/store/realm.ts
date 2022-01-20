@@ -194,9 +194,11 @@ export const insertData = createAsyncThunk(
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
+      const params = checkValidity(props.document);
+
       route = route.replaceAll("_", "-");
       response = await axios.get(`${SERVER_URL}/${route}/create`, {
-        params: props.document,
+        params,
       });
 
       await dispatch(getData({ collectionName: props.collectionName }));
@@ -222,9 +224,11 @@ export const updateData = createAsyncThunk(
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
+      const params = checkValidity(props.update);
+
       route = route.replaceAll("_", "-");
       response = await axios.get(`${SERVER_URL}/${route}/update`, {
-        params: props.update,
+        params,
       });
 
       await dispatch(getData({ collectionName: props.collectionName }));
@@ -361,6 +365,17 @@ const userSlice = createSlice({
       );
   },
 });
+
+function checkValidity(data: Record<string, any>) {
+  const validatedData: Record<string, any> = {};
+  for (const key in data) {
+    let value = data[key];
+    // DB에서 bool 타입을 인식하지 못하므로 타입 변환
+    if (typeof value === "boolean") value = Number(value);
+    validatedData[key] = value;
+  }
+  return validatedData;
+}
 
 const { reducer } = userSlice;
 // const { reducer, actions } = userSlice;
