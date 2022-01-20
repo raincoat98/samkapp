@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   tableHeader: {
     fontSize: "22pt",
     fontWeight: "extrabold",
-    letterSpacing: 8,
+    letterSpacing: 2,
   },
   cell: {
     padding: 10,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   cellTitle: {
     flex: 1,
-    letterSpacing: 3,
+    letterSpacing: 1,
   },
   cellContent: { flex: 3 },
 });
@@ -99,6 +99,15 @@ export default function PrintWorkOrder(props: { data: work_order }) {
               </Text>
             </View>
 
+            <View style={[styles.tableRow, { fontSize: "14pt" }]}>
+              <Text style={[styles.cell, styles.cellContent, styles.cellTitle]}>
+                작업지시 번호
+              </Text>
+              <Text style={[styles.cell, styles.cellContent]}>
+                {props.data.work_order_number}
+              </Text>
+            </View>
+
             <View style={[styles.tableRow]}>
               <Text style={[styles.cell, styles.cellContent, styles.cellTitle]}>
                 주문일자
@@ -145,8 +154,6 @@ export default function PrintWorkOrder(props: { data: work_order }) {
               </View>
 
               <View style={[{ textAlign: "center" }]}>
-                <Text style={[styles.cell]}>규격</Text>
-
                 <View
                   style={[
                     {
