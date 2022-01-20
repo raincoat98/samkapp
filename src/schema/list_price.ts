@@ -56,12 +56,14 @@ export const list_priceSchema: schemaType = {
       isNotNull: true,
     },
     start_date: {
-      type: "date",
+      type: "string",
+      as: "date",
       isPrimary: true,
       isNotNull: true,
     },
     end_date: {
-      type: "date",
+      type: "string",
+      as: "date",
       isNotNull: true,
     },
   },
