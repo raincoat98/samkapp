@@ -11,7 +11,7 @@ import {
   Portal,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { modalHeaderBgColor } from "theme";
+import { modalBgColor, modalHeaderBgColor } from "theme";
 
 export default function Popup(props: {
   title: string;
@@ -24,6 +24,9 @@ export default function Popup(props: {
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
   // 배경색
+  const bgColor = useColorModeValue(modalBgColor.light, modalBgColor.dark);
+
+  // 헤더 배경색
   const headerBgColor = useColorModeValue(
     modalHeaderBgColor.light,
     modalHeaderBgColor.dark
@@ -45,6 +48,7 @@ export default function Popup(props: {
           height="100%"
           overflow="hidden"
           borderWidth={1}
+          bgColor={bgColor}
         >
           {/* 헤더 */}
           <ModalHeader bgColor={headerBgColor}>{props.title}</ModalHeader>

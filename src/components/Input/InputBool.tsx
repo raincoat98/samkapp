@@ -8,6 +8,7 @@ export default function InputBool(props: {
     <Switch
       onChange={(event) => props.onChange(event.target.checked)}
       defaultChecked={props.isDefaultTrue ? true : false}
+      size={"lg"}
     />
   );
 }

@@ -1,5 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { useMediaQuery, FormControl, FormLabel, Box } from "@chakra-ui/react";
+import {
+  useMediaQuery,
+  FormControl,
+  FormLabel,
+  Box,
+  Text,
+} from "@chakra-ui/react";
 
 export default function InputFormControl(props: {
   name: string;
@@ -31,7 +37,9 @@ export default function InputFormControl(props: {
       }
     >
       <FormLabel minWidth={"100px"} marginBottom={0}>
-        {translate(`${props.name}`)}
+        <Text as={!props.isDisabled && props.isRequired ? "mark" : "label"}>
+          {translate(`${props.name}`)}
+        </Text>
       </FormLabel>
       <Box flex="1">{props.children}</Box>
     </FormControl>
