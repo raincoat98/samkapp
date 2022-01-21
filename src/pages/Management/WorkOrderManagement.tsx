@@ -12,11 +12,14 @@ export default function WorkOrderManagement() {
     (state: RootState) => state.realm.database[collectionName]
   );
 
-  // 진행중 작업지시 목록
-  const latestDataList = data.filter((item) => item.status !== 2);
-
-  // 완료된 작업지시 목록
-  const oldDataList = data.filter((item) => item.status === 2);
+  const dataList = [
+    // 진행중 작업지시 목록
+    data.filter((item) => item.status === 1),
+    // 대기 및 미분류 작업지시 목록
+    data.filter((item) => !item.status || item.status === 0),
+    // 완료된 작업지시 목록
+    data.filter((item) => item.status === 2),
+  ];
 
   return (
     <Management
@@ -25,13 +28,13 @@ export default function WorkOrderManagement() {
       tabProps={{
         tabGroups: [
           {
-            data: ["진행중", "완료"],
+            data: ["진행중", "대기", "완료"],
             onTabChange: (props) =>
               props.index !== undefined && setTabIndex(props.index),
           },
         ],
       }}
-      tableProps={{ data: tabIndex === 0 ? latestDataList : oldDataList }}
+      tableProps={{ data: dataList[tabIndex] }}
     />
   );
 }
