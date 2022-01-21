@@ -45,9 +45,9 @@ export default function InputPartId(props: {
       if (partItem.part_id === props.defaultValue) {
         if (partItem.group2_id) {
           setGroup2Item(
-            group2List.filter(
+            group2List.find(
               (groupItem) => groupItem.group2_id === partItem.group2_id
-            )[0]
+            )
           );
         }
 
@@ -99,9 +99,9 @@ export default function InputPartId(props: {
         value={group2Item?.group2_id}
         placeholder="없음"
         onChange={(event) => {
-          const group2Item = group2List.filter(
+          const group2Item = group2List.find(
             (group2Item) => group2Item.group2_id === Number(event.target.value)
-          )[0];
+          );
           setGroup2Item(group2Item);
 
           // 필터 1
@@ -145,9 +145,9 @@ export default function InputPartId(props: {
 
                   if (!group2Item?.spec2) {
                     setPartItemId(
-                      filteredPartList1.filter(
+                      filteredPartList1.find(
                         (partItem) => partItem.spec1 === event.target.value
-                      )[0].part_id
+                      )?.part_id
                     );
                   }
                 }
@@ -199,9 +199,9 @@ export default function InputPartId(props: {
 
                   if (!group2Item?.spec3) {
                     setPartItemId(
-                      filteredPartList2.filter(
+                      filteredPartList2.find(
                         (partItem) => partItem.spec2 === event.target.value
-                      )[0].part_id
+                      )?.part_id
                     );
                   }
                 }
@@ -252,9 +252,9 @@ export default function InputPartId(props: {
 
                   if (!group2Item?.spec4) {
                     setPartItemId(
-                      filteredPartList3.filter(
+                      filteredPartList3.find(
                         (partItem) => partItem.spec3 === event.target.value
-                      )[0].part_id
+                      )?.part_id
                     );
                   }
                 }
@@ -304,9 +304,9 @@ export default function InputPartId(props: {
 
                   if (!group2Item?.spec5) {
                     setPartItemId(
-                      filteredPartList4.filter(
+                      filteredPartList4.find(
                         (partItem) => partItem.spec4 === event.target.value
-                      )[0].part_id
+                      )?.part_id
                     );
                   }
                 }
@@ -344,9 +344,9 @@ export default function InputPartId(props: {
               onChange={(event) => {
                 if (event.target.value) {
                   setPartItemId(
-                    filteredPartList5.filter(
+                    filteredPartList5.find(
                       (partItem) => partItem.spec5 === event.target.value
-                    )[0].part_id
+                    )?.part_id
                   );
                 }
               }}
