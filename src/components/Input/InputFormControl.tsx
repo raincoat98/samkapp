@@ -26,8 +26,8 @@ export default function InputFormControl(props: {
       // 수정 불가능한 값일 경우 툴팁 추가
       title={
         props.isReadOnly || props.isDisabled
-          ? "이 값은 수정할 수 없습니다."
-          : "수정하려면 클릭해주세요."
+          ? "이 값은 변경할 수 없습니다."
+          : "변경하려면 클릭해주세요."
       }
     >
       <FormLabel minWidth={"100px"} marginBottom={0}>
