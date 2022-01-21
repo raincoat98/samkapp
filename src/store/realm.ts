@@ -285,9 +285,15 @@ const userSlice = createSlice({
       })
       // 로그아웃
       .addCase(logout.fulfilled.type, (state) => {
+        state.error = undefined;
         state.loading = false;
         state.loggedIn = false;
         state.user.name = "";
+
+        // 데이터베이스 삭제
+        for (const key in state.database) {
+          state.database[key as COLLECTION_NAME_TYPE] = [];
+        }
       })
       // 컬렉션 데이터 가져오기
       .addCase(
