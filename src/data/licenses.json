@@ -1,5 +1,5 @@
 {
-    "@chakra-ui/react@1.6.7": {
+    "@chakra-ui/react@1.7.4": {
         "licenses": "MIT",
         "repository": "https://github.com/chakra-ui/chakra-ui",
         "licenseUrl": "https://github.com/chakra-ui/chakra-ui",
@@ -71,7 +71,7 @@
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
         "parents": "smes"
     },
-    "@types/react@17.0.19": {
+    "@types/react@17.0.38": {
         "licenses": "MIT",
         "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
         "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
@@ -201,6 +201,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/rt2zz/redux-persist",
         "licenseUrl": "https://github.com/rt2zz/redux-persist/raw/master/LICENSE",
+        "parents": "smes"
+    },
+    "redux@4.1.2": {
+        "licenses": "MIT",
+        "repository": "github:reduxjs/redux",
+        "licenseUrl": "github:reduxjs/redux",
         "parents": "smes"
     },
     "typescript@4.4.2": {
