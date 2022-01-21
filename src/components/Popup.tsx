@@ -11,7 +11,7 @@ import {
   Portal,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { modalHeaderBgColor } from "utils/colors";
+import { modalHeaderBgColor } from "theme";
 
 export default function Popup(props: {
   title: string;
@@ -40,7 +40,12 @@ export default function Popup(props: {
       >
         <ModalOverlay />
 
-        <ModalContent width="100%" height="100%" overflow="hidden">
+        <ModalContent
+          width="100%"
+          height="100%"
+          overflow="hidden"
+          borderWidth={1}
+        >
           {/* 헤더 */}
           <ModalHeader bgColor={headerBgColor}>{props.title}</ModalHeader>
 

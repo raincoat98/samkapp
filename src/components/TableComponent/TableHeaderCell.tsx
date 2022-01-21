@@ -5,7 +5,7 @@ import {
   tableHeaderBgColor,
   tableHeaderBgColorHover,
   borderColor,
-} from "utils/colors";
+} from "theme";
 
 export default function TableHeaderCell(
   props: TableHeaderProps & {

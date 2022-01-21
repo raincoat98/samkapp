@@ -1,6 +1,6 @@
 import { Cell } from "react-table";
 import { useColorModeValue, Td, TableCellProps } from "@chakra-ui/react";
-import { borderColor } from "utils/colors";
+import { borderColor } from "theme";
 
 export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
   const { cell, ...rest } = props;

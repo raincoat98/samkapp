@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "store/system";
 import { menu } from "utils/icons";
-import { menuBackground, borderColor } from "utils/colors";
+import { menuBackground, borderColor } from "theme";
 import {
   useStyleConfig,
   chakra,

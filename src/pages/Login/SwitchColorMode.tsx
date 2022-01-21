@@ -16,7 +16,6 @@ export default function SwitchColorMode() {
         position={"absolute"}
         right={5}
         bottom={5}
-        boxShadow={"md"}
         aria-label={"라이트 모드 & 다크모드 전환"}
       />
     </Tooltip>

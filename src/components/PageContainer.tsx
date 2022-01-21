@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import PageTitle from "./PageTitle";
 import PageContent from "./PageContent";
-import { contentBackground } from "utils/colors";
+import { contentBackground } from "theme";
 
 export default function PageContainer(
   props: FlexProps & { headerChildren?: React.ReactNode }

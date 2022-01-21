@@ -34,7 +34,7 @@ import {
   tableRowBgColorStriped,
   tableRowBgColorHover,
   borderColor,
-} from "utils/colors";
+} from "theme";
 import { arrowBack, arrowForward, caretLeft, caretRight } from "utils/icons";
 
 // 테이블 특수 컬럼 아이디 (인덱스, 체크박스)
@@ -176,8 +176,6 @@ export default function TableComponent(props: TableComponentProps) {
           icon={<Icon as={arrowBack} />}
           aria-label="맨 앞으로"
           title="맨 앞으로"
-          borderColor={borderColorValue}
-          borderWidth={1}
         />
         <IconButton
           onClick={previousPage}
@@ -185,8 +183,6 @@ export default function TableComponent(props: TableComponentProps) {
           icon={<Icon as={caretLeft} />}
           aria-label="이전"
           title="이전"
-          borderColor={borderColorValue}
-          borderWidth={1}
         />
         <Center>
           {/* @ts-ignore */}
@@ -200,8 +196,6 @@ export default function TableComponent(props: TableComponentProps) {
           icon={<Icon as={caretRight} />}
           aria-label="다음"
           title="다음"
-          borderColor={borderColorValue}
-          borderWidth={1}
         />
         <IconButton
           onClick={() => gotoPage(pageCount - 1)}
@@ -209,8 +203,6 @@ export default function TableComponent(props: TableComponentProps) {
           icon={<Icon as={arrowForward} />}
           aria-label="맨 뒤로"
           title="맨 뒤로"
-          borderColor={borderColorValue}
-          borderWidth={1}
         />
       </Stack>
     </Center>

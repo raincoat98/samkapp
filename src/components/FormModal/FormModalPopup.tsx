@@ -74,7 +74,6 @@ export default function FormModalPopup(props: {
                   <Button
                     onClick={() => printPopupState.onOpen()}
                     borderWidth={1}
-                    borderColor="gray.400"
                   >
                     출력
                   </Button>

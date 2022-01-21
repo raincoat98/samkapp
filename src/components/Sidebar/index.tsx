@@ -17,7 +17,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import SidebarMenu from "./SidebarMenu";
-import { menuBackground, borderColor } from "utils/colors";
+import { menuBackground, borderColor } from "theme";
 
 export default function Sidebar(props: {
   isOpen: boolean;

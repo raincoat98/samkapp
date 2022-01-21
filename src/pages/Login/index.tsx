@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { login } from "store/realm";
 import * as icons from "utils/icons";
-import { contentBackground } from "utils/colors";
+import { contentBackground } from "theme";
 import SwitchColorMode from "./SwitchColorMode";
 import {
   Box,

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import { chakra, useColorModeValue } from "@chakra-ui/react";
-import { menuBackground } from "utils/colors";
+import { menuBackground } from "theme";
 import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/SpinnerComponent";

@@ -6,7 +6,7 @@ import {
   TabList,
   Tab,
 } from "@chakra-ui/react";
-import { borderColor } from "utils/colors";
+import { borderColor } from "theme";
 
 export type ManagementTableTabsProps = {
   tabGroups: {
