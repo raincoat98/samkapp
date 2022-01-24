@@ -24,6 +24,7 @@
     "@types/redux-logger": "^3.0.9",
     "axios": "^0.24.0",
     "framer-motion": "^4.1.17",
+    "fuse.js": "^6.5.3",
     "i18next": "^20.4.0",
     "moment": "^2.29.1",
     "npm-license-crawler": "^0.2.1",

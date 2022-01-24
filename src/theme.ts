@@ -80,6 +80,28 @@ const components: ThemeComponents = {
   Input: inputTheme,
   Select: inputTheme,
   NumberInput: inputTheme,
+
+  Popover: {
+    parts: ["header", "content"],
+    baseStyle: (props) => ({
+      header: {
+        fontWeight: "bold",
+        bgColor:
+          props.colorMode === "light"
+            ? modalHeaderBgColor.light
+            : modalHeaderBgColor.dark,
+        borderBottomWidth: 1,
+        borderColor:
+          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+      },
+      content: {
+        borderBottomWidth: 1,
+        borderColor:
+          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+        boxShadow: "md",
+      },
+    }),
+  },
 };
 
 const theme = extendTheme({
