@@ -54,7 +54,7 @@ export default function FormModalPopup(props: {
             onSubmit={(event) => {
               event.preventDefault();
               props.onSubmit();
-              if (isKeepOpen) {
+              if (props.mode === "insert" && isKeepOpen) {
                 formEl.current?.reset();
                 props.onOpen();
               }
