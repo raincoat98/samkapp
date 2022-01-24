@@ -26,7 +26,6 @@ export default function InputEnum(props: {
   displayKey?: string;
   onChange: (selected: any) => void;
   defaultValue?: any;
-  sort?: boolean;
 }) {
   let dataList = props.enumList;
   let defaultValueIndex: number | undefined;
@@ -37,13 +36,6 @@ export default function InputEnum(props: {
 
   // 선택한 항목의 배열 인덱스
   const [fuseResults, setFuseResults] = useState<Fuse.FuseResult<any>[]>([]);
-
-  // 정렬
-  if (props.sort) {
-    dataList.sort((a, b) =>
-      a[key]?.toString().localeCompare(b[key]?.toString())
-    );
-  }
 
   // 특정 값인 데이터만 필터링
   for (const filterKey in props.filter) {

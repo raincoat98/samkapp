@@ -49,7 +49,6 @@ export default function FormModalInput(props: {
           displayKey={property.foreign.display ?? property.foreign.key}
           defaultValue={props.defaultValue ?? property.default}
           onChange={(value) => props.onChange(value)}
-          sort={database[property.foreign.table].length > 20}
         />
       );
     }
