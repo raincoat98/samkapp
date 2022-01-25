@@ -37,4 +37,12 @@ router.get("/update", (req, res) => {
   runProcedure(res, sql, params);
 });
 
+// 삭제
+router.get("/delete", (req, res) => {
+  res.status(501).send({
+    success: false,
+  });
+  console.log("미구현: 품목 가격 삭제");
+});
+
 module.exports = router;

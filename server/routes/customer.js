@@ -6,7 +6,7 @@ const runProcedure = require("./index");
 // 거래처
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_customer_LST(?,?,?)";
+  const sql = `CALL usp_customer_LST (${new Array(3).fill("?").toString()})`;
   const params = [
     req.query["customer_name"],
     req.query["ceo_name"],
@@ -18,7 +18,7 @@ router.get("/all", (req, res) => {
 
 // 등록
 router.get("/create", (req, res) => {
-  const sql = "CALL usp_customer_INS(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+  const sql = `CALL usp_customer_INS (${new Array(16).fill("?").toString()})`;
   const params = [
     req.query["customer_name"], // NOT NULL
     req.query["business_number"],
@@ -43,7 +43,7 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = "CALL usp_customer_UPD(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+  const sql = `CALL usp_customer_UPD (${new Array(17).fill("?").toString()})`;
   const params = [
     req.query["customer_id"],
     req.query["customer_name"],
@@ -67,7 +67,7 @@ router.get("/update", (req, res) => {
   runProcedure(res, sql, params);
 });
 
-// 거래처 삭제
+// 삭제
 router.delete("/delete", (req, res) => {
   const sql = "DELETE FROM tb_customer WHERE customer_id=?";
   const params = [req.query["customer_id"]];

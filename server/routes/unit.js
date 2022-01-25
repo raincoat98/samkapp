@@ -3,7 +3,8 @@ const router = express();
 
 const connection = require("../lib/db.js");
 
-// 품목 가격 조회
+// 단위
+// 조회
 router.get("/all", (req, res) => {
   var dataList = [];
   const sql = "SELECT unit_id, unit_name, mod_date FROM tb_unit";
@@ -19,7 +20,7 @@ router.get("/all", (req, res) => {
   });
 });
 
-// 품목 가격 등록
+// 등록
 router.get("/create", (req, res) => {
   const sql =
     "INSERT INTO tb_unit " +
@@ -41,7 +42,7 @@ router.get("/create", (req, res) => {
   });
 });
 
-//품목 가격 수정
+// 수정
 router.get("/update", (req, res) => {
   const sql = "UPDATE tb_unit SET unit_name=?, mod_date=? WHERE unit_id=?";
   const params = [
@@ -60,7 +61,7 @@ router.get("/update", (req, res) => {
   });
 });
 
-// 품목 가격 삭제
+//  삭제
 router.delete("/delete", (req, res) => {
   const sql = "DELETE FROM tb_unit WHERE unit_id=?";
   const params = [req.query["unit_id"]];

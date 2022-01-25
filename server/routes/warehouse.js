@@ -3,7 +3,8 @@ const router = express();
 
 const connection = require("../lib/db.js");
 
-// 창고  조회
+// 창고
+// 조회
 router.get("/all", (req, res) => {
   var dataList = [];
   const sql =
@@ -21,7 +22,7 @@ router.get("/all", (req, res) => {
   });
 });
 
-// 창고  등록
+// 등록
 router.get("/create", (req, res) => {
   const sql =
     "INSERT INTO tb_warehouse " +
@@ -45,7 +46,7 @@ router.get("/create", (req, res) => {
   });
 });
 
-//창고  수정
+// 수정
 router.get("/update", (req, res) => {
   const sql =
     "UPDATE tb_warehouse " +
@@ -71,7 +72,7 @@ router.get("/update", (req, res) => {
   });
 });
 
-// 창고  삭제
+// 삭제
 router.delete("/delete", (req, res) => {
   const sql = "DELETE FROM tb_warehouse WHERE warehouse_id=?";
   const params = [req.query["warehouse_id"]];

@@ -11,9 +11,9 @@ router.get("/all", (req, res) => {
   runProcedure(res, sql);
 });
 
-// 품목 분류 등록
+// 등록
 router.get("/create", (req, res) => {
-  const sql = "CALL usp_group_INS (?,?,?,?,?,?,?,?)";
+  const sql = `CALL usp_group_INS (${new Array(8).fill("?").toString()})`;
   const params = [
     req.query["group2_name"], // NOT NULL
     req.query["spec1"],
@@ -30,7 +30,7 @@ router.get("/create", (req, res) => {
 
 //품목 분류 수정
 router.get("/update", (req, res) => {
-  const sql = "CALL usp_group_UPD (?,?,?,?,?,?,?,?,?)";
+  const sql = `CALL usp_group_UPD (${new Array(9).fill("?").toString()})`;
   const params = [
     req.query["group2_id"], // NOT NULL
     req.query["group2_name"],

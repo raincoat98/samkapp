@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express();
-const connection = require("../lib/db.js");
 const runProcedure = require("./index");
 
-// 출고 조회
+// 출고
+// 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_transfer_out_LST(?,?,?)";
+  const sql = `CALL usp_transfer_out_LST (${new Array(3)
+    .fill("?")
+    .toString()})`;
   const params = [
     req.query["transfer_type_id"],
     req.query["part_id"],
@@ -15,9 +17,11 @@ router.get("/all", (req, res) => {
   runProcedure(res, sql, params);
 });
 
-// 출고 등록
+// 등록
 router.get("/create", (req, res) => {
-  const sql = "CALL usp_transfer_out_INS(?,?,?,?,?,?,?)";
+  const sql = `CALL usp_transfer_out_INS (${new Array(7)
+    .fill("?")
+    .toString()})`;
   const params = [
     req.query["transfer_type_id"],
     req.query["plan_date"],
@@ -31,19 +35,20 @@ router.get("/create", (req, res) => {
   runProcedure(res, sql, params);
 });
 
-// 출고 삭제
+// 수정
+router.get("/update", (req, res) => {
+  res.status(501).send({
+    success: false,
+  });
+  console.log("미구현: 출고 수정");
+});
+
+// 삭제
 router.delete("/delete", (req, res) => {
   const sql = "CALL usp_transfer_out_DEL(?)";
   const params = [req.query["transfer_out_id"]];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("delete ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;

@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express();
-const connection = require("../lib/db.js");
 const runProcedure = require("./index");
 
 // 입고
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_transfer_in_LST (?,?,?)";
+  const sql = `CALL usp_transfer_in_LST (${new Array(3).fill("?").toString()})`;
   const params = [
     req.query["transfer_type_id"],
     req.query["part_id"],
@@ -18,7 +17,7 @@ router.get("/all", (req, res) => {
 
 // 입고 등록
 router.get("/create", (req, res) => {
-  const sql = "CALL usp_transfer_in_INS(?,?,?,?)";
+  const sql = `CALL usp_transfer_in_INS (${new Array(4).fill("?").toString()})`;
   const params = [
     req.query["transfer_type_id"],
     req.query["part_id"],
@@ -31,13 +30,13 @@ router.get("/create", (req, res) => {
 
 //입고 수정
 router.get("/update", (req, res) => {
-  const sql = "CALL usp_transfer_in_UPD(?,?,?,?,?)";
+  const sql = `CALL usp_transfer_in_UPD (${new Array(5).fill("?").toString()})`;
   const params = [
     req.query["transfer_in_id"],
     req.query["transfer_type_id"],
     req.query["part_id"],
-    req.query["work_order_id"],
     req.query["quantity"],
+    req.query["warehouse_id"],
   ];
 
   runProcedure(res, sql, params);
@@ -48,14 +47,7 @@ router.delete("/delete", (req, res) => {
   const sql = "CALL usp_transfer_in_DEL(?)";
   const params = [req.query["transfer_in_id"]];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("delete ok");
-    }
-    res.send({ results });
-  });
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;

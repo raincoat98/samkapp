@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express();
-const connection = require("../lib/db.js");
 const runProcedure = require("./index");
 
 // 품목 명세서
@@ -14,7 +13,7 @@ router.get("/all", (req, res) => {
 
 // 등록
 router.get("/create", (req, res) => {
-  const sql = "CALL usp_bom_INS(?,?,?,?,?,?,?)";
+  const sql = `CALL usp_bom_INS (${new Array(7).fill("?").toString()})`;
   const params = [
     req.query["product_id"], // NOT NULL
     req.query["assembly_id"], // NOT NULL
@@ -30,7 +29,7 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = "CALL usp_bom_UPD(?,?,?,?,?,?,?,?)";
+  const sql = `CALL usp_bom_UPD (${new Array(8).fill("?").toString()})`;
   const params = [
     req.query["bom_id"], // NOT NULL
     req.query["product_id"], // NOT NULL
@@ -43,6 +42,14 @@ router.get("/update", (req, res) => {
   ];
 
   runProcedure(res, sql, params);
+});
+
+// 삭제
+router.get("/delete", (req, res) => {
+  res.status(501).send({
+    success: false,
+  });
+  console.log("미구현: 품목 명세서 삭제");
 });
 
 module.exports = router;
