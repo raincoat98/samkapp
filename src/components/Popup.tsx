@@ -9,10 +9,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Portal,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import { modalBgColor, modalHeaderBgColor } from "theme";
-
 export default function Popup(props: {
   title: string;
   isOpen: boolean;
@@ -23,15 +20,6 @@ export default function Popup(props: {
   // 가로 세로 모드 구분
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
 
-  // 배경색
-  const bgColor = useColorModeValue(modalBgColor.light, modalBgColor.dark);
-
-  // 헤더 배경색
-  const headerBgColor = useColorModeValue(
-    modalHeaderBgColor.light,
-    modalHeaderBgColor.dark
-  );
-
   return (
     <Portal>
       <Modal
@@ -40,6 +28,7 @@ export default function Popup(props: {
         size={isLandscape ? "2xl" : "full"}
         isCentered={isLandscape}
         scrollBehavior={isLandscape ? "inside" : "outside"}
+        variant="popup"
       >
         <ModalOverlay />
 
@@ -48,10 +37,9 @@ export default function Popup(props: {
           height="100%"
           overflow="hidden"
           borderWidth={1}
-          bgColor={bgColor}
         >
           {/* 헤더 */}
-          <ModalHeader bgColor={headerBgColor}>{props.title}</ModalHeader>
+          <ModalHeader>{props.title}</ModalHeader>
 
           {/* 닫기 버튼 */}
           <ModalCloseButton size="lg" />
@@ -61,9 +49,7 @@ export default function Popup(props: {
 
           {/* 푸터 */}
           {props.footerChildren && (
-            <ModalFooter bgColor={headerBgColor}>
-              {props.footerChildren}
-            </ModalFooter>
+            <ModalFooter>{props.footerChildren}</ModalFooter>
           )}
         </ModalContent>
       </Modal>

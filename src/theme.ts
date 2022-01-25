@@ -1,9 +1,14 @@
-import { extendTheme, ThemeConfig, ThemeComponents } from "@chakra-ui/react";
+import {
+  extendTheme,
+  ThemeConfig,
+  ThemeComponents,
+  ColorMode,
+} from "@chakra-ui/react";
 
 export const borderColor = { light: "gray.500", dark: "gray.500" };
 
 export const modalHeaderBgColor = { light: "gray.200", dark: "gray.800" };
-export const modalBgColor = { light: "white", dark: "gray.900" };
+export const modalBgColor = { light: "white", dark: "gray.700" };
 
 // 테이블
 export const tableBgColor = { light: "gray.200", dark: "gray.900" };
@@ -29,8 +34,7 @@ const inputTheme = {
     outline: (props: any) => ({
       field: {
         borderWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+        borderColor: getColorModeValue(props.colorMode, borderColor),
         _hover: {
           borderColor: props.colorMode === "light" ? "black" : "white",
           boxShadow: "base",
@@ -42,29 +46,36 @@ const inputTheme = {
 };
 
 const components: ThemeComponents = {
+  // 버튼
   Button: {
     variants: {
       solid: (props) => ({
         borderWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+        borderColor: getColorModeValue(props.colorMode, borderColor),
       }),
     },
   },
+
+  // 모달
   Modal: {
-    parts: ["hedaer", "footer"],
-    baseStyle: (props) => ({
-      header: {
-        borderBottomWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
-      },
-      footer: {
-        borderTopWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
-      },
-    }),
+    parts: ["hedaer", "body", "footer"],
+    variants: {
+      popup: (props) => ({
+        header: {
+          bgColor: getColorModeValue(props.colorMode, modalHeaderBgColor),
+          borderBottomWidth: 1,
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+        },
+        body: {
+          bgColor: getColorModeValue(props.colorMode, modalBgColor),
+        },
+        footer: {
+          bgColor: getColorModeValue(props.colorMode, modalHeaderBgColor),
+          borderTopWidth: 1,
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+        },
+      }),
+    },
   },
 
   // 인풋
@@ -81,28 +92,31 @@ const components: ThemeComponents = {
   Select: inputTheme,
   NumberInput: inputTheme,
 
+  // 팝오버
   Popover: {
     parts: ["header", "content"],
     baseStyle: (props) => ({
       header: {
         fontWeight: "bold",
-        bgColor:
-          props.colorMode === "light"
-            ? modalHeaderBgColor.light
-            : modalHeaderBgColor.dark,
+        bgColor: getColorModeValue(props.colorMode, modalHeaderBgColor),
         borderBottomWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+        borderColor: getColorModeValue(props.colorMode, borderColor),
       },
       content: {
         borderBottomWidth: 1,
-        borderColor:
-          props.colorMode === "light" ? borderColor.light : borderColor.dark,
+        borderColor: getColorModeValue(props.colorMode, borderColor),
         boxShadow: "md",
       },
     }),
   },
 };
+
+function getColorModeValue(
+  colorMode: ColorMode,
+  colorValue: { light: string; dark: string }
+) {
+  return colorMode === "light" ? colorValue.light : colorValue.dark;
+}
 
 const theme = extendTheme({
   config,
