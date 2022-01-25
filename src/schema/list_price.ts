@@ -64,7 +64,6 @@ export const list_priceSchema: schemaType = {
     end_date: {
       type: "string",
       as: "date",
-      isNotNull: true,
     },
   },
 };
