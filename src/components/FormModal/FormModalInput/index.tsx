@@ -43,6 +43,7 @@ export default function FormModalInput(props: {
     } else {
       element = (
         <InputEnum
+          isDisabled={props.isDisabled}
           enumList={database[property.foreign.table]}
           searchKey={property.foreign.key}
           filter={property.foreign.filter}

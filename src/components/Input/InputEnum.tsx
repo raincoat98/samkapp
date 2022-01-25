@@ -26,6 +26,7 @@ export default function InputEnum(props: {
   displayKey?: string;
   onChange: (selected: any) => void;
   defaultValue?: any;
+  isDisabled?: boolean;
 }) {
   let dataList = props.enumList;
   let defaultValueIndex: number | undefined;
@@ -62,7 +63,7 @@ export default function InputEnum(props: {
   });
 
   return (
-    <FormControl>
+    <FormControl isDisabled={props.isDisabled}>
       <HStack>
         <Select
           ref={selectEl}
@@ -85,6 +86,7 @@ export default function InputEnum(props: {
         <Popover>
           <PopoverTrigger>
             <IconButton
+              isDisabled={props.isDisabled}
               icon={<Icon as={search} />}
               aria-label="항목 검색"
               title="항목 검색"
