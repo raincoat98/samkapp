@@ -110,8 +110,12 @@ export default function InputEnum(props: {
                   {fuseResults.map((fuseData, index) => (
                     <Button
                       onClick={() => {
-                        if (selectEl.current)
+                        if (selectEl.current) {
                           selectEl.current.value = fuseData.refIndex.toString();
+                          props.onChange(
+                            dataList[fuseData.refIndex][props.searchKey]
+                          );
+                        }
                       }}
                       w="100%"
                       p={1}
