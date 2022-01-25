@@ -2,6 +2,7 @@ import React from "react";
 import TableDataCell from "./TableDataCell";
 import TableHeaderCell from "./TableHeaderCell";
 import TableSearch from "./TableSearch";
+import TablePagination from "./TablePagination";
 import {
   useTable,
   useRowSelect,
@@ -20,13 +21,9 @@ import {
   Thead,
   Tbody,
   Tr,
-  Center,
-  Stack,
   Flex,
   Box,
   Checkbox,
-  IconButton,
-  Icon,
 } from "@chakra-ui/react";
 import {
   tableBgColor,
@@ -35,7 +32,6 @@ import {
   tableRowBgColorHover,
   borderColor,
 } from "theme";
-import { arrowBack, arrowForward, caretLeft, caretRight } from "utils/icons";
 
 // 테이블 특수 컬럼 아이디 (인덱스, 체크박스)
 const INDEX_COLUMN = "_index";
@@ -142,8 +138,6 @@ export default function TableComponent(props: TableComponentProps) {
     // @ts-ignore
     canNextPage,
     // @ts-ignore
-    pageOptions,
-    // @ts-ignore
     pageCount,
     // @ts-ignore
     gotoPage,
@@ -168,44 +162,16 @@ export default function TableComponent(props: TableComponentProps) {
 
   // 페이지 이동 요소
   const paginationElement = (
-    <Center>
-      <Stack direction="column" spacing={3} isInline={true}>
-        <IconButton
-          onClick={() => gotoPage(0)}
-          disabled={!canPreviousPage}
-          icon={<Icon as={arrowBack} />}
-          aria-label="맨 앞으로"
-          title="맨 앞으로"
-        />
-        <IconButton
-          onClick={previousPage}
-          isDisabled={!canPreviousPage}
-          icon={<Icon as={caretLeft} />}
-          aria-label="이전"
-          title="이전"
-        />
-        <Center>
-          {/* @ts-ignore */}
-          {`${tableState.pageIndex + 1} / ${
-            pageOptions.length === 0 ? 1 : pageOptions.length
-          }`}
-        </Center>
-        <IconButton
-          onClick={nextPage}
-          isDisabled={!canNextPage}
-          icon={<Icon as={caretRight} />}
-          aria-label="다음"
-          title="다음"
-        />
-        <IconButton
-          onClick={() => gotoPage(pageCount - 1)}
-          disabled={!canNextPage}
-          icon={<Icon as={arrowForward} />}
-          aria-label="맨 뒤로"
-          title="맨 뒤로"
-        />
-      </Stack>
-    </Center>
+    <TablePagination
+      /* @ts-ignore */
+      pageIndex={tableState.pageIndex}
+      pageCount={pageCount}
+      canPreviousPage={canPreviousPage}
+      canNextPage={canNextPage}
+      onPaging={(index: number) => gotoPage(index)}
+      onPreviousPage={previousPage}
+      onNextPage={nextPage}
+    />
   );
 
   const tableElement = (
