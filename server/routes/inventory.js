@@ -10,6 +10,14 @@ router.get("/all", (req, res) => {
   runProcedure(res, sql, params);
 });
 
+// 등록
+router.get("/create", (req, res) => {
+  res.status(501).send({
+    success: false,
+  });
+  console.log("미구현: 재고 등록");
+});
+
 // 수정
 router.get("/update", (req, res) => {
   const sql = `CALL usp_list_price (${new Array(1).fill("?").toString()})`;
