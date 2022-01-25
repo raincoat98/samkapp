@@ -23,7 +23,7 @@ export type propertyType = {
   isNotNull?: boolean; // 필수로 입력되어야 하는지 여부
   isNotVisible?: boolean; // 유저에게 보여지지 않는지 여부 (추가, 수정 모두)
   isAutoSet?: boolean; // 데이터베이스 내부에서 자동으로 입력하는지 여부
-  isReadOnly?: boolean; // 유저가 읽기만 가능하고 작성하는 것은 불가능한 값
+  isReadOnly?: boolean; // 유저가 읽기만 가능하고 작성하는 것은 불가능한 값 (처음 데이터 생성시 값 지정은 가능)
   isTextarea?: boolean; // (type: string) 문자열을 여러 줄로 받을지 여부
   isDisalbePreview?: boolean; // 테이블 뷰에서 보여주지 않고 상세 보기에서만 보여줄지 여부
 };

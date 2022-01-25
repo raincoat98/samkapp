@@ -62,7 +62,9 @@ export default function FormModal(props: FormModalProps) {
       const isRequired = property.isNotNull;
 
       // 비활성화된 값인지 여부
-      let disabled = property.isReadOnly as boolean;
+      let disabled = false;
+      // 읽기전용 값은 수정 모드에서 비활성
+      if (props.mode === "update" && property.isReadOnly) disabled = true;
       // 기본키는 수정할 수 없으므로 수정 불가능하게
       if (props.mode === "update" && property.isPrimary) disabled = true;
 
