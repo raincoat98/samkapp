@@ -7,6 +7,7 @@ export type product_order = {
   order_quantity: number;
   stocked_quantity: number;
   scrapped_quantity: number;
+  due_date: string;
   remark?: string;
 };
 
@@ -46,10 +47,18 @@ export const product_orderSchema: schemaType = {
     stocked_quantity: {
       type: "number",
       isNotNull: true,
+      isAutoSet: true,
     },
     scrapped_quantity: {
       type: "number",
       isNotNull: true,
+      isAutoSet: true,
+    },
+    due_date: {
+      type: "string",
+      as: "date",
+      isNotNull: true,
+      isReadOnly: true,
     },
     remark: {
       type: "string",

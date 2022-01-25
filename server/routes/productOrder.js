@@ -37,14 +37,13 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = `CALL usp_product_order_UPD (${new Array(4)
+  const sql = `CALL usp_product_order_UPD (${new Array(3)
     .fill("?")
     .toString()})`;
   const params = [
     req.query["work_order_id"],
     req.query["stocked_quantity"],
     req.query["scrapped_quantity"],
-    req.query["end_date"],
   ];
 
   runProcedure(res, sql, params);
