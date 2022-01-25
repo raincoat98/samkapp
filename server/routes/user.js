@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express();
+const runProcedure = require("./index");
 
 const connection = require("../lib/db.js");
 
@@ -24,6 +25,12 @@ router.get("/login", (req, res) => {
       res.send(error);
     }
   });
+});
+
+router.get("/all", (req, res) => {
+  const sql = "CALL usp_user_LST()";
+
+  runProcedure(res, sql);
 });
 
 module.exports = router;

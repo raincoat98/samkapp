@@ -10,4 +10,12 @@ router.get("/all", (req, res) => {
   runProcedure(res, sql, params);
 });
 
+// 수정
+router.get("/update", (req, res) => {
+  const sql = `CALL usp_list_price (${new Array(1).fill("?").toString()})`;
+  const params = [req.query["work_order_id"]];
+
+  runProcedure(res, sql, params);
+});
+
 module.exports = router;
