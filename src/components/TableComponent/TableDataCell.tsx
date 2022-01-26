@@ -1,28 +1,13 @@
 import { Cell } from "react-table";
-import { useColorModeValue, Td, TableCellProps } from "@chakra-ui/react";
-import { borderColor } from "theme";
+import { Td } from "@chakra-ui/react";
 
-export default function TableDataCell(props: TableCellProps & { cell: Cell }) {
-  const { cell, ...rest } = props;
+export default function TableDataCell(props: {
+  cell: Cell;
+  onClick?: () => void;
+}) {
   return (
-    <Td
-      {...cell.getCellProps()}
-      display="block"
-      overflow="hidden"
-      textOverflow="ellipsis"
-      whiteSpace="nowrap"
-      padding={3}
-      margin={0}
-      textAlign="center"
-      alignItems="center"
-      justifyContent="center"
-      // 외곽선
-      borderColor={useColorModeValue(borderColor.light, borderColor.dark)}
-      borderBottomWidth={1}
-      _notFirst={{ borderLeftWidth: 1 }}
-      {...rest}
-    >
-      {cell.render("Cell")}
+    <Td {...props.cell.getCellProps()} onClick={props.onClick}>
+      {props.cell.render("Cell")}
     </Td>
   );
 }

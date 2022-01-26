@@ -5,6 +5,10 @@ import {
   ColorMode,
 } from "@chakra-ui/react";
 
+// 고대비
+export const highContrastColor = { light: "black", dark: "white" };
+export const highContrastBfColor = { light: "white", dark: "black" };
+
 export const borderColor = { light: "gray.500", dark: "gray.500" };
 
 export const modalHeaderBgColor = { light: "gray.200", dark: "gray.800" };
@@ -136,6 +140,70 @@ const components: ThemeComponents = {
           _notLast: {
             marginRight: 1,
           },
+        },
+      }),
+    },
+  },
+
+  Table: {
+    baseStyle: (props) => ({
+      thead: {
+        userSelect: "none",
+      },
+    }),
+    variants: {
+      solid: (props) => ({
+        baseStyle: {
+          bgColor: getColorModeValue(props.colorMode, tableBgColor),
+          wordBreak: "break-all",
+        },
+        thead: {
+          position: "sticky",
+          top: 0,
+          zIndex: "docked",
+        },
+        th: {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          whiteSpace: "pre",
+          margin: 0,
+          padding: 3,
+          overflow: "hidden",
+          color: getColorModeValue(props.colorMode, highContrastColor),
+          bgColor: getColorModeValue(props.colorMode, tableHeaderBgColor),
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+          _notFirst: { borderLeftWidth: 1 },
+          _hover: {
+            bgColor: getColorModeValue(
+              props.colorMode,
+              tableHeaderBgColorHover
+            ),
+          },
+        },
+        tr: {
+          bgColor: getColorModeValue(props.colorMode, tableRowBgColor),
+          _even: {
+            bgColor: getColorModeValue(props.colorMode, tableRowBgColorStriped),
+          },
+          _hover: {
+            bgColor: getColorModeValue(props.colorMode, tableRowBgColorHover),
+          },
+        },
+        td: {
+          display: "block",
+          margin: 0,
+          padding: 3,
+          justifyContent: "center",
+          alignItems: "center",
+          overflow: "hidden",
+          textAlign: "center",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+          borderBottomWidth: 1,
+          _notFirst: { borderLeftWidth: 1 },
         },
       }),
     },

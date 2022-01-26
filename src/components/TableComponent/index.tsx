@@ -3,6 +3,7 @@ import TableDataCell from "./TableDataCell";
 import TableHeaderCell from "./TableHeaderCell";
 import TableSearch from "./TableSearch";
 import TablePagination from "./TablePagination";
+import TableCheckbox from "./TableCheckbox";
 import {
   useTable,
   useRowSelect,
@@ -23,15 +24,8 @@ import {
   Tr,
   Flex,
   Box,
-  Checkbox,
 } from "@chakra-ui/react";
-import {
-  tableBgColor,
-  tableRowBgColor,
-  tableRowBgColorStriped,
-  tableRowBgColorHover,
-  borderColor,
-} from "theme";
+import { borderColor } from "theme";
 
 // 테이블 특수 컬럼 아이디 (인덱스, 체크박스)
 const INDEX_COLUMN = "_index";
@@ -48,24 +42,6 @@ export type TableComponentProps = {
 export default function TableComponent(props: TableComponentProps) {
   // 가로모드
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
-  // 테이블 열 배경색
-  const tableRowBgColorValue = useColorModeValue(
-    tableRowBgColor.light,
-    tableRowBgColor.dark
-  );
-
-  // 테이블 열 배경색 (스트라이프 무늬)
-  const tableRowBgColorStripedValue = useColorModeValue(
-    tableRowBgColorStriped.light,
-    tableRowBgColorStriped.dark
-  );
-
-  // 테이블 열 배경색 (마우스 오버)
-  const tableRowBgColorHoverValue = useColorModeValue(
-    tableRowBgColorHover.light,
-    tableRowBgColorHover.dark
-  );
 
   // 외곽선 색상
   const borderColorValue = useColorModeValue(
@@ -178,13 +154,15 @@ export default function TableComponent(props: TableComponentProps) {
     <Table
       // react-table 프로퍼티 전달
       {...getTableProps()}
-      // 테이블 배경색
-      bgColor={useColorModeValue(tableBgColor.light, tableBgColor.dark)}
-      wordBreak="break-all"
+      variant={"solid"}
     >
-      <Thead position={"sticky"} top={0} zIndex="docked" userSelect={"none"}>
+      <Thead>
         {headerGroups.map((headerGroup) => (
-          <Tr {...headerGroup.getHeaderGroupProps()}>
+          <Tr
+            {...headerGroup.getHeaderGroupProps()}
+            borderColor={borderColorValue}
+            borderBottomWidth={1}
+          >
             {headerGroup.headers.map((column, index) => (
               <TableHeaderCell
                 column={column}
@@ -204,23 +182,17 @@ export default function TableComponent(props: TableComponentProps) {
             <Tr
               // react-table 프로퍼티 전달
               {...row.getRowProps()}
-              // 배경색
-              bgColor={tableRowBgColorValue}
-              _even={{
-                bgColor: tableRowBgColorStripedValue,
-              }}
-              _hover={{
-                bgColor: tableRowBgColorHoverValue,
-              }}
             >
               {row.cells.map((cell, index) => (
                 <TableDataCell
                   cell={cell}
-                  onClick={(event) => {
-                    // 체크박스 관리 행일 때는 이벤트 취소
-                    if (cell.column.id === SELECTION_COLUMN) return;
-                    if (props.onRowClick) props.onRowClick(row);
-                  }}
+                  onClick={
+                    cell.column.id !== SELECTION_COLUMN
+                      ? () => {
+                          if (props.onRowClick) props.onRowClick(row);
+                        }
+                      : undefined
+                  }
                   key={index}
                 />
               ))}
@@ -257,27 +229,4 @@ export default function TableComponent(props: TableComponentProps) {
       table: tableElement,
     },
   };
-}
-
-function TableCheckbox(props: {
-  checked: boolean;
-  indeterminate: boolean;
-  onChange: (checkbox: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
-  const { checked, indeterminate, onChange } = props;
-
-  const borderColorValue = useColorModeValue(
-    borderColor.light,
-    borderColor.dark
-  );
-
-  return (
-    <Checkbox
-      isChecked={checked}
-      isIndeterminate={indeterminate}
-      onChange={(e) => onChange(e)}
-      borderColor={borderColorValue}
-      verticalAlign="center"
-    />
-  );
 }
