@@ -2,12 +2,12 @@ import { schemaType } from "./index";
 
 export type product_order = {
   product_order_id: number;
-  work_order_id: number;
   part_id: number;
   order_quantity: number;
   stocked_quantity: number;
   scrapped_quantity: number;
   due_date: string;
+  work_order_id: number;
   remark?: string;
 };
 
@@ -20,16 +20,6 @@ export const product_orderSchema: schemaType = {
       isNotNull: true,
       isAutoSet: true,
       isNotVisible: true,
-    },
-    work_order_id: {
-      type: "number",
-      foreign: {
-        table: "work_order",
-        key: "work_order_id",
-        display: "work_order_number",
-      },
-      isAutoSet: true,
-      isReadOnly: true,
     },
     part_id: {
       type: "number",
@@ -58,6 +48,16 @@ export const product_orderSchema: schemaType = {
       type: "string",
       as: "date",
       isNotNull: true,
+      isReadOnly: true,
+    },
+    work_order_id: {
+      type: "number",
+      foreign: {
+        table: "work_order",
+        key: "work_order_id",
+        display: "work_order_number",
+      },
+      isAutoSet: true,
       isReadOnly: true,
     },
     remark: {
