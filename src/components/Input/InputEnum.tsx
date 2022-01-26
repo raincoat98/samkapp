@@ -98,7 +98,6 @@ export default function InputEnum(props: {
             <PopoverHeader>항목 검색</PopoverHeader>
             <PopoverBody overflow="hidden">
               <Input
-                type="text"
                 placeholder="검색어를 입력해주세요."
                 onChange={(event) => {
                   window.setTimeout(() => {

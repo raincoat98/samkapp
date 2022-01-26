@@ -34,7 +34,7 @@ export default function Sidebar(props: {
   return (
     <Flex
       display={props.isOpen ? "flex" : "none"}
-      direction={"column"}
+      flexDir={"column"}
       w={isLandscape ? 250 : "100%"}
       p={5}
       // 우측 외곽선

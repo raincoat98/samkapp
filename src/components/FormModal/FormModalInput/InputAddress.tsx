@@ -51,7 +51,7 @@ export default function FormModalInputAddress(props: {
       />
 
       <FormControl display="flex" alignItems="center">
-        <FormLabel minWidth="100px" marginBottom={0}>
+        <FormLabel minW="100px" marginBottom={0}>
           {translate(name)}
         </FormLabel>
 
@@ -60,7 +60,6 @@ export default function FormModalInputAddress(props: {
             <Input
               ref={zipCodeRef}
               defaultValue={defaultValue.zip_code}
-              type="text"
               placeholder="우편번호"
             />
             <Textarea

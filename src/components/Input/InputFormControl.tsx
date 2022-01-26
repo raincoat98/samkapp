@@ -27,7 +27,7 @@ export default function InputFormControl(props: {
       isDisabled={props.isDisabled}
       isRequired={props.isRequired}
       display="flex"
-      flexDirection={isLandscape ? "row" : "column"}
+      flexDir={isLandscape ? "row" : "column"}
       alignItems={isLandscape ? "center" : "normal"}
       // 수정 불가능한 값일 경우 툴팁 추가
       title={
@@ -36,7 +36,7 @@ export default function InputFormControl(props: {
           : "변경하려면 클릭해주세요."
       }
     >
-      <FormLabel minWidth={"100px"} marginBottom={0}>
+      <FormLabel minW={"100px"} marginBottom={0}>
         <Text as={!props.isDisabled && props.isRequired ? "mark" : "label"}>
           {translate(`${props.name}`)}
         </Text>

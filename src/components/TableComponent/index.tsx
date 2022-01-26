@@ -207,12 +207,12 @@ export default function TableComponent(props: TableComponentProps) {
     tableInstance,
     component: {
       box: (
-        <Flex direction="column" width="100%" height="100%" overflow="auto">
+        <Flex flexDir="column" width="100%" height="100%" overflow="auto">
           <Box flex="1" overflow="auto">
             {tableElement}
           </Box>
           <Flex
-            direction={isLandscape ? "row" : "column"}
+            flexDir={isLandscape ? "row" : "column"}
             p={3}
             borderColor={borderColorValue}
             borderTopWidth={1}

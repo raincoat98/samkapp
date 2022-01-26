@@ -14,7 +14,7 @@ export default function NoMatch() {
       height="100%"
       status="error"
       variant="subtle"
-      flexDirection="column"
+      flexDir="column"
       alignItems="center"
       justifyContent="center"
       textAlign="center"

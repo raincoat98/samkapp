@@ -278,7 +278,7 @@ export default function Management(props: {
           />
         }
       >
-        <Flex direction="column" width="100%" height="100%">
+        <Flex flexDir="column" width="100%" height="100%">
           {/* 탭 추가 */}
           {tabProps && <TableTabs {...tabProps} />}
 

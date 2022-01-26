@@ -27,7 +27,7 @@ export default function PageContainer(props: {
   return (
     <Flex
       display="flex"
-      flexDirection="column"
+      flexDir="column"
       height="100%"
       overflow="hidden"
       bgColor={bgColor}

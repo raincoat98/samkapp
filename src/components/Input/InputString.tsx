@@ -11,7 +11,6 @@ export default function InputString(props: {
   if (!props.isTextarea) {
     element = (
       <Input
-        type="text"
         onChange={(event) => props.onChange(event.target.value)}
         defaultValue={props.defaultValue}
       />
@@ -19,7 +18,6 @@ export default function InputString(props: {
   } else {
     element = (
       <Textarea
-        type="text"
         onChange={(event) => props.onChange(event.target.value)}
         defaultValue={props.defaultValue}
       />
