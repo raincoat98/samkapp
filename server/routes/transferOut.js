@@ -37,10 +37,21 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 출고 수정");
+  const sql = `CALL usp_transfer_out_UPD (${new Array(8)
+    .fill("?")
+    .toString()})`;
+  const params = [
+    req.query["transfer_out_id"],
+    req.query["transfer_type_id"],
+    req.query["priorities"],
+    req.query["plan_date"],
+    req.query["customer_id"],
+    req.query["part_id"],
+    req.query["quantity"],
+    req.query["warehouse_id"],
+  ];
+
+  runProcedure(res, sql, params);
 });
 
 // 삭제
