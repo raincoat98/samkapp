@@ -109,6 +109,37 @@ const components: ThemeComponents = {
       },
     }),
   },
+
+  // 탭
+  Tabs: {
+    parts: ["tablist", "tab"],
+    baseStyle: {
+      tablist: {
+        display: "flex",
+        overflow: "auto",
+      },
+      tab: {
+        wordBreak: "keep-all",
+      },
+    },
+    variants: {
+      "solid-rounded": (props) => ({
+        tablist: {
+          padding: 1,
+          borderBottomWidth: 1,
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+        },
+        tab: {
+          borderWidth: 1,
+          borderColor: getColorModeValue(props.colorMode, borderColor),
+          borderRadius: 5,
+          _notLast: {
+            marginRight: 1,
+          },
+        },
+      }),
+    },
+  },
 };
 
 function getColorModeValue(

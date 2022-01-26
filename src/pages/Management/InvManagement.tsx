@@ -6,7 +6,7 @@ import { inventorySchema } from "schema/inventory";
 
 export default function InvManagement() {
   const collectionName = "inventory";
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState<number | undefined>();
   const data = useSelector(
     (state: RootState) => state.realm.database[collectionName]
   );
@@ -21,13 +21,13 @@ export default function InvManagement() {
       tabProps={{
         tabGroups: [
           {
-            data: ["전체", "재고 없음"],
-            onTabChange: (props) =>
-              props.index !== undefined && setTabIndex(props.index),
+            allowNull: true,
+            data: ["재고 없음"],
+            onTabChange: (props) => setTabIndex(props.index),
           },
         ],
       }}
-      tableProps={{ data: tabIndex === 0 ? data : noStockList }}
+      tableProps={{ data: tabIndex === undefined ? data : noStockList }}
     />
   );
 }
