@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import {
+  useDisclosure,
   FormControl,
   Select,
   Input,
@@ -28,11 +29,15 @@ export default function InputEnum(props: {
   defaultValue?: any;
   isDisabled?: boolean;
 }) {
-  let dataList = props.enumList;
+  const popoverDisclosure = useDisclosure();
+
+  let dataList = [...props.enumList];
   let defaultValueIndex: number | undefined;
   const key = props.displayKey ?? props.searchKey;
 
-  // Select 엘리먼트 ref
+  // 엘리먼트 ref
+  const inputEl = useRef<HTMLInputElement>(null);
+  const searchEl = useRef<HTMLInputElement>(null);
   const selectEl = useRef<HTMLSelectElement>(null);
 
   // 선택한 항목의 배열 인덱스
@@ -47,7 +52,7 @@ export default function InputEnum(props: {
   }
 
   // 기존값 검색
-  if (props.defaultValue) {
+  if (props.defaultValue !== undefined) {
     dataList.find((data, index) => {
       if (data[props.searchKey] === props.defaultValue) {
         defaultValueIndex = index;
@@ -64,7 +69,80 @@ export default function InputEnum(props: {
 
   return (
     <FormControl isDisabled={props.isDisabled}>
-      <HStack>
+      {props.enumList.length > 50 ? (
+        // 데이터가 50개 이상일 때는 Select를 사용하지 않음 (성능 문제)
+        <Popover
+          initialFocusRef={searchEl}
+          isOpen={popoverDisclosure.isOpen}
+          onClose={popoverDisclosure.onClose}
+        >
+          <PopoverTrigger>
+            <HStack>
+              <Input
+                ref={inputEl}
+                onClick={popoverDisclosure.onOpen}
+                defaultValue={
+                  defaultValueIndex !== undefined
+                    ? dataList[defaultValueIndex][key]
+                    : ""
+                }
+                isReadOnly={true}
+                placeholder="없음"
+                cursor="pointer"
+              />
+
+              <IconButton
+                onClick={popoverDisclosure.onOpen}
+                isDisabled={props.isDisabled}
+                icon={<Icon as={search} />}
+                aria-label="항목 검색"
+                title="항목 검색"
+              />
+            </HStack>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>항목 검색</PopoverHeader>
+            <PopoverBody overflow="hidden">
+              <Input
+                ref={searchEl}
+                placeholder="검색어를 입력해주세요."
+                onChange={(event) => {
+                  window.setTimeout(() => {
+                    setFuseResults(fuse.search(event.target.value));
+                  }, 200);
+                }}
+              />
+
+              {fuseResults.length !== 0 && (
+                <VStack maxH={200} mt={2} p={1} overflow="auto">
+                  {fuseResults.map((fuseData, index) => (
+                    <Button
+                      onClick={() => {
+                        if (inputEl.current) {
+                          inputEl.current.value = fuseData.item[key].toString();
+                        }
+
+                        props.onChange(
+                          dataList[fuseData.refIndex][props.searchKey]
+                        );
+
+                        popoverDisclosure.onClose();
+                      }}
+                      w="100%"
+                      p={1}
+                      key={index}
+                    >
+                      {fuseData.item[key]}
+                    </Button>
+                  ))}
+                </VStack>
+              )}
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      ) : (
         <Select
           ref={selectEl}
           onChange={(event) =>
@@ -81,56 +159,7 @@ export default function InputEnum(props: {
             </option>
           ))}
         </Select>
-
-        {/* 검색 영역 */}
-        <Popover>
-          <PopoverTrigger>
-            <IconButton
-              isDisabled={props.isDisabled}
-              icon={<Icon as={search} />}
-              aria-label="항목 검색"
-              title="항목 검색"
-            />
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>항목 검색</PopoverHeader>
-            <PopoverBody overflow="hidden">
-              <Input
-                placeholder="검색어를 입력해주세요."
-                onChange={(event) => {
-                  window.setTimeout(() => {
-                    setFuseResults(fuse.search(event.target.value));
-                  }, 200);
-                }}
-              />
-
-              {fuseResults.length !== 0 && (
-                <VStack maxH={200} mt={2} p={1} overflow="auto">
-                  {fuseResults.map((fuseData, index) => (
-                    <Button
-                      onClick={() => {
-                        if (selectEl.current) {
-                          selectEl.current.value = fuseData.refIndex.toString();
-                          props.onChange(
-                            dataList[fuseData.refIndex][props.searchKey]
-                          );
-                        }
-                      }}
-                      w="100%"
-                      p={1}
-                      key={index}
-                    >
-                      {fuseData.item[key]}
-                    </Button>
-                  ))}
-                </VStack>
-              )}
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-      </HStack>
+      )}
     </FormControl>
   );
 }
