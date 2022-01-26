@@ -100,9 +100,11 @@ export default function InputEnum(props: {
               <Input
                 type="text"
                 placeholder="검색어를 입력해주세요."
-                onChange={(event) =>
-                  setFuseResults(fuse.search(event.target.value))
-                }
+                onChange={(event) => {
+                  window.setTimeout(() => {
+                    setFuseResults(fuse.search(event.target.value));
+                  }, 200);
+                }}
               />
 
               {fuseResults.length !== 0 && (
