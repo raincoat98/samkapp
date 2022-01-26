@@ -42,26 +42,21 @@ export default function Sidebar(props: {
       borderColor={borColor}
       bgColor={bgColor}
     >
-      <Flex>
-        <Center>
-          {!isLandscape && <CloseButton onClick={() => props.onClose()} />}
-        </Center>
-
-        <Center w={"100%"} maxH={100}>
-          <Image
-            src={logo}
-            maxH="100%"
-            pb={5}
-            filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
-            userSelect="none"
-          />
-        </Center>
-      </Flex>
+      <Center>{!isLandscape && <CloseButton onClick={props.onClose} />}</Center>
+      <Center w={"100%"} maxH={100}>
+        <Image
+          src={logo}
+          maxH="100%"
+          pb={5}
+          filter={colorMode === "dark" ? "contrast(0%) brightness(2)" : ""}
+          userSelect="none"
+        />
+      </Center>
 
       <Divider />
 
       {/* 사이드바 메뉴 */}
-      <SidebarMenu onClose={() => props.onClose()} />
+      <SidebarMenu onClose={props.onClose} />
 
       <Divider />
 

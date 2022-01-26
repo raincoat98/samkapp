@@ -1,11 +1,10 @@
+import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "store/system";
 import { menu } from "utils/icons";
 import { menuBackground, borderColor } from "theme";
 import {
-  useStyleConfig,
   chakra,
-  HeadingProps,
   useColorModeValue,
   Flex,
   Heading,
@@ -14,9 +13,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-export default function PageTitle(props: HeadingProps) {
-  const { children, title, ...rest } = props;
-  const styles = useStyleConfig("PageTitle");
+export default function PageTitle(props: {
+  children: ReactNode;
+  title: string;
+}) {
+  const { children, title } = props;
 
   const dispatch = useDispatch();
 
@@ -25,18 +26,14 @@ export default function PageTitle(props: HeadingProps) {
 
   return (
     <chakra.header
-      __css={styles}
-      {...rest}
       position="sticky"
-      top="0px"
-      variant="page-title"
+      zIndex="sticky"
+      top={0}
       padding="3"
+      bgColor={bgColor}
       borderBottomWidth={1}
       borderColor={borColor}
-      bgColor={bgColor}
-      transition={"var(--chakra-transition-duration-normal)"}
       userSelect="none"
-      zIndex="sticky"
     >
       <Flex align="center">
         <IconButton
