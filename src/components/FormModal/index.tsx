@@ -40,6 +40,8 @@ export default function FormModal(props: FormModalProps) {
   const [isFormModalAlertOpen, setIsFormModalAlertOpen] =
     useState<boolean>(false);
 
+  const [isAutoFill, setIsAutoFill] = useState<boolean>(false);
+
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
 
@@ -48,6 +50,7 @@ export default function FormModal(props: FormModalProps) {
     // 초기화
     setEditedDocument({});
     setInputList([]);
+    setIsAutoFill(false);
 
     for (const key in props.schema.properties) {
       // 프로퍼티
@@ -78,6 +81,8 @@ export default function FormModal(props: FormModalProps) {
         // 값 지정
         defaultValue = property.default;
         if (property.isReadOnly) disabled = property.isReadOnly;
+
+        setIsAutoFill(true);
         setEditedDocument((state) => ({
           ...state,
           [key]: defaultValue,
@@ -110,6 +115,7 @@ export default function FormModal(props: FormModalProps) {
 
   // 데이터 수정시
   function editData(props: { key: string; value: any }) {
+    setIsAutoFill(false);
     setEditedDocument((state) => ({
       ...state,
       [props.key]: props.value,
@@ -144,7 +150,9 @@ export default function FormModal(props: FormModalProps) {
       }}
       // 다이얼로그가 닫힐 때
       onClose={() => {
-        if (Object.keys(editedDocument).length !== 0) {
+        console.log(isAutoFill, editedDocument);
+
+        if (!isAutoFill && Object.keys(editedDocument).length !== 0) {
           setIsFormModalAlertOpen(true);
         } else {
           setEditedDocument({});
