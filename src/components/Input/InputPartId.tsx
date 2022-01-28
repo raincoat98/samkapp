@@ -1,7 +1,7 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { Box, Flex, Select, FormLabel } from "@chakra-ui/react";
+import { useMediaQuery, Box, Flex, Select, FormLabel } from "@chakra-ui/react";
 import { group2 } from "schema/group2";
 import { part } from "schema/part";
 
@@ -10,6 +10,10 @@ export default function InputPartId(props: {
   onChange: (partId: number) => void;
   defaultValue?: any;
 }) {
+  // 가로 세로 모드 구분
+  const [isLandscape] = useMediaQuery("(orientation: landscape)");
+
+  // 초기값 적용 여부
   const [isInit, setIsInit] = React.useState(false);
 
   // 데이터베이스
@@ -119,260 +123,309 @@ export default function InputPartId(props: {
         ))}
       </Select>
 
-      <Flex>
-        {group2Item?.spec1 && (
-          <Box flex="1">
-            <FormLabel>{group2Item.spec1}</FormLabel>
-            <Select
-              defaultValue={partItemSpec1}
-              placeholder="없음"
-              ref={spec1El}
-              onChange={(event) => {
-                if (spec2El.current) spec2El.current.value = "";
-                if (spec3El.current) spec3El.current.value = "";
-                if (spec4El.current) spec4El.current.value = "";
-                if (spec5El.current) spec5El.current.value = "";
+      {group2Item && (
+        <Flex
+          flexDir={isLandscape ? "row" : "column"}
+          marginTop={2}
+          paddingLeft={2}
+        >
+          {/* 해당 분류에 품목이 존재하지 않을 때 */}
+          {filteredPartList1.length === 0 && (
+            <Select placeholder="해당 분류의 품목이 존재하지 않습니다. 먼저 품목을 추가해주세요."></Select>
+          )}
 
-                if (event.target.value) {
-                  setPartItemSpec1(event.target.value);
-
-                  // 필터 2
-                  setFilteredPartList2(
-                    filteredPartList1.filter(
-                      (partItem) => partItem.spec1 === event.target.value
-                    )
-                  );
-
-                  if (!group2Item?.spec2) {
-                    setPartItemId(
-                      filteredPartList1.find(
-                        (partItem) => partItem.spec1 === event.target.value
-                      )?.part_id
-                    );
+          {/* 스펙은 없고 품명만 있는 것이 있음 */}
+          {filteredPartList1.length !== 0 && !group2Item?.spec1 && (
+            <Box flex="1">
+              <FormLabel>품명</FormLabel>
+              <Select
+                defaultValue={partItemSpec1}
+                placeholder="없음"
+                ref={spec1El}
+                onChange={(event) => {
+                  if (event.target.value !== "") {
+                    setPartItemId(Number(event.target.value));
                   }
-                }
-              }}
-            >
-              {Array.from(
-                new Set(
-                  filteredPartList1
-                    .filter(
-                      (item) =>
-                        item["spec1"] !== undefined && item["spec1"] !== ""
-                    )
-                    .map((item) => item["spec1"])
-                )
-              )
-                .sort()
-                .map((spec, index) => {
+                }}
+              >
+                {filteredPartList1.map((part, index) => {
                   return (
-                    <option value={spec} key={index}>
-                      {spec}
+                    <option value={part.part_id} key={index}>
+                      {part.part_name}
                     </option>
                   );
                 })}
-            </Select>
-          </Box>
-        )}
+              </Select>
+            </Box>
+          )}
 
-        {group2Item?.spec2 && (
-          <Box flex="1">
-            <FormLabel>{group2Item.spec2}</FormLabel>
-            <Select
-              defaultValue={partItemSpec2}
-              placeholder="없음"
-              ref={spec2El}
-              onChange={(event) => {
-                if (spec3El.current) spec3El.current.value = "";
-                if (spec4El.current) spec4El.current.value = "";
-                if (spec5El.current) spec5El.current.value = "";
+          {filteredPartList1.length !== 0 && (
+            <>
+              {group2Item?.spec1 && (
+                <Box flex="1">
+                  <FormLabel>{group2Item.spec1}</FormLabel>
+                  <Select
+                    defaultValue={partItemSpec1}
+                    placeholder="없음"
+                    ref={spec1El}
+                    onChange={(event) => {
+                      if (spec2El.current) spec2El.current.value = "";
+                      if (spec3El.current) spec3El.current.value = "";
+                      if (spec4El.current) spec4El.current.value = "";
+                      if (spec5El.current) spec5El.current.value = "";
 
-                if (event.target.value) {
-                  setPartItemSpec2(event.target.value);
+                      if (event.target.value) {
+                        setPartItemSpec1(event.target.value);
 
-                  // 필터 3
-                  setFilteredPartList3(
-                    filteredPartList2.filter(
-                      (partItem) => partItem.spec2 === event.target.value
+                        // 필터 2
+                        setFilteredPartList2(
+                          filteredPartList1.filter(
+                            (partItem) => partItem.spec1 === event.target.value
+                          )
+                        );
+
+                        if (!group2Item?.spec2) {
+                          setPartItemId(
+                            filteredPartList1.find(
+                              (partItem) =>
+                                partItem.spec1 === event.target.value
+                            )?.part_id
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {Array.from(
+                      new Set(
+                        filteredPartList1
+                          .filter(
+                            (item) =>
+                              item["spec1"] !== undefined &&
+                              item["spec1"] !== ""
+                          )
+                          .map((item) => item["spec1"])
+                      )
                     )
-                  );
+                      .sort()
+                      .map((spec, index) => {
+                        return (
+                          <option value={spec} key={index}>
+                            {spec}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </Box>
+              )}
 
-                  if (!group2Item?.spec3) {
-                    setPartItemId(
-                      filteredPartList2.find(
-                        (partItem) => partItem.spec2 === event.target.value
-                      )?.part_id
-                    );
-                  }
-                }
-              }}
-            >
-              {Array.from(
-                new Set(
-                  filteredPartList2
-                    .filter(
-                      (item) =>
-                        item["spec2"] !== undefined && item["spec2"] !== ""
+              {group2Item?.spec2 && (
+                <Box flex="1">
+                  <FormLabel>{group2Item.spec2}</FormLabel>
+                  <Select
+                    defaultValue={partItemSpec2}
+                    placeholder="없음"
+                    ref={spec2El}
+                    onChange={(event) => {
+                      if (spec3El.current) spec3El.current.value = "";
+                      if (spec4El.current) spec4El.current.value = "";
+                      if (spec5El.current) spec5El.current.value = "";
+
+                      if (event.target.value) {
+                        setPartItemSpec2(event.target.value);
+
+                        // 필터 3
+                        setFilteredPartList3(
+                          filteredPartList2.filter(
+                            (partItem) => partItem.spec2 === event.target.value
+                          )
+                        );
+
+                        if (!group2Item?.spec3) {
+                          setPartItemId(
+                            filteredPartList2.find(
+                              (partItem) =>
+                                partItem.spec2 === event.target.value
+                            )?.part_id
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {Array.from(
+                      new Set(
+                        filteredPartList2
+                          .filter(
+                            (item) =>
+                              item["spec2"] !== undefined &&
+                              item["spec2"] !== ""
+                          )
+                          .map((item) => item["spec2"])
+                      )
                     )
-                    .map((item) => item["spec2"])
-                )
-              )
-                .sort()
-                .map((spec, index) => {
-                  return (
-                    <option value={spec} key={index}>
-                      {spec}
-                    </option>
-                  );
-                })}
-            </Select>
-          </Box>
-        )}
+                      .sort()
+                      .map((spec, index) => {
+                        return (
+                          <option value={spec} key={index}>
+                            {spec}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </Box>
+              )}
 
-        {group2Item?.spec3 && (
-          <Box flex="1">
-            <FormLabel>{group2Item.spec3}</FormLabel>
-            <Select
-              defaultValue={partItemSpec3}
-              placeholder="없음"
-              ref={spec3El}
-              onChange={(event) => {
-                if (spec4El.current) spec4El.current.value = "";
-                if (spec5El.current) spec5El.current.value = "";
+              {group2Item?.spec3 && (
+                <Box flex="1">
+                  <FormLabel>{group2Item.spec3}</FormLabel>
+                  <Select
+                    defaultValue={partItemSpec3}
+                    placeholder="없음"
+                    ref={spec3El}
+                    onChange={(event) => {
+                      if (spec4El.current) spec4El.current.value = "";
+                      if (spec5El.current) spec5El.current.value = "";
 
-                if (event.target.value) {
-                  setPartItemSpec3(event.target.value);
+                      if (event.target.value) {
+                        setPartItemSpec3(event.target.value);
 
-                  // 필터 4
-                  setFilteredPartList4(
-                    filteredPartList3.filter(
-                      (partItem) => partItem.spec3 === event.target.value
+                        // 필터 4
+                        setFilteredPartList4(
+                          filteredPartList3.filter(
+                            (partItem) => partItem.spec3 === event.target.value
+                          )
+                        );
+
+                        if (!group2Item?.spec4) {
+                          setPartItemId(
+                            filteredPartList3.find(
+                              (partItem) =>
+                                partItem.spec3 === event.target.value
+                            )?.part_id
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {Array.from(
+                      new Set(
+                        filteredPartList3
+                          .filter(
+                            (item) =>
+                              item["spec3"] !== undefined &&
+                              item["spec3"] !== ""
+                          )
+                          .map((item) => item["spec3"])
+                      )
                     )
-                  );
+                      .sort()
+                      .map((spec, index) => {
+                        return (
+                          <option value={spec} key={index}>
+                            {spec}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </Box>
+              )}
 
-                  if (!group2Item?.spec4) {
-                    setPartItemId(
-                      filteredPartList3.find(
-                        (partItem) => partItem.spec3 === event.target.value
-                      )?.part_id
-                    );
-                  }
-                }
-              }}
-            >
-              {Array.from(
-                new Set(
-                  filteredPartList3
-                    .filter(
-                      (item) =>
-                        item["spec3"] !== undefined && item["spec3"] !== ""
+              {group2Item?.spec4 && (
+                <Box flex="1">
+                  <FormLabel>{group2Item.spec4}</FormLabel>
+                  <Select
+                    defaultValue={partItemSpec4}
+                    placeholder="없음"
+                    ref={spec4El}
+                    onChange={(event) => {
+                      if (spec5El.current) spec5El.current.value = "";
+
+                      if (event.target.value) {
+                        setPartItemSpec4(event.target.value);
+
+                        // 필터 5
+                        setFilteredPartList5(
+                          filteredPartList4.filter(
+                            (partItem) => partItem.spec4 === event.target.value
+                          )
+                        );
+
+                        if (!group2Item?.spec5) {
+                          setPartItemId(
+                            filteredPartList4.find(
+                              (partItem) =>
+                                partItem.spec4 === event.target.value
+                            )?.part_id
+                          );
+                        }
+                      }
+                    }}
+                  >
+                    {Array.from(
+                      new Set(
+                        filteredPartList4
+                          .filter(
+                            (item) =>
+                              item["spec4"] !== undefined &&
+                              item["spec4"] !== ""
+                          )
+                          .map((item) => item["spec4"])
+                      )
                     )
-                    .map((item) => item["spec3"])
-                )
-              )
-                .sort()
-                .map((spec, index) => {
-                  return (
-                    <option value={spec} key={index}>
-                      {spec}
-                    </option>
-                  );
-                })}
-            </Select>
-          </Box>
-        )}
+                      .sort()
+                      .map((spec, index) => {
+                        return (
+                          <option value={spec} key={index}>
+                            {spec}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </Box>
+              )}
 
-        {group2Item?.spec4 && (
-          <Box flex="1">
-            <FormLabel>{group2Item.spec4}</FormLabel>
-            <Select
-              defaultValue={partItemSpec4}
-              placeholder="없음"
-              ref={spec4El}
-              onChange={(event) => {
-                if (spec5El.current) spec5El.current.value = "";
-
-                if (event.target.value) {
-                  setPartItemSpec4(event.target.value);
-
-                  // 필터 5
-                  setFilteredPartList5(
-                    filteredPartList4.filter(
-                      (partItem) => partItem.spec4 === event.target.value
+              {group2Item?.spec5 && (
+                <Box flex="1">
+                  <FormLabel>{group2Item.spec5}</FormLabel>
+                  <Select
+                    defaultValue={partItemSpec5}
+                    placeholder="없음"
+                    ref={spec5El}
+                    onChange={(event) => {
+                      if (event.target.value) {
+                        setPartItemId(
+                          filteredPartList5.find(
+                            (partItem) => partItem.spec5 === event.target.value
+                          )?.part_id
+                        );
+                      }
+                    }}
+                  >
+                    {Array.from(
+                      new Set(
+                        filteredPartList5
+                          .filter(
+                            (item) =>
+                              item["spec5"] !== undefined &&
+                              item["spec5"] !== ""
+                          )
+                          .map((item) => item["spec5"])
+                      )
                     )
-                  );
-
-                  if (!group2Item?.spec5) {
-                    setPartItemId(
-                      filteredPartList4.find(
-                        (partItem) => partItem.spec4 === event.target.value
-                      )?.part_id
-                    );
-                  }
-                }
-              }}
-            >
-              {Array.from(
-                new Set(
-                  filteredPartList4
-                    .filter(
-                      (item) =>
-                        item["spec4"] !== undefined && item["spec4"] !== ""
-                    )
-                    .map((item) => item["spec4"])
-                )
-              )
-                .sort()
-                .map((spec, index) => {
-                  return (
-                    <option value={spec} key={index}>
-                      {spec}
-                    </option>
-                  );
-                })}
-            </Select>
-          </Box>
-        )}
-
-        {group2Item?.spec5 && (
-          <Box flex="1">
-            <FormLabel>{group2Item.spec5}</FormLabel>
-            <Select
-              defaultValue={partItemSpec5}
-              placeholder="없음"
-              ref={spec5El}
-              onChange={(event) => {
-                if (event.target.value) {
-                  setPartItemId(
-                    filteredPartList5.find(
-                      (partItem) => partItem.spec5 === event.target.value
-                    )?.part_id
-                  );
-                }
-              }}
-            >
-              {Array.from(
-                new Set(
-                  filteredPartList5
-                    .filter(
-                      (item) =>
-                        item["spec5"] !== undefined && item["spec5"] !== ""
-                    )
-                    .map((item) => item["spec5"])
-                )
-              )
-                .sort()
-                .map((spec, index) => {
-                  return (
-                    <option value={spec} key={index}>
-                      {spec}
-                    </option>
-                  );
-                })}
-            </Select>
-          </Box>
-        )}
-      </Flex>
+                      .sort()
+                      .map((spec, index) => {
+                        return (
+                          <option value={spec} key={index}>
+                            {spec}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </Box>
+              )}
+            </>
+          )}
+        </Flex>
+      )}
     </Box>
   );
 }
