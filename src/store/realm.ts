@@ -273,11 +273,9 @@ export const runFunction = createAsyncThunk(
         }
       );
 
-      console.log(response);
       return { response };
     } catch (error) {
       console.log(error);
-
       return rejectWithValue(error);
     }
   }
