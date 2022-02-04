@@ -53,7 +53,7 @@ function combine(translation: {
 }
 
 i18n.use(initReactI18next).init({
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   resources,
   lng: "ko",
   interpolation: {
