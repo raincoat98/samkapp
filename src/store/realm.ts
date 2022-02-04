@@ -253,6 +253,36 @@ export const deleteData = createAsyncThunk(
   }
 );
 
+// SQL 함수 실행
+export const runFunction = createAsyncThunk(
+  `${name}/runFunction`,
+  async (
+    props: {
+      function_name: string;
+      params: Record<string, any>;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      let response: AxiosResponse<any, any>;
+
+      response = await axios.get(
+        `${SERVER_URL}/functions/${props.function_name}`,
+        {
+          params: props.params,
+        }
+      );
+
+      console.log(response);
+      return { response };
+    } catch (error) {
+      console.log(error);
+
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name,
   initialState,
@@ -333,6 +363,10 @@ const userSlice = createSlice({
       )
       // 컬렉션 데이터 삭제
       .addCase(deleteData.fulfilled.type, (state) => {
+        state.loading = false;
+      })
+      // SQL 함수 실행
+      .addCase(runFunction.fulfilled.type, (state) => {
         state.loading = false;
       })
 
