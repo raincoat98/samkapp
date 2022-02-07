@@ -1,11 +1,12 @@
 import React, { FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { login } from "store/realm";
+import { login, register } from "store/realm";
 import * as icons from "utils/icons";
 import { contentBackground } from "theme";
 import SwitchColorMode from "./SwitchColorMode";
 import {
+  Divider,
   Box,
   Image,
   Center,
@@ -28,9 +29,14 @@ export default function Login() {
   const appName = useSelector((state: RootState) => state.system.appName);
   const logo = useSelector((state: RootState) => state.system.logo);
 
+  const [isRegister, setIsRegister] = React.useState(false);
+
   const [userId, setUserId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [passwordShow, setPasswordShow] = React.useState(false);
+
+  // 회원가입 시에만
+  const [name, setName] = React.useState("");
 
   const contentBackgroundValue = useColorModeValue(
     contentBackground.light,
@@ -43,14 +49,14 @@ export default function Login() {
   }
 
   return (
-    <Center w={"100%"} h={"100%"}>
+    <Center width="100%" height="100%">
       <Box
         p={10}
         borderWidth={1}
         bgColor={contentBackgroundValue}
         rounded={"lg"}
       >
-        <Box display={"flex"} w={"100%"} justifyContent={"center"}>
+        <Box display="flex" width="100%" justifyContent="center">
           <Image
             src={logo}
             w={250}
@@ -61,37 +67,55 @@ export default function Login() {
         <chakra.form
           onSubmit={(event) => {
             event.preventDefault();
-            dispatch(login({ id: userId, password }));
+            if (isRegister) dispatch(register({ id: userId, password, name }));
+            else dispatch(login({ id: userId, password }));
           }}
           action=""
         >
           <FormControl isRequired={true}>
             <Stack spacing={5}>
-              <Heading size={"md"}>{appName}에 오신 것을 환영합니다.</Heading>
+              <Heading size={"md"} textAlign="center">
+                {appName}에 오신 것을 환영합니다.
+              </Heading>
+
+              {isRegister && (
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<Icon as={icons.user} />}
+                  />
+                  <Input
+                    id="name"
+                    placeholder="성함"
+                    autoComplete="name"
+                    onChange={(event) => setName(event.target.value)}
+                  />
+                </InputGroup>
+              )}
 
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents={"none"}
+                  pointerEvents="none"
                   children={<Icon as={icons.id} />}
                 />
                 <Input
-                  id={"user-id"}
-                  placeholder={"아이디"}
-                  autoComplete={"username"}
+                  id="user-id"
+                  placeholder="아이디"
+                  autoComplete="username"
                   onChange={(event) => setUserId(event.target.value)}
                 />
               </InputGroup>
 
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents={"none"}
+                  pointerEvents="none"
                   children={<Icon as={icons.password} />}
                 />
                 <Input
-                  id={"password"}
                   type={passwordShow ? "text" : "password"}
-                  placeholder={"비밀번호"}
-                  autoComplete={"current-password"}
+                  id="password"
+                  placeholder="비밀번호"
+                  autoComplete="current-password"
                   pr={"4.5rem"}
                   onChange={(event) => setPassword(event.target.value)}
                 />
@@ -106,8 +130,14 @@ export default function Login() {
                 </InputRightElement>
               </InputGroup>
 
-              <Button type={"submit"} colorScheme={"blue"}>
-                로그인
+              <Button type="submit" colorScheme={"blue"}>
+                {isRegister ? "사용자 등록" : "로그인"}
+              </Button>
+
+              <Divider />
+
+              <Button size={"sm"} onClick={() => setIsRegister(!isRegister)}>
+                {isRegister ? "로그인으로" : "사용자 등록으로"}
               </Button>
             </Stack>
           </FormControl>

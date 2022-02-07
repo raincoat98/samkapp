@@ -118,6 +118,7 @@ export const login = createAsyncThunk(
 
       return response.data.result;
     } catch (error) {
+      console.error(error);
       return rejectWithValue(new Error("Invalid email and password"));
     }
   }
@@ -133,7 +134,42 @@ export const logout = createAsyncThunk(
       });
       return;
     } catch (error) {
+      console.error(error);
       return rejectWithValue(error);
+    }
+  }
+);
+
+// 유저 회원가입
+export const register = createAsyncThunk(
+  `${name}/register`,
+  async (
+    props: { id: string; password: string; name: string },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      let response: AxiosResponse<any, any>;
+      response = await axios.get(`${SERVER_URL}/user/register`, {
+        params: {
+          user_id: props.id,
+          password: props.password,
+          name: props.name,
+        },
+      });
+
+      if (!response.data) throw response;
+
+      await dispatch(
+        login({
+          id: props.id,
+          password: props.password,
+        })
+      );
+
+      return response.data.result;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue(new Error("유저 등록이 실패했습니다"));
     }
   }
 );
@@ -300,8 +336,6 @@ const userSlice = createSlice({
       )
       // 로그인
       .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
-        console.log(action.payload);
-
         state.loading = false;
         state.loggedIn = true;
         state.user.name = action.payload.name;
