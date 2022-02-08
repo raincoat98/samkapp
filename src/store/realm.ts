@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
+import moment from "moment";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
 import { bill_of_materials } from "schema/bill_of_materials";
@@ -211,6 +212,38 @@ export const insertData = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
+      // 출고
+      if (props.collectionName === "transfer_out") {
+        const document = props.document as transfer_out;
+        const qty = (await dispatch(
+          runFunction({
+            function_name: "get_qty",
+            params: {
+              inv_month: moment(new Date()).format("YYYYMM").toString(),
+              part_id: document.part_id,
+            },
+          })
+        )) as any;
+        console.log(document.quantity, qty.payload.data.result);
+
+        if (
+          qty.payload.data.result === undefined ||
+          qty.payload.data.result === null
+        ) {
+          throw new Error(
+            "해당 품목의 재고 데이터가 존재하지 않습니다. 재고 데이터를 추가해주세요."
+          );
+        } else {
+          if (document.quantity !== undefined) {
+            if (document.quantity > qty.payload.data.result) {
+              throw new RangeError(
+                "현재 재고량보다 초과되게 출고할 수 없습니다."
+              );
+            }
+          }
+        }
+      }
+
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
