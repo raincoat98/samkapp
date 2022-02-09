@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import { chakra, useColorModeValue } from "@chakra-ui/react";
+import { Flex, useColorModeValue } from "@chakra-ui/react";
 import { menuBackground } from "theme";
 import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
@@ -16,10 +16,11 @@ export default function App() {
   const error = useSelector((state: RootState) => state.realm.error);
 
   return (
-    <chakra.div
+    <Flex
       fontFamily="맑은 고딕, 나눔고딕"
       width="100%"
       height="100vh"
+      flexDir="column"
       bgColor={bgColor}
     >
       <SpinnerComponent />
@@ -27,6 +28,6 @@ export default function App() {
       {error && <ErrorAlert error={error} />}
 
       {!isLoggedIn ? <Login /> : <AppRouter />}
-    </chakra.div>
+    </Flex>
   );
 }

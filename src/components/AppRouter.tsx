@@ -22,7 +22,7 @@ export default function AppRouter() {
 
   return (
     <Router>
-      <Flex h={"100%"} w={"100%"}>
+      <Flex height="100%" width="100%">
         <Sidebar
           isOpen={isSidebarOpen}
           onClose={() => dispatch(toggleSidebar())}

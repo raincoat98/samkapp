@@ -53,7 +53,7 @@ export type RealmState = {
   };
   loading: boolean;
   loggedIn: boolean;
-  error: any;
+  error?: Error;
   // 데이터베이스 컬렉션들
   database: database;
   bookmarkedData: {
@@ -345,6 +345,9 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
+    removeError(state) {
+      state.error = undefined;
+    },
     setBookmarkData(
       state,
       action: PayloadAction<{
@@ -363,7 +366,7 @@ const userSlice = createSlice({
         state.user.name = action.payload.name;
         state.user.privilege = action.payload.privilege;
       })
-      .addCase(login.rejected.type, (state, action: PayloadAction<string>) => {
+      .addCase(login.rejected.type, (state, action: PayloadAction<Error>) => {
         state.loading = false;
         state.loggedIn = false;
         state.error = action.payload;
@@ -428,7 +431,7 @@ const userSlice = createSlice({
         (action) => action.type.endsWith("/pending"),
         (state) => {
           state.loading = true;
-          state.error = null;
+          state.error = undefined;
         }
       )
       // 작업 종료시 실행
@@ -455,5 +458,5 @@ function checkValidity(data: Record<string, any>) {
 }
 
 const { reducer, actions } = userSlice;
-export const { setBookmarkData } = actions;
+export const { removeError, setBookmarkData } = actions;
 export default reducer;
