@@ -7,7 +7,7 @@ export type transfer_out = {
   transfer_type_id: string;
   priorities: number;
   plan_date?: string;
-  customer_id?: number;
+  customer_id: number;
   part_id: number;
   quantity?: number;
   unit_price?: number;
@@ -68,6 +68,7 @@ export const transfer_outSchema: schemaType = {
     },
     customer_id: {
       type: "number",
+      isNotNull: true,
       foreign: {
         table: "customer",
         key: "customer_id",
