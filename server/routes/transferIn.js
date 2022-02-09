@@ -17,11 +17,12 @@ router.get("/all", (req, res) => {
 
 // 입고 등록
 router.get("/create", (req, res) => {
-  const sql = `CALL usp_transfer_in_INS (${new Array(4).fill("?").toString()})`;
+  const sql = `CALL usp_transfer_in_INS (${new Array(5).fill("?").toString()})`;
   const params = [
     req.query["transfer_type_id"],
     req.query["part_id"],
     req.query["quantity"],
+    req.query["unit_price"],
     req.query["warehouse_id"],
   ];
 
