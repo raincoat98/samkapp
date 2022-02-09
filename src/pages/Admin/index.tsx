@@ -1,70 +1,46 @@
-import { contentBackground, menuBackground } from "theme";
-import {
-  Box,
-  useColorModeValue,
-  Stat,
-  StatArrow,
-  StatGroup,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-} from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
+import { VStack, Button, Heading } from "@chakra-ui/react";
 import PageContainer from "components/PageContainer";
 
-export default function Login() {
-  const menuBackgroundValue = useColorModeValue(
-    menuBackground.light,
-    menuBackground.dark
-  );
-
-  const contentBackgroundValue = useColorModeValue(
-    contentBackground.light,
-    contentBackground.dark
-  );
+export default function Admin() {
+  const history = useHistory();
 
   return (
     <PageContainer title={"관리자 페이지"}>
-      <Box p={3}>
-        <StatGroup p={3}>
-          <Stat>
-            <StatLabel>생산</StatLabel>
-            <StatNumber>345,670</StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              23.36%
-            </StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatLabel>생산</StatLabel>
-            <StatNumber>345,670</StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              23.36%
-            </StatHelpText>
-          </Stat>
-        </StatGroup>
-
-        <StatGroup p={3}>
-          <Stat>
-            <StatLabel>생산</StatLabel>
-            <StatNumber>345,670</StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              23.36%
-            </StatHelpText>
-          </Stat>
-
-          <Stat>
-            <StatLabel>생산</StatLabel>
-            <StatNumber>345,670</StatNumber>
-            <StatHelpText>
-              <StatArrow type="increase" />
-              23.36%
-            </StatHelpText>
-          </Stat>
-        </StatGroup>
-      </Box>
+      <VStack>
+        <Heading as={"h3"} size={"lg"} textAlign="center">
+          {moment(new Date()).format("YYYY년 MM월 DD일")}
+        </Heading>
+        <Button
+          onClick={() => {
+            history.push("/admin_page_production");
+          }}
+        >
+          생산현황
+        </Button>
+        <Button
+          onClick={() => {
+            history.push("/admin_page_transfer_in");
+          }}
+        >
+          입고현황
+        </Button>
+        <Button
+          onClick={() => {
+            history.push("/admin_page_transfer_out");
+          }}
+        >
+          출고현황
+        </Button>
+        <Button
+          onClick={() => {
+            history.push("/admin_page_important_product");
+          }}
+        >
+          주요품목
+        </Button>
+      </VStack>
     </PageContainer>
   );
 }

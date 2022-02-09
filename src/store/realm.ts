@@ -28,35 +28,41 @@ export type schemaType = {
   primaryKey: string;
 };
 
+type database = {
+  [COLLECTION_NAME.bill_of_materials]: bill_of_materials[];
+  [COLLECTION_NAME.customer]: customer[];
+  [COLLECTION_NAME.group2]: group2[];
+  [COLLECTION_NAME.inventory]: inventory[];
+  [COLLECTION_NAME.list_price]: list_price[];
+  [COLLECTION_NAME.part_type]: part_type[];
+  [COLLECTION_NAME.part]: part[];
+  [COLLECTION_NAME.product_order]: product_order[];
+  [COLLECTION_NAME.transfer_in]: transfer_in[];
+  [COLLECTION_NAME.transfer_out]: transfer_out[];
+  [COLLECTION_NAME.transfer_type]: transfer_type[];
+  [COLLECTION_NAME.unit]: unit[];
+  [COLLECTION_NAME.user]: user[];
+  [COLLECTION_NAME.warehouse]: warehouse[];
+  [COLLECTION_NAME.work_order]: work_order[];
+};
+
 export type RealmState = {
   user: {
     name: string;
+    privilege: number;
   };
   loading: boolean;
   loggedIn: boolean;
   error: any;
   // 데이터베이스 컬렉션들
-  database: {
-    [COLLECTION_NAME.bill_of_materials]: bill_of_materials[];
-    [COLLECTION_NAME.customer]: customer[];
-    [COLLECTION_NAME.group2]: group2[];
-    [COLLECTION_NAME.inventory]: inventory[];
-    [COLLECTION_NAME.list_price]: list_price[];
-    [COLLECTION_NAME.part_type]: part_type[];
+  database: database;
+  bookmarkedData: {
     [COLLECTION_NAME.part]: part[];
-    [COLLECTION_NAME.product_order]: product_order[];
-    [COLLECTION_NAME.transfer_in]: transfer_in[];
-    [COLLECTION_NAME.transfer_out]: transfer_out[];
-    [COLLECTION_NAME.transfer_type]: transfer_type[];
-    [COLLECTION_NAME.unit]: unit[];
-    [COLLECTION_NAME.user]: user[];
-    [COLLECTION_NAME.warehouse]: warehouse[];
-    [COLLECTION_NAME.work_order]: work_order[];
   };
 };
 
 const initialState: RealmState = {
-  user: { name: "" },
+  user: { name: "", privilege: 0 },
   loading: false,
   loggedIn: false,
   error: undefined,
@@ -76,6 +82,9 @@ const initialState: RealmState = {
     [COLLECTION_NAME.user]: [],
     [COLLECTION_NAME.warehouse]: [],
     [COLLECTION_NAME.work_order]: [],
+  },
+  bookmarkedData: {
+    [COLLECTION_NAME.part]: [],
   },
 };
 
@@ -353,7 +362,16 @@ export const runFunction = createAsyncThunk(
 const userSlice = createSlice({
   name,
   initialState,
-  reducers: {},
+  reducers: {
+    setBookmarkData(
+      state,
+      action: PayloadAction<{
+        partItem: part;
+      }>
+    ) {
+      state.bookmarkedData.part.push(action.payload.partItem);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -372,6 +390,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.loggedIn = true;
         state.user.name = action.payload.name;
+        state.user.privilege = action.payload.privilege;
       })
       .addCase(login.rejected.type, (state, action: PayloadAction<string>) => {
         state.loading = false;
@@ -466,7 +485,6 @@ function checkValidity(data: Record<string, any>) {
   return validatedData;
 }
 
-const { reducer } = userSlice;
-// const { reducer, actions } = userSlice;
-// export const {} = actions;
+const { reducer, actions } = userSlice;
+export const { setBookmarkData } = actions;
 export default reducer;

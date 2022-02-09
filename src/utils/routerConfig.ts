@@ -1,3 +1,10 @@
+// 관리자 페이지
+import AdminPage from "pages/Admin";
+import ProductionPage from "pages/Admin/Production";
+import TransferInPage from "pages/Admin/TransferIn";
+import TransferOutPage from "pages/Admin/TransferOut";
+import ImportantProductPage from "pages/Admin/ImportantProduct";
+
 // 관리 페이지
 import CustomerManagement from "pages/Management/CustomerManagement";
 import InvManagement from "pages/Management/InvManagement";
@@ -21,6 +28,33 @@ export type route = {
 };
 
 export const routes: Record<string, route> = {
+  // 관리자 페이지
+  admin_page: {
+    name: "관리자 페이지",
+    path: "/admin_page",
+    component: AdminPage,
+  },
+  production_page: {
+    name: "생산현황 페이지",
+    path: "/admin_page_production",
+    component: ProductionPage,
+  },
+  transfer_in_page: {
+    name: "입고현황 페이지",
+    path: "/admin_page_transfer_in",
+    component: TransferInPage,
+  },
+  transfer_out_page: {
+    name: "출고현황 페이지",
+    path: "/admin_page_transfer_out",
+    component: TransferOutPage,
+  },
+  important_product_page: {
+    name: "주요품목 페이지",
+    path: "/admin_page_important_product",
+    component: ImportantProductPage,
+  },
+
   // 거래처 관리
   customer_manage: {
     name: "거래처 관리",
@@ -131,6 +165,12 @@ export const sidebarConfig: sidebarRouteType[] = [
       { name: "창고 관리", route: routes.warehouse_manage },
     ],
   },
+];
+export const adminSidebarConfig: sidebarRouteType[] = [
+  { name: "생산현황", route: routes.production_page },
+  { name: "입고현황", route: routes.transfer_in_page },
+  { name: "출고현황", route: routes.transfer_out_page },
+  { name: "주요품목", route: routes.important_product_page },
 ];
 
 export default routerConfig;

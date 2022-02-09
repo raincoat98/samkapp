@@ -2,7 +2,7 @@ import { schemaType } from "./index";
 
 export type user = {
   user_id: number;
-  privilege: string;
+  privilege: number;
   name: string;
 };
 
@@ -17,7 +17,7 @@ export const userSchema: schemaType = {
       isNotVisible: true,
     },
     privilege: {
-      type: "string",
+      type: "number",
       isNotNull: true,
       isAutoSet: true,
       isReadOnly: true,

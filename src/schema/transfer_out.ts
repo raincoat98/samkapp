@@ -13,7 +13,7 @@ export type transfer_out = {
   unit_price?: number;
   release_amont?: number;
   warehouse_id?: number;
-  work_order_id?: string;
+  work_order_id?: number;
 };
 
 export const transfer_outSchema: schemaType = {

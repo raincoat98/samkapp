@@ -5,6 +5,7 @@ export default function InputDate(props: {
   onChange: (value: Date | null) => void;
   defaultValue?: Date;
   isMonth?: boolean;
+  isAvailableBeforeToday?: boolean;
 }) {
   if (props.isMonth) {
     return (
@@ -24,7 +25,11 @@ export default function InputDate(props: {
         defaultValue={
           props.defaultValue && moment(props.defaultValue).format("YYYY-MM-DD")
         }
-        min={moment().format("YYYY-MM-DD")}
+        min={
+          props.isAvailableBeforeToday
+            ? undefined
+            : moment().format("YYYY-MM-DD")
+        }
       />
     );
   }

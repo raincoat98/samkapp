@@ -6,7 +6,6 @@ import { group2 } from "schema/group2";
 import { part } from "schema/part";
 
 export default function InputPartId(props: {
-  displayKey?: string;
   onChange: (partId: number) => void;
   defaultValue?: any;
 }) {
@@ -92,9 +91,11 @@ export default function InputPartId(props: {
   React.useEffect(() => {
     // 최초로 발생하는 이벤트는 초기화 작업중에 발생하는 이벤트이기 때문에 넘김
     if (!isInit) setIsInit(true);
-    else if (partItemId !== undefined && partItemId !== props.defaultValue)
+    else if (partItemId !== undefined && partItemId !== props.defaultValue) {
       props.onChange(partItemId);
-  }, [isInit, partItemId, props]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInit, partItemId, props.defaultValue]);
 
   return (
     <Box>

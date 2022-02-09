@@ -1,5 +1,11 @@
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 import { useHistory } from "react-router-dom";
-import { sidebarRouteType, sidebarConfig } from "utils/routerConfig";
+import {
+  sidebarRouteType,
+  sidebarConfig,
+  adminSidebarConfig,
+} from "utils/routerConfig";
 import { circle } from "utils/icons";
 import {
   useMediaQuery,
@@ -17,8 +23,11 @@ import {
 } from "@chakra-ui/react";
 
 export default function SidebarMenu(props: { onClose: () => void }) {
+  const user = useSelector((state: RootState) => state.realm.user);
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
   const history = useHistory();
+  const sidebarList =
+    user.privilege === 10 ? adminSidebarConfig : sidebarConfig;
 
   // 사이드바 버튼
   function SidebarButton(sidebarRoute: sidebarRouteType) {
@@ -45,7 +54,7 @@ export default function SidebarMenu(props: { onClose: () => void }) {
   return (
     <Center flex="1" overflow="auto">
       <Stack as={ButtonGroup} variant="ghost" spacing="0" width="100%">
-        {sidebarConfig.map((sidebarRoute, index) => {
+        {sidebarList.map((sidebarRoute, index) => {
           if (!sidebarRoute.children) {
             return <SidebarButton {...sidebarRoute} key={index} />;
           } else {

@@ -35,7 +35,6 @@ export default function FormModalInput(props: {
     ) {
       element = (
         <InputPartId
-          displayKey={property.foreign.display ?? property.foreign.key}
           defaultValue={props.defaultValue ?? property.default}
           onChange={(value) => props.onChange(value)}
         />

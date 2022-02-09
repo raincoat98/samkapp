@@ -6,6 +6,7 @@ export type product_order = {
   order_quantity: number;
   stocked_quantity: number;
   scrapped_quantity: number;
+  start_dttm: string;
   due_date: string;
   work_order_id: number;
   remark?: string;
@@ -43,6 +44,12 @@ export const product_orderSchema: schemaType = {
       type: "number",
       isNotNull: true,
       isAutoSet: true,
+    },
+    start_dttm: {
+      type: "string",
+      as: "date",
+      isNotNull: true,
+      isReadOnly: true,
     },
     due_date: {
       type: "string",
