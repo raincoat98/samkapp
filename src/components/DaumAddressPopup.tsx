@@ -22,8 +22,6 @@ export default function PopupPostCode(
   const { onComplete, isOpen, onClose, ...rest } = props;
 
   function handleComplete(data: Record<string, string>) {
-    console.log(data);
-
     let fullAddress = data.address;
     let extraAddress = "";
 

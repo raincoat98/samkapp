@@ -88,19 +88,6 @@ const initialState: RealmState = {
   },
 };
 
-// 데이터베이스 자동 로그인
-export const autoLogin = createAsyncThunk(
-  `${name}/autoLogin`,
-  async (props, { dispatch }) => {
-    // 로그인 때에 모든 테이블  데이터 가져오기
-    for (const key in COLLECTION_NAME) {
-      const collectionName = key as COLLECTION_NAME_TYPE;
-      await dispatch(getData({ collectionName }));
-    }
-    return "테스트 유저";
-  }
-);
-
 // 데이터베이스 로그인
 export const login = createAsyncThunk(
   `${name}/login`,
@@ -233,7 +220,6 @@ export const insertData = createAsyncThunk(
             },
           })
         )) as any;
-        console.log(document.quantity, qty.payload.data.result);
 
         if (
           qty.payload.data.result === undefined ||
@@ -321,11 +307,8 @@ export const deleteData = createAsyncThunk(
       });
 
       await dispatch(getData({ collectionName: props.collectionName }));
-      console.log(response);
       return { response };
     } catch (error) {
-      console.log(error);
-
       return rejectWithValue(error);
     }
   }
@@ -353,7 +336,6 @@ export const runFunction = createAsyncThunk(
 
       return response;
     } catch (error) {
-      console.log(error);
       return rejectWithValue(error);
     }
   }
@@ -374,17 +356,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(
-        // 자동 로그인
-        autoLogin.fulfilled.type,
-        (state, action: PayloadAction<string>) => {
-          state.loading = false;
-          if (action.payload) {
-            state.loggedIn = true;
-            state.user.name = action.payload;
-          }
-        }
-      )
       // 로그인
       .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
         state.loading = false;
@@ -430,7 +401,6 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{ response: AxiosResponse<any, any> }>
         ) => {
-          console.log(action.payload.response);
           state.loading = false;
         }
       )
@@ -441,7 +411,6 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{ response: AxiosResponse<any, any> }>
         ) => {
-          console.log(action.payload.response);
           state.loading = false;
         }
       )

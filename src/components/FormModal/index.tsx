@@ -150,8 +150,6 @@ export default function FormModal(props: FormModalProps) {
       }}
       // 다이얼로그가 닫힐 때
       onClose={() => {
-        console.log(isAutoFill, editedDocument);
-
         if (!isAutoFill && Object.keys(editedDocument).length !== 0) {
           setIsFormModalAlertOpen(true);
         } else {
