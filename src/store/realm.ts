@@ -351,7 +351,7 @@ export const runFunction = createAsyncThunk(
         }
       );
 
-      return { response };
+      return response;
     } catch (error) {
       console.log(error);
       return rejectWithValue(error);
