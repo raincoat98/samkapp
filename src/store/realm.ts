@@ -48,6 +48,7 @@ type database = {
 
 export type RealmState = {
   user: {
+    user_id: string;
     name: string;
     privilege: number;
   };
@@ -62,7 +63,7 @@ export type RealmState = {
 };
 
 const initialState: RealmState = {
-  user: { name: "", privilege: 0 },
+  user: { user_id: "", name: "", privilege: 0 },
   loading: false,
   loggedIn: false,
   error: undefined,
@@ -363,6 +364,8 @@ const userSlice = createSlice({
       .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
         state.loading = false;
         state.loggedIn = true;
+
+        state.user.user_id = action.payload.user_id;
         state.user.name = action.payload.name;
         state.user.privilege = action.payload.privilege;
       })
@@ -374,9 +377,14 @@ const userSlice = createSlice({
       // 로그아웃
       .addCase(logout.fulfilled.type, (state) => {
         state.error = undefined;
+
         state.loading = false;
         state.loggedIn = false;
+
+        // 유저 정보 제거
+        state.user.user_id = "";
         state.user.name = "";
+        state.user.privilege = 0;
 
         // 데이터베이스 삭제
         for (const key in state.database) {

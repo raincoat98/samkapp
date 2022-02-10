@@ -1,7 +1,7 @@
 import { schemaType } from "./index";
 
 export type user = {
-  user_id: number;
+  user_id: string;
   privilege: number;
   name: string;
 };
@@ -10,7 +10,7 @@ export const userSchema: schemaType = {
   name: "user",
   properties: {
     user_id: {
-      type: "number",
+      type: "string",
       isPrimary: true,
       isNotNull: true,
       isAutoSet: true,

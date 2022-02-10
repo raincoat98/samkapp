@@ -2,10 +2,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { logout } from "store/realm";
 import { user } from "utils/icons";
-import { Icon, Heading, Button, Wrap, WrapItem } from "@chakra-ui/react";
+import {
+  Icon,
+  Heading,
+  Text,
+  Button,
+  Wrap,
+  WrapItem,
+  VStack,
+  Flex,
+} from "@chakra-ui/react";
 
 export default function Profile() {
-  const userName = useSelector((state: RootState) => state.realm.user.name);
+  const userInfo = useSelector((state: RootState) => state.realm.user);
   const dispatch = useDispatch();
 
   return (
@@ -23,9 +32,12 @@ export default function Profile() {
       </WrapItem>
 
       <WrapItem>
-        <Heading as="h4" size="md">
-          {userName}
-        </Heading>
+        <Flex flexDir={"column"}>
+          <Heading as={"h4"} size={"md"}>
+            {userInfo.name}
+          </Heading>
+          <Text>@{userInfo.user_id}</Text>
+        </Flex>
       </WrapItem>
 
       <WrapItem>
