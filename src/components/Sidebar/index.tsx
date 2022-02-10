@@ -15,6 +15,7 @@ import {
   CloseButton,
   IconButton,
   Icon,
+  Tooltip,
 } from "@chakra-ui/react";
 import SidebarMenu from "./SidebarMenu";
 import { menuBackground, borderColor } from "theme";
@@ -61,17 +62,20 @@ export default function Sidebar(props: {
       <Divider />
 
       <Flex marginTop={3} align="center">
-        <IconButton
-          icon={<Icon as={setting} />}
-          onClick={() => {
-            history.push("/setting");
-            if (!isLandscape) props.onClose();
-          }}
-          borderWidth={1}
-          borderColor={borColor}
-          width="fit-content"
-          aria-label="설정"
-        />
+        <Tooltip label="설정">
+          <IconButton
+            icon={<Icon as={setting} />}
+            onClick={() => {
+              history.push("/setting");
+              if (!isLandscape) props.onClose();
+            }}
+            borderWidth={1}
+            borderColor={borColor}
+            width="fit-content"
+            aria-label="설정"
+          />
+        </Tooltip>
+
         <Box flex="1" textAlign="center">
           <Box>
             <Moment format="YYYY년 MM월 DD일" interval={60} />

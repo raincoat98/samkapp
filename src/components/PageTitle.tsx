@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
 import { toggleSidebar } from "store/system";
 import { menu } from "utils/icons";
 import { menuBackground, borderColor } from "theme";
@@ -11,6 +12,7 @@ import {
   Spacer,
   IconButton,
   Icon,
+  Tooltip,
 } from "@chakra-ui/react";
 
 export default function PageTitle(props: {
@@ -19,6 +21,9 @@ export default function PageTitle(props: {
 }) {
   const { children, title } = props;
 
+  const isSidebarOpen = useSelector(
+    (state: RootState) => state.system.isSidebarOpen
+  );
   const dispatch = useDispatch();
 
   const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
@@ -36,13 +41,15 @@ export default function PageTitle(props: {
       userSelect="none"
     >
       <Flex align="center">
-        <IconButton
-          icon={<Icon as={menu} />}
-          onClick={() => dispatch(toggleSidebar())}
-          mr={3}
-          variant="ghost"
-          aria-label="사이드바 전환"
-        />
+        <Tooltip label={isSidebarOpen ? "사이드바 닫기" : "사이드바 열기"}>
+          <IconButton
+            icon={<Icon as={menu} />}
+            onClick={() => dispatch(toggleSidebar())}
+            mr={3}
+            variant="ghost"
+            aria-label="사이드바 전환"
+          />
+        </Tooltip>
         <Heading as="h3" size="lg">
           {title}
         </Heading>

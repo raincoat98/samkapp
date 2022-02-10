@@ -13,7 +13,6 @@ import {
   StackDivider,
   Button,
   Switch,
-  ButtonGroup,
 } from "@chakra-ui/react";
 
 export default function Setting() {
@@ -21,15 +20,7 @@ export default function Setting() {
   const licenseModalDisclosure = useDisclosure();
 
   return (
-    <PageContainer
-      title="설정"
-      headerChildren={
-        <ButtonGroup spacing="3">
-          <Button colorScheme="red">초기화</Button>
-          <Button colorScheme="blue">저장</Button>
-        </ButtonGroup>
-      }
-    >
+    <PageContainer title="설정">
       <Stack divider={<StackDivider />} spacing={3} p={3}>
         <Box>
           <Heading as="h4" size="md">
