@@ -122,22 +122,6 @@ export const login = createAsyncThunk(
   }
 );
 
-// 데이터베이스 로그아웃
-export const logout = createAsyncThunk(
-  `${name}/logout`,
-  async (undefinded, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch({
-        type: `${name}/removeUser`,
-      });
-      return;
-    } catch (error) {
-      console.error(error);
-      return rejectWithValue(error);
-    }
-  }
-);
-
 // 유저 회원가입
 export const register = createAsyncThunk(
   `${name}/register`,
@@ -346,6 +330,22 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
+    // 로그아웃
+    logout(state) {
+      state.error = undefined;
+      state.loading = false;
+      state.loggedIn = false;
+
+      // 유저 정보 제거
+      state.user.user_id = "";
+      state.user.name = "";
+      state.user.privilege = 0;
+
+      // 데이터베이스 삭제
+      for (const key in state.database) {
+        state.database[key as COLLECTION_NAME_TYPE] = [];
+      }
+    },
     // 페이지 새로고침
     onPageRefresh(state) {
       state.error = undefined;
@@ -388,23 +388,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.loggedIn = false;
         state.error = action.payload;
-      })
-      // 로그아웃
-      .addCase(logout.fulfilled.type, (state) => {
-        state.error = undefined;
-
-        state.loading = false;
-        state.loggedIn = false;
-
-        // 유저 정보 제거
-        state.user.user_id = "";
-        state.user.name = "";
-        state.user.privilege = 0;
-
-        // 데이터베이스 삭제
-        for (const key in state.database) {
-          state.database[key as COLLECTION_NAME_TYPE] = [];
-        }
       })
       // 컬렉션 데이터 가져오기
       .addCase(
@@ -482,6 +465,7 @@ function checkValidity(data: Record<string, any>) {
 
 const { reducer, actions } = userSlice;
 export const {
+  logout,
   onPageRefresh,
   removeError,
   setBookmarkData,
