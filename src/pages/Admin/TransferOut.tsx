@@ -73,12 +73,7 @@ export default function AdminTransferOutView() {
               printPopupState.onOpen();
             }}
           >
-            <VStack
-              minWidth={450}
-              maxWidth={500}
-              spacing={2}
-              textAlign="center"
-            >
+            <VStack width="100%" spacing={2} textAlign="center">
               <InputFormControl name={"시작일"}>
                 <InputDate
                   onChange={(value) => {

@@ -35,7 +35,7 @@ export default function Popup(props: {
         <ModalContent
           width="100%"
           height="100%"
-          overflow="hidden"
+          overflow="auto"
           borderWidth={1}
         >
           {/* 헤더 */}
