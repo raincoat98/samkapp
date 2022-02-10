@@ -7,6 +7,7 @@ const product_order = {
     order_quantity: "생산수량",
     stocked_quantity: "재고입력수량",
     scrapped_quantity: "생산불량수량",
+    start_dttm: "시작일자",
     due_date: "마감일자",
     remark: "비고",
   },
