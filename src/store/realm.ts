@@ -346,6 +346,11 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
+    // 페이지 새로고침
+    onPageRefresh(state) {
+      state.error = undefined;
+      state.loading = false;
+    },
     removeError(state) {
       state.error = undefined;
     },
@@ -476,5 +481,10 @@ function checkValidity(data: Record<string, any>) {
 }
 
 const { reducer, actions } = userSlice;
-export const { removeError, setBookmarkData, removeBookmarkData } = actions;
+export const {
+  onPageRefresh,
+  removeError,
+  setBookmarkData,
+  removeBookmarkData,
+} = actions;
 export default reducer;
