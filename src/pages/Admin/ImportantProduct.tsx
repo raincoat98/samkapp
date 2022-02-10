@@ -1,10 +1,15 @@
+import { ReactNode, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
-import { setBookmarkData } from "store/realm";
+import { setBookmarkData, removeBookmarkData } from "store/realm";
 import PageContainer from "components/PageContainer";
 import InputFormControl from "components/Input/InputFormControl";
 import InputPartId from "components/Input/InputPartId";
-import { Box, Heading, HStack } from "@chakra-ui/react";
+import Dialog from "components/Dialog";
+import { Box, useDisclosure, VStack } from "@chakra-ui/react";
+import { part } from "schema/part";
+import { group2 } from "schema/group2";
+import PartCard from "components/Card/PartCard";
 
 export default function ImportantProduct() {
   const dispatch = useDispatch();
@@ -12,9 +17,34 @@ export default function ImportantProduct() {
   const bookmarkedData = useSelector(
     (state: RootState) => state.realm.bookmarkedData
   );
+  const deleteDialogDisclosure = useDisclosure();
+
+  const [dialogChildren, setDialogChildren] = useState<ReactNode>();
+  const [partToDelete, setPartToDelete] = useState<part>();
+
+  function removeBookmark(props: { part: part; group?: group2 }) {
+    setPartToDelete(props.part);
+    setDialogChildren(<PartCard part={props.part}></PartCard>);
+    deleteDialogDisclosure.onOpen();
+  }
 
   return (
     <PageContainer title={"주요품목"}>
+      <Dialog
+        isOpen={deleteDialogDisclosure.isOpen}
+        onClose={deleteDialogDisclosure.onClose}
+        onConfirm={() => {
+          if (partToDelete)
+            dispatch(removeBookmarkData({ partItem: partToDelete }));
+          setPartToDelete(undefined);
+          deleteDialogDisclosure.onClose();
+        }}
+        leastDestructiveRef={undefined}
+        headerChildren="주요 품목 해제 확인"
+      >
+        {dialogChildren}
+        해당 품목을 주요 품목에서 해제하시겠습니까?
+      </Dialog>
       <Box padding={3}>
         <InputFormControl name={"추가하기"}>
           <InputPartId
@@ -26,51 +56,24 @@ export default function ImportantProduct() {
             }}
           />
         </InputFormControl>
-        {bookmarkedData.part.map((part, index) => {
-          const inv = database.inventory.find(
-            (invItem) => invItem.part_id === part.part_id
-          );
-          const group = database.group2.find(
-            (group2Item) => group2Item.group2_id === part.group2_id
-          );
 
-          return (
-            <Box key={index} borderWidth={2} padding={2} marginTop={3}>
-              <Heading size={"md"}>{part.part_name}</Heading>
-              {group && (
-                <HStack>
-                  {group.spec1 && (
-                    <Box>
-                      {group?.spec1}: {part.spec1}
-                    </Box>
-                  )}
+        <VStack marginTop={3}>
+          {bookmarkedData.part.map((part, index) => {
+            const group = database.group2.find(
+              (group2Item) => group2Item.group2_id === part.group2_id
+            );
 
-                  {group.spec2 && (
-                    <Box>
-                      {group?.spec2}: {part.spec2}
-                    </Box>
-                  )}
-                  {group.spec3 && (
-                    <Box>
-                      {group?.spec3}: {part.spec3}
-                    </Box>
-                  )}
-                  {group.spec4 && (
-                    <Box>
-                      {group?.spec4}: {part.spec4}
-                    </Box>
-                  )}
-                  {group.spec5 && (
-                    <Box>
-                      {group?.spec5}: {part.spec5}
-                    </Box>
-                  )}
-                </HStack>
-              )}
-              <Box>재고: {inv ? inv?.quantity : "정보 없음"}</Box>
-            </Box>
-          );
-        })}
+            return (
+              <PartCard
+                part={part}
+                onClose={() => {
+                  removeBookmark({ part, group });
+                }}
+                key={index}
+              ></PartCard>
+            );
+          })}
+        </VStack>
       </Box>
     </PageContainer>
   );

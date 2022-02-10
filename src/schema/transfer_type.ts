@@ -2,9 +2,9 @@ import { schemaType } from "./index";
 
 export type transfer_type = {
   transfer_type_id: string;
-  transfer_type_name?: string;
+  transfer_type_name: string;
   transfer_flag?: number;
-  use_yn?: boolean;
+  use_yn: boolean;
 };
 
 export const transfer_typeSchema: schemaType = {
@@ -37,6 +37,7 @@ export const transfer_typeSchema: schemaType = {
     use_yn: {
       type: "boolean",
       default: true,
+      isNotNull: true,
     },
   },
 };

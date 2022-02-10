@@ -357,6 +357,16 @@ const userSlice = createSlice({
     ) {
       state.bookmarkedData.part.push(action.payload.partItem);
     },
+    removeBookmarkData(
+      state,
+      action: PayloadAction<{
+        partItem: part;
+      }>
+    ) {
+      state.bookmarkedData.part = state.bookmarkedData.part.filter(
+        (part) => action.payload.partItem.part_id !== part.part_id
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -466,5 +476,5 @@ function checkValidity(data: Record<string, any>) {
 }
 
 const { reducer, actions } = userSlice;
-export const { removeError, setBookmarkData } = actions;
+export const { removeError, setBookmarkData, removeBookmarkData } = actions;
 export default reducer;

@@ -2,23 +2,13 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import moment from "moment";
-import {
-  Center,
-  VStack,
-  Button,
-  useDisclosure,
-  Box,
-  Heading,
-  Divider,
-  HStack,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
+import { Center, VStack, Button, useDisclosure } from "@chakra-ui/react";
 import PageContainer from "components/PageContainer";
 import Popup from "components/Popup";
 import InputFormControl from "components/Input/InputFormControl";
 import InputDate from "components/Input/InputDate";
 import InputPartId from "components/Input/InputPartId";
+import WorkOrderCard from "../../components/Card/WorkOrderCard";
 import { transfer_out } from "schema/transfer_out";
 
 export default function AdminTransferOutView() {
@@ -34,7 +24,7 @@ export default function AdminTransferOutView() {
 
   return (
     <>
-      <PageContainer title={"입고현황"}>
+      <PageContainer title={"출고현황"}>
         <Center width="100%" height="100%">
           <form
             action=""
@@ -68,7 +58,7 @@ export default function AdminTransferOutView() {
                 return true;
               });
 
-              setResultList(result);
+              setResultList(result.reverse());
 
               printPopupState.onOpen();
             }}
@@ -114,83 +104,26 @@ export default function AdminTransferOutView() {
         onClose={printPopupState.onClose}
       >
         {resultList.length !== 0 ? (
-          <Wrap justify="center">
-            {resultList.map((result, index) => (
-              <WrapItem key={index}>
-                <Card {...result} />
-              </WrapItem>
-            ))}
-          </Wrap>
+          <VStack width="100%">
+            {resultList.map((result, index) => {
+              const workOrderData = database.work_order.find(
+                (item) => item.work_order_id === result.work_order_id
+              );
+              if (workOrderData)
+                return (
+                  <WorkOrderCard
+                    workOrder={workOrderData}
+                    index={++index}
+                    key={index}
+                  />
+                );
+              else return "";
+            })}
+          </VStack>
         ) : (
           "조회된 항목이 존재하지 않습니다."
         )}
       </Popup>
     </>
-  );
-}
-
-function Card(props: transfer_out) {
-  const database = useSelector((state: RootState) => state.realm.database);
-
-  const workOrder = database.work_order.find(
-    (item) => item.work_order_id === props?.work_order_id
-  );
-  const customer = database.customer.find(
-    (item) => item.customer_id === workOrder?.customer_id
-  );
-  const part = database.part.find((item) => item.part_id === props.part_id);
-  const group = database.group2.find(
-    (item) => item.group2_id === part?.group2_id
-  );
-
-  return (
-    <Box padding={2} borderWidth={2}>
-      <Heading size={"md"}>
-        #{props.work_order_id} Order No. {workOrder?.work_order_number}
-      </Heading>
-      <HStack>
-        <Box>{moment(props.transfer_date).format("YYYY-MM-DD")}</Box>
-        <Box>{customer?.customer_name}</Box>
-      </HStack>
-
-      <Divider marginY={3} />
-
-      {part ? (
-        <Box>
-          <Heading size={"md"}>품목명: {part.part_name}</Heading>
-          {group?.spec1 && (
-            <Box>
-              {group.spec1}: {part.spec1}
-            </Box>
-          )}
-          {group?.spec2 && (
-            <Box>
-              {group.spec2}: {part.spec2}
-            </Box>
-          )}
-          {group?.spec3 && (
-            <Box>
-              {group.spec3}: {part.spec3}
-            </Box>
-          )}
-          {group?.spec4 && (
-            <Box>
-              {group.spec4}: {part.spec4}
-            </Box>
-          )}
-          {group?.spec5 && (
-            <Box>
-              {group?.spec5}: {part.spec5}
-            </Box>
-          )}
-        </Box>
-      ) : (
-        "현재 존재하지 않는 품목입니다."
-      )}
-
-      <Divider marginY={3} />
-
-      <Heading size={"md"}>수량: {props.quantity}</Heading>
-    </Box>
   );
 }
