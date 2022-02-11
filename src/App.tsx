@@ -21,6 +21,7 @@ export default function App() {
     dispatch(onPageRefresh());
   }, [dispatch]);
 
+  // 데이터 백그라운드 새로고침
   useEffect(() => {
     function backgroundDataRefresh() {
       dispatch(getData({ isBackground: true }));

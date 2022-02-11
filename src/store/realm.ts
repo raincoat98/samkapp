@@ -452,6 +452,7 @@ const userSlice = createSlice({
       })
 
       // 데이터 가져오기
+      .addCase(getData.pending.type, () => {}) // 백그라운드 새로고침 시에 loading 방지용
       .addCase(
         getData.fulfilled.type,
         (
