@@ -22,6 +22,7 @@ export const transfer_inSchema: schemaType = {
       isPrimary: true,
       isNotNull: true,
       isAutoSet: true,
+      isNotVisible: true,
     },
     transfer_date: {
       type: "string",
