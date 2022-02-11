@@ -124,7 +124,6 @@ export default function FormModalInput(props: {
       name={props.name}
       isRequired={property.isNotNull}
       isDisabled={props.isDisabled}
-      isReadOnly={property.isReadOnly}
     >
       {element}
     </InputFormControl>
