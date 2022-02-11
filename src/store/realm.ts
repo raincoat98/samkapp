@@ -162,10 +162,13 @@ export const getData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
+      isBackground?: boolean;
     },
     { dispatch, rejectWithValue }
   ) => {
     try {
+      if (!props.isBackground) dispatch(setLoading({ loading: true }));
+
       let response: AxiosResponse<any, any>;
       let route = props.collectionName as string;
 
@@ -307,7 +310,7 @@ export const runFunction = createAsyncThunk(
       function_name: string;
       params: Record<string, any>;
     },
-    { rejectWithValue }
+    { dispatch, rejectWithValue }
   ) => {
     try {
       let response: AxiosResponse<any, any>;
@@ -330,6 +333,15 @@ const userSlice = createSlice({
   name,
   initialState,
   reducers: {
+    // 로딩
+    setLoading(
+      state,
+      action: PayloadAction<{
+        loading: boolean;
+      }>
+    ) {
+      state.loading = action.payload.loading;
+    },
     // 로그아웃
     logout(state) {
       state.error = undefined;
@@ -389,7 +401,11 @@ const userSlice = createSlice({
         state.loggedIn = false;
         state.error = action.payload;
       })
-      // 컬렉션 데이터 가져오기
+
+      // 데이터 가져오기
+      .addCase(getData.pending.type, (state, action: PayloadAction<user>) => {
+        state.error = undefined;
+      })
       .addCase(
         getData.fulfilled.type,
         (
@@ -404,42 +420,7 @@ const userSlice = createSlice({
           state.loading = false;
         }
       )
-      .addCase(
-        insertData.fulfilled.type,
-        (
-          state,
-          action: PayloadAction<{ response: AxiosResponse<any, any> }>
-        ) => {
-          state.loading = false;
-        }
-      )
-      // 컬렉션 데이터 업데이트
-      .addCase(
-        updateData.fulfilled.type,
-        (
-          state,
-          action: PayloadAction<{ response: AxiosResponse<any, any> }>
-        ) => {
-          state.loading = false;
-        }
-      )
-      // 컬렉션 데이터 삭제
-      .addCase(deleteData.fulfilled.type, (state) => {
-        state.loading = false;
-      })
-      // SQL 함수 실행
-      .addCase(runFunction.fulfilled.type, (state) => {
-        state.loading = false;
-      })
 
-      // 작업 시작시 실행
-      .addMatcher(
-        (action) => action.type.endsWith("/pending"),
-        (state) => {
-          state.loading = true;
-          state.error = undefined;
-        }
-      )
       // 작업 종료시 실행
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
@@ -448,7 +429,19 @@ const userSlice = createSlice({
           state.loading = false;
           state.error = action.payload;
         }
-      );
+      )
+
+      // 기본 작업
+      .addDefaultCase((state, action) => {
+        // 작업 시작
+        if (action.type.endsWith("/pending")) {
+          state.loading = true;
+          state.error = undefined;
+          // 작업 성공
+        } else if (action.type.endsWith("/fulfilled")) {
+          state.loading = false;
+        }
+      });
   },
 });
 
@@ -465,6 +458,7 @@ function checkValidity(data: Record<string, any>) {
 
 const { reducer, actions } = userSlice;
 export const {
+  setLoading,
   logout,
   onPageRefresh,
   removeError,
