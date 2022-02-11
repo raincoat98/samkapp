@@ -6,7 +6,13 @@ export default function TableDataCell(props: {
   onClick?: () => void;
 }) {
   return (
-    <Td {...props.cell.getCellProps()} onClick={props.onClick}>
+    <Td
+      {...props.cell.getCellProps()}
+      onClick={props.onClick}
+      _hover={{
+        whiteSpace: "break-spaces",
+      }}
+    >
       {props.cell.render("Cell")}
     </Td>
   );
