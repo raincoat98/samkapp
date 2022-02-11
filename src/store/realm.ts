@@ -347,31 +347,57 @@ const userSlice = createSlice({
         loading: boolean;
       }>
     ) {
-      state.loading = action.payload.loading;
+      return {
+        ...state,
+        loading: action.payload.loading,
+      };
     },
     // 로그아웃
     logout(state) {
-      state.error = undefined;
-      state.loading = false;
-      state.loggedIn = false;
-
-      // 유저 정보 제거
-      state.user.user_id = "";
-      state.user.name = "";
-      state.user.privilege = 0;
-
-      // 데이터베이스 삭제
-      for (const key in state.database) {
-        state.database[key as COLLECTION_NAME_TYPE] = [];
-      }
+      return {
+        ...state,
+        error: undefined,
+        loading: false,
+        loggedIn: false,
+        // 유저 정보 제거
+        user: {
+          user_id: "",
+          name: "",
+          privilege: 0,
+        },
+        // 데이터베이스 삭제
+        database: {
+          [COLLECTION_NAME.bill_of_materials]: [],
+          [COLLECTION_NAME.customer]: [],
+          [COLLECTION_NAME.group2]: [],
+          [COLLECTION_NAME.inventory]: [],
+          [COLLECTION_NAME.list_price]: [],
+          [COLLECTION_NAME.part_type]: [],
+          [COLLECTION_NAME.part]: [],
+          [COLLECTION_NAME.product_order]: [],
+          [COLLECTION_NAME.transfer_in]: [],
+          [COLLECTION_NAME.transfer_out]: [],
+          [COLLECTION_NAME.transfer_type]: [],
+          [COLLECTION_NAME.unit]: [],
+          [COLLECTION_NAME.user]: [],
+          [COLLECTION_NAME.warehouse]: [],
+          [COLLECTION_NAME.work_order]: [],
+        },
+      };
     },
     // 페이지 새로고침
     onPageRefresh(state) {
-      state.error = undefined;
-      state.loading = false;
+      return {
+        ...state,
+        error: undefined,
+        loading: false,
+      };
     },
     removeError(state) {
-      state.error = undefined;
+      return {
+        ...state,
+        error: undefined,
+      };
     },
     setBookmarkData(
       state,
@@ -379,7 +405,16 @@ const userSlice = createSlice({
         partItem: part;
       }>
     ) {
-      state.bookmarkedData.part.push(action.payload.partItem);
+      const bookmarkedPartList = [...state.bookmarkedData.part];
+      bookmarkedPartList.push(action.payload.partItem);
+
+      return {
+        ...state,
+        bookmarkedData: {
+          ...state.bookmarkedData,
+          part: bookmarkedPartList,
+        },
+      };
     },
     removeBookmarkData(
       state,
@@ -387,32 +422,36 @@ const userSlice = createSlice({
         partItem: part;
       }>
     ) {
-      state.bookmarkedData.part = state.bookmarkedData.part.filter(
+      const bookmarkedPartList = state.bookmarkedData.part.filter(
         (part) => action.payload.partItem.part_id !== part.part_id
       );
+
+      return {
+        ...state,
+        bookmarkedData: {
+          ...state.bookmarkedData,
+          part: bookmarkedPartList,
+        },
+      };
     },
   },
   extraReducers: (builder) => {
     builder
       // 로그인
       .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
-        state.loading = false;
-        state.loggedIn = true;
-
-        state.user.user_id = action.payload.user_id;
-        state.user.name = action.payload.name;
-        state.user.privilege = action.payload.privilege;
-      })
-      .addCase(login.rejected.type, (state, action: PayloadAction<Error>) => {
-        state.loading = false;
-        state.loggedIn = false;
-        state.error = action.payload;
+        return {
+          ...state,
+          loading: false,
+          loggedIn: true,
+          user: {
+            user_id: action.payload.user_id,
+            name: action.payload.name,
+            privilege: action.payload.privilege,
+          },
+        };
       })
 
       // 데이터 가져오기
-      .addCase(getData.pending.type, (state) => {
-        state.error = undefined;
-      })
       .addCase(
         getData.fulfilled.type,
         (
@@ -427,19 +466,28 @@ const userSlice = createSlice({
         ) => {
           if (action.payload) {
             const { collectionName, data } = action.payload;
-            if (Array.isArray(data)) state.database[collectionName] = [...data];
+            return {
+              ...state,
+              loading: false,
+              database: {
+                ...state.database,
+                [collectionName]: data,
+              },
+            };
           }
-          state.loading = false;
         }
       )
 
       // 작업 종료시 실행
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
-        (state, action: PayloadAction<any>) => {
+        (state, action: PayloadAction<Error>) => {
           console.error(action.payload);
-          state.loading = false;
-          state.error = action.payload;
+          return {
+            ...state,
+            loading: false,
+            error: action.payload,
+          };
         }
       )
 
@@ -447,11 +495,17 @@ const userSlice = createSlice({
       .addDefaultCase((state, action) => {
         // 작업 시작
         if (action.type.endsWith("/pending")) {
-          state.loading = true;
-          state.error = undefined;
+          return {
+            ...state,
+            loading: true,
+            error: undefined,
+          };
           // 작업 성공
         } else if (action.type.endsWith("/fulfilled")) {
-          state.loading = false;
+          return {
+            ...state,
+            loading: false,
+          };
         }
       });
   },

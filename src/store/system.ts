@@ -18,7 +18,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     toggleSidebar(state) {
-      state.isSidebarOpen = !state.isSidebarOpen;
+      return {
+        ...state,
+        isSidebarOpen: !state.isSidebarOpen,
+      };
     },
   },
 });
