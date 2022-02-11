@@ -39,11 +39,9 @@ export default function SidebarMenu(props: { onClose: () => void }) {
             if (!isLandscape) props.onClose();
           }
         }}
-        borderRadius="0"
-        transitionDuration="0"
-        textAlign="left"
         justifyContent="normal"
         width="100%"
+        textAlign="left"
       >
         <Icon as={circle} marginRight={2} />
         {sidebarRoute.name}

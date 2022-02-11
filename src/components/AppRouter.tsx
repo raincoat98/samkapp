@@ -1,6 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "store";
-import { toggleSidebar } from "store/system";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,20 +10,10 @@ import Sidebar from "components/Sidebar";
 import NoMatch from "pages/NoMatch";
 
 export default function AppRouter() {
-  const dispatch = useDispatch();
-
-  // 사이드바 열림 여부
-  const isSidebarOpen = useSelector(
-    (state: RootState) => state.system.isSidebarOpen
-  );
-
   return (
     <Router>
       <Flex height="100%" width="100%">
-        <Sidebar
-          isOpen={isSidebarOpen}
-          onClose={() => dispatch(toggleSidebar())}
-        />
+        <Sidebar />
 
         <Box flex={1} overflow="auto">
           <Switch>

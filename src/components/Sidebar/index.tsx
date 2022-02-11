@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
-import { RootState } from "../../store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "store";
+import { toggleSidebar } from "store/system";
 import { setting } from "utils/icons";
 import Moment from "react-moment";
 import {
@@ -20,21 +21,24 @@ import {
 import SidebarMenu from "./SidebarMenu";
 import { menuBackground, borderColor } from "theme";
 
-export default function Sidebar(props: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
+export default function Sidebar() {
+  // 사이드바 열림 여부
+  const isSidebarOpen = useSelector(
+    (state: RootState) => state.system.isSidebarOpen
+  );
+  const logo = useSelector((state: RootState) => state.system.logo);
+
   const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
   const borColor = useColorModeValue(borderColor.light, borderColor.dark);
 
   const { colorMode } = useColorMode();
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
-  const logo = useSelector((state: RootState) => state.system.logo);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <Flex
-      display={props.isOpen ? "flex" : "none"}
+      display={isSidebarOpen ? "flex" : "none"}
       flexDir={"column"}
       w={isLandscape ? 250 : "100%"}
       p={5}
@@ -43,7 +47,11 @@ export default function Sidebar(props: {
       borderColor={borColor}
       bgColor={bgColor}
     >
-      <Center>{!isLandscape && <CloseButton onClick={props.onClose} />}</Center>
+      <Center>
+        {!isLandscape && (
+          <CloseButton onClick={() => dispatch(toggleSidebar())} />
+        )}
+      </Center>
       <Center w={"100%"} maxH={100}>
         <Image
           src={logo}
@@ -57,7 +65,7 @@ export default function Sidebar(props: {
       <Divider />
 
       {/* 사이드바 메뉴 */}
-      <SidebarMenu onClose={props.onClose} />
+      <SidebarMenu onClose={() => dispatch(toggleSidebar())} />
 
       <Divider />
 
@@ -67,7 +75,7 @@ export default function Sidebar(props: {
             icon={<Icon as={setting} />}
             onClick={() => {
               history.push("/setting");
-              if (!isLandscape) props.onClose();
+              if (!isLandscape) dispatch(toggleSidebar());
             }}
             borderWidth={1}
             borderColor={borColor}
