@@ -13,10 +13,10 @@ export default function WorkOrderManagement() {
   );
 
   const dataList = [
-    // 진행중 작업지시 목록
-    data.filter((item) => item.status === 1),
     // 대기 및 미분류 작업지시 목록
     data.filter((item) => !item.status || item.status === 0),
+    // 진행중 작업지시 목록
+    data.filter((item) => item.status === 1),
     // 완료된 작업지시 목록
     data.filter((item) => item.status === 2),
   ];
@@ -28,7 +28,7 @@ export default function WorkOrderManagement() {
       tabProps={{
         tabGroups: [
           {
-            data: ["진행중", "대기", "완료"],
+            data: ["대기", "진행중", "완료"],
             onTabChange: (props) =>
               props.index !== undefined && setTabIndex(props.index),
           },
