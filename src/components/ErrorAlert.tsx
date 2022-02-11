@@ -13,7 +13,7 @@ import {
 export default function ErrorAlert(props: { error: Error }) {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { t: translate } = useTranslation();
+  const { i18n, t: translate } = useTranslation();
 
   // 오류 감지
   React.useEffect(() => {
@@ -29,7 +29,11 @@ export default function ErrorAlert(props: { error: Error }) {
       textAlign="center"
     >
       <AlertIcon />
-      <AlertTitle>{translate(`error.${props.error.message}`)}</AlertTitle>
+      <AlertTitle>
+        {i18n.exists(`error.${props.error.message}`)
+          ? translate(`error.${props.error.message}`)
+          : props.error.message}
+      </AlertTitle>
       <CloseButton
         onClick={() => {
           onClose();
