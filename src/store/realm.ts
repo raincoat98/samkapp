@@ -109,10 +109,7 @@ export const login = createAsyncThunk(
       if (!response.data) throw response;
 
       // 로그인 때에 모든 테이블  데이터 가져오기
-      for (const key in COLLECTION_NAME) {
-        const collectionName = key as COLLECTION_NAME_TYPE;
-        await dispatch(getData({ collectionName }));
-      }
+      await dispatch(getData({}));
 
       return response.data.result;
     } catch (error) {
@@ -161,7 +158,7 @@ export const getData = createAsyncThunk(
   `${name}/getData`,
   async (
     props: {
-      collectionName: COLLECTION_NAME_TYPE;
+      collectionName?: COLLECTION_NAME_TYPE;
       isBackground?: boolean;
     },
     { dispatch, rejectWithValue }
@@ -170,15 +167,25 @@ export const getData = createAsyncThunk(
       if (!props.isBackground) dispatch(setLoading({ loading: true }));
 
       let response: AxiosResponse<any, any>;
-      let route = props.collectionName as string;
 
-      route = route.replaceAll("_", "-");
-      response = await axios.get(`${SERVER_URL}/${route}/all`);
+      if (props.collectionName) {
+        let route = props.collectionName as string;
 
-      return {
-        collectionName: props.collectionName,
-        data: response.data.results,
-      };
+        route = route.replaceAll("_", "-");
+        response = await axios.get(`${SERVER_URL}/${route}/all`);
+
+        return {
+          collectionName: props.collectionName,
+          data: response.data.results,
+        };
+      } else {
+        for (const key in COLLECTION_NAME) {
+          const collectionName = key as COLLECTION_NAME_TYPE;
+          await dispatch(
+            getData({ collectionName, isBackground: props.isBackground })
+          );
+        }
+      }
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -403,20 +410,25 @@ const userSlice = createSlice({
       })
 
       // 데이터 가져오기
-      .addCase(getData.pending.type, (state, action: PayloadAction<user>) => {
+      .addCase(getData.pending.type, (state) => {
         state.error = undefined;
       })
       .addCase(
         getData.fulfilled.type,
         (
           state,
-          action: PayloadAction<{
-            collectionName: COLLECTION_NAME_TYPE;
-            data: any[];
-          }>
+          action: PayloadAction<
+            | {
+                collectionName: COLLECTION_NAME_TYPE;
+                data: any[];
+              }
+            | undefined
+          >
         ) => {
-          const { collectionName, data } = action.payload;
-          if (Array.isArray(data)) state.database[collectionName] = [...data];
+          if (action.payload) {
+            const { collectionName, data } = action.payload;
+            if (Array.isArray(data)) state.database[collectionName] = [...data];
+          }
           state.loading = false;
         }
       )
