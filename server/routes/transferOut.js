@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const runProcedure = require("./index");
+const { runProcedure } = require("./index");
 
 // 출고
 // 조회

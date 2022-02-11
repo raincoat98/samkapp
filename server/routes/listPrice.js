@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const runProcedure = require("./index");
+const { runProcedure } = require("./index");
 
 // 품목 가격
 // 조회

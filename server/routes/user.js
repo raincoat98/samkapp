@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const runProcedure = require("./index");
+const { runProcedure } = require("./index");
 
 const connection = require("../lib/db.js");
 

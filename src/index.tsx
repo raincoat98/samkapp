@@ -31,6 +31,9 @@ import rootReducer from "store";
 // Moment (시간 관리 라이브러리) - 한국어 지원
 import "moment/locale/ko";
 
+// 연결 라이브러리
+import axios from "axios";
+
 import { Font as ReactPdfFont } from "@react-pdf/renderer";
 ReactPdfFont.register({
   family: "Nanum Gothic",
@@ -60,6 +63,8 @@ if (process.env.NODE_ENV === "development") {
     collapsed: true,
   });
 }
+
+axios.defaults.timeout = 30000;
 
 const store = configureStore({
   reducer: rootReducer,

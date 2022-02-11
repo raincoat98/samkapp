@@ -1,22 +1,12 @@
 const express = require("express");
-const connection = require("../lib/db.js");
 const router = express();
-const runProcedure = require("./index");
+const { runProcedure, runQuery } = require("./index");
 
 // 조회
 router.get("/all", (req, res) => {
   const sql = "SELECT * FROM tb_product_order";
 
-  try {
-    connection.query(sql, function (error, results) {
-      if (error) throw error;
-      res.send({ results });
-      console.log("select ok");
-    });
-  } catch (error) {
-    res.send(error);
-    console.log("select failed");
-  }
+  runQuery(res, sql);
 });
 
 // 등록

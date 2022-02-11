@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const runProcedure = require("./index");
+const { runProcedure } = require("./index");
 
 // 작업지시 조회
 router.get("/all", (req, res) => {

@@ -467,14 +467,21 @@ const userSlice = createSlice({
         ) => {
           if (action.payload) {
             const { collectionName, data } = action.payload;
-            return {
-              ...state,
-              loading: false,
-              database: {
-                ...state.database,
-                [collectionName]: data,
-              },
-            };
+            if (Array.isArray(data)) {
+              return {
+                ...state,
+                loading: false,
+                database: {
+                  ...state.database,
+                  [collectionName]: data,
+                },
+              };
+            } else {
+              return {
+                ...state,
+                loading: false,
+              };
+            }
           }
         }
       )

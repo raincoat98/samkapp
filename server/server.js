@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 
-const api = require("./routes/index");
 const functions = require("./routes/functions");
 
 const admin = require("./routes/admin");
@@ -26,8 +25,6 @@ const workOrder = require("./routes/workOrder");
 const cors = require("cors");
 app.use(cors());
 
-// api 처리는 './routes/index'에서 일괄처리
-app.use("/api", api);
 app.use("/functions", functions);
 
 app.use("/admin", admin);
@@ -52,4 +49,8 @@ app.use("/work-order", workOrder); // 작업지시
 const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);
+});
+
+process.on("uncaughtException", function (error) {
+  console.error(error);
 });

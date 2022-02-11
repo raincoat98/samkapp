@@ -51,7 +51,8 @@
     "eject": "react-scripts eject",
     "postinstall": "npm-license-crawler -onlyDirectDependencies -json src/data/licenses.json",
     "server": "cd server && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run start\""
+    "server-dev": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server-dev\" \"npm run start\""
   },
   "eslintConfig": {
     "extends": [

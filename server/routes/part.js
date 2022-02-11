@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express();
-const connection = require("../lib/db.js");
-const runProcedure = require("./index");
+const { runProcedure, runQuery } = require("./index");
 
 // 품목
 // 조회
@@ -68,14 +67,7 @@ router.delete("/delete", (req, res) => {
   const sql = "DELETE FROM tb_part WHERE part_id=?";
   const params = [req.query["part_id"]];
 
-  connection.query(sql, params, function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("delete ok");
-    }
-    res.send({ results });
-  });
+  runQuery(res, sql, params);
 });
 
 module.exports = router;

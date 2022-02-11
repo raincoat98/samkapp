@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express();
-const connection = require("../lib/db.js");
-const runProcedure = require("./index");
+const { runProcedure, runQuery } = require("./index");
 
 // 거래처
 // 조회
@@ -72,16 +71,7 @@ router.delete("/delete", (req, res) => {
   const sql = "DELETE FROM tb_customer WHERE customer_id=?";
   const params = [req.query["customer_id"]];
 
-  try {
-    connection.query(sql, params, (error, results) => {
-      if (error) throw error;
-      res.send({ results });
-      console.log("delete ok");
-    });
-  } catch (error) {
-    res.send(error);
-    console.log("delete failed");
-  }
+  runQuery(res, sql, params);
 });
 
 module.exports = router;
