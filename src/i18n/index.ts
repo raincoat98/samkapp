@@ -13,6 +13,8 @@ import part from "./database/part";
 import product_order from "./database/product_order";
 import transfer_in from "./database/transfer_in";
 import transfer_out from "./database/transfer_out";
+import transfer_type from "./database/transfer_type";
+import unit from "./database/unit";
 import warehouse from "./database/warehouse";
 import work_order from "./database/work_order";
 
@@ -33,6 +35,8 @@ const resources = {
       transfer_in: combine(transfer_in),
       transfer_out: combine(transfer_out),
       warehouse: combine(warehouse),
+      transfer_type: combine(transfer_type),
+      unit: combine(unit),
       work_order: combine(work_order),
     },
   },
