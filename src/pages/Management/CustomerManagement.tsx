@@ -5,11 +5,10 @@ import Management from "components/Management/index";
 import { customer, customerSchema } from "schema/customer";
 
 export default function CustomerManagement() {
-  const collectionName = "customer";
   const database = useSelector(
-    (state: RootState) => state.realm.database[collectionName]
+    (state: RootState) => state.realm.database.customer
   );
-  const [dataList, setDataList] = useState<customer[]>([...database]);
+  const [dataList, setDataList] = useState<customer[]>(database);
 
   const filterNames = [
     "ㄱ",
@@ -67,7 +66,7 @@ export default function CustomerManagement() {
                   }),
                 ]);
               } else {
-                setDataList([...database]);
+                setDataList(dataList);
               }
             },
           },
