@@ -27,6 +27,7 @@ export default function ErrorAlert(props: { error: Error }) {
       status="error"
       justifyContent="center"
       textAlign="center"
+      overflow="auto"
     >
       <AlertIcon />
       <AlertTitle>
