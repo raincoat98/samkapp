@@ -17,7 +17,7 @@ router.get("/create", (req, res) => {
   const sql =
     "INSERT INTO tb_warehouse " +
     "(warehouse_name, rack_no, cell_no, row_no, use_yn) " +
-    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    `VALUES(${new Array(5).fill("?").toString()})`;
   const params = [
     req.query["warehouse_name"],
     req.query["rack_no"],
