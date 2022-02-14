@@ -1,80 +1,31 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { useHistory } from "react-router-dom";
-import {
-  sidebarRouteType,
-  sidebarConfig,
-  adminSidebarConfig,
-} from "utils/routerConfig";
-import { circle } from "utils/icons";
-import {
-  useMediaQuery,
-  Stack,
-  Button,
-  ButtonGroup,
-  Center,
-  Icon,
-  Heading,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/react";
+import { sidebarConfig, adminSidebarConfig } from "utils/routerConfig";
+import { Stack, ButtonGroup, Center } from "@chakra-ui/react";
+import SidebarMenuButton from "./SidebarMenuButton";
 
 export default function SidebarMenu(props: { onClose: () => void }) {
   const user = useSelector((state: RootState) => state.realm.user);
-  const [isLandscape] = useMediaQuery("(orientation: landscape)");
-  const history = useHistory();
   const sidebarList =
     user.privilege === 10 ? adminSidebarConfig : sidebarConfig;
 
-  // 사이드바 버튼
-  function SidebarButton(sidebarRoute: sidebarRouteType) {
-    return (
-      <Button
-        onClick={() => {
-          if (sidebarRoute.route) {
-            history.push(sidebarRoute.route.path);
-            if (!isLandscape) props.onClose();
-          }
-        }}
-        justifyContent="normal"
-        width="100%"
-        textAlign="left"
-      >
-        <Icon as={circle} marginRight={2} />
-        {sidebarRoute.name}
-      </Button>
-    );
-  }
-
   return (
     <Center flex="1" overflow="auto">
-      <Stack as={ButtonGroup} variant="ghost" spacing="0" width="100%">
+      <Stack
+        as={ButtonGroup}
+        width="100%"
+        spacing="0"
+        paddingX={1}
+        variant="ghost"
+      >
         {sidebarList.map((sidebarRoute, index) => {
-          if (!sidebarRoute.children) {
-            return <SidebarButton {...sidebarRoute} key={index} />;
-          } else {
-            return (
-              <Accordion allowMultiple key={index}>
-                <AccordionItem>
-                  <AccordionButton>
-                    <Heading as="h5" size="sm">
-                      <Icon as={circle} marginRight={2} />
-                      {sidebarRoute.name}
-                    </Heading>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel py={1}>
-                    {sidebarRoute.children.map((sidebarRoute, index) => (
-                      <SidebarButton {...sidebarRoute} key={index} />
-                    ))}
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            );
-          }
+          return (
+            <SidebarMenuButton
+              sidebarRoute={sidebarRoute}
+              onClick={props.onClose}
+              key={index}
+            />
+          );
         })}
       </Stack>
     </Center>
