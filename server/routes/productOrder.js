@@ -41,10 +41,12 @@ router.get("/update", (req, res) => {
 
 // 삭제
 router.get("/delete", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 생산 지시 삭제");
+  const sql = `CALL usp_product_order_DEL (${new Array(1)
+    .fill("?")
+    .toString()})`;
+  const params = [req.query["work_order_id"]];
+
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;
