@@ -18,6 +18,7 @@ import PartPriceManagement from "pages/Management/PartPriceManagement";
 import WarehouseManagement from "pages/Management/WarehouseManagement";
 import WorkOrderManagement from "pages/Management/WorkOrderManagement";
 import PartUnitManagement from "pages/Management/PartUnitManagement";
+import BomManagement from "pages/Management/BomManagement";
 import TransferTypeManagement from "pages/Management/TransferTypeManagement";
 
 import Setting from "pages/Setting";
@@ -130,6 +131,11 @@ export const routes: Record<string, route> = {
     path: "/part_unit_manage",
     component: PartUnitManagement,
   },
+  bom_manage: {
+    name: "품목 명세서 관리",
+    path: "/bom_manage",
+    component: BomManagement,
+  },
   transfer_type_managemnet: {
     name: "이동 형태 관리",
     path: "/transfer_type_managemnet",
@@ -174,6 +180,7 @@ export const sidebarConfig: sidebarRouteType[] = [
         name: "품목 분류 관리",
         route: routes.part_gorup_2_manage,
       },
+      { name: "품목 명세서 관리", route: routes.bom_manage },
       { name: "품목 단위 관리", route: routes.part_unit_manage },
       { name: "이동 형태 관리", route: routes.transfer_type_managemnet },
       { name: "창고 관리", route: routes.warehouse_manage },

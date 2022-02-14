@@ -38,7 +38,7 @@ router.get("/update", (req, res) => {
 });
 
 // 삭제
-router.get("/delete", (req, res) => {
+router.delete("/delete", (req, res) => {
   res.status(501).send({
     success: false,
   });

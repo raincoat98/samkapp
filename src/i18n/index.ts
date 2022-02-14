@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 import error from "./error.json";
 import { info, use_yn, del_yn } from "./database/common";
 
+import bill_of_materials from "./database/bill_of_materials";
 import customer from "./database/customer";
 import group2 from "./database/group2";
 import inventory from "./database/inventory";
@@ -25,6 +26,7 @@ const resources = {
       error,
 
       // 데이터베이스 테이블 번역
+      bill_of_materials: combine(bill_of_materials),
       customer: combine(customer),
       group2: combine(group2),
       inventory: combine(inventory),

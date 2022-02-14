@@ -40,7 +40,7 @@ router.get("/update", (req, res) => {
 });
 
 // 삭제
-router.get("/delete", (req, res) => {
+router.delete("/delete", (req, res) => {
   const sql = `CALL usp_product_order_DEL (${new Array(1)
     .fill("?")
     .toString()})`;
