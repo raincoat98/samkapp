@@ -13,14 +13,8 @@ router.get("/all", (req, res) => {
 // 등록
 router.get("/create", (req, res) => {
   const sql =
-    "INSERT INTO tb_unit " +
-    "(unit_id, unit_name, mod_date) " +
-    "VALUES(?, ?, ?);";
-  const params = [
-    req.query["unit_id"],
-    req.query["unit_name"],
-    req.query["mod_date"],
-  ];
+    "INSERT INTO tb_unit " + "(unit_id, unit_name) " + "VALUES(?, ?);";
+  const params = [req.query["unit_id"], req.query["unit_name"]];
 
   runQuery(res, sql, params);
 });
