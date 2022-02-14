@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { schemaType } from "schema";
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Divider, VStack } from "@chakra-ui/react";
 
 // FormModal 관련 컴포넌트 가져오기
 import FormModalInput from "./FormModalInput";
@@ -168,11 +168,14 @@ export default function FormModal(props: FormModalProps) {
           setIsFormModalAlertOpen(false);
         }}
       />
-      <Stack>
+      <VStack>
         {inputList.map((formItem, index) => (
-          <Box key={index}>{formItem.element}</Box>
+          <Box width="100%" key={index}>
+            <Box>{formItem.element}</Box>
+            <Divider marginTop={2} />
+          </Box>
         ))}
-      </Stack>
+      </VStack>
     </FormModalPopup>
   );
 }
