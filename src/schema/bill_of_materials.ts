@@ -18,6 +18,7 @@ export const bill_of_materialsSchema: schemaType = {
       type: "number",
       isPrimary: true,
       isNotNull: true,
+      isAutoSet: true,
     },
     product_id: {
       type: "number",
