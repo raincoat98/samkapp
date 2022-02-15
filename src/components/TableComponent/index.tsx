@@ -161,6 +161,7 @@ export default function TableComponent(props: TableComponentProps) {
           <Tr
             {...headerGroup.getHeaderGroupProps()}
             borderColor={borderColorValue}
+            borderTopWidth={1}
             borderBottomWidth={1}
           >
             {headerGroup.headers.map((column, index) => (

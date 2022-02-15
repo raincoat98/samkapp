@@ -1,8 +1,17 @@
-import { Flex, Select, Tabs, TabList, Tab } from "@chakra-ui/react";
+import {
+  Select,
+  Tabs,
+  TabList,
+  Tab,
+  HStack,
+  FormControl,
+  FormLabel,
+} from "@chakra-ui/react";
 
 type pageIndex = number | undefined;
 
 export type tabGroups = {
+  name?: string;
   data: string[];
   onTabChange: (props: { index: pageIndex }) => void;
   allowNull?: boolean;
@@ -15,32 +24,37 @@ export type ManagementTableTabsProps = {
 
 export default function ManagementTableTabs(props: ManagementTableTabsProps) {
   return props.tabGroups.length > 1 ? (
-    <Flex>
+    <HStack padding={1} spacing={1}>
       {props.tabGroups.map((tabGroup, index) => {
         return (
-          <Select
-            defaultValue={tabGroup.defaultValue}
-            onChange={(event) => {
-              const value = event.target.value;
-              tabGroup.onTabChange({
-                index: value === "" ? undefined : Number(value),
-              });
-            }}
-            placeholder={tabGroup.allowNull ? "전체" : undefined}
-            borderRadius={0}
-            flex={1}
-            fontWeight={"bold"}
-            key={index}
-          >
-            {tabGroup.data.map((tab, index) => (
-              <option key={index} value={index}>
-                {tab}
-              </option>
-            ))}
-          </Select>
+          <FormControl display="flex" flex={1} alignItems="center" key={index}>
+            {tabGroup.name && (
+              <FormLabel whiteSpace={"pre"} margin={1}>
+                {tabGroup.name}
+                {": "}
+              </FormLabel>
+            )}
+            <Select
+              defaultValue={tabGroup.defaultValue}
+              onChange={(event) => {
+                const value = event.target.value;
+                tabGroup.onTabChange({
+                  index: value === "" ? undefined : Number(value),
+                });
+              }}
+              placeholder={tabGroup.allowNull ? "전체" : undefined}
+              fontWeight={"bold"}
+            >
+              {tabGroup.data.map((tab, index) => (
+                <option key={index} value={index}>
+                  {tab}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
         );
       })}
-    </Flex>
+    </HStack>
   ) : (
     <Tabs
       isLazy
