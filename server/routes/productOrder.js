@@ -44,7 +44,7 @@ router.delete("/delete", (req, res) => {
   const sql = `CALL usp_product_order_DEL (${new Array(1)
     .fill("?")
     .toString()})`;
-  const params = [req.query["work_order_id"]];
+  const params = [req.query["prod_order_id"]];
 
   runProcedure(res, sql, params);
 });
