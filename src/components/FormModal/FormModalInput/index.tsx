@@ -112,6 +112,7 @@ export default function FormModalInput(props: {
           <InputBool
             isDefaultTrue={props.defaultValue ?? property.default}
             onChange={(checked) => props.onChange(checked)}
+            isDisabled={props.isDisabled}
           />
         );
         break;
