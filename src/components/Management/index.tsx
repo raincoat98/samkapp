@@ -19,6 +19,7 @@ import { useDisclosure, Flex } from "@chakra-ui/react";
 import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
 import ManagementHeaderButtonGroup from "./HeaderButtonGroup";
+import Dialog from "components/Dialog";
 
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
 
@@ -40,6 +41,9 @@ export default function Management(props: {
   // 폼 모달 상태 관리
   const modalDisclosure = useDisclosure();
   const dispatch = useDispatch();
+
+  // 삭제 다이얼로그 상태 관리
+  const dialogDisclosure = useDisclosure();
 
   // 체크한 테이블 열이 존재하는지 확인
   const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
@@ -265,12 +269,21 @@ export default function Management(props: {
         onClose={modalDisclosure.onClose}
       />
 
+      <Dialog
+        isOpen={dialogDisclosure.isOpen}
+        onClose={dialogDisclosure.onClose}
+        onConfirm={deleteSelected}
+        headerChildren="삭제 확인"
+      >
+        선택한 {checkedRows.length}개의 항목을 삭제하시겠습니까?
+      </Dialog>
+
       <PageContainer
         title={title}
         headerChildren={
           <ManagementHeaderButtonGroup
             isDeleteDisabled={Object.keys(checkedRows).length === 0}
-            onDeleteClick={deleteSelected}
+            onDeleteClick={dialogDisclosure.onOpen}
             isAddDisabled={false}
             onAddClick={prepareInsert}
             isRefreshDisabled={false}
