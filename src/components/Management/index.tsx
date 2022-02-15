@@ -114,9 +114,10 @@ export default function Management(props: {
                 const foreign = property.foreign;
                 if (foreign?.table) {
                   const dataList = [...database[foreign.table]];
-                  const item: any = dataList.filter((data: any) => {
-                    return data[foreign.key] === originalRow[foreign.key];
-                  })[0];
+                  const item: any = dataList.find((data: any) => {
+                    return data[foreign.key] === originalRow[key];
+                  });
+
                   if (item) {
                     return foreign.display
                       ? item[foreign.display]
