@@ -39,12 +39,10 @@ export const bill_of_materialsSchema: schemaType = {
     start_date: {
       type: "date",
       isAutoSet: true,
-      isReadOnly: true,
     },
     end_date: {
       type: "date",
       isAutoSet: true,
-      isReadOnly: true,
     },
     unit_id: {
       type: "string",
