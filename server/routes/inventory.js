@@ -20,10 +20,10 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = `CALL usp_list_price (${new Array(1).fill("?").toString()})`;
-  const params = [req.query["work_order_id"]];
-
-  runProcedure(res, sql, params);
+  res.status(501).send({
+    success: false,
+  });
+  console.log("미구현: 재고 수정");
 });
 
 // 삭제
