@@ -3,12 +3,12 @@ import { schemaType } from "./index";
 export type bill_of_materials = {
   bom_id: number;
   product_id?: number;
+  assembly_Qty?: number;
   assembly_id?: number;
   start_date?: Date;
   end_date?: Date;
   unit_id?: string;
   bom_level?: number;
-  assembly_Qty?: number;
 };
 
 export const bill_of_materialsSchema: schemaType = {
@@ -27,6 +27,9 @@ export const bill_of_materialsSchema: schemaType = {
         key: "part_id",
         display: "part_name",
       },
+    },
+    assembly_Qty: {
+      type: "number",
     },
     assembly_id: {
       type: "number",
@@ -53,9 +56,6 @@ export const bill_of_materialsSchema: schemaType = {
       },
     },
     bom_level: {
-      type: "number",
-    },
-    assembly_Qty: {
       type: "number",
     },
   },
