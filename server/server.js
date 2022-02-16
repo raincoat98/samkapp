@@ -44,6 +44,12 @@ app.use("/user", user); // 계정 정보 및 로그인
 app.use("/warehouse", warehouse); // 창고
 app.use("/work-order", workOrder); // 작업지시
 
+// 예외 처리
+app.use((req, res, next) => {
+  console.log("잘못된 요청: ", req.url);
+  res.status(400).send();
+});
+
 // server port 3002 할당
 // 클라이언트와 다른 번호로 충돌나지 않도록
 const PORT = 3002;
@@ -51,6 +57,7 @@ app.listen(PORT, () => {
   console.log(`Server run : http://localhost:${PORT}/`);
 });
 
+// 예외 처리
 process.on("uncaughtException", function (error) {
   console.error(error);
 });
