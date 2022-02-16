@@ -203,7 +203,7 @@ export const insertData = createAsyncThunk(
     { dispatch, rejectWithValue }
   ) => {
     try {
-      // 출고
+      // 출고시 재고 확인
       if (props.collectionName === "transfer_out") {
         const document = props.document as transfer_out;
         const qty = (await dispatch(
@@ -217,20 +217,17 @@ export const insertData = createAsyncThunk(
         )) as any;
 
         if (
-          qty.payload.data.result === undefined ||
-          qty.payload.data.result === null
+          qty.payload.data.results === undefined ||
+          qty.payload.data.results === null
         ) {
           throw new Error(
             "해당 품목의 재고 데이터가 존재하지 않습니다. 재고 데이터를 추가해주세요."
           );
-        } else {
-          if (document.quantity !== undefined) {
-            if (document.quantity > qty.payload.data.result) {
-              throw new RangeError(
-                "현재 재고량보다 초과되게 출고할 수 없습니다."
-              );
-            }
-          }
+        } else if (
+          document.quantity !== undefined &&
+          document.quantity > qty.payload.data.results
+        ) {
+          throw new RangeError("현재 재고량보다 초과되게 출고할 수 없습니다.");
         }
       }
 
