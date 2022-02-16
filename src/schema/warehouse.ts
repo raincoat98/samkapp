@@ -16,6 +16,7 @@ export const warehouseSchema: schemaType = {
       type: "number",
       isPrimary: true,
       isNotNull: true,
+      isAutoSet: true,
     },
     warehouse_name: {
       type: "string",
