@@ -15,7 +15,7 @@ router.get("/create", (req, res) => {
     .fill("?")
     .toString()})`;
   const params = [
-    req.query["work_order_id"],
+    req.query["prod_order_id"],
     req.query["part_id"],
     req.query["order_quantity"],
     req.query["remark"],
@@ -31,7 +31,7 @@ router.get("/update", (req, res) => {
     .fill("?")
     .toString()})`;
   const params = [
-    req.query["work_order_id"],
+    req.query["prod_order_id"],
     req.query["stocked_quantity"],
     req.query["scrapped_quantity"],
   ];

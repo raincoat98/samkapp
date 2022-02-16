@@ -1,7 +1,7 @@
 import { schemaType } from "./index";
 
 export type product_order = {
-  product_order_id: number;
+  prod_order_id: number;
   part_id: number;
   order_quantity: number;
   stocked_quantity: number;
@@ -15,7 +15,7 @@ export type product_order = {
 export const product_orderSchema: schemaType = {
   name: "product_order",
   properties: {
-    product_order_id: {
+    prod_order_id: {
       type: "number",
       isPrimary: true,
       isNotNull: true,
