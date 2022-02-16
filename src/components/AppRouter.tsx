@@ -12,7 +12,7 @@ import NoMatch from "pages/NoMatch";
 export default function AppRouter() {
   return (
     <Router>
-      <Flex flex="1">
+      <Flex flex="1" overflow="auto">
         <Sidebar />
 
         <Box flex={1} overflow="auto">
