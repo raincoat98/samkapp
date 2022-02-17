@@ -2,7 +2,8 @@ import { schemaType } from "./index";
 
 export type unit = {
   unit_id: string;
-  unit_name: string;
+  unit_name_kor: string;
+  unit_name_eng: string;
 };
 
 export const unitSchema: schemaType = {
@@ -13,7 +14,11 @@ export const unitSchema: schemaType = {
       isPrimary: true,
       isNotNull: true,
     },
-    unit_name: {
+    unit_name_kor: {
+      type: "string",
+      isNotNull: true,
+    },
+    unit_name_eng: {
       type: "string",
       isNotNull: true,
     },
