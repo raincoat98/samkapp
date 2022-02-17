@@ -25,7 +25,9 @@ export default function App() {
   // 유휴 상태에서 풀릴 때 데이터 새로고침
   useIdleTimer({
     timeout: 120000, // 120초 이상 아무 동작이 없을 시 유휴상태로 전환
-    onActive: () => dispatch(getData({})),
+    onActive: () => {
+      if (isLoggedIn) dispatch(getData({}));
+    },
     debounce: 500,
   });
 

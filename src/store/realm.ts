@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import moment from "moment";
 import { COLLECTION_NAME, COLLECTION_NAME_TYPE } from "schema";
 
@@ -21,6 +21,23 @@ import { work_order } from "schema/work_order";
 
 const name = "realm";
 const SERVER_URL = "http://localhost:3002";
+
+export type dataType =
+  | bill_of_materials
+  | customer
+  | group2
+  | inventory
+  | list_price
+  | part_type
+  | part
+  | product_order
+  | transfer_in
+  | transfer_out
+  | transfer_type
+  | unit
+  | user
+  | warehouse
+  | work_order;
 
 export type schemaType = {
   name: string;
@@ -160,23 +177,47 @@ export const getData = createAsyncThunk(
     props: {
       collectionName?: COLLECTION_NAME_TYPE;
       isBackground?: boolean;
+      isRedo?: boolean;
     },
     { dispatch, rejectWithValue }
   ) => {
+    let data: dataType[] = [];
+
     try {
       if (!props.isBackground) dispatch(setLoading({ loading: true }));
-
-      let response: AxiosResponse<any, any>;
 
       if (props.collectionName) {
         let route = props.collectionName as string;
 
         route = route.replaceAll("_", "-");
-        response = await axios.get(`${SERVER_URL}/${route}/all`);
+        await axios
+          .get(`${SERVER_URL}/${route}/all`)
+          .then((res) => {
+            const result = res.data.results;
+            if (Array.isArray(result)) data.push(...result);
+          })
+          .catch(async (error: AxiosError) => {
+            switch (error.code) {
+              case "ECONNABORTED": {
+                if (!props.isRedo) {
+                  await dispatch(
+                    getData({
+                      collectionName: props.collectionName,
+                      isRedo: true,
+                    })
+                  );
+                } else throw error;
+                break;
+              }
+              default: {
+                throw error;
+              }
+            }
+          });
 
         return {
           collectionName: props.collectionName,
-          data: response.data.results,
+          data,
         };
       } else {
         for (const key in COLLECTION_NAME) {
@@ -198,7 +239,7 @@ export const insertData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      document: Record<string, any>;
+      document: dataType;
     },
     { dispatch, rejectWithValue }
   ) => {
@@ -241,7 +282,21 @@ export const insertData = createAsyncThunk(
         params,
       });
 
-      await dispatch(getData({}));
+      // 해당 테이블 데이터 새로고침
+      await dispatch(getData({ collectionName: props.collectionName }));
+
+      // 나머지 테이블은 백그라운드로 새로고침
+      for (const key in COLLECTION_NAME) {
+        const collectionKey = key as COLLECTION_NAME_TYPE;
+        if (collectionKey !== props.collectionName) {
+          await dispatch(
+            getData({
+              collectionName: collectionKey,
+              isBackground: true,
+            })
+          );
+        }
+      }
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -255,8 +310,7 @@ export const updateData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      filter: Record<string, string>;
-      update: Record<string, any>;
+      update: dataType;
     },
     { dispatch, rejectWithValue }
   ) => {
@@ -271,7 +325,21 @@ export const updateData = createAsyncThunk(
         params,
       });
 
-      await dispatch(getData({}));
+      // 해당 테이블 데이터 새로고침
+      await dispatch(getData({ collectionName: props.collectionName }));
+
+      // 나머지 테이블은 백그라운드로 새로고침
+      for (const key in COLLECTION_NAME) {
+        const collectionKey = key as COLLECTION_NAME_TYPE;
+        if (collectionKey !== props.collectionName) {
+          await dispatch(
+            getData({
+              collectionName: collectionKey,
+              isBackground: true,
+            })
+          );
+        }
+      }
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -285,7 +353,7 @@ export const deleteData = createAsyncThunk(
   async (
     props: {
       collectionName: COLLECTION_NAME_TYPE;
-      item: Record<string, any>;
+      item: dataType;
     },
     { dispatch, rejectWithValue }
   ) => {
@@ -298,7 +366,21 @@ export const deleteData = createAsyncThunk(
         params: props.item,
       });
 
-      await dispatch(getData({}));
+      // 해당 테이블 데이터 새로고침
+      await dispatch(getData({ collectionName: props.collectionName }));
+
+      // 나머지 테이블은 백그라운드로 새로고침
+      for (const key in COLLECTION_NAME) {
+        const collectionKey = key as COLLECTION_NAME_TYPE;
+        if (collectionKey !== props.collectionName) {
+          await dispatch(
+            getData({
+              collectionName: collectionKey,
+              isBackground: true,
+            })
+          );
+        }
+      }
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -350,36 +432,9 @@ const userSlice = createSlice({
       };
     },
     // 로그아웃
-    logout(state) {
+    logout() {
       return {
-        ...state,
-        error: undefined,
-        loading: false,
-        loggedIn: false,
-        // 유저 정보 제거
-        user: {
-          user_id: "",
-          name: "",
-          privilege: 0,
-        },
-        // 데이터베이스 삭제
-        database: {
-          [COLLECTION_NAME.bill_of_materials]: [],
-          [COLLECTION_NAME.customer]: [],
-          [COLLECTION_NAME.group2]: [],
-          [COLLECTION_NAME.inventory]: [],
-          [COLLECTION_NAME.list_price]: [],
-          [COLLECTION_NAME.part_type]: [],
-          [COLLECTION_NAME.part]: [],
-          [COLLECTION_NAME.product_order]: [],
-          [COLLECTION_NAME.transfer_in]: [],
-          [COLLECTION_NAME.transfer_out]: [],
-          [COLLECTION_NAME.transfer_type]: [],
-          [COLLECTION_NAME.unit]: [],
-          [COLLECTION_NAME.user]: [],
-          [COLLECTION_NAME.warehouse]: [],
-          [COLLECTION_NAME.work_order]: [],
-        },
+        ...initialState,
       };
     },
     // 페이지 새로고침
@@ -457,28 +512,21 @@ const userSlice = createSlice({
           action: PayloadAction<
             | {
                 collectionName: COLLECTION_NAME_TYPE;
-                data: any[];
+                data: dataType[];
               }
             | undefined
           >
         ) => {
           if (action.payload) {
             const { collectionName, data } = action.payload;
-            if (Array.isArray(data)) {
-              return {
-                ...state,
-                loading: false,
-                database: {
-                  ...state.database,
-                  [collectionName]: data,
-                },
-              };
-            } else {
-              return {
-                ...state,
-                loading: false,
-              };
-            }
+            return {
+              ...state,
+              loading: false,
+              database: {
+                ...state.database,
+                [collectionName]: data,
+              },
+            };
           }
         }
       )

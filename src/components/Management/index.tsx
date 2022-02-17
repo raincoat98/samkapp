@@ -2,7 +2,13 @@ import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getData, insertData, updateData, deleteData } from "store/realm";
+import {
+  getData,
+  insertData,
+  updateData,
+  deleteData,
+  dataType,
+} from "store/realm";
 import { Column, Accessor } from "react-table";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -226,15 +232,19 @@ export default function Management(props: {
 
     switch (type) {
       case "insert": {
-        dispatch(insertData({ collectionName: schema.name, document }));
+        dispatch(
+          insertData({
+            collectionName: schema.name,
+            document: document as dataType,
+          })
+        );
         break;
       }
       case "update": {
         dispatch(
           updateData({
             collectionName: schema.name,
-            filter: initialValue,
-            update: { ...initialValue, ...document },
+            update: { ...initialValue, ...document } as dataType,
           })
         );
         break;
