@@ -52,7 +52,7 @@ export default function PartCard(props: { part: part; onClose?: () => void }) {
         </HStack>
       )}
       <Box>
-        재고: {inv ? `${inv?.quantity} ${unit?.unit_name}` : "정보 없음"}
+        재고: {inv ? `${inv?.quantity} ${unit?.unit_name_kor}` : "정보 없음"}
       </Box>
     </Box>
   );

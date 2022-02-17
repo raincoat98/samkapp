@@ -52,7 +52,7 @@ export const bill_of_materialsSchema: schemaType = {
       foreign: {
         table: "unit",
         key: "unit_id",
-        display: "unit_name",
+        display: "unit_name_kor",
       },
     },
     bom_level: {

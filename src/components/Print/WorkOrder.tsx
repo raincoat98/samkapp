@@ -187,7 +187,7 @@ export default function PrintWorkOrder(props: { data: work_order }) {
                 수량
               </Text>
               <Text style={[styles.cell, styles.cellContent]}>
-                {props.data.quantity} {partUnit.unit_name}
+                {props.data.quantity} {partUnit.unit_name_kor}
               </Text>
             </View>
 

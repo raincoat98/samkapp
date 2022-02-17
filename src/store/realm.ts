@@ -241,7 +241,7 @@ export const insertData = createAsyncThunk(
         params,
       });
 
-      await dispatch(getData({ collectionName: props.collectionName }));
+      await dispatch(getData({}));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -271,7 +271,7 @@ export const updateData = createAsyncThunk(
         params,
       });
 
-      await dispatch(getData({ collectionName: props.collectionName }));
+      await dispatch(getData({}));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
@@ -298,7 +298,7 @@ export const deleteData = createAsyncThunk(
         params: props.item,
       });
 
-      await dispatch(getData({ collectionName: props.collectionName }));
+      await dispatch(getData({}));
       return { response };
     } catch (error) {
       return rejectWithValue(error);
