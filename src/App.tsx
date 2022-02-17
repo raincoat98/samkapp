@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useIdleTimer } from "react-idle-timer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./store";
 import { onPageRefresh, getData } from "store/realm";
 import { Flex, useColorModeValue } from "@chakra-ui/react";
 import { menuBackground } from "theme";
+
 import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/SpinnerComponent";
@@ -14,26 +16,18 @@ export default function App() {
   const bgColor = useColorModeValue(menuBackground.light, menuBackground.dark);
   const isLoggedIn = useSelector((state: RootState) => state.realm.loggedIn);
   const error = useSelector((state: RootState) => state.realm.error);
-  const intervalRef = useRef<any>();
 
   // 페이지 새로고침시 1회 실행
   useEffect(() => {
     dispatch(onPageRefresh());
   }, [dispatch]);
 
-  // 데이터 백그라운드 새로고침
-  useEffect(() => {
-    function backgroundDataRefresh() {
-      dispatch(getData({ isBackground: true }));
-    }
-
-    if (isLoggedIn) {
-      // 120초 마다 모든 데이터 새로고침
-      intervalRef.current = setInterval(backgroundDataRefresh, 120000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-  }, [dispatch, isLoggedIn]);
+  // 유휴 상태에서 풀릴 때 데이터 새로고침
+  useIdleTimer({
+    timeout: 120000, // 120초 이상 아무 동작이 없을 시 유휴상태로 전환
+    onActive: () => dispatch(getData({})),
+    debounce: 500,
+  });
 
   return (
     <Flex
