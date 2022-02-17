@@ -63,13 +63,18 @@ type database = {
   [COLLECTION_NAME.work_order]: work_order[];
 };
 
+type job = {
+  name: string;
+  params?: any;
+};
+
 export type RealmState = {
   user: {
     user_id: string;
     name: string;
     privilege: number;
   };
-  loading: boolean;
+  progress?: job;
   loggedIn: boolean;
   error?: Error;
   // 데이터베이스 컬렉션들
@@ -81,7 +86,7 @@ export type RealmState = {
 
 const initialState: RealmState = {
   user: { user_id: "", name: "", privilege: 0 },
-  loading: false,
+  progress: undefined,
   loggedIn: false,
   error: undefined,
   database: {
@@ -184,7 +189,8 @@ export const getData = createAsyncThunk(
     let data: dataType[] = [];
 
     try {
-      if (!props.isBackground) dispatch(setLoading({ loading: true }));
+      if (!props.isBackground)
+        dispatch(setProgress({ progress: { name: "getData", params: props } }));
 
       if (props.collectionName) {
         let route = props.collectionName as string;
@@ -420,15 +426,15 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // 로딩
-    setLoading(
+    setProgress(
       state,
       action: PayloadAction<{
-        loading: boolean;
+        progress: job;
       }>
     ) {
       return {
         ...state,
-        loading: action.payload.loading,
+        progress: action.payload.progress,
       };
     },
     // 로그아웃
@@ -442,7 +448,7 @@ const userSlice = createSlice({
       return {
         ...state,
         error: undefined,
-        loading: false,
+        progress: undefined,
       };
     },
     removeError(state) {
@@ -493,7 +499,7 @@ const userSlice = createSlice({
       .addCase(login.fulfilled.type, (state, action: PayloadAction<user>) => {
         return {
           ...state,
-          loading: false,
+          progress: undefined,
           loggedIn: true,
           user: {
             user_id: action.payload.user_id,
@@ -521,7 +527,7 @@ const userSlice = createSlice({
             const { collectionName, data } = action.payload;
             return {
               ...state,
-              loading: false,
+              progress: undefined,
               database: {
                 ...state.database,
                 [collectionName]: data,
@@ -538,7 +544,7 @@ const userSlice = createSlice({
           console.error(action.payload);
           return {
             ...state,
-            loading: false,
+            progress: undefined,
             error: action.payload,
           };
         }
@@ -550,14 +556,16 @@ const userSlice = createSlice({
         if (action.type.endsWith("/pending")) {
           return {
             ...state,
-            loading: true,
+            progress: {
+              name: action.type.toString(),
+            },
             error: undefined,
           };
           // 작업 성공
         } else if (action.type.endsWith("/fulfilled")) {
           return {
             ...state,
-            loading: false,
+            progress: undefined,
           };
         }
       });
@@ -577,7 +585,7 @@ function checkValidity(data: Record<string, any>) {
 
 const { reducer, actions } = userSlice;
 export const {
-  setLoading,
+  setProgress,
   logout,
   onPageRefresh,
   removeError,

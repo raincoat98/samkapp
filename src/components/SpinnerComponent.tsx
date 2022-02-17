@@ -1,25 +1,32 @@
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import {
-  Center,
-  Spinner,
-  SpinnerProps,
   Modal,
   ModalOverlay,
   ModalContent,
+  Center,
+  VStack,
+  Spinner,
+  Text,
 } from "@chakra-ui/react";
 
-export default function SpinnerComponent(props: SpinnerProps) {
-  const { children, ...rest } = props;
-
-  const isProgress = useSelector((state: RootState) => state.realm.loading);
+export default function SpinnerComponent() {
+  const progress = useSelector((state: RootState) => state.realm.progress);
 
   return (
-    <Modal isOpen={isProgress} onClose={() => {}} isCentered={true}>
+    <Modal isOpen={!!progress} onClose={() => {}} isCentered={true}>
       <ModalOverlay />
       <ModalContent background="none" boxShadow="none">
         <Center>
-          <Spinner {...rest} />
+          <VStack
+            padding="5"
+            borderRadius={"md"}
+            background="whiteAlpha.900"
+            color="black"
+          >
+            <Spinner size="lg" thickness="3px" />
+            {progress && <Text fontSize={"lg"}>실행중: {progress.name}</Text>}
+          </VStack>
         </Center>
       </ModalContent>
     </Modal>
