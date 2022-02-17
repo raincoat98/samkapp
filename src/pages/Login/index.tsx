@@ -49,7 +49,7 @@ export default function Login() {
   }
 
   return (
-    <Center width="100%" height="100%">
+    <Center width="100%" height="100%" position="relative">
       <Box
         p={10}
         borderWidth={1}

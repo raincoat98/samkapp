@@ -10,6 +10,7 @@ import Login from "pages/Login";
 import AppRouter from "components/AppRouter";
 import SpinnerComponent from "components/SpinnerComponent";
 import ErrorAlert from "components/ErrorAlert";
+import StatusBar from "components/StatusBar";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,8 @@ export default function App() {
       {error && <ErrorAlert error={error} />}
 
       {!isLoggedIn ? <Login /> : <AppRouter />}
+
+      <StatusBar />
     </Flex>
   );
 }

@@ -29,7 +29,12 @@ import { FiExternalLink, FiSun, FiMoon } from "react-icons/fi";
 import { HiIdentification, HiKey } from "react-icons/hi";
 import { IoMdRefresh } from "react-icons/io";
 import { IoAdd, IoTrash, IoBusinessOutline } from "react-icons/io5";
-import { BiCircle } from "react-icons/bi";
+import {
+  BiCircle,
+  // 와이파이
+  BiWifi,
+  BiWifiOff,
+} from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
 
@@ -78,3 +83,6 @@ export const minus = AiOutlineMinusCircle;
 export const minusFill = AiFillMinusCircle;
 
 export const deleteFill = AiFillDelete;
+
+export const online = BiWifi;
+export const offline = BiWifiOff;
