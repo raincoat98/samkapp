@@ -9,7 +9,10 @@ const inventory = {
     spec4: "규격4",
     spec5: "규격5",
     warehouse_id: "창고",
+    lot_no: "로트 번호",
+    shelf: "선반 위치",
     quantity: "재고수량",
+    bin: "상자 번호",
     status: "이월상태",
   },
 };

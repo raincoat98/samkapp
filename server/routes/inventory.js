@@ -12,18 +12,30 @@ router.get("/all", (req, res) => {
 
 // 등록
 router.get("/create", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 재고 등록");
+  const sql = `CALL usp_inventory_INS (${new Array(6).fill("?").toString()})`;
+  const params = [
+    req.query["part_id"],
+    req.query["warehouse_id"],
+    req.query["lot_no"],
+    req.query["qty"],
+    req.query["shelf"],
+    req.query["bin"],
+  ];
+
+  runProcedure(res, sql, params);
 });
 
 // 수정
 router.get("/update", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 재고 수정");
+  const sql = `CALL usp_inventory_UPD3 (${new Array(4).fill("?").toString()})`;
+  const params = [
+    req.query["part_id"],
+    req.query["warehouse_id"],
+    req.query["qty"],
+    req.query["status"],
+  ];
+
+  runProcedure(res, sql, params);
 });
 
 // 삭제
