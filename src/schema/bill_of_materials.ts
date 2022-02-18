@@ -3,11 +3,11 @@ import { schemaType } from "./index";
 export type bill_of_materials = {
   bom_id: number;
   product_id?: number;
-  assembly_Qty?: number;
+  unit_id?: string;
   assembly_id?: number;
+  assembly_Qty?: number;
   start_date?: Date;
   end_date?: Date;
-  unit_id?: string;
   bom_level?: number;
 };
 
@@ -28,8 +28,13 @@ export const bill_of_materialsSchema: schemaType = {
         display: "part_name",
       },
     },
-    assembly_Qty: {
-      type: "number",
+    unit_id: {
+      type: "string",
+      foreign: {
+        table: "unit",
+        key: "unit_id",
+        display: "unit_name_kor",
+      },
     },
     assembly_id: {
       type: "number",
@@ -39,6 +44,9 @@ export const bill_of_materialsSchema: schemaType = {
         display: "part_name",
       },
     },
+    assembly_Qty: {
+      type: "number",
+    },
     start_date: {
       type: "date",
       isAutoSet: true,
@@ -46,14 +54,6 @@ export const bill_of_materialsSchema: schemaType = {
     end_date: {
       type: "date",
       isAutoSet: true,
-    },
-    unit_id: {
-      type: "string",
-      foreign: {
-        table: "unit",
-        key: "unit_id",
-        display: "unit_name_kor",
-      },
     },
     bom_level: {
       type: "number",
