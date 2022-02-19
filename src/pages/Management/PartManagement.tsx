@@ -56,12 +56,13 @@ export default function PartManagement() {
           }
         }),
       }}
-      tabProps={{
-        tabGroups: [
+      filtersProps={{
+        filters: [
           {
+            title: "분류",
             data: partGroupNameList,
             defaultValue: 0,
-            onTabChange: (props) => {
+            onFilterChange: (props) => {
               if (props.index !== undefined)
                 setPartGroup(partGroupDataList[props.index]);
               else setPartGroup(undefined);
@@ -69,8 +70,9 @@ export default function PartManagement() {
             allowNull: true,
           },
           {
+            title: "형태",
             data: partTypeNameList,
-            onTabChange: (props) => {
+            onFilterChange: (props) => {
               if (props.index !== undefined)
                 setPartType(partTypeDataList[props.index]);
               else setPartType(undefined);

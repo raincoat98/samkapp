@@ -56,12 +56,12 @@ export default function PartTypeManagement() {
           }
         }),
       }}
-      tabProps={{
-        tabGroups: [
+      filtersProps={{
+        filters: [
           {
-            name: "분류",
+            title: "분류",
             data: partGroupNameList,
-            onTabChange: (props) => {
+            onFilterChange: (props) => {
               setSpec1(undefined);
               if (props.index !== undefined) {
                 const partGroupData = partGroupDataList[props.index];
@@ -84,9 +84,9 @@ export default function PartTypeManagement() {
             allowNull: true,
           },
           {
-            name: "스펙 1",
+            title: "스펙 1",
             data: partSpec1DataList,
-            onTabChange: (props) => {
+            onFilterChange: (props) => {
               if (props.index !== undefined)
                 setSpec1(partSpec1DataList[props.index]);
               else setSpec1(undefined);

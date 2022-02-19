@@ -1,68 +1,28 @@
-import {
-  Select,
-  Tabs,
-  TabList,
-  Tab,
-  HStack,
-  FormControl,
-  FormLabel,
-} from "@chakra-ui/react";
+import { Tabs, TabList, Tab } from "@chakra-ui/react";
 
 type pageIndex = number | undefined;
 
-export type tabGroups = {
-  name?: string;
-  data: string[];
+export type tab = {
+  data: { name: string; isDisabled?: boolean }[];
   onTabChange: (props: { index: pageIndex }) => void;
   allowNull?: boolean;
-  defaultValue?: number;
 };
 
 export type ManagementTableTabsProps = {
-  tabGroups: tabGroups[];
+  tab: tab;
 };
 
 export default function ManagementTableTabs(props: ManagementTableTabsProps) {
-  return props.tabGroups.length > 1 ? (
-    <HStack padding={1} spacing={1}>
-      {props.tabGroups.map((tabGroup, index) => {
-        return (
-          <FormControl display="flex" flex={1} alignItems="center" key={index}>
-            {tabGroup.name && (
-              <FormLabel whiteSpace={"pre"} margin={1}>
-                {tabGroup.name}
-                {": "}
-              </FormLabel>
-            )}
-            <Select
-              defaultValue={tabGroup.defaultValue}
-              onChange={(event) => {
-                const value = event.target.value;
-                tabGroup.onTabChange({
-                  index: value === "" ? undefined : Number(value),
-                });
-              }}
-              placeholder={tabGroup.allowNull ? "전체" : undefined}
-              fontWeight={"bold"}
-            >
-              {tabGroup.data.map((tab, index) => (
-                <option key={index} value={index}>
-                  {tab}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        );
-      })}
-    </HStack>
-  ) : (
+  const { tab } = props;
+
+  return (
     <Tabs
       isLazy
       onChange={(tabIndex) => {
         let index: pageIndex = tabIndex;
 
         // "전체" 탭이 허용 되어있을 경우
-        if (props.tabGroups[0].allowNull) {
+        if (tab.allowNull) {
           // "전체" 탭일 경우 undefined 리턴
           if (tabIndex === 0) index = undefined;
           // 아닐 경우 tabIndex에서 -1
@@ -71,7 +31,7 @@ export default function ManagementTableTabs(props: ManagementTableTabsProps) {
           index = tabIndex;
         }
 
-        props.tabGroups[0].onTabChange({
+        tab.onTabChange({
           index,
         });
       }}
@@ -79,9 +39,15 @@ export default function ManagementTableTabs(props: ManagementTableTabsProps) {
       variant={"solid-rounded"}
     >
       <TabList>
-        {props.tabGroups[0].allowNull && <Tab>전체</Tab>}
-        {props.tabGroups[0].data.map((tab, index) => (
-          <Tab key={index}>{tab}</Tab>
+        {tab.allowNull && <Tab>전체</Tab>}
+        {tab.data.map((tabData, index) => (
+          <Tab
+            isDisabled={tabData.isDisabled}
+            key={index}
+            _disabled={{ opacity: 0.5, cursor: "not-allowed" }}
+          >
+            {tabData.name}
+          </Tab>
         ))}
       </TabList>
     </Tabs>

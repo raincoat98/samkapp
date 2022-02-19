@@ -19,13 +19,16 @@ export default function InvManagement() {
       title="재고 현황"
       schema={inventorySchema}
       tabProps={{
-        tabGroups: [
-          {
-            allowNull: true,
-            data: ["재고 없음"],
-            onTabChange: (props) => setTabIndex(props.index),
-          },
-        ],
+        tab: {
+          allowNull: true,
+          data: [
+            {
+              name: "재고 없음",
+              isDisabled: !noStockList.length,
+            },
+          ],
+          onTabChange: (props) => setTabIndex(props.index),
+        },
       }}
       tableProps={{ data: tabIndex === undefined ? data : noStockList }}
     />

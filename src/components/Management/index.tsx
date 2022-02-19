@@ -28,6 +28,7 @@ import ManagementHeaderButtonGroup from "./HeaderButtonGroup";
 import Dialog from "components/Dialog";
 
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
+import TableFilters, { ManagementTableFiltersProps } from "./TableFilters";
 
 // 관리 페이지
 export default function Management(props: {
@@ -35,8 +36,9 @@ export default function Management(props: {
   schema: schemaType; // 테이블 스키마
   tableProps: TableComponentProps;
   tabProps?: ManagementTableTabsProps;
+  filtersProps?: ManagementTableFiltersProps;
 }) {
-  const { title, schema, tableProps, tabProps } = props;
+  const { title, schema, tableProps, tabProps, filtersProps } = props;
 
   // 번역
   const { t: translate } = useTranslation();
@@ -305,6 +307,7 @@ export default function Management(props: {
         <Flex flexDir="column" width="100%" height="100%">
           {/* 탭 추가 */}
           {tabProps && <TableTabs {...tabProps} />}
+          {filtersProps && <TableFilters {...filtersProps} />}
 
           {mainTable.component.box}
         </Flex>
