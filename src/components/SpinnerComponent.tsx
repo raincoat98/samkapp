@@ -16,7 +16,12 @@ export default function SpinnerComponent() {
   return (
     <Modal isOpen={!!progress} onClose={() => {}} isCentered={true}>
       <ModalOverlay />
-      <ModalContent background="none" boxShadow="none">
+      <ModalContent
+        background="none"
+        boxShadow="none"
+        cursor="wait"
+        userSelect="none"
+      >
         <Center>
           <VStack
             padding="5"
