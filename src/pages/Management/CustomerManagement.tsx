@@ -50,9 +50,11 @@ export default function CustomerManagement() {
         },
       }}
       tableProps={{
-        data: database.filter((customer) => {
-          return filter ? filter.test(customer.customer_name) : true;
-        }),
+        data: filter
+          ? database.filter((customer) => {
+              return filter.test(customer.customer_name);
+            })
+          : database,
       }}
     />
   );
