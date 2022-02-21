@@ -57,7 +57,11 @@ export default function FormModal(props: FormModalProps) {
       let property = props.schema.properties[key];
 
       // 직접 추가시에 데이터베이스에서 자동 생성되는 값은 넘어감
-      if (props.mode === "insert" && property.isAutoSet) continue;
+      if (
+        (props.mode === "insert" && property.isAutoSet) ||
+        property.isPreviewOnly
+      )
+        continue;
       // 아예 보여주지 않을 값도 넘어감
       if (property.isNotVisible) continue;
 

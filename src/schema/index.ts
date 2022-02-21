@@ -26,6 +26,7 @@ export type propertyType = {
   isReadOnly?: boolean; // 유저가 읽기만 가능하고 작성하는 것은 불가능한 값 (처음 데이터 생성시 값 지정은 가능)
   isTextarea?: boolean; // (type: string) 문자열을 여러 줄로 받을지 여부
   isDisalbePreview?: boolean; // 테이블 뷰에서 보여주지 않고 상세 보기에서만 보여줄지 여부
+  isPreviewOnly?: boolean; // 테이블 뷰에서만 보여주고 상세 보기에선 보여주지 않을 여부
 };
 
 export type selectType = { name?: string; value: any };
