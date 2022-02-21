@@ -37,6 +37,7 @@ import {
 } from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 export const add = IoAdd;
 export const trash = IoTrash;
@@ -86,3 +87,5 @@ export const deleteFill = AiFillDelete;
 
 export const online = BiWifi;
 export const offline = BiWifiOff;
+
+export const excel = SiMicrosoftexcel;

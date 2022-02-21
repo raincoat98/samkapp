@@ -1,5 +1,5 @@
 import { ButtonGroup, Icon, IconButton, Tooltip } from "@chakra-ui/react";
-import { refresh, add, trash } from "utils/icons";
+import { refresh, add, trash, excel } from "utils/icons";
 
 export default function ManagementHeaderButtonGroup(props: {
   isDeleteDisabled: boolean;
@@ -10,9 +10,21 @@ export default function ManagementHeaderButtonGroup(props: {
 
   isRefreshDisabled: boolean;
   onRefreshClick: () => void;
+
+  isSaveAsExcelDisabled: boolean;
+  onSaveAsExcelClick: () => void;
 }) {
   return (
     <ButtonGroup>
+      <Tooltip label="신규 작성">
+        <IconButton
+          onClick={props.onAddClick}
+          icon={<Icon as={add} />}
+          colorScheme="blue"
+          aria-label="신규"
+        />
+      </Tooltip>
+
       <Tooltip label="삭제">
         <IconButton
           isDisabled={props.isDeleteDisabled}
@@ -23,12 +35,13 @@ export default function ManagementHeaderButtonGroup(props: {
         />
       </Tooltip>
 
-      <Tooltip label="신규 작성">
+      <Tooltip label="엑셀 파일로 다운로드">
         <IconButton
-          onClick={props.onAddClick}
-          icon={<Icon as={add} />}
-          colorScheme="blue"
-          aria-label="신규"
+          isDisabled={props.isSaveAsExcelDisabled}
+          onClick={props.onSaveAsExcelClick}
+          icon={<Icon as={excel} />}
+          colorScheme="green"
+          aria-label="엑셀 파일로 다운로드"
         />
       </Tooltip>
 

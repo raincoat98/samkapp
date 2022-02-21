@@ -30,6 +30,8 @@ import Dialog from "components/Dialog";
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
 import TableFilters, { ManagementTableFiltersProps } from "./TableFilters";
 
+import { createExcelFile, downloadExcelFile } from "utils/excel";
+
 // 관리 페이지
 export default function Management(props: {
   title: string; // 브라우저 페이지 이름
@@ -301,6 +303,11 @@ export default function Management(props: {
             onAddClick={prepareInsert}
             isRefreshDisabled={false}
             onRefreshClick={refreshData}
+            isSaveAsExcelDisabled={false}
+            onSaveAsExcelClick={() => {
+              const excel = createExcelFile(schema, tableProps.data);
+              downloadExcelFile(excel);
+            }}
           />
         }
       >
