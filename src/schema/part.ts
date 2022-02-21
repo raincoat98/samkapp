@@ -33,6 +33,7 @@ export const partSchema: schemaType = {
     part_number: {
       type: "string",
       isNotNull: true,
+      isAutoSet: true,
     },
     part_name: {
       type: "string",
