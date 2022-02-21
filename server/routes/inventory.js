@@ -17,7 +17,7 @@ router.get("/create", (req, res) => {
     req.query["part_id"],
     req.query["warehouse_id"],
     req.query["lot_no"],
-    req.query["qty"],
+    req.query["quantity"],
     req.query["shelf"],
     req.query["bin"],
   ];
@@ -27,11 +27,14 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = `CALL usp_inventory_UPD3 (${new Array(4).fill("?").toString()})`;
+  const sql = `CALL usp_inventory_UPD3 (${new Array(7).fill("?").toString()})`;
   const params = [
     req.query["part_id"],
     req.query["warehouse_id"],
-    req.query["qty"],
+    req.query["lot_no"],
+    req.query["quantity"],
+    req.query["shelf"],
+    req.query["bin"],
     req.query["status"],
   ];
 
