@@ -171,7 +171,7 @@ const components: ThemeComponents = {
           textAlign: "center",
           whiteSpace: "pre",
           margin: 0,
-          padding: 3,
+          padding: 2,
           overflow: "hidden",
           color: getColorModeValue(props.colorMode, highContrastColor),
           bgColor: getColorModeValue(props.colorMode, tableHeaderBgColor),
@@ -196,7 +196,7 @@ const components: ThemeComponents = {
         td: {
           display: "block",
           margin: 0,
-          padding: 3,
+          padding: 2,
           justifyContent: "center",
           alignItems: "center",
           overflow: "hidden",

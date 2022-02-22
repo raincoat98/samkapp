@@ -1,6 +1,8 @@
 import { HeaderGroup, TableHeaderProps } from "react-table";
 import { Th, Heading } from "@chakra-ui/react";
 import TableSortIcon from "./TableSortIcon";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 export default function TableHeaderCell(
   props: TableHeaderProps & {
@@ -13,8 +15,16 @@ export default function TableHeaderCell(
     excludeIds?: string[];
   };
 
+  const tablePadding = useSelector(
+    (state: RootState) => state.theme.padding.table
+  );
+
   return (
-    <Th {...column.getHeaderProps(column.getSortByToggleProps())} {...rest}>
+    <Th
+      {...column.getHeaderProps(column.getSortByToggleProps())}
+      {...rest}
+      padding={tablePadding}
+    >
       <Heading as="h6" size="sm" display="inline-block">
         {column.render("Header")}
       </Heading>
