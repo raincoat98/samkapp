@@ -15,6 +15,23 @@ export type product_order = {
 export const product_orderSchema: schemaType = {
   name: "product_order",
   properties: {
+    status: {
+      type: "number",
+      select: [
+        {
+          name: "생산대기",
+          value: 0,
+        },
+        {
+          name: "생산중",
+          value: 1,
+        },
+        {
+          name: "생산완료",
+          value: 2,
+        },
+      ],
+    },
     prod_order_id: {
       type: "number",
       isPrimary: true,
@@ -70,5 +87,6 @@ export const product_orderSchema: schemaType = {
     remark: {
       type: "string",
     },
+    
   },
 };

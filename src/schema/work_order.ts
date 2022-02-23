@@ -17,19 +17,6 @@ export type work_order = {
 export const work_orderSchema: schemaType = {
   name: "work_order",
   properties: {
-    work_order_id: {
-      type: "number",
-      isPrimary: true,
-      isAutoSet: true,
-      isNotNull: true,
-      isReadOnly: true,
-      isNotVisible: true,
-    },
-    work_order_number: {
-      type: "string",
-      isAutoSet: true,
-      isReadOnly: true,
-    },
     status: {
       type: "number",
       select: [
@@ -47,6 +34,20 @@ export const work_orderSchema: schemaType = {
         },
       ],
     },
+    work_order_id: {
+      type: "number",
+      isPrimary: true,
+      isAutoSet: true,
+      isNotNull: true,
+      isReadOnly: true,
+      isNotVisible: true,
+    },
+    work_order_number: {
+      type: "string",
+      isAutoSet: true,
+      isReadOnly: true,
+    },
+
     customer_id: {
       type: "number",
       foreign: {

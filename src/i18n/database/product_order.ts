@@ -10,6 +10,7 @@ const product_order = {
     start_dttm: "시작일자",
     due_date: "마감일자",
     remark: "비고",
+    status: "작업상태",
   },
 };
 export default product_order;
