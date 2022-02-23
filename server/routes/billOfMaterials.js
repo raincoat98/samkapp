@@ -5,10 +5,9 @@ const { runProcedure } = require("./index");
 // 품목 명세서
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_bom_LST(?)";
-  const params = [req.query["product_id"]];
+  const sql = "CALL usp_bom_LST ()";
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 등록
