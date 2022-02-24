@@ -19,7 +19,7 @@ import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { ReducerTableState, TableInstance } from "react-table";
 
 // chakra-ui
-import { useDisclosure, Flex } from "@chakra-ui/react";
+import { useDisclosure, Flex, HStack } from "@chakra-ui/react";
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
@@ -28,7 +28,7 @@ import ManagementHeaderButtonGroup from "./HeaderButtonGroup";
 import Dialog from "components/Dialog";
 
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
-import TableFilters, { ManagementTableFiltersProps } from "./TableFilters";
+import TableFilter, { ManagementTableFilterProps } from "./TableFilter";
 
 import { createExcelFile, downloadExcelFile } from "utils/excel";
 
@@ -38,7 +38,7 @@ export default function Management(props: {
   schema: schemaType; // 테이블 스키마
   tableProps: TableComponentProps;
   tabProps?: ManagementTableTabsProps;
-  filtersProps?: ManagementTableFiltersProps;
+  filtersProps?: ManagementTableFilterProps[];
 }) {
   const { title, schema, tableProps, tabProps, filtersProps } = props;
 
@@ -314,7 +314,14 @@ export default function Management(props: {
         <Flex flexDir="column" width="100%" height="100%">
           {/* 탭 추가 */}
           {tabProps && <TableTabs {...tabProps} />}
-          {filtersProps && <TableFilters {...filtersProps} />}
+
+          {filtersProps && (
+            <HStack padding={1} spacing={1}>
+              {filtersProps.map((filter, index) => (
+                <TableFilter {...filter} key={index} />
+              ))}
+            </HStack>
+          )}
 
           {mainTable.component.box}
         </Flex>

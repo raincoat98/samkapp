@@ -1,38 +1,30 @@
-import React from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import Management from "components/Management/index";
 import { partSchema } from "schema/part";
 import { group2 } from "schema/group2";
-import { part_type } from "schema/part_type";
 
 export default function PartManagement() {
-  const collectionName = "part";
-
-  const partList = useSelector(
-    (state: RootState) => state.realm.database[collectionName]
-  );
+  const partList = useSelector((state: RootState) => state.realm.database.part);
 
   const partGroupDataList = useSelector(
     (state: RootState) => state.realm.database.group2
-  );
-
-  const partTypeDataList = useSelector(
-    (state: RootState) => state.realm.database.part_type
   );
 
   const partGroupNameList = partGroupDataList.map(
     (partGroup) => partGroup.group2_name
   );
 
-  const partTypeNameList = partTypeDataList.map(
-    (partType) => partType.part_type_name ?? partType.part_type_id
-  );
-
-  const [partGroup, setPartGroup] = React.useState<group2 | undefined>(
+  const [partGroup, setPartGroup] = useState<group2 | undefined>(
     partGroupDataList[0]
   );
-  const [partType, setPartType] = React.useState<part_type>();
+
+  const [partSpec1DataList, setPartSpec1DataList] = useState<string[]>([]);
+  const [partSpec2DataList, setPartSpec2DataList] = useState<string[]>([]);
+
+  const [spec1, setSpec1] = useState<string>();
+  const [spec2, setSpec2] = useState<string>();
 
   return (
     <Management
@@ -40,47 +32,93 @@ export default function PartManagement() {
       schema={partSchema}
       tableProps={{
         data: partList.filter((partData) => {
-          if (partGroup) {
-            if (partType) {
-              return (
-                partData.group2_id === partGroup.group2_id &&
-                partData.part_type_id === partType.part_type_id
-              );
-            } else {
-              return partData.group2_id === partGroup.group2_id;
-            }
-          } else if (partType) {
-            return partData.part_type_id === partType.part_type_id;
-          } else {
-            return true;
-          }
+          return partData
+            ? (partGroup ? partData.group2_id === partGroup.group2_id : true) &&
+                (spec1 ? partData.spec1 === spec1 : true) &&
+                (spec2 ? partData.spec2 === spec2 : true)
+            : false;
         }),
       }}
-      filtersProps={{
-        filters: [
-          {
-            title: "분류",
-            data: partGroupNameList,
-            defaultValue: 0,
-            onFilterChange: (props) => {
-              if (props.index !== undefined)
-                setPartGroup(partGroupDataList[props.index]);
-              else setPartGroup(undefined);
-            },
-            allowNull: true,
+      filtersProps={[
+        {
+          title: "분류",
+          data: partGroupNameList,
+          onFilterChange: (props) => {
+            setSpec1(undefined);
+            setSpec2(undefined);
+            setPartGroup(undefined);
+            setPartSpec1DataList([]);
+            setPartSpec2DataList([]);
+
+            if (props.index !== undefined) {
+              const partGroupData = partGroupDataList[props.index];
+              setPartGroup(partGroupData);
+              const partListGrouped = partList.filter(
+                (partData) => partData.group2_id === partGroupData.group2_id
+              );
+
+              setPartSpec1DataList(
+                Array.from(
+                  new Set(
+                    partListGrouped
+                      .map((partData) => partData.spec1 as string)
+                      .filter((spec1Data) => spec1Data !== "")
+                      .sort()
+                  )
+                )
+              );
+
+              setPartSpec2DataList(
+                Array.from(
+                  new Set(
+                    partListGrouped
+                      .map((partData) => partData.spec2 as string)
+                      .filter((spec2Data) => spec2Data !== "")
+                      .sort()
+                  )
+                )
+              );
+            }
           },
-          {
-            title: "형태",
-            data: partTypeNameList,
-            onFilterChange: (props) => {
-              if (props.index !== undefined)
-                setPartType(partTypeDataList[props.index]);
-              else setPartType(undefined);
-            },
-            allowNull: true,
+          allowNull: true,
+        },
+        {
+          title: "규격 1",
+          data: partSpec1DataList,
+          onFilterChange: (props) => {
+            if (props.index !== undefined) {
+              const spec1 = partSpec1DataList[props.index];
+              setSpec1(partSpec1DataList[props.index]);
+
+              const filteredPartList = partList.filter(
+                (partData) => partData.spec1 === spec1
+              );
+
+              setPartSpec2DataList(
+                Array.from(
+                  new Set(
+                    filteredPartList
+                      .map((partData) => partData.spec2 as string)
+                      .filter((spec2Data) => spec2Data !== "")
+                      .sort()
+                  )
+                )
+              );
+            } else setSpec1(undefined);
           },
-        ],
-      }}
+          allowNull: true,
+        },
+        {
+          title: "규격 2",
+          data: partSpec2DataList,
+          onFilterChange: (props) => {
+            if (props.index !== undefined)
+              setSpec2(partSpec2DataList[props.index]);
+            else setSpec2(undefined);
+          },
+          allowNull: true,
+        },
+      ]}
     />
   );
 }

@@ -25,8 +25,10 @@ export default function PartTypeManagement() {
   );
 
   const [partSpec1DataList, setPartSpec1DataList] = useState<string[]>([]);
+  const [partSpec2DataList, setPartSpec2DataList] = useState<string[]>([]);
 
   const [spec1, setSpec1] = useState<string>();
+  const [spec2, setSpec2] = useState<string>();
 
   return (
     <Management
@@ -38,63 +40,93 @@ export default function PartTypeManagement() {
             (partData) => partPriceData.part_id === partData.part_id
           );
 
-          if (!partData) return false;
-
-          if (partGroup) {
-            if (spec1) {
-              return (
-                partData.group2_id === partGroup.group2_id &&
-                partData.spec1 === spec1
-              );
-            } else {
-              return partData.group2_id === partGroup.group2_id;
-            }
-          } else if (spec1) {
-            return partData.spec1 === spec1;
-          } else {
-            return true;
-          }
+          return partData
+            ? (partGroup ? partData.group2_id === partGroup.group2_id : true) &&
+                (spec1 ? partData.spec1 === spec1 : true) &&
+                (spec2 ? partData.spec2 === spec2 : true)
+            : false;
         }),
       }}
-      filtersProps={{
-        filters: [
-          {
-            title: "분류",
-            data: partGroupNameList,
-            onFilterChange: (props) => {
-              setSpec1(undefined);
-              if (props.index !== undefined) {
-                const partGroupData = partGroupDataList[props.index];
-                setPartGroup(partGroupData);
-                const partListGrouped = partList.filter(
-                  (partData) => partData.group2_id === partGroupData.group2_id
-                );
-                const partSpec1List = partListGrouped
-                  .map((partData) => partData.spec1 as string)
-                  .filter((spec1Data) => spec1Data !== "")
-                  .sort();
-                const list = Array.from(new Set(partSpec1List));
+      filtersProps={[
+        {
+          title: "분류",
+          data: partGroupNameList,
+          onFilterChange: (props) => {
+            setSpec1(undefined);
+            setSpec2(undefined);
+            setPartGroup(undefined);
+            setPartSpec1DataList([]);
+            setPartSpec2DataList([]);
 
-                setPartSpec1DataList(list);
-              } else {
-                setPartGroup(undefined);
-                setPartSpec1DataList([]);
-              }
-            },
-            allowNull: true,
+            if (props.index !== undefined) {
+              const partGroupData = partGroupDataList[props.index];
+              setPartGroup(partGroupData);
+              const partListGrouped = partList.filter(
+                (partData) => partData.group2_id === partGroupData.group2_id
+              );
+
+              setPartSpec1DataList(
+                Array.from(
+                  new Set(
+                    partListGrouped
+                      .map((partData) => partData.spec1 as string)
+                      .filter((spec1Data) => spec1Data !== "")
+                      .sort()
+                  )
+                )
+              );
+
+              setPartSpec2DataList(
+                Array.from(
+                  new Set(
+                    partListGrouped
+                      .map((partData) => partData.spec2 as string)
+                      .filter((spec2Data) => spec2Data !== "")
+                      .sort()
+                  )
+                )
+              );
+            }
           },
-          {
-            title: "스펙 1",
-            data: partSpec1DataList,
-            onFilterChange: (props) => {
-              if (props.index !== undefined)
-                setSpec1(partSpec1DataList[props.index]);
-              else setSpec1(undefined);
-            },
-            allowNull: true,
+          allowNull: true,
+        },
+        {
+          title: "규격 1",
+          data: partSpec1DataList,
+          onFilterChange: (props) => {
+            if (props.index !== undefined) {
+              const spec1 = partSpec1DataList[props.index];
+              setSpec1(partSpec1DataList[props.index]);
+
+              const filteredPartList = partList.filter(
+                (partData) => partData.spec1 === spec1
+              );
+
+              setPartSpec2DataList(
+                Array.from(
+                  new Set(
+                    filteredPartList
+                      .map((partData) => partData.spec2 as string)
+                      .filter((spec2Data) => spec2Data !== "")
+                      .sort()
+                  )
+                )
+              );
+            } else setSpec1(undefined);
           },
-        ],
-      }}
+          allowNull: true,
+        },
+        {
+          title: "규격 2",
+          data: partSpec2DataList,
+          onFilterChange: (props) => {
+            if (props.index !== undefined)
+              setSpec2(partSpec2DataList[props.index]);
+            else setSpec2(undefined);
+          },
+          allowNull: true,
+        },
+      ]}
     />
   );
 }
