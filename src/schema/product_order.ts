@@ -1,6 +1,7 @@
 import { schemaType } from "./index";
 
 export type product_order = {
+  status?: number;
   prod_order_id: number;
   part_id: number;
   order_quantity: number;
