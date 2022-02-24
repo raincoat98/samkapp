@@ -35,6 +35,8 @@ export const bill_of_materialsSchema: schemaType = {
         key: "unit_id",
         display: "unit_name_kor",
       },
+      isAutoSet: true,
+      isReadOnly: true,
     },
     assembly_id: {
       type: "number",
