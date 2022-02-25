@@ -17,6 +17,7 @@ export const inventorySchema: schemaType = {
     inv_month: {
       type: "string",
       as: "month",
+      isAutoSet: true,
     },
     part_id: {
       type: "number",
@@ -85,6 +86,7 @@ export const inventorySchema: schemaType = {
     status: {
       type: "boolean",
       isNotNull: true,
+      isAutoSet: true,
       isDisalbePreview: true,
     },
   },
