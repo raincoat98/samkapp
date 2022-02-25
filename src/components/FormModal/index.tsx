@@ -9,6 +9,8 @@ import FormModalInput from "./FormModalInput";
 import FormModalPopup from "./FormModalPopup";
 import FormModalAlert from "./FormModalAlert";
 
+import { PopupProps } from "components/Popup";
+
 // 타입 선언
 export type formItem = {
   name: string;
@@ -29,6 +31,8 @@ export type FormModalProps = {
   }) => void;
   initialValue: Record<string, any>;
   schema: schemaType;
+  leftButton?: PopupProps["leftButton"];
+  rightButton?: PopupProps["rightButton"];
 };
 export default function FormModal(props: FormModalProps) {
   // 수정한 데이터가 저장되는 객체
@@ -161,6 +165,8 @@ export default function FormModal(props: FormModalProps) {
           props.onClose();
         }
       }}
+      leftButton={props.leftButton}
+      rightButton={props.rightButton}
     >
       <FormModalAlert
         isOpen={isFormModalAlertOpen}

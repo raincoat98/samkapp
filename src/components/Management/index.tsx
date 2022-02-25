@@ -59,6 +59,7 @@ export default function Management(props: {
   const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
   // 현재 수정중인 데이터
   const [selected, setSelected] = React.useState<any>();
+  const [selectedRowIndex, setSelectedRowIndex] = React.useState<number>(0);
   // 폼모달 모드
   const [modalMode, setModalMode] = React.useState<formModalModeType>("insert");
 
@@ -200,7 +201,10 @@ export default function Management(props: {
     onRowClick: (row) => {
       setModalMode("update");
       setSelected(row.original as any);
+      console.log(row.original);
+
       modalDisclosure.onOpen();
+      setSelectedRowIndex(row.index);
     },
     stateReducer: React.useCallback(
       (newState: { selectedRowIds: Record<number, boolean> }, action: any) => {
@@ -282,6 +286,26 @@ export default function Management(props: {
         onSave={onFormModalSave}
         onOpen={modalDisclosure.onOpen}
         onClose={modalDisclosure.onClose}
+        leftButton={{
+          isDisabled: selectedRowIndex < 1,
+          onClick: () => {
+            const index = selectedRowIndex - 1;
+            if (selectedRowIndex !== undefined) {
+              setSelectedRowIndex(index);
+              setSelected(tableProps.data[index]);
+            }
+          },
+        }}
+        rightButton={{
+          isDisabled: selectedRowIndex >= tableProps.data.length - 1,
+          onClick: () => {
+            const index = selectedRowIndex + 1;
+            if (selectedRowIndex !== undefined) {
+              setSelectedRowIndex(index);
+              setSelected(tableProps.data[index]);
+            }
+          },
+        }}
       />
 
       <Dialog

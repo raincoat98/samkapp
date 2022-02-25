@@ -11,7 +11,7 @@ import { COLLECTION_NAME_TYPE } from "schema";
 import { formModalModeType } from "./index";
 import WorkOrderPrint from "components/Print/WorkOrder";
 import TransferOutPrint from "components/Print/TransferOut";
-import Popup from "components/Popup";
+import Popup, { PopupProps } from "components/Popup";
 import PrintPopup from "components/Print/PrintPopup";
 
 export default function FormModalPopup(props: {
@@ -27,6 +27,8 @@ export default function FormModalPopup(props: {
   onClose: () => void;
   onSubmit: () => void;
   children: ReactNode;
+  leftButton?: PopupProps["leftButton"];
+  rightButton?: PopupProps["rightButton"];
 }) {
   // 폼 아이디
   const formId = "modal-form";
@@ -47,23 +49,8 @@ export default function FormModalPopup(props: {
         title={props.title}
         isOpen={props.isOpen}
         onClose={props.onClose}
-        children={
-          <chakra.form
-            ref={formEl}
-            id={formId}
-            onSubmit={(event) => {
-              event.preventDefault();
-              props.onSubmit();
-              if (props.mode === "insert" && isKeepOpen) {
-                formEl.current?.reset();
-                props.onOpen();
-              }
-            }}
-            action=""
-          >
-            {props.children}
-          </chakra.form>
-        }
+        leftButton={props.leftButton}
+        rightButton={props.rightButton}
         footerChildren={
           <>
             {/* 수정 화면일 때만 출력 버튼을 표시 */}
@@ -101,7 +88,23 @@ export default function FormModalPopup(props: {
             </ButtonGroup>
           </>
         }
-      ></Popup>
+      >
+        <chakra.form
+          ref={formEl}
+          id={formId}
+          onSubmit={(event) => {
+            event.preventDefault();
+            props.onSubmit();
+            if (props.mode === "insert" && isKeepOpen) {
+              formEl.current?.reset();
+              props.onOpen();
+            }
+          }}
+          action=""
+        >
+          {props.children}
+        </chakra.form>
+      </Popup>
 
       <PrintPopup
         isOpen={printPopupState.isOpen}
