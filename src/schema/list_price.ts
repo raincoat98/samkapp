@@ -57,7 +57,6 @@ export const list_priceSchema: schemaType = {
     },
     list_price: {
       type: "number",
-      default: true,
       isNotNull: true,
     },
     start_date: {
