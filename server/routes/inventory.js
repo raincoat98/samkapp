@@ -41,10 +41,13 @@ router.get("/update", (req, res) => {
 
 // 삭제
 router.delete("/delete", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 재고 삭제");
+  const sql = `CALL usp_inventory_DEL (${new Array(3).fill("?").toString()})`;
+  const params = [
+    req.query["inv_month"],    
+    req.query["part_id"],
+    req.query["warehouse_id"],
+  ];
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;
