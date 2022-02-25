@@ -32,6 +32,7 @@ export const product_orderSchema: schemaType = {
           value: 2,
         },
       ],
+      isAutoSet: true,
     },
     prod_order_id: {
       type: "number",

@@ -11,14 +11,13 @@ router.get("/all", (req, res) => {
 
 // 등록
 router.get("/create", (req, res) => {
-  const sql = `CALL usp_product_order_INS (${new Array(6)
+  const sql = `CALL usp_product_order_INS (${new Array(5)
     .fill("?")
     .toString()})`;
   const params = [
     req.query["part_id"],
     req.query["order_quantity"],
     req.query["work_order_id"],
-    req.query["status"],
     req.query["remark"],
     req.query["due_date"],
   ];
