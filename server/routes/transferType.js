@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express();
-const { runQuery } = require("./index");
+const { runProcedure } = require("./index");
 
 // 이동 형태
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "SELECT * FROM tb_transfer_type";
+  const sql = "CALL usp_transfer_type_LST ()";
 
-  runQuery(res, sql);
+  runProcedure(res, sql);
 });
 
 // 등록
@@ -28,9 +28,11 @@ router.get("/update", (req, res) => {
 
 // 삭제
 router.delete("/delete", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 이동 형태 삭제");
+  const sql = `CALL usp_transfer_type_DEL (${new Array(1).fill("?").toString()})`;
+  const params = [
+    req.query["transfer_type_id"],
+  ];
+
+  runProcedure(res, sql, params);
 });
 module.exports = router;
