@@ -311,7 +311,10 @@ export default function Management(props: {
       <Dialog
         isOpen={dialogDisclosure.isOpen}
         onClose={dialogDisclosure.onClose}
-        onConfirm={deleteSelected}
+        onConfirm={() => {
+          deleteSelected();
+          dialogDisclosure.onClose();
+        }}
         headerChildren="삭제 확인"
       >
         선택한 {checkedRows.length}개의 항목을 삭제하시겠습니까?
