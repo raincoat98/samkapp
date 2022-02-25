@@ -17,6 +17,7 @@ export const inventorySchema: schemaType = {
     inv_month: {
       type: "string",
       as: "month",
+      isReadOnly: true,
       isAutoSet: true,
     },
     part_id: {
@@ -63,6 +64,7 @@ export const inventorySchema: schemaType = {
       type: "number",
       isNotNull: true,
       isPrimary: true,
+      isAutoSet: true,
       foreign: {
         table: "warehouse",
         key: "warehouse_id",

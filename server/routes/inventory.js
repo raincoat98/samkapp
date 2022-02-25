@@ -4,18 +4,16 @@ const { runProcedure } = require("./index");
 
 // 재고 조회
 router.get("/all", (req, res) => {
-  const sql = `CALL usp_inventory_LST (${new Array(2).fill("?").toString()})`;
-  const params = [req.query["part_name"], req.query["warehouse_name"]];
+  const sql = "CALL usp_inventory_LST ()";
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 등록
 router.get("/create", (req, res) => {
-  const sql = `CALL usp_inventory_INS (${new Array(6).fill("?").toString()})`;
+  const sql = `CALL usp_inventory_INS (${new Array(5).fill("?").toString()})`;
   const params = [
     req.query["part_id"],
-    req.query["warehouse_id"],
     req.query["lot_no"],
     req.query["quantity"],
     req.query["shelf"],
