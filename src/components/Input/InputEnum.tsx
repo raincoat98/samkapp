@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   useDisclosure,
   FormControl,
@@ -31,9 +31,23 @@ export default function InputEnum(props: {
 }) {
   const popoverDisclosure = useDisclosure();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   let dataList = [...props.enumList];
   let defaultValueIndex: number | undefined;
   const key = props.displayKey ?? props.searchKey;
+
+  const [valueIndex, setValueIndex] = useState<any>();
+  useEffect(() => {
+    // 기존값 검색
+    if (props.defaultValue !== undefined) {
+      dataList.find((data, index) => {
+        if (data[props.searchKey] === props.defaultValue) {
+          setValueIndex(index);
+          return true;
+        } else return false;
+      });
+    }
+  }, [dataList, defaultValueIndex, props.defaultValue, props.searchKey]);
 
   // 엘리먼트 ref
   const inputEl = useRef<HTMLInputElement>(null);
@@ -49,16 +63,6 @@ export default function InputEnum(props: {
     dataList = dataList.filter(
       (enumData) => enumData[filterKey] === filterData
     );
-  }
-
-  // 기존값 검색
-  if (props.defaultValue !== undefined) {
-    dataList.find((data, index) => {
-      if (data[props.searchKey] === props.defaultValue) {
-        defaultValueIndex = index;
-        return true;
-      } else return false;
-    });
   }
 
   const fuseKeys: string[] = [props.searchKey];
@@ -145,12 +149,12 @@ export default function InputEnum(props: {
       ) : (
         <Select
           ref={selectEl}
-          onChange={(event) =>
-            props.onChange(
-              dataList[Number(event.target.value)][props.searchKey]
-            )
-          }
-          defaultValue={defaultValueIndex}
+          onChange={(event) => {
+            const index = Number(event.target.value);
+            setValueIndex(index);
+            props.onChange(dataList[index][props.searchKey]);
+          }}
+          value={valueIndex}
           placeholder="없음"
         >
           {dataList.map((enumItem, index) => (

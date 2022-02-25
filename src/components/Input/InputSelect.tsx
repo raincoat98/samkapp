@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { selectType } from "schema";
 import { Select } from "@chakra-ui/react";
 
@@ -6,13 +7,19 @@ export default function InputSelect(props: {
   selectList: selectType[];
   defaultValue?: any;
 }) {
+  const [value, setValue] = useState<string>();
+
+  useEffect(() => setValue(props.defaultValue), [props]);
+
   return (
     <Select
       onChange={(event) => {
-        const value = event.target.value === "" ? null : event.target.value;
+        const value =
+          event.target.value === "" ? undefined : event.target.value;
+        setValue(value);
         props.onChange(value);
       }}
-      defaultValue={props.defaultValue}
+      value={value}
       placeholder="없음"
     >
       {props.selectList.map((selectItem, index) => (
