@@ -92,11 +92,13 @@ export const transfer_outSchema: schemaType = {
       type: "number",
       isAutoSet: true,
       isReadOnly: true,
+      isDisalbePreview: true,
     },
     release_amont: {
       type: "number",
       isAutoSet: true,
       isReadOnly: true,
+      isDisalbePreview: true,
     },
     warehouse_id: {
       type: "number",
@@ -106,6 +108,7 @@ export const transfer_outSchema: schemaType = {
         display: "warehouse_name",
       },
       isNotNull: true,
+      isDisalbePreview: true,
     },
     work_order_id: {
       type: "number",
@@ -116,6 +119,7 @@ export const transfer_outSchema: schemaType = {
       },
       isAutoSet: true,
       isReadOnly: true,
+      isDisalbePreview: true,
     },
   },
 };
