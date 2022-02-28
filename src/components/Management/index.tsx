@@ -19,7 +19,14 @@ import TableComponent, { TableComponentProps } from "components/TableComponent";
 import { ReducerTableState, TableInstance } from "react-table";
 
 // chakra-ui
-import { useDisclosure, Flex, HStack } from "@chakra-ui/react";
+import {
+  useDisclosure,
+  Flex,
+  Box,
+  HStack,
+  VStack,
+  Badge,
+} from "@chakra-ui/react";
 
 // 관련 컴포넌트
 import PageContainer from "components/PageContainer";
@@ -120,26 +127,58 @@ export default function Management(props: {
         case "number": {
           // 테이블 뷰에서 외부 데이터베이스 테이블 값 가져오기
           if (property.foreign) {
-            accessor = (originalRow: Record<string, any>) => {
-              try {
-                const foreign = property.foreign;
-                if (foreign?.table) {
-                  const dataList = [...database[foreign.table]];
+            const foreign = property.foreign;
+            const dataList = [...database[foreign.table]];
+
+            // 품목
+            if (
+              property.foreign.table === "part" &&
+              property.foreign.key === "part_id"
+            ) {
+              accessor = (originalRow: Record<string, any>) => {
+                try {
                   const item: any = dataList.find((data: any) => {
                     return data[foreign.key] === originalRow[key];
                   });
 
-                  if (item) {
-                    return foreign.display
-                      ? item[foreign.display]
-                      : item[foreign.key];
-                  }
+                  return (
+                    <VStack>
+                      <Box>{item.part_name}</Box>
+                      <HStack spacing={1}>
+                        {item.spec1 && <Badge>{item.spec1}</Badge>}
+                        {item.spec2 && <Badge>{item.spec2}</Badge>}
+                        {item.spec3 && <Badge>{item.spec3}</Badge>}
+                        {item.spec4 && <Badge>{item.spec4}</Badge>}
+                        {item.spec5 && <Badge>{item.spec5}</Badge>}
+                      </HStack>
+                    </VStack>
+                  );
+                } catch (error) {
+                  console.error(error);
+                  return "잘못된 값";
                 }
-              } catch (error) {
-                console.error(error);
-                return "잘못된 값";
-              }
-            };
+              };
+              // 그외
+            } else {
+              accessor = (originalRow: Record<string, any>) => {
+                try {
+                  if (foreign?.table) {
+                    const item: any = dataList.find((data: any) => {
+                      return data[foreign.key] === originalRow[key];
+                    });
+
+                    if (item) {
+                      return foreign.display
+                        ? item[foreign.display]
+                        : item[foreign.key];
+                    }
+                  }
+                } catch (error) {
+                  console.error(error);
+                  return "잘못된 값";
+                }
+              };
+            }
           } else accessor = key;
           break;
         }

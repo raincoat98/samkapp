@@ -2,11 +2,6 @@ import { schemaType } from "./index";
 
 export type list_price = {
   part_id: number;
-  spec1?: string;
-  spec2?: string;
-  spec3?: string;
-  spec4?: string;
-  spec5?: string;
   list_price: number;
   start_date: string;
   end_date: string;
@@ -24,36 +19,6 @@ export const list_priceSchema: schemaType = {
         key: "part_id",
         display: "part_name",
       },
-    },
-    spec1: {
-      type: "string",
-      isReadOnly: true,
-      isAutoSet: true,
-      isPreviewOnly: true,
-    },
-    spec2: {
-      type: "string",
-      isReadOnly: true,
-      isAutoSet: true,
-      isPreviewOnly: true,
-    },
-    spec3: {
-      type: "string",
-      isReadOnly: true,
-      isAutoSet: true,
-      isPreviewOnly: true,
-    },
-    spec4: {
-      type: "string",
-      isReadOnly: true,
-      isAutoSet: true,
-      isPreviewOnly: true,
-    },
-    spec5: {
-      type: "string",
-      isReadOnly: true,
-      isAutoSet: true,
-      isPreviewOnly: true,
     },
     list_price: {
       type: "number",

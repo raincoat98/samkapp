@@ -16,6 +16,8 @@ export default function TableDataCell(props: {
       {...props.cell.getCellProps()}
       onClick={props.onClick}
       padding={tablePadding}
+      display="flex"
+      justifyContent="center"
       _hover={{
         whiteSpace: "break-spaces",
       }}
