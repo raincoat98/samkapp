@@ -34,7 +34,7 @@ export default function PageTitle(props: {
       position="sticky"
       zIndex="sticky"
       top={0}
-      padding="3"
+      padding={2}
       bgColor={bgColor}
       borderBottomWidth={1}
       borderColor={borColor}
@@ -50,7 +50,7 @@ export default function PageTitle(props: {
             aria-label="사이드바 전환"
           />
         </Tooltip>
-        <Heading as="h3" size="lg">
+        <Heading as="h4" fontSize={"2xl"}>
           {title}
         </Heading>
         <Spacer />
