@@ -325,26 +325,34 @@ export default function Management(props: {
         onSave={onFormModalSave}
         onOpen={modalDisclosure.onOpen}
         onClose={modalDisclosure.onClose}
-        leftButton={{
-          isDisabled: selectedRowIndex < 1,
-          onClick: () => {
-            const index = selectedRowIndex - 1;
-            if (selectedRowIndex !== undefined) {
-              setSelectedRowIndex(index);
-              setSelected(tableProps.data[index]);
-            }
-          },
-        }}
-        rightButton={{
-          isDisabled: selectedRowIndex >= tableProps.data.length - 1,
-          onClick: () => {
-            const index = selectedRowIndex + 1;
-            if (selectedRowIndex !== undefined) {
-              setSelectedRowIndex(index);
-              setSelected(tableProps.data[index]);
-            }
-          },
-        }}
+        leftButton={
+          modalMode === "update"
+            ? {
+                isDisabled: selectedRowIndex < 1,
+                onClick: () => {
+                  const index = selectedRowIndex - 1;
+                  if (selectedRowIndex !== undefined) {
+                    setSelectedRowIndex(index);
+                    setSelected(tableProps.data[index]);
+                  }
+                },
+              }
+            : undefined
+        }
+        rightButton={
+          modalMode === "update"
+            ? {
+                isDisabled: selectedRowIndex >= tableProps.data.length - 1,
+                onClick: () => {
+                  const index = selectedRowIndex + 1;
+                  if (selectedRowIndex !== undefined) {
+                    setSelectedRowIndex(index);
+                    setSelected(tableProps.data[index]);
+                  }
+                },
+              }
+            : undefined
+        }
       />
 
       <Dialog
