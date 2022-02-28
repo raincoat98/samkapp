@@ -17,13 +17,13 @@ import {
 } from "react-table";
 import {
   useColorModeValue,
-  useMediaQuery,
   Table,
   Thead,
   Tbody,
   Tr,
   Flex,
   Box,
+  HStack,
 } from "@chakra-ui/react";
 import { borderColor } from "theme";
 
@@ -40,9 +40,6 @@ export type TableComponentProps = {
 };
 
 export default function TableComponent(props: TableComponentProps) {
-  // 가로모드
-  const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
   // 외곽선 색상
   const borderColorValue = useColorModeValue(
     borderColor.light,
@@ -209,20 +206,13 @@ export default function TableComponent(props: TableComponentProps) {
     component: {
       box: (
         <Flex flexDir="column" width="100%" height="100%" overflow="auto">
+          <HStack p={2} borderColor={borderColorValue}>
+            {searchElement}
+            {paginationElement}
+          </HStack>
           <Box flex="1" overflow="auto">
             {tableElement}
           </Box>
-          <Flex
-            flexDir={isLandscape ? "row" : "column"}
-            p={3}
-            borderColor={borderColorValue}
-            borderTopWidth={1}
-          >
-            <Box flex="1" pr={isLandscape ? 3 : 0} pb={isLandscape ? 0 : 3}>
-              {searchElement}
-            </Box>
-            {paginationElement}
-          </Flex>
         </Flex>
       ),
       search: searchElement,

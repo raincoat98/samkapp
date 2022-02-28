@@ -14,7 +14,7 @@ export default function TableSearch(props: {
   }, 200);
 
   return (
-    <InputGroup>
+    <InputGroup size={"sm"}>
       <InputLeftElement pointerEvents="none" children={<Icon as={search} />} />
       <Input
         value={value || ""}

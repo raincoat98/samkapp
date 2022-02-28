@@ -18,7 +18,7 @@ export default function ManagementTableFilter(
   return (
     <FormControl display="flex" flex={1} alignItems="center">
       {props.title && (
-        <FormLabel whiteSpace={"pre"} margin={1}>
+        <FormLabel whiteSpace={"pre"} margin={0}>
           {props.title}
           {": "}
         </FormLabel>
@@ -33,6 +33,7 @@ export default function ManagementTableFilter(
         }}
         placeholder={props.allowNull ? "전체" : undefined}
         fontWeight={"bold"}
+        size={"sm"}
       >
         {props.data.map((tab, index) => (
           <option key={index} value={index}>

@@ -390,7 +390,7 @@ export default function Management(props: {
           {tabProps && <TableTabs {...tabProps} />}
 
           {filtersProps && (
-            <HStack padding={1} spacing={1}>
+            <HStack paddingX={2} paddingTop={2} spacing={2}>
               {filtersProps.map((filter, index) => (
                 <TableFilter {...filter} key={index} />
               ))}
