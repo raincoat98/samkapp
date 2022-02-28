@@ -19,6 +19,7 @@ export default function InputPartId(props: {
   const database = useSelector((state: RootState) => state.realm.database);
   const partList = database.part;
   const group2List = database.group2;
+  const invList = database.inventory;
 
   // 필터된 품목 리스트
   const [filteredPartList1, setFilteredPartList1] = React.useState<part[]>([]);
@@ -427,6 +428,16 @@ export default function InputPartId(props: {
           )}
         </Flex>
       )}
+
+      {
+        <Box marginTop={1} marginLeft={2}>
+          현재 재고:{" "}
+          {partItemId
+            ? invList.find((invData) => invData.part_id === partItemId)
+                ?.quantity
+            : "정보 없음"}
+        </Box>
+      }
     </Box>
   );
 }
