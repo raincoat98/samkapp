@@ -2,10 +2,10 @@ import { schemaType } from "./index";
 import moment from "moment";
 
 export type transfer_out = {
+  priorities: number;
   transfer_out_id: number;
   transfer_date: string;
   transfer_type_id: string;
-  priorities: number;
   plan_date?: string;
   customer_id: number;
   part_id: number;
@@ -19,6 +19,24 @@ export type transfer_out = {
 export const transfer_outSchema: schemaType = {
   name: "transfer_out",
   properties: {
+    priorities: {
+      type: "number",
+      default: 0,
+      select: [
+        {
+          name: "보통",
+          value: 0,
+        },
+        {
+          name: "긴급",
+          value: 1,
+        },
+        {
+          name: "기타",
+          value: 2,
+        },
+      ],
+    },
     transfer_out_id: {
       type: "number",
       isPrimary: true,
@@ -42,24 +60,6 @@ export const transfer_outSchema: schemaType = {
         display: "transfer_type_name",
         filter: { transfer_flag: 1 },
       },
-    },
-    priorities: {
-      type: "number",
-      default: 0,
-      select: [
-        {
-          name: "보통",
-          value: 0,
-        },
-        {
-          name: "긴급",
-          value: 1,
-        },
-        {
-          name: "기타",
-          value: 2,
-        },
-      ],
     },
     plan_date: {
       type: "string",
