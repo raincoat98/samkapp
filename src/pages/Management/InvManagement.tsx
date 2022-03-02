@@ -6,16 +6,19 @@ import { inventorySchema } from "schema/inventory";
 import { group2 } from "schema/group2";
 
 export default function InvManagement() {
-  const dataList = useSelector(
-    (state: RootState) => state.realm.database.inventory
+  const database = useSelector((state: RootState) => state.realm.database);
+  const inventoryDataList = database.inventory;
+  const partList = database.part;
+  const partGroupDataList = database.group2;
+
+  const [stockFilter, setStockFilter] = useState<
+    "all" | "in_stock" | "out_of_stock"
+  >("all");
+  const inStockInventoryDataList = inventoryDataList.filter(
+    (invData) => invData.quantity !== 0
   );
-
-  const [inventoryDataList, setInventoryDataList] = useState(dataList);
-
-  const partList = useSelector((state: RootState) => state.realm.database.part);
-
-  const partGroupDataList = useSelector(
-    (state: RootState) => state.realm.database.group2
+  const noStockInventoryDataList = inventoryDataList.filter(
+    (invData) => invData.quantity === 0
   );
 
   const partGroupNameList = partGroupDataList.map(
@@ -35,7 +38,12 @@ export default function InvManagement() {
       title="재고 현황"
       schema={inventorySchema}
       tableProps={{
-        data: inventoryDataList.filter((inventoryData) => {
+        data: (stockFilter === "all"
+          ? inventoryDataList
+          : stockFilter === "in_stock"
+          ? inStockInventoryDataList
+          : noStockInventoryDataList
+        ).filter((inventoryData) => {
           const partData = partList.find(
             (partData) => inventoryData.part_id === partData.part_id
           );
@@ -54,19 +62,15 @@ export default function InvManagement() {
           onFilterChange: (props) => {
             switch (props.index) {
               case 0: {
-                setInventoryDataList(
-                  dataList.filter((item) => item.quantity !== 0)
-                );
+                setStockFilter("in_stock");
                 break;
               }
               case 1: {
-                setInventoryDataList(
-                  dataList.filter((item) => item.quantity === 0)
-                );
+                setStockFilter("out_of_stock");
                 break;
               }
               default: {
-                setInventoryDataList(dataList);
+                setStockFilter("all");
                 break;
               }
             }
