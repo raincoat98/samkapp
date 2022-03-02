@@ -20,6 +20,7 @@ export default function InputPartId(props: {
   const partList = database.part;
   const group2List = database.group2;
   const invList = database.inventory;
+  const warehousetList = database.warehouse;
 
   // 필터된 품목 리스트
   const [filteredPartList1, setFilteredPartList1] = React.useState<part[]>([]);
@@ -89,6 +90,7 @@ export default function InputPartId(props: {
     }
   }, [group2List, partList, props.defaultValue]);
 
+  // 특정 값이 바뀌는 것을 감지
   React.useEffect(() => {
     // 최초로 발생하는 이벤트는 초기화 작업중에 발생하는 이벤트이기 때문에 넘김
     if (!isInit) setIsInit(true);
@@ -431,11 +433,20 @@ export default function InputPartId(props: {
 
       {
         <Box marginTop={1} marginLeft={2}>
-          현재 재고:{" "}
-          {partItemId
-            ? invList.find((invData) => invData.part_id === partItemId)
-                ?.quantity
-            : "정보 없음"}
+          {invList.map((invData, index) => {
+            if (invData.part_id === partItemId) {
+              const warehouse = warehousetList.find(
+                (warehoustData) =>
+                  warehoustData.warehouse_id === invData.warehouse_id
+              );
+
+              return (
+                <Box key={index}>
+                  {`${warehouse?.warehouse_name}: ${invData.quantity}`}
+                </Box>
+              );
+            } else return "";
+          })}
         </Box>
       }
     </Box>
