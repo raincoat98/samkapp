@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const { runProcedure, runQuery } = require("./index");
+const { runProcedure } = require("./index");
 
 // 품목
 // 조회
@@ -63,10 +63,11 @@ router.get("/update", (req, res) => {
 
 // 품목 삭제
 router.delete("/delete", (req, res) => {
-  const sql = "DELETE FROM tb_part WHERE part_id=?";
-  const params = [req.query["part_id"]];
-
-  runQuery(res, sql, params);
+  const sql = `CALL usp_part_DEL (${new Array(1).fill("?").toString()})`;
+  const params = [
+    req.query["part_id"], // NOT NULL
+  ];
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;
