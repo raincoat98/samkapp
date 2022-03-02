@@ -14,7 +14,11 @@ export default function SpinnerComponent() {
   const progress = useSelector((state: RootState) => state.realm.progress);
 
   return (
-    <Modal isOpen={!!progress} onClose={() => {}} isCentered={true}>
+    <Modal
+      isOpen={progress !== undefined && progress.isBackgroundWork !== true}
+      onClose={() => {}}
+      isCentered={true}
+    >
       <ModalOverlay />
       <ModalContent
         background="none"

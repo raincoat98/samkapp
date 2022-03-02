@@ -66,6 +66,7 @@ type database = {
 type job = {
   name: string;
   params?: any;
+  isBackgroundWork?: boolean;
 };
 
 export type RealmState = {
@@ -189,8 +190,15 @@ export const getData = createAsyncThunk(
     let data: dataType[] = [];
 
     try {
-      if (!props.isBackground)
-        dispatch(setProgress({ progress: { name: "getData", params: props } }));
+      dispatch(
+        setProgress({
+          progress: {
+            name: "getData",
+            params: props,
+            isBackgroundWork: props.isBackground,
+          },
+        })
+      );
 
       if (props.collectionName) {
         let route = props.collectionName as string;
