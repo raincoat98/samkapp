@@ -41,13 +41,13 @@ export const inventorySchema: schemaType = {
         display: "warehouse_name",
       },
     },
-    lot_no: {
-      type: "number",
-    },
     quantity: {
       type: "number",
       default: 0,
       isNotNull: true,
+    },
+    lot_no: {
+      type: "number",
     },
     shelf: {
       type: "string",

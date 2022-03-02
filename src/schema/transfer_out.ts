@@ -51,21 +51,6 @@ export const transfer_outSchema: schemaType = {
       isAutoSet: true,
       isReadOnly: true,
     },
-    transfer_type_id: {
-      type: "string",
-      isNotNull: true,
-      foreign: {
-        table: "transfer_type",
-        key: "transfer_type_id",
-        display: "transfer_type_name",
-        filter: { transfer_flag: 1 },
-      },
-    },
-    plan_date: {
-      type: "string",
-      as: "date",
-      default: moment(new Date()).format("YYYY-MM-DD"),
-    },
     customer_id: {
       type: "number",
       isNotNull: true,
@@ -87,6 +72,21 @@ export const transfer_outSchema: schemaType = {
     quantity: {
       type: "number",
       isNotNull: true,
+    },
+    transfer_type_id: {
+      type: "string",
+      isNotNull: true,
+      foreign: {
+        table: "transfer_type",
+        key: "transfer_type_id",
+        display: "transfer_type_name",
+        filter: { transfer_flag: 1 },
+      },
+    },
+    plan_date: {
+      type: "string",
+      as: "date",
+      default: moment(new Date()).format("YYYY-MM-DD"),
     },
     unit_price: {
       type: "number",
