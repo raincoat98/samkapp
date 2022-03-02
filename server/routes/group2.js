@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const { runProcedure, runQuery } = require("./index");
+const { runProcedure } = require("./index");
 
 // 품목 분류
 // 조회
@@ -47,10 +47,11 @@ router.get("/update", (req, res) => {
 
 // 품목 분류 삭제
 router.delete("/delete", (req, res) => {
-  const sql = "DELETE FROM tb_group2 WHERE group2_id=?";
-  const params = [req.query["group2_id"]];
+  const sql = "CALL usp_group_DEL(?)";
+  const params = [req.query["group2_id"]
+  ];
 
-  runQuery(res, sql, params);
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;

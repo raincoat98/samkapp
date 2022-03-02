@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const { runProcedure, runQuery } = require("./index");
+const { runProcedure } = require("./index");
 
 // 거래처
 // 조회
@@ -68,10 +68,10 @@ router.get("/update", (req, res) => {
 
 // 삭제
 router.delete("/delete", (req, res) => {
-  const sql = "DELETE FROM tb_customer WHERE customer_id=?";
+  const sql = "CALL usp_customer_DEL(?)";
   const params = [req.query["customer_id"]];
 
-  runQuery(res, sql, params);
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;
