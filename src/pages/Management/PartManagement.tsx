@@ -16,9 +16,7 @@ export default function PartManagement() {
     (partGroup) => partGroup.group2_name
   );
 
-  const [partGroup, setPartGroup] = useState<group2 | undefined>(
-    partGroupDataList[0]
-  );
+  const [partGroup, setPartGroup] = useState<group2 | undefined>();
 
   const [partSpec1DataList, setPartSpec1DataList] = useState<string[]>([]);
   const [partSpec2DataList, setPartSpec2DataList] = useState<string[]>([]);
