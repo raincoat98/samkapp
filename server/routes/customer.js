@@ -5,14 +5,9 @@ const { runProcedure } = require("./index");
 // 거래처
 // 조회
 router.get("/all", (req, res) => {
-  const sql = `CALL usp_customer_LST (${new Array(3).fill("?").toString()})`;
-  const params = [
-    req.query["customer_name"],
-    req.query["ceo_name"],
-    req.query["addr_name"],
-  ];
+  const sql = `CALL usp_customer_LST ()`;
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 등록

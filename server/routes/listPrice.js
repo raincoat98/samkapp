@@ -5,10 +5,9 @@ const { runProcedure } = require("./index");
 // 품목 가격
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_list_price_LST(?)";
-  const params = [req.query["part_name"]];
+  const sql = "CALL usp_list_price_LST()";
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 등록

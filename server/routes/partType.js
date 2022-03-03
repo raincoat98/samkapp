@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express();
-const { runQuery } = require("./index");
+const { runProcedure, runQuery } = require("./index");
 
 // 품목 형태 조회
 router.get("/all", (req, res) => {
-  const sql = "SELECT part_type_id, part_type_name, mod_date FROM tb_part_type";
+  const sql = "CALL usp_part_type_LST ()";
 
-  runQuery(res, sql);
+  runProcedure(res, sql);
 });
 
 // 품목 형태 등록

@@ -4,14 +4,9 @@ const { runProcedure } = require("./index");
 
 // 작업지시 조회
 router.get("/all", (req, res) => {
-  const sql = `CALL usp_work_order_LST (${new Array(3).fill("?").toString()})`;
-  const params = [
-    req.query["mod_date"],
-    req.query["part_id"],
-    req.query["customer_id"],
-  ];
+  const sql = `CALL usp_work_order_LST ()`;
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 작업지시 등록

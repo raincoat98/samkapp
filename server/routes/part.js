@@ -5,10 +5,9 @@ const { runProcedure } = require("./index");
 // 품목
 // 조회
 router.get("/all", (req, res) => {
-  const sql = "CALL usp_part_LST (?)";
-  const params = [req.query["group_id"]];
+  const sql = "CALL usp_part_LST ()";
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 품목 등록

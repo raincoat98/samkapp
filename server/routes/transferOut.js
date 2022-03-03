@@ -5,16 +5,9 @@ const { runProcedure } = require("./index");
 // 출고
 // 조회
 router.get("/all", (req, res) => {
-  const sql = `CALL usp_transfer_out_LST (${new Array(3)
-    .fill("?")
-    .toString()})`;
-  const params = [
-    req.query["transfer_type_id"],
-    req.query["part_id"],
-    req.query["warehouse_id"],
-  ];
+  const sql = `CALL usp_transfer_out_LST ()`;
 
-  runProcedure(res, sql, params);
+  runProcedure(res, sql);
 });
 
 // 등록
