@@ -81,6 +81,7 @@ export default function FormModalInput(props: {
           <InputNumber
             onChange={(value) => props.onChange(value)}
             defaultValue={props.defaultValue ?? property.default}
+            isDisabled={props.isDisabled}
           />
         );
         break;

@@ -8,12 +8,18 @@ import {
   AiOutlineDesktop,
   AiOutlineSearch,
   AiOutlineInfoCircle,
-  AiOutlinePlusCircle,
-  AiFillPlusCircle,
-  AiOutlineMinusCircle,
-  AiFillMinusCircle,
   AiFillPrinter,
   AiFillDelete,
+
+  // 플러스
+  AiOutlinePlus,
+  AiOutlinePlusCircle,
+  AiFillPlusCircle,
+
+  // 마이너스
+  AiOutlineMinus,
+  AiOutlineMinusCircle,
+  AiFillMinusCircle,
 
   // 화살표
   AiOutlineCaretDown,
@@ -77,9 +83,13 @@ export const bussiness = IoBusinessOutline;
 export const fax = AiFillPrinter;
 export const phone = FaPhoneAlt;
 
+// 플러스
+export const plusOutline = AiOutlinePlus;
 export const plus = AiOutlinePlusCircle;
 export const plusFill = AiFillPlusCircle;
 
+// 마이너스
+export const minusOutline = AiOutlineMinus;
 export const minus = AiOutlineMinusCircle;
 export const minusFill = AiFillMinusCircle;
 
