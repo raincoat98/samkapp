@@ -34,7 +34,8 @@ export default function App() {
 
   return (
     <Flex
-      fontFamily="맑은 고딕, 나눔고딕"
+      fontFamily={`"Pretendard Variable", "나눔고딕", "맑은 고딕", "-apple-system", "Fira Sans", "Droid Sans", "Helvetica Neue", "sans-serif"`}
+      fontWeight="medium"
       width="100%"
       height="100vh"
       flexDir="column"

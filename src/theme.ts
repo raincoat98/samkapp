@@ -89,7 +89,7 @@ const components: ThemeComponents = {
     baseStyle: (props) => ({
       fontWeight: "bold",
       _disabled: {
-        fontWeight: "normal",
+        fontWeight: "meduim",
         opacity: 0.7,
       },
     }),
