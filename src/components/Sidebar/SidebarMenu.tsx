@@ -10,11 +10,12 @@ export default function SidebarMenu(props: { onClose: () => void }) {
     user.privilege === 10 ? adminSidebarConfig : sidebarConfig;
 
   return (
-    <Center flex="1" overflow="auto">
+    <Center flex="1" paddingY={2} overflow="auto">
       <Stack
         as={ButtonGroup}
         width="100%"
         spacing="0"
+        margin="auto"
         paddingX={1}
         variant="ghost"
       >
