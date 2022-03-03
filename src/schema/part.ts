@@ -114,6 +114,7 @@ export const partSchema: schemaType = {
       type: "boolean",
       default: true,
       isDisalbePreview: true,
+      isAutoSet: true,
     },
   },
 };

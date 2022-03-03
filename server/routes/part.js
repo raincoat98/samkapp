@@ -12,7 +12,7 @@ router.get("/all", (req, res) => {
 
 // 품목 등록
 router.get("/create", (req, res) => {
-  const sql = `CALL usp_part_INS (${new Array(15).fill("?").toString()})`;
+  const sql = `CALL usp_part_INS (${new Array(14).fill("?").toString()})`;
   const params = [
     req.query["part_name"], // NOT NULL
     req.query["spec1"],
@@ -28,7 +28,6 @@ router.get("/create", (req, res) => {
     req.query["standard_cost"],
     req.query["list_price"],
     req.query["remark"],
-    req.query["use_yn"], // NOT NULL
   ];
 
   runProcedure(res, sql, params);
