@@ -9,7 +9,7 @@ export type SystemState = {
 
 const initialState: SystemState = {
   isSidebarOpen: true,
-  appName: "SMES",
+  appName: "샘터 재고관리 시스템",
   logo: logo,
 };
 
