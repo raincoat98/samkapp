@@ -71,99 +71,97 @@ export default function InputEnum(props: {
     keys: fuseKeys,
   });
 
-  return (
-    <FormControl isDisabled={props.isDisabled}>
-      {props.enumList.length > 50 ? (
-        // 데이터가 50개 이상일 때는 Select를 사용하지 않음 (성능 문제)
-        <Popover
-          initialFocusRef={searchEl}
-          isOpen={popoverDisclosure.isOpen}
-          onClose={popoverDisclosure.onClose}
-        >
-          <PopoverTrigger>
-            <HStack>
-              <Input
-                ref={inputEl}
-                onClick={popoverDisclosure.onOpen}
-                defaultValue={
-                  defaultValueIndex !== undefined
-                    ? dataList[defaultValueIndex][key]
-                    : ""
-                }
-                isReadOnly={true}
-                placeholder="없음"
-                cursor="pointer"
-              />
+  return props.enumList.length > 50 ? (
+    // 데이터가 50개 이상일 때는 Select를 사용하지 않음 (성능 문제)
+    <Popover
+      initialFocusRef={searchEl}
+      isOpen={popoverDisclosure.isOpen}
+      onClose={popoverDisclosure.onClose}
+    >
+      <PopoverTrigger>
+        <HStack>
+          <Input
+            ref={inputEl}
+            onClick={popoverDisclosure.onOpen}
+            defaultValue={
+              defaultValueIndex !== undefined
+                ? dataList[defaultValueIndex][key]
+                : ""
+            }
+            isDisabled={props.isDisabled}
+            isReadOnly={true}
+            placeholder="없음"
+            cursor="pointer"
+          />
 
-              <IconButton
-                onClick={popoverDisclosure.onOpen}
-                isDisabled={props.isDisabled}
-                icon={<Icon as={search} />}
-                aria-label="항목 검색"
-                title="항목 검색"
-              />
-            </HStack>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverHeader>항목 검색</PopoverHeader>
-            <PopoverBody overflow="hidden">
-              <Input
-                ref={searchEl}
-                placeholder="검색어를 입력해주세요."
-                onChange={(event) => {
-                  window.setTimeout(() => {
-                    setFuseResults(fuse.search(event.target.value));
-                  }, 200);
-                }}
-              />
+          <IconButton
+            onClick={popoverDisclosure.onOpen}
+            isDisabled={props.isDisabled}
+            icon={<Icon as={search} />}
+            aria-label="항목 검색"
+            title="항목 검색"
+          />
+        </HStack>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverHeader>항목 검색</PopoverHeader>
+        <PopoverBody overflow="hidden">
+          <Input
+            ref={searchEl}
+            placeholder="검색어를 입력해주세요."
+            onChange={(event) => {
+              window.setTimeout(() => {
+                setFuseResults(fuse.search(event.target.value));
+              }, 200);
+            }}
+          />
 
-              {fuseResults.length !== 0 && (
-                <VStack maxH={200} mt={2} p={1} overflow="auto">
-                  {fuseResults.map((fuseData, index) => (
-                    <Button
-                      onClick={() => {
-                        if (inputEl.current) {
-                          inputEl.current.value = fuseData.item[key].toString();
-                        }
+          {fuseResults.length !== 0 && (
+            <VStack maxH={200} mt={2} p={1} overflow="auto">
+              {fuseResults.map((fuseData, index) => (
+                <Button
+                  onClick={() => {
+                    if (inputEl.current) {
+                      inputEl.current.value = fuseData.item[key].toString();
+                    }
 
-                        props.onChange(
-                          dataList[fuseData.refIndex][props.searchKey]
-                        );
+                    props.onChange(
+                      dataList[fuseData.refIndex][props.searchKey]
+                    );
 
-                        popoverDisclosure.onClose();
-                      }}
-                      w="100%"
-                      p={1}
-                      key={index}
-                    >
-                      {fuseData.item[key]}
-                    </Button>
-                  ))}
-                </VStack>
-              )}
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-      ) : (
-        <Select
-          ref={selectEl}
-          onChange={(event) => {
-            const index = Number(event.target.value);
-            setValueIndex(index);
-            props.onChange(dataList[index][props.searchKey]);
-          }}
-          value={valueIndex}
-          placeholder="없음"
-        >
-          {dataList.map((enumItem, index) => (
-            <option value={index} key={index}>
-              {enumItem[key]}
-            </option>
-          ))}
-        </Select>
-      )}
-    </FormControl>
+                    popoverDisclosure.onClose();
+                  }}
+                  w="100%"
+                  p={1}
+                  key={index}
+                >
+                  {fuseData.item[key]}
+                </Button>
+              ))}
+            </VStack>
+          )}
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  ) : (
+    <Select
+      ref={selectEl}
+      onChange={(event) => {
+        const index = Number(event.target.value);
+        setValueIndex(index);
+        props.onChange(dataList[index][props.searchKey]);
+      }}
+      value={valueIndex}
+      isDisabled={props.isDisabled}
+      placeholder="없음"
+    >
+      {dataList.map((enumItem, index) => (
+        <option value={index} key={index}>
+          {enumItem[key]}
+        </option>
+      ))}
+    </Select>
   );
 }
