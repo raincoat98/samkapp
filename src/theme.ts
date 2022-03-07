@@ -30,8 +30,7 @@ export const backgroundSelected = { light: "gray.100", dark: "gray.700" };
 export const sidebarMenuSelected = { light: "white", dark: "gray.600" };
 
 const config: ThemeConfig = {
-  initialColorMode: "light",
-  useSystemColorMode: false,
+  initialColorMode: "system",
 };
 
 const inputTheme = {
