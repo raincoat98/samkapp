@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express();
-const { runProcedure, runQuery } = require("./index");
+const { runProcedure } = require("./index");
 
 // 품목 형태 조회
 router.get("/all", (req, res) => {
@@ -11,40 +11,40 @@ router.get("/all", (req, res) => {
 
 // 품목 형태 등록
 router.get("/create", (req, res) => {
-  const sql =
-    "INSERT INTO tb_part_type " +
-    "(part_type_id, part_type_name, mod_date)" +
-    "VALUES(?, ?, ?)";
+  const sql = `CALL usp_part_type_INS (${new Array(2)
+    .fill("?")
+    .toString()})`;
   const params = [
-    req.query["part_type_id"],
+    req.query["part_type_id"], // NOT NULL
     req.query["part_type_name"],
-    req.query["mod_date"],
   ];
 
-  runQuery(res, sql, params);
+  runProcedure(res, sql, params);
 });
 
 //품목 형태 수정
 router.get("/update", (req, res) => {
-  const sql =
-    "UPDATE tb_part_type" +
-    "SET part_type_name=?, mod_date=?" +
-    "WHERE part_type_id=?";
+  const sql = `CALL usp_part_type_UPD (${new Array(2)
+    .fill("?")
+    .toString()})`;
   const params = [
+    req.query["part_type_id"], // NOT NULL
     req.query["part_type_name"],
-    req.query["mod_date"],
-    req.query["part_type_id"],
   ];
 
-  runQuery(res, sql, params);
+  runProcedure(res, sql, params);
 });
 
 // 품목 형태 삭제
 router.delete("/delete", (req, res) => {
-  const sql = "DELETE FROM tb_part_type WHERE part_type_id=?";
-  const params = [req.query["part_type_id"]];
+  const sql = `CALL usp_part_type_DEL (${new Array(1)
+    .fill("?")
+    .toString()})`;
+  const params = [
+    req.query["part_type_id"], // NOT NULL
+  ];
 
-  runQuery(res, sql, params);
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;

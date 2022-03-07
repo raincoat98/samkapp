@@ -38,6 +38,7 @@ export const transfer_typeSchema: schemaType = {
       type: "boolean",
       default: true,
       isNotNull: true,
+      isAutoSet: true,
     },
   },
 };

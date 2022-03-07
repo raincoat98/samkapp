@@ -12,7 +12,9 @@ router.get("/all", (req, res) => {
 
 // 등록
 router.get("/create", (req, res) => {
-  const sql = `CALL usp_list_price (${new Array(4).fill("?").toString()})`;
+  const sql = `CALL usp_list_price (${new Array(4)
+    .fill("?")
+    .toString()})`;
   const params = [
     req.query["part_id"],
     req.query["list_price"],
@@ -25,7 +27,9 @@ router.get("/create", (req, res) => {
 
 // 수정
 router.get("/update", (req, res) => {
-  const sql = `CALL usp_list_price (${new Array(4).fill("?").toString()})`;
+  const sql = `CALL usp_list_price (${new Array(4)
+    .fill("?")
+    .toString()})`;
   const params = [
     req.query["part_id"],
     req.query["list_price"],
@@ -38,10 +42,13 @@ router.get("/update", (req, res) => {
 
 // 삭제
 router.delete("/delete", (req, res) => {
-  res.status(501).send({
-    success: false,
-  });
-  console.log("미구현: 품목 가격 삭제");
+  const sql = `CALL usp_list_price_DEL (${new Array(1)
+    .fill("?")
+    .toString()})`;
+  const params = [
+    req.query["part_id"],
+  ];
+  runProcedure(res, sql, params);
 });
 
 module.exports = router;
