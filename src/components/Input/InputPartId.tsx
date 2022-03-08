@@ -199,25 +199,7 @@ export default function InputPartId(props: {
                       }
                     }}
                   >
-                    {Array.from(
-                      new Set(
-                        filteredPartList1
-                          .filter(
-                            (item) =>
-                              item["spec1"] !== undefined &&
-                              item["spec1"] !== ""
-                          )
-                          .map((item) => item["spec1"])
-                      )
-                    )
-                      .sort()
-                      .map((spec, index) => {
-                        return (
-                          <option value={spec} key={index}>
-                            {spec}
-                          </option>
-                        );
-                      })}
+                    {createSelectOptions(filteredPartList1, "spec1")}
                   </Select>
                 </Box>
               )}
@@ -255,25 +237,7 @@ export default function InputPartId(props: {
                       }
                     }}
                   >
-                    {Array.from(
-                      new Set(
-                        filteredPartList2
-                          .filter(
-                            (item) =>
-                              item["spec2"] !== undefined &&
-                              item["spec2"] !== ""
-                          )
-                          .map((item) => item["spec2"])
-                      )
-                    )
-                      .sort()
-                      .map((spec, index) => {
-                        return (
-                          <option value={spec} key={index}>
-                            {spec}
-                          </option>
-                        );
-                      })}
+                    {createSelectOptions(filteredPartList2, "spec2")}
                   </Select>
                 </Box>
               )}
@@ -310,25 +274,7 @@ export default function InputPartId(props: {
                       }
                     }}
                   >
-                    {Array.from(
-                      new Set(
-                        filteredPartList3
-                          .filter(
-                            (item) =>
-                              item["spec3"] !== undefined &&
-                              item["spec3"] !== ""
-                          )
-                          .map((item) => item["spec3"])
-                      )
-                    )
-                      .sort()
-                      .map((spec, index) => {
-                        return (
-                          <option value={spec} key={index}>
-                            {spec}
-                          </option>
-                        );
-                      })}
+                    {createSelectOptions(filteredPartList3, "spec3")}
                   </Select>
                 </Box>
               )}
@@ -364,25 +310,7 @@ export default function InputPartId(props: {
                       }
                     }}
                   >
-                    {Array.from(
-                      new Set(
-                        filteredPartList4
-                          .filter(
-                            (item) =>
-                              item["spec4"] !== undefined &&
-                              item["spec4"] !== ""
-                          )
-                          .map((item) => item["spec4"])
-                      )
-                    )
-                      .sort()
-                      .map((spec, index) => {
-                        return (
-                          <option value={spec} key={index}>
-                            {spec}
-                          </option>
-                        );
-                      })}
+                    {createSelectOptions(filteredPartList4, "spec4")}
                   </Select>
                 </Box>
               )}
@@ -404,25 +332,7 @@ export default function InputPartId(props: {
                       }
                     }}
                   >
-                    {Array.from(
-                      new Set(
-                        filteredPartList5
-                          .filter(
-                            (item) =>
-                              item["spec5"] !== undefined &&
-                              item["spec5"] !== ""
-                          )
-                          .map((item) => item["spec5"])
-                      )
-                    )
-                      .sort()
-                      .map((spec, index) => {
-                        return (
-                          <option value={spec} key={index}>
-                            {spec}
-                          </option>
-                        );
-                      })}
+                    {createSelectOptions(filteredPartList5, "spec5")}
                   </Select>
                 </Box>
               )}
@@ -451,4 +361,27 @@ export default function InputPartId(props: {
       }
     </Box>
   );
+}
+
+function createSelectOptions(
+  partList: part[],
+  key: "spec1" | "spec2" | "spec3" | "spec4" | "spec5"
+) {
+  return Array.from(
+    new Set(
+      partList.filter((part) => !isNil(part[key])).map((part) => part[key])
+    )
+  )
+    .sort()
+    .map((spec, index) => {
+      return (
+        <option value={spec} key={index}>
+          {spec}
+        </option>
+      );
+    });
+}
+
+function isNil(spec?: string) {
+  return spec === null || spec === undefined || spec === "";
 }
