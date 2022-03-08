@@ -1,7 +1,16 @@
 import React from "react";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
-import { useMediaQuery, Box, Flex, Select, FormLabel } from "@chakra-ui/react";
+import {
+  useMediaQuery,
+  Box,
+  Flex,
+  Select,
+  FormLabel,
+  Stack,
+  Divider,
+  Center,
+} from "@chakra-ui/react";
 import { group2 } from "schema/group2";
 import { part } from "schema/part";
 
@@ -163,181 +172,192 @@ export default function InputPartId(props: {
             </Box>
           )}
 
-          {filteredPartList1.length !== 0 && (
-            <>
-              {group2Item?.spec1 && (
-                <Box flex="1">
-                  <FormLabel>{group2Item.spec1}</FormLabel>
-                  <Select
-                    defaultValue={partItemSpec1}
-                    placeholder="없음"
-                    ref={spec1El}
-                    onChange={(event) => {
-                      if (spec2El.current) spec2El.current.value = "";
-                      if (spec3El.current) spec3El.current.value = "";
-                      if (spec4El.current) spec4El.current.value = "";
-                      if (spec5El.current) spec5El.current.value = "";
+          <Center marginRight={2}>
+            <Divider orientation="vertical" />
+          </Center>
 
-                      if (event.target.value) {
-                        setPartItemSpec1(event.target.value);
+          <Stack flex="1" direction={isLandscape ? "row" : "column"}>
+            {filteredPartList1.length !== 0 && (
+              <>
+                {group2Item?.spec1 && (
+                  <Box flex="1">
+                    <FormLabel>{group2Item.spec1}</FormLabel>
+                    <Select
+                      defaultValue={partItemSpec1}
+                      placeholder="없음"
+                      ref={spec1El}
+                      onChange={(event) => {
+                        if (spec2El.current) spec2El.current.value = "";
+                        if (spec3El.current) spec3El.current.value = "";
+                        if (spec4El.current) spec4El.current.value = "";
+                        if (spec5El.current) spec5El.current.value = "";
 
-                        // 필터 2
-                        setFilteredPartList2(
-                          filteredPartList1.filter(
-                            (partItem) => partItem.spec1 === event.target.value
-                          )
-                        );
+                        if (event.target.value) {
+                          setPartItemSpec1(event.target.value);
 
-                        if (!group2Item?.spec2) {
-                          setPartItemId(
-                            filteredPartList1.find(
+                          // 필터 2
+                          setFilteredPartList2(
+                            filteredPartList1.filter(
                               (partItem) =>
                                 partItem.spec1 === event.target.value
-                            )?.part_id
+                            )
                           );
+
+                          if (!group2Item?.spec2) {
+                            setPartItemId(
+                              filteredPartList1.find(
+                                (partItem) =>
+                                  partItem.spec1 === event.target.value
+                              )?.part_id
+                            );
+                          }
                         }
-                      }
-                    }}
-                  >
-                    {createSelectOptions(filteredPartList1, "spec1")}
-                  </Select>
-                </Box>
-              )}
+                      }}
+                    >
+                      {createSelectOptions(filteredPartList1, "spec1")}
+                    </Select>
+                  </Box>
+                )}
 
-              {group2Item?.spec2 && (
-                <Box flex="1">
-                  <FormLabel>{group2Item.spec2}</FormLabel>
-                  <Select
-                    defaultValue={partItemSpec2}
-                    placeholder="없음"
-                    ref={spec2El}
-                    onChange={(event) => {
-                      if (spec3El.current) spec3El.current.value = "";
-                      if (spec4El.current) spec4El.current.value = "";
-                      if (spec5El.current) spec5El.current.value = "";
+                {group2Item?.spec2 && (
+                  <Box flex="1">
+                    <FormLabel>{group2Item.spec2}</FormLabel>
+                    <Select
+                      defaultValue={partItemSpec2}
+                      placeholder="없음"
+                      ref={spec2El}
+                      onChange={(event) => {
+                        if (spec3El.current) spec3El.current.value = "";
+                        if (spec4El.current) spec4El.current.value = "";
+                        if (spec5El.current) spec5El.current.value = "";
 
-                      if (event.target.value) {
-                        setPartItemSpec2(event.target.value);
+                        if (event.target.value) {
+                          setPartItemSpec2(event.target.value);
 
-                        // 필터 3
-                        setFilteredPartList3(
-                          filteredPartList2.filter(
-                            (partItem) => partItem.spec2 === event.target.value
-                          )
-                        );
-
-                        if (!group2Item?.spec3) {
-                          setPartItemId(
-                            filteredPartList2.find(
+                          // 필터 3
+                          setFilteredPartList3(
+                            filteredPartList2.filter(
                               (partItem) =>
                                 partItem.spec2 === event.target.value
-                            )?.part_id
+                            )
                           );
+
+                          if (!group2Item?.spec3) {
+                            setPartItemId(
+                              filteredPartList2.find(
+                                (partItem) =>
+                                  partItem.spec2 === event.target.value
+                              )?.part_id
+                            );
+                          }
                         }
-                      }
-                    }}
-                  >
-                    {createSelectOptions(filteredPartList2, "spec2")}
-                  </Select>
-                </Box>
-              )}
+                      }}
+                    >
+                      {createSelectOptions(filteredPartList2, "spec2")}
+                    </Select>
+                  </Box>
+                )}
 
-              {group2Item?.spec3 && (
-                <Box flex="1">
-                  <FormLabel>{group2Item.spec3}</FormLabel>
-                  <Select
-                    defaultValue={partItemSpec3}
-                    placeholder="없음"
-                    ref={spec3El}
-                    onChange={(event) => {
-                      if (spec4El.current) spec4El.current.value = "";
-                      if (spec5El.current) spec5El.current.value = "";
+                {group2Item?.spec3 && (
+                  <Box flex="1">
+                    <FormLabel>{group2Item.spec3}</FormLabel>
+                    <Select
+                      defaultValue={partItemSpec3}
+                      placeholder="없음"
+                      ref={spec3El}
+                      onChange={(event) => {
+                        if (spec4El.current) spec4El.current.value = "";
+                        if (spec5El.current) spec5El.current.value = "";
 
-                      if (event.target.value) {
-                        setPartItemSpec3(event.target.value);
+                        if (event.target.value) {
+                          setPartItemSpec3(event.target.value);
 
-                        // 필터 4
-                        setFilteredPartList4(
-                          filteredPartList3.filter(
-                            (partItem) => partItem.spec3 === event.target.value
-                          )
-                        );
-
-                        if (!group2Item?.spec4) {
-                          setPartItemId(
-                            filteredPartList3.find(
+                          // 필터 4
+                          setFilteredPartList4(
+                            filteredPartList3.filter(
                               (partItem) =>
                                 partItem.spec3 === event.target.value
-                            )?.part_id
+                            )
                           );
+
+                          if (!group2Item?.spec4) {
+                            setPartItemId(
+                              filteredPartList3.find(
+                                (partItem) =>
+                                  partItem.spec3 === event.target.value
+                              )?.part_id
+                            );
+                          }
                         }
-                      }
-                    }}
-                  >
-                    {createSelectOptions(filteredPartList3, "spec3")}
-                  </Select>
-                </Box>
-              )}
+                      }}
+                    >
+                      {createSelectOptions(filteredPartList3, "spec3")}
+                    </Select>
+                  </Box>
+                )}
 
-              {group2Item?.spec4 && (
-                <Box flex="1">
-                  <FormLabel>{group2Item.spec4}</FormLabel>
-                  <Select
-                    defaultValue={partItemSpec4}
-                    placeholder="없음"
-                    ref={spec4El}
-                    onChange={(event) => {
-                      if (spec5El.current) spec5El.current.value = "";
+                {group2Item?.spec4 && (
+                  <Box flex="1">
+                    <FormLabel>{group2Item.spec4}</FormLabel>
+                    <Select
+                      defaultValue={partItemSpec4}
+                      placeholder="없음"
+                      ref={spec4El}
+                      onChange={(event) => {
+                        if (spec5El.current) spec5El.current.value = "";
 
-                      if (event.target.value) {
-                        setPartItemSpec4(event.target.value);
+                        if (event.target.value) {
+                          setPartItemSpec4(event.target.value);
 
-                        // 필터 5
-                        setFilteredPartList5(
-                          filteredPartList4.filter(
-                            (partItem) => partItem.spec4 === event.target.value
-                          )
-                        );
-
-                        if (!group2Item?.spec5) {
-                          setPartItemId(
-                            filteredPartList4.find(
+                          // 필터 5
+                          setFilteredPartList5(
+                            filteredPartList4.filter(
                               (partItem) =>
                                 partItem.spec4 === event.target.value
+                            )
+                          );
+
+                          if (!group2Item?.spec5) {
+                            setPartItemId(
+                              filteredPartList4.find(
+                                (partItem) =>
+                                  partItem.spec4 === event.target.value
+                              )?.part_id
+                            );
+                          }
+                        }
+                      }}
+                    >
+                      {createSelectOptions(filteredPartList4, "spec4")}
+                    </Select>
+                  </Box>
+                )}
+
+                {group2Item?.spec5 && (
+                  <Box flex="1">
+                    <FormLabel>{group2Item.spec5}</FormLabel>
+                    <Select
+                      defaultValue={partItemSpec5}
+                      placeholder="없음"
+                      ref={spec5El}
+                      onChange={(event) => {
+                        if (event.target.value) {
+                          setPartItemId(
+                            filteredPartList5.find(
+                              (partItem) =>
+                                partItem.spec5 === event.target.value
                             )?.part_id
                           );
                         }
-                      }
-                    }}
-                  >
-                    {createSelectOptions(filteredPartList4, "spec4")}
-                  </Select>
-                </Box>
-              )}
-
-              {group2Item?.spec5 && (
-                <Box flex="1">
-                  <FormLabel>{group2Item.spec5}</FormLabel>
-                  <Select
-                    defaultValue={partItemSpec5}
-                    placeholder="없음"
-                    ref={spec5El}
-                    onChange={(event) => {
-                      if (event.target.value) {
-                        setPartItemId(
-                          filteredPartList5.find(
-                            (partItem) => partItem.spec5 === event.target.value
-                          )?.part_id
-                        );
-                      }
-                    }}
-                  >
-                    {createSelectOptions(filteredPartList5, "spec5")}
-                  </Select>
-                </Box>
-              )}
-            </>
-          )}
+                      }}
+                    >
+                      {createSelectOptions(filteredPartList5, "spec5")}
+                    </Select>
+                  </Box>
+                )}
+              </>
+            )}
+          </Stack>
         </Flex>
       )}
 
