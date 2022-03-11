@@ -10,6 +10,8 @@ export default function InputNumber(props: {
   min?: number;
   max?: number;
 }) {
+  // props.defaultValue가 바뀌었을 때 NumberFormat의 onValueChange가 실행되기 때문에 해당 시점에는 이벤트가 실행되지 않게 함
+  const [isInited, setIsInited] = useState<boolean>(false);
   const [value, setValue] = useState<number | undefined>(
     props.defaultValue ?? undefined
   );
@@ -18,7 +20,10 @@ export default function InputNumber(props: {
   const maxValue =
     props.max !== undefined ? props.max : Number.MAX_SAFE_INTEGER;
 
-  useEffect(() => setValue(props.defaultValue), [props]);
+  useEffect(() => {
+    setIsInited(false);
+    setValue(props.defaultValue);
+  }, [props]);
 
   return (
     <HStack>
@@ -36,8 +41,14 @@ export default function InputNumber(props: {
       <NumberFormat
         value={value}
         onValueChange={(event) => {
-          setValue(event.floatValue);
-          props.onChange(event.floatValue !== undefined ? event.floatValue : 0);
+          if (isInited) {
+            setValue(event.floatValue);
+            props.onChange(
+              event.floatValue !== undefined ? event.floatValue : 0
+            );
+          } else {
+            setIsInited(true);
+          }
         }}
         isAllowed={(values) => {
           if (values.floatValue !== undefined) {

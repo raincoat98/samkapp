@@ -6,6 +6,7 @@ import {
   Box,
   Flex,
   Select,
+  FormControl,
   FormLabel,
   Stack,
   Divider,
@@ -15,14 +16,11 @@ import { group2 } from "schema/group2";
 import { part } from "schema/part";
 
 export default function InputPartId(props: {
-  onChange: (partId: number) => void;
+  onChange: (partId?: number) => void;
   defaultValue?: any;
 }) {
   // 가로 세로 모드 구분
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
-
-  // 초기값 적용 여부
-  const [isInit, setIsInit] = React.useState(false);
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
@@ -31,27 +29,39 @@ export default function InputPartId(props: {
   const invList = database.inventory;
   const warehousetList = database.warehouse;
 
+  // 품목 분류 리스트
+  const [sameGroupPartList, setSameGroupPartList] = React.useState<part[]>([]);
+
   // 필터된 품목 리스트
-  const [filteredPartList1, setFilteredPartList1] = React.useState<part[]>([]);
-  const [filteredPartList2, setFilteredPartList2] = React.useState<part[]>([]);
-  const [filteredPartList3, setFilteredPartList3] = React.useState<part[]>([]);
-  const [filteredPartList4, setFilteredPartList4] = React.useState<part[]>([]);
-  const [filteredPartList5, setFilteredPartList5] = React.useState<part[]>([]);
+  const [partListFiltedBySpec1, setPartListFiltedBySpec1] = React.useState<
+    part[]
+  >([]);
+  const [partListFiltedBySpec2, setPartListFiltedBySpec2] = React.useState<
+    part[]
+  >([]);
+  const [partListFiltedBySpec3, setPartListFiltedBySpec3] = React.useState<
+    part[]
+  >([]);
+  const [partListFiltedBySpec4, setPartListFiltedBySpec4] = React.useState<
+    part[]
+  >([]);
 
   const [group2Item, setGroup2Item] = React.useState<group2>();
 
-  const [partItemId, setPartItemId] = React.useState<number>();
-  const [partItemSpec1, setPartItemSpec1] = React.useState<string>();
-  const [partItemSpec2, setPartItemSpec2] = React.useState<string>();
-  const [partItemSpec3, setPartItemSpec3] = React.useState<string>();
-  const [partItemSpec4, setPartItemSpec4] = React.useState<string>();
-  const [partItemSpec5, setPartItemSpec5] = React.useState<string>();
-
-  const spec1El = React.useRef<HTMLSelectElement>(null);
-  const spec2El = React.useRef<HTMLSelectElement>(null);
-  const spec3El = React.useRef<HTMLSelectElement>(null);
-  const spec4El = React.useRef<HTMLSelectElement>(null);
-  const spec5El = React.useRef<HTMLSelectElement>(null);
+  const [partItemId, setPartItemId] = React.useState<part["part_id"]>();
+  const [partItemSpec1, setPartItemSpec1] = React.useState<part["spec1"]>("");
+  const [partItemSpec2, setPartItemSpec2] = React.useState<part["spec2"]>("");
+  const [partItemSpec3, setPartItemSpec3] = React.useState<part["spec3"]>("");
+  const [partItemSpec4, setPartItemSpec4] = React.useState<part["spec4"]>("");
+  const [partItemSpec5, setPartItemSpec5] = React.useState<part["spec5"]>("");
+  const setPartItemSpec = [
+    undefined,
+    setPartItemSpec1,
+    setPartItemSpec2,
+    setPartItemSpec3,
+    setPartItemSpec4,
+    setPartItemSpec5,
+  ] as const;
 
   React.useEffect(() => {
     for (let index = 0; index < partList.length; index++) {
@@ -66,10 +76,13 @@ export default function InputPartId(props: {
         }
 
         // 필터 적용
-        const filtered1 = partList.filter(
+        // 같은 분류의 품목들로 필터링
+        const _sameGroupPartList = partList.filter(
           (part) => part.group2_id === partItem.group2_id
         );
-        const filtered2 = filtered1.filter(
+        setSameGroupPartList(_sameGroupPartList);
+
+        const filtered2 = _sameGroupPartList.filter(
           (part) => part.spec1 === partItem.spec1
         );
         const filtered3 = filtered2.filter(
@@ -82,11 +95,10 @@ export default function InputPartId(props: {
           (part) => part.spec4 === partItem.spec4
         );
 
-        setFilteredPartList1(filtered1);
-        setFilteredPartList2(filtered2);
-        setFilteredPartList3(filtered3);
-        setFilteredPartList4(filtered4);
-        setFilteredPartList5(filtered5);
+        setPartListFiltedBySpec1(filtered2);
+        setPartListFiltedBySpec2(filtered3);
+        setPartListFiltedBySpec3(filtered4);
+        setPartListFiltedBySpec4(filtered5);
 
         setPartItemId(partItem.part_id);
         if (partItem.spec1) setPartItemSpec1(partItem.spec1);
@@ -99,286 +111,248 @@ export default function InputPartId(props: {
     }
   }, [group2List, partList, props.defaultValue]);
 
-  // 특정 값이 바뀌는 것을 감지
   React.useEffect(() => {
-    // 최초로 발생하는 이벤트는 초기화 작업중에 발생하는 이벤트이기 때문에 넘김
-    if (!isInit) setIsInit(true);
-    else if (partItemId !== undefined && partItemId !== props.defaultValue) {
-      props.onChange(partItemId);
+    setPartItemId(
+      sameGroupPartList.find(
+        (partItem) =>
+          partItem.spec1 === partItemSpec1 &&
+          partItem.spec2 === partItemSpec2 &&
+          partItem.spec3 === partItemSpec3 &&
+          partItem.spec4 === partItemSpec4 &&
+          partItem.spec5 === partItemSpec5
+      )?.part_id
+    );
+  }, [
+    sameGroupPartList,
+    partItemSpec1,
+    partItemSpec2,
+    partItemSpec3,
+    partItemSpec4,
+    partItemSpec5,
+  ]);
+
+  function setSpec(spec: 1 | 2 | 3 | 4 | 5, value?: part["spec1"]) {
+    for (let index = spec; index < 5; index++) {
+      setPartItemSpec[index]("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInit, partItemId, props.defaultValue]);
+    setPartItemSpec[spec](value);
+
+    let spec1 = spec === 1 ? value : partItemSpec1,
+      spec2 = spec === 2 ? value : partItemSpec2,
+      spec3 = spec === 3 ? value : partItemSpec3,
+      spec4 = spec === 4 ? value : partItemSpec4,
+      spec5 = spec === 5 ? value : partItemSpec5;
+
+    const partId = sameGroupPartList.find(
+      (partItem) =>
+        partItem.spec1 === spec1 &&
+        partItem.spec2 === spec2 &&
+        partItem.spec3 === spec3 &&
+        partItem.spec4 === spec4 &&
+        partItem.spec5 === spec5
+    )?.part_id;
+
+    setPartItemId(partId);
+    props.onChange(partId);
+  }
 
   return (
     <Box>
-      <Select
-        defaultValue={group2Item?.group2_id}
-        value={group2Item?.group2_id}
-        placeholder="없음"
-        onChange={(event) => {
-          const group2Item = group2List.find(
-            (group2Item) => group2Item.group2_id === Number(event.target.value)
-          );
-          setGroup2Item(group2Item);
+      <FormControl isRequired={true}>
+        <Select
+          value={group2Item?.group2_id}
+          placeholder="없음"
+          onChange={(event) => {
+            const group2Item = group2List.find(
+              (group2Item) =>
+                group2Item.group2_id === Number(event.target.value)
+            );
+            setGroup2Item(group2Item);
 
-          // 필터 1
-          setFilteredPartList1(
-            partList.filter(
-              (partItem) => partItem.group2_id === group2Item?.group2_id
-            )
-          );
-        }}
-      >
-        {group2List.map((group2Item, index) => (
-          <option value={group2Item.group2_id} key={index}>
-            {group2Item.group2_name}
-          </option>
-        ))}
-      </Select>
-
-      {group2Item && (
-        <Flex
-          flexDir={isLandscape ? "row" : "column"}
-          marginTop={2}
-          paddingLeft={2}
+            // 필터 1
+            setSameGroupPartList(
+              partList.filter(
+                (partItem) => partItem.group2_id === group2Item?.group2_id
+              )
+            );
+          }}
         >
-          {/* 해당 분류에 품목이 존재하지 않을 때 */}
-          {filteredPartList1.length === 0 && (
-            <Select placeholder="해당 분류의 품목이 존재하지 않습니다. 먼저 품목을 추가해주세요."></Select>
-          )}
+          {group2List.map((group2Item, index) => (
+            <option value={group2Item.group2_id} key={index}>
+              {group2Item.group2_name}
+            </option>
+          ))}
+        </Select>
 
-          {/* 스펙은 없고 품명만 있는 것이 있음 */}
-          {filteredPartList1.length !== 0 && !group2Item?.spec1 && (
-            <Box flex="1">
-              <FormLabel>품명</FormLabel>
-              <Select
-                defaultValue={partItemSpec1}
-                placeholder="없음"
-                ref={spec1El}
-                onChange={(event) => {
-                  if (event.target.value !== "") {
-                    setPartItemId(Number(event.target.value));
-                  }
-                }}
-              >
-                {filteredPartList1.map((part, index) => {
-                  return (
-                    <option value={part.part_id} key={index}>
-                      {part.part_name}
-                    </option>
-                  );
-                })}
-              </Select>
-            </Box>
-          )}
+        {group2Item && (
+          <Flex
+            flexDir={isLandscape ? "row" : "column"}
+            marginTop={2}
+            paddingLeft={2}
+          >
+            {/* 해당 분류에 품목이 존재하지 않을 때 */}
+            {sameGroupPartList.length === 0 && (
+              <Select placeholder="해당 분류의 품목이 존재하지 않습니다. 먼저 품목을 추가해주세요."></Select>
+            )}
 
-          <Center marginRight={2}>
-            <Divider orientation="vertical" />
-          </Center>
+            {/* 스펙은 없고 품명만 있는 것이 있음 */}
+            {sameGroupPartList.length !== 0 && !group2Item?.spec1 && (
+              <Box flex="1">
+                <FormLabel>품명</FormLabel>
+                <Select
+                  value={partItemId?.toString()}
+                  placeholder="없음"
+                  onChange={(event) => {
+                    if (event.target.value !== "") {
+                      setPartItemId(Number(event.target.value));
+                    }
+                  }}
+                >
+                  {sameGroupPartList.map((part, index) => {
+                    return (
+                      <option value={part.part_id} key={index}>
+                        {part.part_name}
+                      </option>
+                    );
+                  })}
+                </Select>
+              </Box>
+            )}
 
-          <Stack flex="1" direction={isLandscape ? "row" : "column"}>
-            {filteredPartList1.length !== 0 && (
-              <>
-                {group2Item?.spec1 && (
-                  <Box flex="1">
-                    <FormLabel>{group2Item.spec1}</FormLabel>
-                    <Select
-                      defaultValue={partItemSpec1}
-                      placeholder="없음"
-                      ref={spec1El}
-                      onChange={(event) => {
-                        if (spec2El.current) spec2El.current.value = "";
-                        if (spec3El.current) spec3El.current.value = "";
-                        if (spec4El.current) spec4El.current.value = "";
-                        if (spec5El.current) spec5El.current.value = "";
+            <Center marginRight={2}>
+              <Divider orientation="vertical" />
+            </Center>
 
-                        if (event.target.value) {
-                          setPartItemSpec1(event.target.value);
+            <Stack flex="1" direction={isLandscape ? "row" : "column"}>
+              {sameGroupPartList.length !== 0 && (
+                <>
+                  {group2Item?.spec1 && (
+                    <Box flex="1">
+                      <FormLabel>{group2Item.spec1}</FormLabel>
+                      <Select
+                        value={partItemSpec1}
+                        placeholder="없음"
+                        onChange={(event) => {
+                          setSpec(1, event.target.value);
 
-                          // 필터 2
-                          setFilteredPartList2(
-                            filteredPartList1.filter(
+                          setPartListFiltedBySpec1(
+                            sameGroupPartList.filter(
                               (partItem) =>
                                 partItem.spec1 === event.target.value
                             )
                           );
+                        }}
+                      >
+                        {createSelectOptions(sameGroupPartList, "spec1")}
+                      </Select>
+                    </Box>
+                  )}
 
-                          if (!group2Item?.spec2) {
-                            setPartItemId(
-                              filteredPartList1.find(
-                                (partItem) =>
-                                  partItem.spec1 === event.target.value
-                              )?.part_id
-                            );
-                          }
-                        }
-                      }}
-                    >
-                      {createSelectOptions(filteredPartList1, "spec1")}
-                    </Select>
-                  </Box>
-                )}
+                  {group2Item?.spec2 && (
+                    <Box flex="1">
+                      <FormLabel>{group2Item.spec2}</FormLabel>
+                      <Select
+                        value={partItemSpec2}
+                        placeholder="없음"
+                        onChange={(event) => {
+                          setSpec(2, event.target.value);
 
-                {group2Item?.spec2 && (
-                  <Box flex="1">
-                    <FormLabel>{group2Item.spec2}</FormLabel>
-                    <Select
-                      defaultValue={partItemSpec2}
-                      placeholder="없음"
-                      ref={spec2El}
-                      onChange={(event) => {
-                        if (spec3El.current) spec3El.current.value = "";
-                        if (spec4El.current) spec4El.current.value = "";
-                        if (spec5El.current) spec5El.current.value = "";
-
-                        if (event.target.value) {
-                          setPartItemSpec2(event.target.value);
-
-                          // 필터 3
-                          setFilteredPartList3(
-                            filteredPartList2.filter(
+                          setPartListFiltedBySpec2(
+                            partListFiltedBySpec1.filter(
                               (partItem) =>
                                 partItem.spec2 === event.target.value
                             )
                           );
+                        }}
+                      >
+                        {createSelectOptions(partListFiltedBySpec1, "spec2")}
+                      </Select>
+                    </Box>
+                  )}
 
-                          if (!group2Item?.spec3) {
-                            setPartItemId(
-                              filteredPartList2.find(
-                                (partItem) =>
-                                  partItem.spec2 === event.target.value
-                              )?.part_id
-                            );
-                          }
-                        }
-                      }}
-                    >
-                      {createSelectOptions(filteredPartList2, "spec2")}
-                    </Select>
-                  </Box>
-                )}
+                  {group2Item?.spec3 && (
+                    <Box flex="1">
+                      <FormLabel>{group2Item.spec3}</FormLabel>
+                      <Select
+                        value={partItemSpec3}
+                        placeholder="없음"
+                        onChange={(event) => {
+                          setSpec(3, event.target.value);
 
-                {group2Item?.spec3 && (
-                  <Box flex="1">
-                    <FormLabel>{group2Item.spec3}</FormLabel>
-                    <Select
-                      defaultValue={partItemSpec3}
-                      placeholder="없음"
-                      ref={spec3El}
-                      onChange={(event) => {
-                        if (spec4El.current) spec4El.current.value = "";
-                        if (spec5El.current) spec5El.current.value = "";
-
-                        if (event.target.value) {
-                          setPartItemSpec3(event.target.value);
-
-                          // 필터 4
-                          setFilteredPartList4(
-                            filteredPartList3.filter(
+                          setPartListFiltedBySpec3(
+                            partListFiltedBySpec2.filter(
                               (partItem) =>
                                 partItem.spec3 === event.target.value
                             )
                           );
+                        }}
+                      >
+                        {createSelectOptions(partListFiltedBySpec2, "spec3")}
+                      </Select>
+                    </Box>
+                  )}
 
-                          if (!group2Item?.spec4) {
-                            setPartItemId(
-                              filteredPartList3.find(
-                                (partItem) =>
-                                  partItem.spec3 === event.target.value
-                              )?.part_id
-                            );
-                          }
-                        }
-                      }}
-                    >
-                      {createSelectOptions(filteredPartList3, "spec3")}
-                    </Select>
-                  </Box>
-                )}
+                  {group2Item?.spec4 && (
+                    <Box flex="1">
+                      <FormLabel>{group2Item.spec4}</FormLabel>
+                      <Select
+                        value={partItemSpec4}
+                        placeholder="없음"
+                        onChange={(event) => {
+                          setSpec(4, event.target.value);
 
-                {group2Item?.spec4 && (
-                  <Box flex="1">
-                    <FormLabel>{group2Item.spec4}</FormLabel>
-                    <Select
-                      defaultValue={partItemSpec4}
-                      placeholder="없음"
-                      ref={spec4El}
-                      onChange={(event) => {
-                        if (spec5El.current) spec5El.current.value = "";
-
-                        if (event.target.value) {
-                          setPartItemSpec4(event.target.value);
-
-                          // 필터 5
-                          setFilteredPartList5(
-                            filteredPartList4.filter(
+                          setPartListFiltedBySpec4(
+                            partListFiltedBySpec3.filter(
                               (partItem) =>
                                 partItem.spec4 === event.target.value
                             )
                           );
+                        }}
+                      >
+                        {createSelectOptions(partListFiltedBySpec3, "spec4")}
+                      </Select>
+                    </Box>
+                  )}
 
-                          if (!group2Item?.spec5) {
-                            setPartItemId(
-                              filteredPartList4.find(
-                                (partItem) =>
-                                  partItem.spec4 === event.target.value
-                              )?.part_id
-                            );
-                          }
-                        }
-                      }}
-                    >
-                      {createSelectOptions(filteredPartList4, "spec4")}
-                    </Select>
+                  {group2Item?.spec5 && (
+                    <Box flex="1">
+                      <FormLabel>{group2Item.spec5}</FormLabel>
+                      <Select
+                        value={partItemSpec5}
+                        placeholder="없음"
+                        onChange={(event) => {
+                          setSpec(5, event.target.value);
+                        }}
+                      >
+                        {createSelectOptions(partListFiltedBySpec4, "spec5")}
+                      </Select>
+                    </Box>
+                  )}
+                </>
+              )}
+            </Stack>
+          </Flex>
+        )}
+
+        {
+          <Box marginTop={1} marginLeft={2}>
+            {invList.map((invData, index) => {
+              if (invData.part_id === partItemId) {
+                const warehouse = warehousetList.find(
+                  (warehoustData) =>
+                    warehoustData.warehouse_id === invData.warehouse_id
+                );
+
+                return (
+                  <Box key={index}>
+                    {`${warehouse?.warehouse_name}: ${invData.quantity}`}
                   </Box>
-                )}
-
-                {group2Item?.spec5 && (
-                  <Box flex="1">
-                    <FormLabel>{group2Item.spec5}</FormLabel>
-                    <Select
-                      defaultValue={partItemSpec5}
-                      placeholder="없음"
-                      ref={spec5El}
-                      onChange={(event) => {
-                        if (event.target.value) {
-                          setPartItemId(
-                            filteredPartList5.find(
-                              (partItem) =>
-                                partItem.spec5 === event.target.value
-                            )?.part_id
-                          );
-                        }
-                      }}
-                    >
-                      {createSelectOptions(filteredPartList5, "spec5")}
-                    </Select>
-                  </Box>
-                )}
-              </>
-            )}
-          </Stack>
-        </Flex>
-      )}
-
-      {
-        <Box marginTop={1} marginLeft={2}>
-          {invList.map((invData, index) => {
-            if (invData.part_id === partItemId) {
-              const warehouse = warehousetList.find(
-                (warehoustData) =>
-                  warehoustData.warehouse_id === invData.warehouse_id
-              );
-
-              return (
-                <Box key={index}>
-                  {`${warehouse?.warehouse_name}: ${invData.quantity}`}
-                </Box>
-              );
-            } else return "";
-          })}
-        </Box>
-      }
+                );
+              } else return "";
+            })}
+          </Box>
+        }
+      </FormControl>
     </Box>
   );
 }
