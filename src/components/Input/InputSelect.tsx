@@ -20,7 +20,7 @@ export default function InputSelect(props: {
         props.onChange(value);
       }}
       value={value}
-      placeholder="없음"
+      placeholder="미선택"
     >
       {props.selectList.map((selectItem, index) => (
         <option value={selectItem.value} key={index}>

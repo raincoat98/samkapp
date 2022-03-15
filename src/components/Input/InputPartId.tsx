@@ -161,7 +161,7 @@ export default function InputPartId(props: {
       <FormControl isRequired={true}>
         <Select
           value={group2Item?.group2_id}
-          placeholder="없음"
+          placeholder="미선택"
           onChange={(event) => {
             const group2Item = group2List.find(
               (group2Item) =>
@@ -201,7 +201,7 @@ export default function InputPartId(props: {
                 <FormLabel>품명</FormLabel>
                 <Select
                   value={partItemId?.toString()}
-                  placeholder="없음"
+                  placeholder="미선택"
                   onChange={(event) => {
                     if (event.target.value !== "") {
                       setPartItemId(Number(event.target.value));
@@ -231,7 +231,7 @@ export default function InputPartId(props: {
                       <FormLabel>{group2Item.spec1}</FormLabel>
                       <Select
                         value={partItemSpec1}
-                        placeholder="없음"
+                        placeholder="미선택"
                         onChange={(event) => {
                           setSpec(1, event.target.value);
 
@@ -253,7 +253,7 @@ export default function InputPartId(props: {
                       <FormLabel>{group2Item.spec2}</FormLabel>
                       <Select
                         value={partItemSpec2}
-                        placeholder="없음"
+                        placeholder="미선택"
                         onChange={(event) => {
                           setSpec(2, event.target.value);
 
@@ -275,7 +275,7 @@ export default function InputPartId(props: {
                       <FormLabel>{group2Item.spec3}</FormLabel>
                       <Select
                         value={partItemSpec3}
-                        placeholder="없음"
+                        placeholder="미선택"
                         onChange={(event) => {
                           setSpec(3, event.target.value);
 
@@ -297,7 +297,7 @@ export default function InputPartId(props: {
                       <FormLabel>{group2Item.spec4}</FormLabel>
                       <Select
                         value={partItemSpec4}
-                        placeholder="없음"
+                        placeholder="미선택"
                         onChange={(event) => {
                           setSpec(4, event.target.value);
 
@@ -319,7 +319,7 @@ export default function InputPartId(props: {
                       <FormLabel>{group2Item.spec5}</FormLabel>
                       <Select
                         value={partItemSpec5}
-                        placeholder="없음"
+                        placeholder="미선택"
                         onChange={(event) => {
                           setSpec(5, event.target.value);
                         }}

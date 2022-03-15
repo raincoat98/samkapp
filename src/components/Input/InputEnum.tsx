@@ -90,7 +90,7 @@ export default function InputEnum(props: {
             }
             isDisabled={props.isDisabled}
             isReadOnly={true}
-            placeholder="없음"
+            placeholder="미선택"
             cursor="pointer"
           />
 
@@ -155,7 +155,7 @@ export default function InputEnum(props: {
       }}
       value={valueIndex}
       isDisabled={props.isDisabled}
-      placeholder="없음"
+      placeholder="미선택"
     >
       {dataList.map((enumItem, index) => (
         <option value={index} key={index}>
