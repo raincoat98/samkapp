@@ -204,13 +204,15 @@ export default function InputPartId(props: {
                   placeholder="미선택"
                   onChange={(event) => {
                     if (event.target.value !== "") {
-                      setPartItemId(Number(event.target.value));
+                      const partId = Number(event.target.value);
+                      setPartItemId(partId);
+                      props.onChange(partId);
                     }
                   }}
                 >
                   {sameGroupPartList.map((part, index) => {
                     return (
-                      <option value={part.part_id} key={index}>
+                      <option value={part.part_id.toString()} key={index}>
                         {part.part_name}
                       </option>
                     );
