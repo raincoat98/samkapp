@@ -117,7 +117,7 @@ export default function FormModalPopup(props: {
           )}
           {/* 출고지시서 출력 */}
           {props.print?.format === "transfer_out" && (
-            <TransferOutPrint data={props.print.data}></TransferOutPrint>
+            <TransferOutPrint data={[props.print.data]}></TransferOutPrint>
           )}
         </>
       </PrintPopup>

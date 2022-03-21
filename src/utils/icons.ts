@@ -40,6 +40,7 @@ import {
   // 와이파이
   BiWifi,
   BiWifiOff,
+  BiPrinter,
 } from "react-icons/bi";
 import { BsCircleFill } from "react-icons/bs";
 import { FaSort, FaSortUp, FaSortDown, FaPhoneAlt } from "react-icons/fa";
@@ -82,6 +83,7 @@ export const desktop = AiOutlineDesktop;
 export const bussiness = IoBusinessOutline;
 export const fax = AiFillPrinter;
 export const phone = FaPhoneAlt;
+export const print = BiPrinter;
 
 // 플러스
 export const plusOutline = AiOutlinePlus;

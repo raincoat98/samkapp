@@ -9,6 +9,7 @@ import {
   deleteData,
   dataType,
 } from "store/realm";
+import { setWorkOrderPrintData, setTransferOutPrintData } from "store/print";
 import { Column, Accessor } from "react-table";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,9 @@ import PageContainer from "components/PageContainer";
 import FormModal, { formModalModeType } from "components/FormModal";
 import ManagementHeaderButtonGroup from "./HeaderButtonGroup";
 import Dialog from "components/Dialog";
+import PrintPopup from "components/Print/PrintPopup";
+import WorkOrderPrint from "components/Print/WorkOrder";
+import TransferOutPrint from "components/Print/TransferOut";
 
 import TableTabs, { ManagementTableTabsProps } from "./TableTabs";
 import TableFilter, { ManagementTableFilterProps } from "./TableFilter";
@@ -61,6 +65,10 @@ export default function Management(props: {
 
   // 삭제 다이얼로그 상태 관리
   const dialogDisclosure = useDisclosure();
+
+  // PDF 표시 상태
+  const printPopupState = useDisclosure();
+  const printStore = useSelector((state: RootState) => state.print);
 
   // 체크한 테이블 열이 존재하는지 확인
   const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
@@ -382,6 +390,21 @@ export default function Management(props: {
               const excel = createExcelFile(schema, tableProps.data);
               downloadExcelFile(excel);
             }}
+            isPrintDisabled={Object.keys(checkedRows).length === 0}
+            onPrintClick={() => {
+              switch (schema.name) {
+                case "work_order":
+                  dispatch(setWorkOrderPrintData(checkedRows));
+                  printPopupState.onOpen();
+                  break;
+                case "transfer_out":
+                  dispatch(setTransferOutPrintData(checkedRows));
+                  printPopupState.onOpen();
+                  break;
+                default:
+                  break;
+              }
+            }}
           />
         }
       >
@@ -400,6 +423,20 @@ export default function Management(props: {
           {mainTable.component.box}
         </Flex>
       </PageContainer>
+
+      <PrintPopup
+        isOpen={printPopupState.isOpen}
+        onClose={() => printPopupState.onClose()}
+      >
+        <>
+          {/* 작업지시서 출력 */}
+          {printStore.work_order.length !== 0 && (
+            <WorkOrderPrint data={printStore.work_order[0]}></WorkOrderPrint>
+          )}
+          {/* 출고지시서 출력 */}
+          <TransferOutPrint></TransferOutPrint>
+        </>
+      </PrintPopup>
     </>
   );
 }

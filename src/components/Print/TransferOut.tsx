@@ -10,7 +10,6 @@ import moment from "moment";
 import { RootState } from "store";
 import { useSelector } from "react-redux";
 import { transfer_out } from "schema/transfer_out";
-import { customer } from "schema/customer";
 
 const styles = StyleSheet.create({
   // 페이지
@@ -62,21 +61,10 @@ const styles = StyleSheet.create({
   column: { flexDirection: "column" },
 });
 
-export default function PrintTransferOut(props: { data: transfer_out }) {
-  const data = props.data;
-
+export default function PrintTransferOut(props: { data?: transfer_out[] }) {
   const database = useSelector((state: RootState) => state.realm.database);
-
-  // 거래처가 DB에서 삭제된 경우 거래처 정보가 존재하지 않을 가능성 존재
-  const customer: customer | undefined = database.customer.filter(
-    (customer) => customer.customer_id === data.customer_id
-  )[0];
-
-  const part = database.part.filter((part) => part.part_id === data.part_id)[0];
-
-  const partGroup = database.group2.filter(
-    (group2) => group2.group2_id === part.group2_id
-  )[0];
+  const printStore = useSelector((state: RootState) => state.print);
+  const printData = props.data ?? printStore.transfer_out;
 
   function TableText(props: { children?: string }) {
     return <Text style={[styles.cell]}>{props.children}</Text>;
@@ -93,50 +81,71 @@ export default function PrintTransferOut(props: { data: transfer_out }) {
               </Text>
             </View>
 
-            <View style={[styles.tableRow]}>
-              <Text style={[styles.cell]}>
-                주문일 :{" "}
-                {moment(data.transfer_date).format("YYYY년 MM월 DD일 (dddd)")}
-              </Text>
-              <Text style={[styles.cell]}>
-                출고일 :{" "}
-                {moment(data.plan_date).format("YYYY년 MM월 DD일 (dddd)")}
-              </Text>
-            </View>
+            {printData.map((data, index) => {
+              const customer = database.customer.find(
+                (customer) => customer.customer_id === data.customer_id
+              );
 
-            <View style={[styles.tableRow]}>
-              <Text style={[styles.cellWithoutFlex]}>거래처</Text>
-              <Text style={[styles.cell]}>{customer?.customer_name}</Text>
-            </View>
+              const part = database.part.find(
+                (part) => part.part_id === data.part_id
+              );
 
-            <View style={[styles.tableRow]}>
-              <Text style={[styles.cellWithoutFlex]}>품명</Text>
+              const partGroup = database.group2.find(
+                (group2) => group2.group2_id === part?.group2_id
+              );
 
-              {/* 규격 */}
-              {partGroup.spec1 && <TableText>{partGroup.spec1}</TableText>}
-              {partGroup.spec2 && <TableText>{partGroup.spec2}</TableText>}
-              {partGroup.spec3 && <TableText>{partGroup.spec3}</TableText>}
-              {partGroup.spec4 && <TableText>{partGroup.spec4}</TableText>}
-              {partGroup.spec5 && <TableText>{partGroup.spec5}</TableText>}
+              console.log(data);
 
-              <Text style={[styles.cell, { flex: 0.5 }]}>수량</Text>
+              return (
+                <View key={index}>
+                  <View style={[styles.tableRow]}>
+                    <Text style={[styles.cell]}>
+                      주문일 :{" "}
+                      {moment(data.transfer_date).format(
+                        "YYYY년 MM월 DD일 (dddd)"
+                      )}
+                    </Text>
+                    <Text style={[styles.cell]}>
+                      출고일 :{" "}
+                      {moment(data.plan_date).format("YYYY년 MM월 DD일 (dddd)")}
+                    </Text>
+                  </View>
 
-              <Text style={[styles.cell, { flex: 0.5 }]}>비고</Text>
-            </View>
+                  <View style={[styles.tableRow]}>
+                    <Text style={[styles.cellWithoutFlex]}>거래처</Text>
+                    <Text style={[styles.cell]}>{customer?.customer_name}</Text>
+                  </View>
 
-            <View style={[styles.tableRow]}>
-              <Text style={[styles.cellWithoutFlex]}>{part.part_name}</Text>
+                  <View style={[styles.tableRow]}>
+                    <Text style={[styles.cellWithoutFlex]}>품명</Text>
+                    <TableText>{partGroup?.spec1}</TableText>
+                    <TableText>{partGroup?.spec2}</TableText>
+                    <TableText>{partGroup?.spec3}</TableText>
+                    <TableText>{partGroup?.spec4}</TableText>
+                    <TableText>{partGroup?.spec5}</TableText>
+                    <Text style={[styles.cell, { flex: 0.5 }]}>수량</Text>
+                    <Text style={[styles.cell, { flex: 0.5 }]}>비고</Text>
+                  </View>
 
-              {/* 규격 */}
-              {partGroup.spec1 && <TableText>{part.spec1}</TableText>}
-              {partGroup.spec2 && <TableText>{part.spec2}</TableText>}
-              {partGroup.spec3 && <TableText>{part.spec3}</TableText>}
-              {partGroup.spec4 && <TableText>{part.spec4}</TableText>}
-              {partGroup.spec5 && <TableText>{part.spec5}</TableText>}
-
-              <Text style={[styles.cell, { flex: 0.5 }]}>{data.quantity}</Text>
-              <Text style={[styles.cell, { flex: 0.5 }]}>{part.remark}</Text>
-            </View>
+                  <View style={[styles.tableRow]}>
+                    <Text style={[styles.cellWithoutFlex]}>
+                      {part?.part_name}
+                    </Text>
+                    <TableText>{part?.spec1}</TableText>
+                    <TableText>{part?.spec2}</TableText>
+                    <TableText>{part?.spec3}</TableText>
+                    <TableText>{part?.spec4}</TableText>
+                    <TableText>{part?.spec5}</TableText>
+                    <Text style={[styles.cell, { flex: 0.5 }]}>
+                      {data.quantity}
+                    </Text>
+                    <Text style={[styles.cell, { flex: 0.5 }]}>
+                      {part?.remark}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
           </View>
         </Page>
       </Document>

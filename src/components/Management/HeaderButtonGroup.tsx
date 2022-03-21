@@ -1,5 +1,5 @@
 import { ButtonGroup, Icon, IconButton, Tooltip } from "@chakra-ui/react";
-import { refresh, add, trash, excel } from "utils/icons";
+import { refresh, add, trash, excel, print } from "utils/icons";
 
 export default function ManagementHeaderButtonGroup(props: {
   isDeleteDisabled: boolean;
@@ -13,6 +13,9 @@ export default function ManagementHeaderButtonGroup(props: {
 
   isSaveAsExcelDisabled: boolean;
   onSaveAsExcelClick: () => void;
+
+  isPrintDisabled: boolean;
+  onPrintClick: () => void;
 }) {
   return (
     <ButtonGroup>
@@ -32,6 +35,16 @@ export default function ManagementHeaderButtonGroup(props: {
           icon={<Icon as={trash} />}
           colorScheme="red"
           aria-label="삭제"
+        />
+      </Tooltip>
+
+      <Tooltip label="인쇄">
+        <IconButton
+          isDisabled={props.isPrintDisabled}
+          onClick={props.onPrintClick}
+          icon={<Icon as={print} />}
+          colorScheme="cyan"
+          aria-label="인쇄"
         />
       </Tooltip>
 
