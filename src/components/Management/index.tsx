@@ -7,6 +7,7 @@ import {
   insertData,
   updateData,
   deleteData,
+  getViewData,
   dataType,
 } from "store/realm";
 import { setWorkOrderPrintData, setTransferOutPrintData } from "store/print";
@@ -69,6 +70,8 @@ export default function Management(props: {
   // PDF 표시 상태
   const printPopupState = useDisclosure();
   const printStore = useSelector((state: RootState) => state.print);
+
+  const viewDataList = useSelector((state: RootState) => state.realm.view);
 
   // 체크한 테이블 열이 존재하는지 확인
   const [checkedRows, setCheckedRows] = React.useState<any[]>([]);
@@ -386,9 +389,19 @@ export default function Management(props: {
             isRefreshDisabled={false}
             onRefreshClick={refreshData}
             isSaveAsExcelDisabled={false}
-            onSaveAsExcelClick={() => {
-              const excel = createExcelFile(schema, tableProps.data);
-              downloadExcelFile(excel);
+            onSaveAsExcelClick={async () => {
+              await dispatch(getViewData({ collectionName: schema.name }));
+
+              if (schema.name === "inventory") {
+                const excel = createExcelFile(
+                  schema.name,
+                  viewDataList.inventory
+                );
+                downloadExcelFile(excel);
+              } else {
+                const excel = createExcelFile(schema, tableProps.data);
+                downloadExcelFile(excel);
+              }
             }}
             isPrintDisabled={Object.keys(checkedRows).length === 0}
             onPrintClick={() => {

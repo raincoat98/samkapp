@@ -83,6 +83,9 @@ export type RealmState = {
   bookmarkedData: {
     [COLLECTION_NAME.part]: part[];
   };
+  view: {
+    [COLLECTION_NAME.inventory]: any[];
+  };
 };
 
 const initialState: RealmState = {
@@ -109,6 +112,9 @@ const initialState: RealmState = {
   },
   bookmarkedData: {
     [COLLECTION_NAME.part]: [],
+  },
+  view: {
+    [COLLECTION_NAME.inventory]: [],
   },
 };
 
@@ -429,6 +435,31 @@ export const runFunction = createAsyncThunk(
   }
 );
 
+export const getViewData = createAsyncThunk(
+  `${name}/getViewData`,
+  async (
+    props: {
+      collectionName: COLLECTION_NAME_TYPE;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      let response: AxiosResponse<any, any>;
+      let route = props.collectionName as string;
+
+      route = route.replaceAll("_", "-");
+      response = await axios.get(`${SERVER_URL}/${route}/view`);
+
+      return {
+        collectionName: props.collectionName,
+        data: response.data.results,
+      };
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name,
   initialState,
@@ -538,6 +569,35 @@ const userSlice = createSlice({
               progress: undefined,
               database: {
                 ...state.database,
+                [collectionName]: data,
+              },
+            };
+          }
+        }
+      )
+
+      // 뷰 가져오기
+      .addCase(
+        getViewData.fulfilled.type,
+        (
+          state,
+          action: PayloadAction<
+            | {
+                collectionName: COLLECTION_NAME_TYPE;
+                data: dataType[];
+              }
+            | undefined
+          >
+        ) => {
+          if (action.payload) {
+            const { collectionName, data } = action.payload;
+            console.log(action.payload);
+
+            return {
+              ...state,
+              progress: undefined,
+              view: {
+                ...state.view,
                 [collectionName]: data,
               },
             };

@@ -3,9 +3,9 @@ import ExcelJS from "exceljs";
 import moment from "moment";
 import { schemaType } from "schema";
 
-export function createExcelFile(schema: schemaType, dataList: any[]) {
+export function createExcelFile(schema: schemaType | string, dataList: any[]) {
   const workbook = new ExcelJS.Workbook();
-  workbook.title = schema.name;
+  workbook.title = typeof schema === "string" ? schema : schema.name;
   workbook.creator = "샘터 재고 관리 시스템";
   workbook.created = new Date();
   workbook.modified = new Date();
@@ -13,7 +13,9 @@ export function createExcelFile(schema: schemaType, dataList: any[]) {
   const sheet = workbook.addWorksheet("시트 1");
 
   // 헤더
-  const columnKeys = Object.keys(schema.properties);
+  const columnKeys = Object.keys(
+    typeof schema === "string" ? dataList[0] : schema.properties
+  );
   sheet.getRow(1).values = columnKeys;
   const row = sheet.getRow(1);
   row.eachCell((cell, rowNumber) => {
