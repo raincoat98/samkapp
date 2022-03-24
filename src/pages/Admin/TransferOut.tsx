@@ -2,21 +2,27 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import moment from "moment";
-import { Center, VStack, Button, useDisclosure } from "@chakra-ui/react";
+import {
+  Center,
+  VStack,
+  HStack,
+  Button,
+  useDisclosure,
+  Radio,
+  RadioGroup,
+} from "@chakra-ui/react";
 import PageContainer from "components/PageContainer";
 import Popup from "components/Popup";
 import InputFormControl from "components/Input/InputFormControl";
-import InputDate from "components/Input/InputDate";
-import InputPartId from "components/Input/InputPartId";
-import WorkOrderCard from "../../components/Card/WorkOrderCard";
 import { transfer_out } from "schema/transfer_out";
+import WorkOrderCard from "../../components/Card/WorkOrderCard";
 
 export default function AdminTransferOutView() {
   const database = useSelector((state: RootState) => state.realm.database);
 
-  const [startDate, setStartDate] = useState<Date | null>();
-  const [endDate, setEndDate] = useState<Date | null>();
-  const [partId, setPartId] = useState<number>();
+  type viewDateType = "today" | "week" | "month" | "all";
+  const [viewDate, setViewDate] = useState<viewDateType>("today");
+  const [sorting, setSorting] = useState<"1" | "2">("1");
 
   const [resultList, setResultList] = useState<transfer_out[]>([]);
 
@@ -34,60 +40,68 @@ export default function AdminTransferOutView() {
                 const transfer_date = moment(item.transfer_date).format(
                   "YYYY-MM-DD"
                 );
-                const startFilterDate = moment(startDate).format("YYYY-MM-DD");
-                const endFilterDate = moment(endDate).format("YYYY-MM-DD");
+
+                const date = new Date();
+
+                switch (viewDate) {
+                  case "today":
+                    date.setDate(date.getDate() - 1);
+                    break;
+                  case "week":
+                    date.setDate(date.getDate() - 7);
+                    break;
+                  case "month":
+                    date.setMonth(date.getMonth() - 1);
+                    break;
+                  case "all":
+                    return true;
+                }
+
+                const startFilterDate = moment(date).format("YYYY-MM-DD");
 
                 // 시작일 검사
                 if (
-                  startDate &&
                   !moment(startFilterDate).isSameOrBefore(moment(transfer_date))
                 )
                   return false;
-
-                // 종료일 검사
-                if (
-                  endDate &&
-                  !moment(endFilterDate).isSameOrAfter(
-                    moment(item.transfer_date)
-                  )
-                )
-                  return false;
-
-                // 품목 검사
-                if (partId && partId !== item.part_id) return false;
-                return true;
+                else return true;
               });
 
-              setResultList(result.reverse());
+              if (sorting === "1") setResultList(result);
+              else setResultList(result.reverse());
 
               printPopupState.onOpen();
             }}
           >
             <VStack width="100%" spacing={2} textAlign="center">
-              <InputFormControl name={"시작일"}>
-                <InputDate
-                  onChange={(value) => {
-                    setStartDate(value);
+              <InputFormControl name={"조회기간"}>
+                <RadioGroup
+                  value={viewDate}
+                  onChange={(value: viewDateType) => {
+                    setViewDate(value);
                   }}
-                  isAvailableBeforeToday={true}
-                />
+                >
+                  <HStack spacing={1}>
+                    <Radio value="today">오늘</Radio>
+                    <Radio value="week">1주일</Radio>
+                    <Radio value="month">1개월</Radio>
+                    <Radio value="all">전체</Radio>
+                  </HStack>
+                </RadioGroup>
               </InputFormControl>
 
-              <InputFormControl name={"종료일"}>
-                <InputDate
-                  onChange={(value) => {
-                    setEndDate(value);
+              <InputFormControl name={"정렬"}>
+                <RadioGroup
+                  value={sorting}
+                  onChange={(value: "1" | "2") => {
+                    setSorting(value);
                   }}
-                  isAvailableBeforeToday={true}
-                />
-              </InputFormControl>
-
-              <InputFormControl name={"품목"}>
-                <InputPartId
-                  onChange={(value) => {
-                    setPartId(value);
-                  }}
-                />
+                >
+                  <HStack spacing={3}>
+                    <Radio value="1">최신순</Radio>
+                    <Radio value="2">과거순</Radio>
+                  </HStack>
+                </RadioGroup>
               </InputFormControl>
 
               <Button type="submit" colorScheme={"blue"}>
