@@ -415,6 +415,7 @@ export default function Management(props: {
                   printPopupState.onOpen();
                   break;
                 default:
+                  alert("죄송합니다. 아직 구현되지 않은 기능입니다.");
                   break;
               }
             }}
