@@ -33,6 +33,7 @@ const SELECTION_COLUMN = "_selection";
 
 export type TableComponentProps = {
   columns?: Array<Column>;
+  excludeColumnIds?: Array<string>;
   data: Array<any>;
   useIndex?: boolean;
   stateReducer?: any;
@@ -161,13 +162,21 @@ export default function TableComponent(props: TableComponentProps) {
             borderTopWidth={1}
             borderBottomWidth={1}
           >
-            {headerGroup.headers.map((column, index) => (
-              <TableHeaderCell
-                column={column}
-                excludeIds={[INDEX_COLUMN, SELECTION_COLUMN]}
-                key={index}
-              />
-            ))}
+            {headerGroup.headers.map((column, index) => {
+              if (
+                props.excludeColumnIds &&
+                props.excludeColumnIds.includes(column.id)
+              )
+                return <></>;
+
+              return (
+                <TableHeaderCell
+                  column={column}
+                  excludeIds={[INDEX_COLUMN, SELECTION_COLUMN]}
+                  key={index}
+                />
+              );
+            })}
           </Tr>
         ))}
       </Thead>
@@ -181,19 +190,27 @@ export default function TableComponent(props: TableComponentProps) {
               // react-table 프로퍼티 전달
               {...row.getRowProps()}
             >
-              {row.cells.map((cell, index) => (
-                <TableDataCell
-                  cell={cell}
-                  onClick={
-                    cell.column.id !== SELECTION_COLUMN
-                      ? () => {
-                          if (props.onRowClick) props.onRowClick(row);
-                        }
-                      : undefined
-                  }
-                  key={index}
-                />
-              ))}
+              {row.cells.map((cell, index) => {
+                if (
+                  props.excludeColumnIds &&
+                  props.excludeColumnIds.includes(cell.column.id)
+                )
+                  return <></>;
+
+                return (
+                  <TableDataCell
+                    cell={cell}
+                    onClick={
+                      cell.column.id !== SELECTION_COLUMN
+                        ? () => {
+                            if (props.onRowClick) props.onRowClick(row);
+                          }
+                        : undefined
+                    }
+                    key={index}
+                  />
+                );
+              })}
             </Tr>
           );
         })}

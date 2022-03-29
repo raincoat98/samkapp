@@ -61,5 +61,31 @@ export const inventorySchema: schemaType = {
       isAutoSet: true,
       isDisalbePreview: true,
     },
+    // 보이지 않는 필드
+    spec1: {
+      type: "string",
+      isDisalbePreview: true,
+      isNotVisible: true,
+    },
+    spec2: {
+      type: "string",
+      isDisalbePreview: true,
+      isNotVisible: true,
+    },
+    spec3: {
+      type: "string",
+      isDisalbePreview: true,
+      isNotVisible: true,
+    },
+    spec4: {
+      type: "string",
+      isDisalbePreview: true,
+      isNotVisible: true,
+    },
+    spec5: {
+      type: "string",
+      isDisalbePreview: true,
+      isNotVisible: true,
+    },
   },
 };

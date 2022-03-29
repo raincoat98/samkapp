@@ -55,7 +55,7 @@ export default function Management(props: {
   const { title, schema, tableProps, tabProps, filtersProps } = props;
 
   // 번역
-  const { t: translate } = useTranslation();
+  const { i18n, t: translate } = useTranslation();
 
   // 데이터베이스
   const database = useSelector((state: RootState) => state.realm.database);
@@ -107,11 +107,14 @@ export default function Management(props: {
 
   // 테이블 데이터
   const columns: Column[] = [];
+  const excludeColumnIds: string[] = [];
   for (const key in schema.properties) {
     const property = schema.properties[key];
     const type = property.as ?? property.type;
 
-    if (property.isDisalbePreview || property.isNotVisible) continue;
+    if (property.isDisalbePreview || property.isNotVisible) {
+      excludeColumnIds.push(key);
+    }
 
     let accessor: string | Accessor<{}> | undefined;
 
@@ -225,7 +228,8 @@ export default function Management(props: {
     }
 
     // 헤더 번역
-    const header = translate(`${schema.name}.properties.${key}`);
+    const headerKey = `${schema.name}.properties.${key}`;
+    const header = i18n.exists(headerKey) ? translate(headerKey) : key;
 
     columns.push({
       Header: header,
@@ -246,6 +250,7 @@ export default function Management(props: {
   };
   mainTable = TableComponent({
     columns,
+    excludeColumnIds,
     data: tableProps.data,
     // 열 클릭 이벤트
     onRowClick: (row) => {
