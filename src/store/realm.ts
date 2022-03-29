@@ -20,7 +20,8 @@ import { warehouse } from "schema/warehouse";
 import { work_order } from "schema/work_order";
 
 const name = "realm";
-const SERVER_URL = "http://localhost:3002";
+// const SERVER_URL = "http://localhost:3002"; // 로컬 서버 주소
+const SERVER_URL = "http://210.105.208.107:3002"; // 서버 주소
 
 export type dataType =
   | bill_of_materials
@@ -562,6 +563,7 @@ const userSlice = createSlice({
             | undefined
           >
         ) => {
+
           if (action.payload) {
             const { collectionName, data } = action.payload;
             return {
