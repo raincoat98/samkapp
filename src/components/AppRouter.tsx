@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
 import routerConfig from "utils/routerConfig";
 import { Box, Flex } from "@chakra-ui/react";
 import Sidebar from "components/Sidebar";
@@ -11,7 +6,7 @@ import NoMatch from "pages/NoMatch";
 
 export default function AppRouter() {
   return (
-    <Router>
+    <HashRouter basename="/esamter/samter/smis">
       <Flex flex="1" overflow="auto">
         <Sidebar />
 
@@ -43,6 +38,6 @@ export default function AppRouter() {
           </Switch>
         </Box>
       </Flex>
-    </Router>
+    </HashRouter>
   );
 }

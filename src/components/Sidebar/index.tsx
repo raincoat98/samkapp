@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "store";
 import { toggleSidebar } from "store/system";
@@ -33,7 +33,7 @@ export default function Sidebar() {
 
   const { colorMode } = useColorMode();
   const [isLandscape] = useMediaQuery("(orientation: landscape)");
-  const history = useHistory();
+
   const dispatch = useDispatch();
 
   return (
@@ -71,17 +71,19 @@ export default function Sidebar() {
 
       <Flex marginTop={3} align="center">
         <Tooltip label="설정">
-          <IconButton
-            icon={<Icon as={setting} />}
-            onClick={() => {
-              history.push("/setting");
-              if (!isLandscape) dispatch(toggleSidebar());
+          <Link
+            to={{
+              pathname: "/setting",
             }}
-            borderWidth={1}
-            borderColor={borColor}
-            width="fit-content"
-            aria-label="설정"
-          />
+          >
+            <IconButton
+              icon={<Icon as={setting} />}
+              borderWidth={1}
+              borderColor={borColor}
+              width="fit-content"
+              aria-label="설정"
+            />
+          </Link>
         </Tooltip>
 
         <Box flex="1" textAlign="center">
