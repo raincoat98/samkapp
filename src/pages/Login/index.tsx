@@ -102,6 +102,7 @@ export default function Login() {
                   id="user-id"
                   placeholder="아이디"
                   autoComplete="username"
+                  autoCapitalize="off" // 첫글자가 대문자로 나오는 것을 방지
                   onChange={(event) => setUserId(event.target.value)}
                 />
               </InputGroup>
